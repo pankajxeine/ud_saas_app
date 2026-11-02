@@ -6,7 +6,7 @@ import '../i10n/i10n.dart';
 ///
 /// This class contains all the routes used in the application.
 class ApplicationRoutesConstants {
-  static const home = '/main';
+  static const home = '/';
   static const dashboard = home;
   static const emails = '/emails';
 

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/icons/bootstrap_icons.dart';
+import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
 
 class NavItem {
-  const NavItem({
-    required this.label,
-    required this.icon,
-    required this.route,
-  });
+  const NavItem({required this.label, required this.icon, required this.route});
 
   final String label;
   final String route;

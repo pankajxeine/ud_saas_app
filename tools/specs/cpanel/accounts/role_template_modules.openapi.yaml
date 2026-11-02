@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: RoleTemplateModulesResponse API
+  version: 1.0.0
+paths:
+  /role_template_modules:
+    get:
+      operationId: listRoleTemplateModules
+      summary: Get all role_template_modules
+      responses:
+        '200':
+          description: List of role_template_modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleTemplateModulesResponse'
+    post:
+      operationId: createRoleTemplateModule
+      summary: Create a new role_template_modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleTemplateModulesRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTemplateModulesResponse'
+
+  /role_template_modules/{id}:
+    get:
+      operationId: getRoleTemplateModulesById
+      summary: Get role_template_modules by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: role_template_modules object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTemplateModulesResponse'
+    put:
+      operationId: updateRoleTemplateModule
+      summary: Update role_template_modules by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleTemplateModulesRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTemplateModulesResponse'
+    delete:
+      operationId: deleteRoleTemplateModule
+      summary: Delete role_template_modules by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+components:
+  schemas:
+
+    RoleTemplateModulesRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        role_template_id:
+          type: integer
+        module_id:
+          type: integer
+        module_key:
+          type: string
+          maxLength: 50
+
+    RoleTemplateModulesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        role_template_id:
+          type: integer
+        module_id:
+          type: integer
+        module_key:
+          type: string
+          maxLength: 50
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  

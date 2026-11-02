@@ -1,0 +1,78 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../service/{{endpoint.moduleName}}_service.dart';
+import '{{{coreImport}}}/config/app_logger.dart';
+import '{{{coreImport}}}/models/api_operation_response.dart';
+{{#models}}
+import '../model/{{file}}';
+{{/models}}
+
+// Events
+abstract class {{endpoint.OperationId}}Event {}
+
+class Load{{endpoint.OperationId}}Event extends {{endpoint.OperationId}}Event {
+  {{#endpoint.parameters}}
+  final {{datatype}} {{name}};
+  {{/endpoint.parameters}}
+
+  {{#endpoint.isParametersExist}}
+  Load{{endpoint.OperationId}}Event({
+    {{#endpoint.parameters}}
+    required this.{{name}},
+    {{/endpoint.parameters}}
+  });
+  {{/endpoint.isParametersExist}}
+
+  {{^endpoint.isParametersExist}}
+  Load{{endpoint.OperationId}}Event();
+  {{/endpoint.isParametersExist}}
+}
+
+// States
+abstract class {{endpoint.OperationId}}State {}
+
+class {{endpoint.OperationId}}Initial extends {{endpoint.OperationId}}State {}
+
+class {{endpoint.OperationId}}Loading extends {{endpoint.OperationId}}State {}
+
+class {{endpoint.OperationId}}Success<T> extends {{endpoint.OperationId}}State {
+  final ApiOperationResponse<T> response;
+
+  {{endpoint.OperationId}}Success(this.response);
+}
+
+class {{endpoint.OperationId}}Error extends {{endpoint.OperationId}}State {
+  final String message;
+
+  {{endpoint.OperationId}}Error(this.message);
+}
+
+// Bloc
+class {{endpoint.OperationId}}Bloc extends Bloc<{{endpoint.OperationId}}Event, {{endpoint.OperationId}}State> {
+  final {{endpoint.serviceName}}Service service;
+  final log = AppLogger.getLogger('{{endpoint.OperationId}}Bloc');
+
+  {{endpoint.OperationId}}Bloc(this.service) : super({{endpoint.OperationId}}Initial()) {
+    on<Load{{endpoint.OperationId}}Event>(_onLoad);
+  }
+
+  Future<void> _onLoad(
+    Load{{endpoint.OperationId}}Event event,
+    Emitter<{{endpoint.OperationId}}State> emit,
+  ) async {
+    log.info('Bloc handling {{endpoint.OperationId}}Event');
+    emit({{endpoint.OperationId}}Loading());
+
+    try {
+      final response = await service.{{endpoint.methodName}}({{endpoint.methodCallEventParams}});
+
+      if (response.status) {
+        emit({{endpoint.OperationId}}Success(response));
+      } else {
+        emit({{endpoint.OperationId}}Error(response.message));
+      }
+    } catch (e, stack) {
+      log.error('{{endpoint.OperationId}} failed: $e\n$stack');
+      emit({{endpoint.OperationId}}Error('Exception occurred: $e'));
+    }
+  }
+}

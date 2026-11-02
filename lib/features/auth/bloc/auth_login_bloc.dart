@@ -16,9 +16,7 @@ abstract class AuthLoginEvent {}
 class LoadAuthLoginEvent extends AuthLoginEvent {
   final LoginRequest request;
 
-  LoadAuthLoginEvent({
-    required this.request,
-  });
+  LoadAuthLoginEvent({required this.request});
 }
 
 // States
@@ -69,7 +67,7 @@ class AuthLoginBloc extends Bloc<AuthLoginEvent, AuthLoginState> {
             jsonEncode(loginResponse.user.toJson()),
           ),
           storage.save(StorageKeys.username.name, loginResponse.user.username),
-          storage.save(StorageKeys.roles.name, [loginResponse.user.role]),
+          //storage.save(StorageKeys.roles.name, [loginResponse.user.role]),
         ]);
 
         if (saved.any((wasSaved) => !wasSaved)) {

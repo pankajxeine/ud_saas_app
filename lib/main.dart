@@ -1,18 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ud_sass_app/core/config/app_logger.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
 import 'package:ud_sass_app/core/config/local_storage.dart';
 import 'package:ud_sass_app/core/theme/theme_cubit.dart';
-import 'package:ud_sass_app/core/theme/theme_state.dart';
-import 'package:yaml/yaml.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ud_sass_app/di/injection.dart';
 
@@ -30,10 +25,6 @@ Future<void> main() async {
   final log = AppLogger.getLogger("main_local.dart");
 
   ProfileConstants.setEnvironment(Environment.dev);
-  final apiBaseUrl = ProfileConstants.api.toString();
-  // if (apiBaseUrl != 'mock') {
-  //   RestApi.configureGlobal(baseUrl: apiBaseUrl);
-  // }
 
   log.info("Starting App with env: {}", [Environment.dev.name]);
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,26 +36,15 @@ Future<void> main() async {
   AppLocalStorage().setStorage(StorageType.sharedPreferences);
   await AppLocalStorage().save(StorageKeys.language.name, defaultLanguage);
 
-  final appConfig = await _loadAppConfig();
-  final prefs = await SharedPreferences.getInstance();
+  final SharedPreferences prefs = sl<SharedPreferences>();
   final settings = await loadSettings(prefs);
 
-  // runApp(AppRoot(
-  //   appConfig: appConfig,
-  //   settings: settings,
-  //   prefs: prefs,
-  // ));
-  runApp(MultiBlocProvider(
-      providers: [
-        BlocProvider<AppThemeCubit>.value(value: sl<AppThemeCubit>()),
-      ],
-      child: BlocBuilder<AppThemeCubit, AppThemeState>(
-          builder: (context, themeState) {
-        return _DeferredFirstFrameApp(
-          child:
-              AppRoot(appConfig: appConfig, settings: settings, prefs: prefs),
-        );
-      })));
+  runApp(
+    BlocProvider<ThemeCubit>(
+      create: (_) => ThemeCubit(initialSettings: settings, preferences: prefs),
+      child: const _DeferredFirstFrameApp(child: AppRoot()),
+    ),
+  );
   _notifyWebAppReady();
 }
 
@@ -97,15 +77,6 @@ class _DeferredFirstFrameAppState extends State<_DeferredFirstFrameApp> {
   }
 }
 
-Future<Map<String, Object?>> _loadAppConfig() async {
-  try {
-    final raw = await rootBundle.loadString('docs.json');
-    return jsonDecode(raw) as Map<String, Object?>;
-  } catch (_) {
-    return {'flavor': 'local'};
-  }
-}
-
 void _notifyWebAppReady() {
   if (!kIsWeb) return;
   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -115,21 +86,4 @@ void _notifyWebAppReady() {
 
 String getReleaseTagName() {
   return 'Release';
-}
-
-String? loadPackageVersion(String rawLock) {
-  final lock = loadYaml(rawLock);
-  if (lock is! YamlMap) {
-    return null;
-  }
-  final packages = lock['packages'];
-  if (packages is! YamlMap) {
-    return null;
-  }
-  final dep = packages['shadcn_flutter'];
-  if (dep is! YamlMap) {
-    return null;
-  }
-  final version = dep['version'];
-  return version is String ? version : null;
 }

@@ -1,29 +1,34 @@
-import 'package:ud_sass_app/ui/shadcn/components/control/button/button.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
-import 'package:ud_sass_app/ui/shadcn/components/overlay/tooltip/tooltip.dart';
+import 'package:flutter/material.dart' hide IconButton, Theme, Tooltip;
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/tooltip.dart';
 
 class TooltipButton extends StatelessWidget {
-  final String tooltip;
+  final String label;
   final VoidCallback? onPressed;
-  final Widget icon;
+  final Widget child;
+  final ButtonVariant? variant;
+  final ButtonSize? size;
 
   const TooltipButton({
     super.key,
-    required this.tooltip,
+    required this.label,
     this.onPressed,
-    required this.icon,
+    required this.child,
+    this.variant,
+    this.size,
   });
 
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      tooltip: TooltipContainer(
-        child: Text(tooltip),
-      ),
+      semanticLabel: label,
+      tooltip: (BuildContext context) => Text(label),
       waitDuration: const Duration(milliseconds: 300),
-      child: IconButton.outline(
+      child: Button(
+        variant: variant ?? ButtonVariant.primary,
+        size: size ?? ButtonSize.md,
         onPressed: onPressed,
-        icon: icon,
+        child: child,
       ),
     );
   }

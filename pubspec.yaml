@@ -3,12 +3,11 @@ description: A new Flutter project.
 publish_to: none
 version: 1.0.0+1
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ^3.12.0
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  go_router: ^14.2.3
   shared_preferences: ^2.3.2
   http: ^1.2.2
   widget_visibility_checker: ^1.0.2
@@ -42,10 +41,13 @@ dependencies:
   trina_grid: ^2.3.0
   fl_chart: ^1.2.0
   data_table_2: ^2.7.2
+  reactive_forms: ^18.2.2
+  qr: ^3.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  mustache_template: ^2.0.6
 flutter:
   generate: true
   uses-material-design: true

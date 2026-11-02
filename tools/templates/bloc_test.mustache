@@ -1,0 +1,50 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
+import '{{module}}_bloc.dart';
+import '{{module}}_service.dart';
+import '{{module}}_repository.dart';
+
+class Mock{{Module}}Repository extends Mock implements {{Module}}Repository {}
+
+void main() {
+  late {{Module}}Bloc bloc;
+  late {{Module}}Service service;
+  late Mock{{Module}}Repository mockRepository;
+
+  setUp(() {
+    mockRepository = Mock{{Module}}Repository();
+    service = {{Module}}Service(mockRepository);
+    bloc = {{Module}}Bloc(service);
+  });
+
+  group('{{Module}}Bloc Tests', () {
+    blocTest<{{Module}}Bloc, {{module}}State>(
+      'emits [Loading, Loaded] when Load{{Module}}Event succeeds',
+      build: () {
+        when(() => mockRepository.request(any())).thenAnswer(
+          (_) async => {'status': 'ok'},
+        );
+        return bloc;
+      },
+      act: (bloc) => bloc.add(Load{{Module}}Event({'test': 'ok'})),
+      expect: () => [
+        isA<{{Module}}Loading>(),
+        isA<{{Module}}Loaded>(),
+      ],
+    );
+
+    blocTest<{{Module}}Bloc, {{module}}State>(
+      'emits [Loading, Error] when Load{{Module}}Event fails',
+      build: () {
+        when(() => mockRepository.request(any())).thenThrow(Exception('API failed'));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(Load{{Module}}Event({'bad': 'data'})),
+      expect: () => [
+        isA<{{Module}}Loading>(),
+        isA<{{Module}}Error>(),
+      ],
+    );
+  });
+}

@@ -1,0 +1,92 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
+import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
+import 'package:ud_sass_app/ui/shadcn/shared/primitives/text.dart';
+
+import 'package:ud_sass_app/core/config/environment.dart';
+import 'package:ud_sass_app/core/config/entity_field/entity_field_meta.dart';
+import 'package:ud_sass_app/core/widgets/components/loading.dart';
+
+import '../service/{{endpoint.moduleName}}_service.dart';
+import '../bloc/{{endpoint.blocFieldName}}_bloc.dart';
+import '../meta/{{module}}_meta.dart';
+
+{{#models}}
+import '../model/{{file}}';
+{{/models}}
+
+class {{Module}}DetailPage extends StatelessWidget {
+    const {{Module}}DetailPage({
+        super.key,
+        {{#endpoint.pathParams}}
+        required this.{{name}},
+        {{/endpoint.pathParams}}
+    });
+
+    {{#endpoint.pathParams}}
+    final {{datatype}} {{name}};
+    {{/endpoint.pathParams}}
+
+     @override
+    Widget build(BuildContext context) {
+        return BlocProvider<{{endpoint.OperationId}}Bloc>(
+            create:(_) => {{endpoint.OperationId}}Bloc(
+                {{endpoint.serviceName}}Service(baseUrl : ProfileConstants.api)
+            )..add(Load{{endpoint.OperationId}}Event(
+                {{#endpoint.pathParams}}
+                {{name}}: {{name}},
+                {{/endpoint.pathParams}}
+            )),
+
+            child: Scaffold(
+                child: Padding(
+                 padding: const EdgeInsets.all(16.0),
+                 child: BlocBuilder<{{endpoint.OperationId}}Bloc, {{endpoint.OperationId}}State>(
+                     builder: (context, state) {
+                    switch (state) {
+                        case {{endpoint.OperationId}}Initial():
+                        return const Center(child: Text("Initial state"));
+
+                        case {{endpoint.OperationId}}Loading():
+                        return const Center(child: Loading());
+
+                        case {{endpoint.OperationId}}Error(:final message):
+                        return Center(child: Text(message));
+
+                        case {{endpoint.OperationId}}Success(:final response):
+                            final item = state.response.body;
+                            if(item == null) {
+                                return  const Center(child: Text('Not Found'));
+                            }
+
+                            final entries = {{Module}}EntityMeta.toDetailsEntries(
+                                item.toJson(),
+                                mode: EntityMode.view,
+                            );
+
+                            return ListView(
+                                children: [
+                                    for(final entry in entries)
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 6),
+                                        child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                            SizedBox(width: 160, child: Text(entry.key).semiBold),
+                                            Expanded(child: Text(entry.value)),
+                                        ],
+                                        ),
+                                    ),
+                                ],
+                            );
+                        }
+                            return const SizedBox.shrink();
+                    }
+                 ),
+                ),
+            ),
+        );
+    }
+
+}

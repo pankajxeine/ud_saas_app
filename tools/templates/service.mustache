@@ -1,0 +1,37 @@
+import '../repository/{{module}}_repository.dart';
+import '{{{coreImport}}}/config/app_logger.dart';
+{{#models}}
+import '../model/{{file}}';
+{{/models}}
+import '{{{coreImport}}}/models/api_operation_response.dart'; // <-- common response model
+import '{{{coreImport}}}/models/paginated_response.dart';
+
+class {{Module}}Service {
+  final {{Module}}Repository repository;
+  final log = AppLogger.getLogger('{{Module}}Service');
+
+  {{Module}}Service({
+    required String baseUrl,
+    Map<String, String> headers = const {},
+  }) : repository = {{Module}}Repository(baseUrl: baseUrl, headers: headers);
+
+  {{#endpoints}}
+  Future<ApiOperationResponse<{{#isArrayResponse}}PaginatedResponse<{{ResponseClass}}>{{/isArrayResponse}}{{^isArrayResponse}}{{ResponseClass}}{{#hasNoContent}}?{{/hasNoContent}}{{/isArrayResponse}}>> {{methodName}}(
+    {{methodParams}}
+  ) async {
+    try {
+      log.info(
+        'Service calling repository.{{methodName}} with params: {{#hasRequestBody}}{{requestBodyName}}{{/hasRequestBody}}{{^hasRequestBody}}{}{{/hasRequestBody}}',
+      );
+
+      final response = await repository.{{methodName}}({{methodCallParams}});
+
+      log.info('Service received response: $response');
+      return response;
+    } catch (e, stack) {
+      log.error('Error in {{Module}}Service.{{methodName}}: $e\n$stack');
+      return ApiOperationResponse.error('Exception occurred in service: $e');
+    }
+  }
+  {{/endpoints}}
+}

@@ -1,0 +1,27 @@
+class {{classname}} {
+  {{#vars}}
+  final {{datatype}} {{name}};
+  {{/vars}}
+
+  {{classname}}({
+    {{#vars}}
+    {{#required}}required {{/required}}this.{{name}},
+    {{/vars}}
+  });
+
+  factory {{classname}}.fromJson(Map<String, dynamic> json) => {{classname}}(
+    {{#vars}}
+    {{name}}: json['{{baseName}}'] as {{castType}},
+    {{/vars}}
+  );
+
+  Map<String, dynamic> toJson() => {
+    {{#vars}}
+    {{#required}}'{{baseName}}': {{name}},
+    {{/required}}
+    {{^required}}
+    if ({{name}} != null) '{{baseName}}': {{name}},
+    {{/required}}
+    {{/vars}}
+  };
+}

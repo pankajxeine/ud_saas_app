@@ -1,0 +1,121 @@
+import '{{{coreImport}}}/config/app_logger.dart';
+import '{{{coreImport}}}/api/rest_api.dart';
+import '{{{coreImport}}}/api/api_parser.dart';
+import '{{{coreImport}}}/models/api_operation_response.dart';
+import '{{{coreImport}}}/models/paginated_response.dart';
+{{#models}}
+import '../model/{{file}}';
+{{/models}}
+
+class {{Module}}Repository {
+  final RestApi api;
+  final log = AppLogger.getLogger('{{Module}}Repository');
+
+  {{Module}}Repository({
+    required String baseUrl,
+    Map<String, String> headers = const {},
+  }) : api = RestApi(baseUrl: baseUrl, defaultHeaders: headers);
+
+  {{#endpoints}}
+  Future<ApiOperationResponse<{{#isArrayResponse}}PaginatedResponse<{{ResponseClass}}>{{/isArrayResponse}}{{^isArrayResponse}}{{ResponseClass}}{{#hasNoContent}}?{{/hasNoContent}}{{/isArrayResponse}}>> {{methodName}}(
+    {{methodParams}}
+  ) async {
+    try {
+      final endpointPath = {{{endpointPathExpression}}};
+
+      log.info(
+        'Calling {{httpMethod}} $endpointPath with request: {{#hasRequestBody}}{{requestBodyName}}{{/hasRequestBody}}{{^hasRequestBody}}{}{{/hasRequestBody}}',
+      );
+
+      {{#isCreateOrDelete}}
+      final response = await api.requestWithResponse<dynamic>(
+        endpointPath: endpointPath,
+        method: '{{httpMethod}}',
+        {{#hasQueryParams}}
+        queryParams: {
+          {{#queryParams}}
+          if ({{name}} != null) '{{original}}': {{name}},
+          {{/queryParams}}
+        },
+        {{/hasQueryParams}}
+        {{#hasRequestBody}}
+        body: {{requestBodyName}},
+        {{/hasRequestBody}}
+      );
+
+      log.info('Response from $endpointPath: ${response.data}');
+      final success = response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300;
+
+      if (!success) {
+        return ApiOperationResponse.error('Request failed with status ${response.statusCode}');
+      }
+
+      final body = {{#isArrayResponse}}
+        ApiParser.parsePaginated<{{ResponseClass}}>(
+          response.data,
+          (json) => {{ResponseClass}}.fromJson(json),
+        );
+      {{/isArrayResponse}}
+      {{^isArrayResponse}}
+        {{#hasNoContent}}
+          null;
+        {{/hasNoContent}}
+        {{^hasNoContent}}
+          ApiParser.parseObject<{{ResponseClass}}>(
+            response.data,
+            (json) => {{ResponseClass}}.fromJson(json),
+          );
+        {{/hasNoContent}}
+      {{/isArrayResponse}}
+
+      return ApiOperationResponse.success(body, message: 'Success');
+      {{/isCreateOrDelete}}
+
+      {{^isCreateOrDelete}}
+      final json = await api.request<dynamic>(
+        endpointPath: endpointPath,
+        method: '{{httpMethod}}',
+        {{#hasQueryParams}}
+        queryParams: {
+          {{#queryParams}}
+          if ({{name}} != null) '{{original}}': {{name}},
+          {{/queryParams}}
+        },
+        {{/hasQueryParams}}
+        {{#hasRequestBody}}
+        body: {{requestBodyName}},
+        {{/hasRequestBody}}
+      );
+
+      log.info('Response from $endpointPath: $json');
+      if (json == null) {
+        {{#isArrayResponse}}
+        return ApiOperationResponse.success(const PaginatedResponse<{{ResponseClass}}>(data: []), message: 'No content');
+        {{/isArrayResponse}}
+        {{^isArrayResponse}}
+        return ApiOperationResponse.success(null, message: 'No content');
+        {{/isArrayResponse}}
+      }
+
+      {{#isArrayResponse}}
+      final body = ApiParser.parsePaginated<{{ResponseClass}}>(
+        json,
+        (json) => {{ResponseClass}}.fromJson(json),
+      );
+      return ApiOperationResponse.success(body);
+      {{/isArrayResponse}}
+
+      {{^isArrayResponse}}
+      final body = {{ResponseClass}}.fromJson(json as Map<String, dynamic>);
+      return ApiOperationResponse.success(body);
+      {{/isArrayResponse}}
+      {{/isCreateOrDelete}}
+    } catch (e, stack) {
+      log.error('Error in {{methodName}}: $e\n$stack');
+      return ApiOperationResponse.error('Exception occurred: $e');
+    }
+  }
+  {{/endpoints}}
+}

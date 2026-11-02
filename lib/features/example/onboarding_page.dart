@@ -1,12 +1,8 @@
-// ignore_for_file: duplicate_import, unnecessary_import
-// Example: Onboarding / Multi-step Wizard Page
-// Uses: Card, Button, TextField, Text extensions, AnimatedSwitcher
-
-import 'package:flutter/material.dart' hide Card, TextField;
-import 'package:ud_sass_app/ui/shadcn/components/control/button/button.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/card/card.dart';
-import 'package:ud_sass_app/ui/shadcn/components/display/text/text.dart';
-import 'package:ud_sass_app/ui/shadcn/components/form/text_field/text_field.dart';
+import 'package:flutter/material.dart' hide Card, TextField, Theme;
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/card.dart';
+import 'package:ud_sass_app/ui/dashcn/components/input.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -38,7 +34,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colors;
 
     return Scaffold(
       body: SafeArea(
@@ -61,7 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             decoration: BoxDecoration(
                               color: isActive
                                   ? colorScheme.primary
-                                  : colorScheme.outlineVariant,
+                                  : colorScheme.foreground,
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
@@ -73,9 +69,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Step ${_step + 1} of ${_steps.length}')
-                          .muted()
-                          .small(),
+                      Text(
+                        'Step ${_step + 1} of ${_steps.length}',
+                      ).muted().small(),
                       Text(_steps[_step]).muted().small(),
                     ],
                   ),
@@ -100,111 +96,127 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _buildStep() {
     return switch (_step) {
       0 => Card(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('👋', style: TextStyle(fontSize: 36)),
-              const SizedBox(height: 16),
-              const Text('Welcome to the app').semiBold(),
-              const SizedBox(height: 8),
-              const Text(
-                "We're excited to have you. Let's get you set up in just a few steps.",
-              ).muted().small(),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  onPressed: _next,
-                  child: const Text('Get started'),
-                ),
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('👋', style: TextStyle(fontSize: 36)),
+            const SizedBox(height: 16),
+            const Text('Welcome to the app').semiBold(),
+            const SizedBox(height: 8),
+            const Text(
+              "We're excited to have you. Let's get you set up in just a few steps.",
+            ).muted().small(),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: Button(
+                variant: ButtonVariant.primary,
+                onPressed: _next,
+                child: const Text('Get started'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
       1 => Card(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Your profile').semiBold(),
-              const SizedBox(height: 4),
-              const Text('Tell us a little about yourself.').muted().small(),
-              const SizedBox(height: 20),
-              const Text('Full name').semiBold().small(),
-              const SizedBox(height: 6),
-              TextField(
-                controller: _nameController,
-                placeholder: const Text('Jane Doe'),
-              ),
-              const SizedBox(height: 16),
-              const Text('Job role').semiBold().small(),
-              const SizedBox(height: 6),
-              TextField(
-                controller: _roleController,
-                placeholder: const Text('e.g. Product Designer'),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  OutlineButton(onPressed: _back, child: const Text('Back')),
-                  const Spacer(),
-                  PrimaryButton(
-                      onPressed: _next, child: const Text('Continue')),
-                ],
-              ),
-            ],
-          ),
-        ),
-      2 => Card(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Preferences').semiBold(),
-              const SizedBox(height: 4),
-              const Text('Customize your experience.').muted().small(),
-              const SizedBox(height: 20),
-              const Text(
-                "We'll use these to personalize your dashboard and recommendations.",
-              ).muted().small(),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  OutlineButton(onPressed: _back, child: const Text('Back')),
-                  const Spacer(),
-                  PrimaryButton(
-                      onPressed: _next, child: const Text('Continue')),
-                ],
-              ),
-            ],
-          ),
-        ),
-      _ => Card(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('🎉', style: TextStyle(fontSize: 36)),
-              const SizedBox(height: 16),
-              const Text("You're all set!").semiBold(),
-              const SizedBox(height: 8),
-              const Text('Your account is ready. Start exploring the app.')
-                  .muted()
-                  .small(),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  onPressed: () {},
-                  child: const Text('Go to dashboard'),
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Your profile').semiBold(),
+            const SizedBox(height: 4),
+            const Text('Tell us a little about yourself.').muted().small(),
+            const SizedBox(height: 20),
+            const Text('Full name').semiBold().small(),
+            const SizedBox(height: 6),
+            Input(
+              controller: _nameController,
+              placeholder: const Text('Jane Doe'),
+            ),
+            const SizedBox(height: 16),
+            const Text('Job role').semiBold().small(),
+            const SizedBox(height: 6),
+            Input(
+              controller: _roleController,
+              placeholder: const Text('e.g. Product Designer'),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Button(
+                  variant: ButtonVariant.outline,
+                  onPressed: _back,
+                  child: const Text('Back'),
                 ),
-              ),
-            ],
-          ),
+                const Spacer(),
+                Button(
+                  variant: ButtonVariant.primary,
+                  onPressed: _next,
+                  child: const Text('Continue'),
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+      2 => Card(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Preferences').semiBold(),
+            const SizedBox(height: 4),
+            const Text('Customize your experience.').muted().small(),
+            const SizedBox(height: 20),
+            const Text(
+              "We'll use these to personalize your dashboard and recommendations.",
+            ).muted().small(),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Button(
+                  variant: ButtonVariant.outline,
+                  onPressed: _back,
+                  child: const Text('Back'),
+                ),
+                const Spacer(),
+                Button(
+                  variant: ButtonVariant.primary,
+                  onPressed: _next,
+                  child: const Text('Continue'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      _ => Card(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('🎉', style: TextStyle(fontSize: 36)),
+            const SizedBox(height: 16),
+            const Text("You're all set!").semiBold(),
+            const SizedBox(height: 8),
+            const Text(
+              'Your account is ready. Start exploring the app.',
+            ).muted().small(),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: Button(
+                variant: ButtonVariant.primary,
+                onPressed: () {},
+                child: const Text('Go to dashboard'),
+              ),
+            ),
+          ],
+        ),
+      ),
     };
   }
 }

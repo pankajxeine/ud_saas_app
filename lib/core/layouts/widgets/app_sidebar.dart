@@ -1,39 +1,35 @@
-import 'package:flutter/material.dart' hide Theme, ButtonStyle, NavigationRail;
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart'
+    hide Theme, ButtonStyle, NavigationBar, NavigationRail;
+import 'package:ud_sass_app/core/navigation/app_navigation.dart';
+import 'package:ud_sass_app/core/navigation/app_route_location.dart';
 import 'package:ud_sass_app/i10n/i10n.dart';
 import 'package:ud_sass_app/routes/app_routes_constants.dart';
-import 'package:ud_sass_app/ui/shadcn/components/control/button/_impl/styles/button_style_class.dart';
-import 'package:ud_sass_app/ui/shadcn/components/control/button/_impl/extensions/button_style_extension.dart';
-import 'package:ud_sass_app/ui/shadcn/components/display/text/text.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/outlined_container/outlined_container.dart';
-import 'package:ud_sass_app/ui/shadcn/components/navigation/navigation_bar/navigation_bar.dart';
+import 'package:ud_sass_app/ui/dashcn/components/navigation_bar.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'app_logo.dart';
 
 class AppNavDrawer extends StatelessWidget {
   const AppNavDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
-    String currentRoute = '';
-
-    try {
-      currentRoute = GoRouterState.of(context).matchedLocation;
-    } catch (_) {}
+    final dashcn.ThemeData theme = dashcn.Theme.of(context);
+    final String currentRoute = AppRouteLocation.maybeOf(context) ?? '';
 
     return Drawer(
-        backgroundColor: cs.card,
-        child: SafeArea(
-            child: AppSidebar(
+      backgroundColor: theme.colors.card,
+      child: SafeArea(
+        child: AppSidebar(
           currentRoute: currentRoute,
           onNavigate: () => Navigator.of(context).pop(),
-        )));
+        ),
+      ),
+    );
   }
 }
 
-class AppSidebar extends StatefulWidget {
+class AppSidebar extends StatelessWidget {
   const AppSidebar({
     super.key,
     this.collapsed = false,
@@ -49,72 +45,90 @@ class AppSidebar extends StatefulWidget {
   final VoidCallback? onNavigate;
   final VoidCallback? onToggle;
 
-  @override
-  State<AppSidebar> createState() => _AppSidebarState();
-}
+  static final List<String> _paths = <String>[
+    for (final group in ApplicationRoutesConstants.kNavGroups)
+      if (group.items.isEmpty)
+        group.path ?? ApplicationRoutesConstants.dashboard
+      else
+        for (final item in group.items)
+          if (item.inSidebar) item.path,
+  ];
 
-class _AppSidebarState extends State<AppSidebar> {
-  static const _sidebarRadius = BorderRadius.all(Radius.circular(8));
+  int _indexForRoute(String route) {
+    final String normalized = route.split('?').first;
+    final String path = normalized.length > 1
+        ? normalized.replaceFirst(RegExp(r'/+$'), '')
+        : normalized;
+    final int exactIndex = _paths.indexOf(path);
+    if (exactIndex >= 0) {
+      return exactIndex;
+    }
 
-  late int _selected = widget.selected;
-
-  NavigationItem _buildButton(String text, IconData icon) {
-    return NavigationItem(
-      label: Text(text),
-      alignment: Alignment.topLeft,
-      style: const ButtonStyle.ghost().withBorderRadius(
-        borderRadius: _sidebarRadius,
-      ),
-      selectedStyle: const ButtonStyle.primaryIcon().withBorderRadius(
-        borderRadius: _sidebarRadius,
-      ),
-      child: Icon(icon),
-    );
-  }
-
-  NavigationLabel _buildLabel(String label) {
-    return NavigationLabel(
-      alignment: Alignment.topLeft,
-      child: Text(label).semiBold().muted(),
-    );
+    int bestIndex = -1;
+    int bestLength = 0;
+    for (int index = 0; index < _paths.length; index += 1) {
+      final String candidate = _paths[index];
+      if (candidate != '/' &&
+          path.startsWith('$candidate/') &&
+          candidate.length > bestLength) {
+        bestIndex = index;
+        bestLength = candidate.length;
+      }
+    }
+    return bestIndex >= 0 ? bestIndex : selected;
   }
 
   List<NavigationBarItem> _buildNavigationItems(S localization) {
-    const groups = ApplicationRoutesConstants.kNavGroups;
-    final items = <NavigationBarItem>[];
+    final List<NavigationBarItem> items = <NavigationBarItem>[];
+    int routeIndex = 0;
+    const List<NavGroup> groups = ApplicationRoutesConstants.kNavGroups;
 
-    for (var index = 0; index < groups.length; index++) {
-      final group = groups[index];
-
+    for (int groupIndex = 0; groupIndex < groups.length; groupIndex += 1) {
+      final NavGroup group = groups[groupIndex];
       if (group.items.isEmpty) {
-        items.add(_buildButton(
-          ApplicationRoutesConstants.navigationLabelFor(
-            group.localizationKey,
-            localization,
-          ),
-          group.icon ?? Icons.menu,
-        ));
-      } else {
-        items.add(_buildLabel(
-          ApplicationRoutesConstants.navigationLabelFor(
-            group.localizationKey,
-            localization,
-          ),
-        ));
-        for (final item in group.items) {
-          if (item.inSidebar) {
-            items.add(_buildButton(
+        items.add(
+          NavigationItem(
+            index: routeIndex++,
+            label: Text(
               ApplicationRoutesConstants.navigationLabelFor(
-                item.localizationKey,
+                group.localizationKey,
                 localization,
               ),
-              item.icon,
-            ));
+            ),
+            child: Icon(group.icon ?? Icons.menu),
+          ),
+        );
+      } else {
+        items.add(
+          NavigationLabel(
+            child: Text(
+              ApplicationRoutesConstants.navigationLabelFor(
+                group.localizationKey,
+                localization,
+              ),
+            ),
+          ),
+        );
+        for (final NavItem item in group.items) {
+          if (!item.inSidebar) {
+            continue;
           }
+          items.add(
+            NavigationItem(
+              index: routeIndex++,
+              label: Text(
+                ApplicationRoutesConstants.navigationLabelFor(
+                  item.localizationKey,
+                  localization,
+                ),
+              ),
+              child: Icon(item.icon),
+            ),
+          );
         }
       }
 
-      if (index < groups.length - 1) {
+      if (groupIndex < groups.length - 1) {
         items.add(const NavigationDivider());
       }
     }
@@ -124,37 +138,30 @@ class _AppSidebarState extends State<AppSidebar> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final localization = S.of(context)!;
-    final navigationItems = _buildNavigationItems(localization);
+    final dashcn.ThemeData theme = dashcn.Theme.of(context);
+    final S localization = S.of(context)!;
+    final bool isCollapsed = collapsed;
 
-    void onSelected(int value) {
-      setState(() => _selected = value);
-    }
-
-    if (widget.collapsed) {
-      return OutlinedContainer(
-        borderRadius: _sidebarRadius,
-        child: NavigationRail(
-          backgroundColor: theme.colorScheme.card,
-          labelType: NavigationLabelType.expanded,
-          labelPosition: NavigationLabelPosition.end,
-          alignment: NavigationRailAlignment.start,
-          expanded: false,
-          index: _selected,
-          onSelected: onSelected,
-          children: navigationItems,
-        ),
-      );
-    }
-
-    return OutlinedContainer(
-      borderRadius: _sidebarRadius,
-      child: NavigationSidebar(
-        index: _selected,
-        onSelected: onSelected,
-        children: navigationItems,
+    return NavigationBar(
+      container: NavigationContainerType.sidebar,
+      constraints: BoxConstraints.tightFor(
+        width: (isCollapsed ? 72 : 256) * theme.scaling,
       ),
+      labelType: isCollapsed
+          ? NavigationLabelType.tooltip
+          : NavigationLabelType.expanded,
+      labelPosition: NavigationLabelPosition.end,
+      expanded: !isCollapsed,
+      index: _indexForRoute(currentRoute),
+      onSelected: (int index) {
+        if (index < 0 || index >= _paths.length) {
+          return;
+        }
+        onNavigate?.call();
+        context.go(_paths[index]);
+      },
+      header: <Widget>[AppLogo(collapsed: isCollapsed)],
+      children: _buildNavigationItems(localization),
     );
   }
 }

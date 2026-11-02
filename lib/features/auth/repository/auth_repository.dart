@@ -14,13 +14,12 @@ class AuthRepository {
   }) : api = RestApi(baseUrl: baseUrl, defaultHeaders: headers);
 
   Future<ApiOperationResponse<LoginResponse>> authRegister(
-      LoginRequest request) async {
+    LoginRequest request,
+  ) async {
     try {
       const endpointPath = '/auth/register';
 
-      log.info(
-        'Calling POST $endpointPath with request: request',
-      );
+      log.info('Calling POST $endpointPath with request: request');
 
       final response = await api.requestWithResponse<dynamic>(
         endpointPath: endpointPath,
@@ -29,13 +28,15 @@ class AuthRepository {
       );
 
       log.info('Response from $endpointPath: ${response.data}');
-      final success = response.statusCode != null &&
+      final success =
+          response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300;
 
       if (!success) {
         return ApiOperationResponse.error(
-            'Request failed with status ${response.statusCode}');
+          'Request failed with status ${response.statusCode}',
+        );
       }
 
       final body = ApiParser.parseObject<LoginResponse>(
@@ -51,13 +52,12 @@ class AuthRepository {
   }
 
   Future<ApiOperationResponse<LoginResponse>> authLogin(
-      LoginRequest request) async {
+    LoginRequest request,
+  ) async {
     try {
-      const endpointPath = '/auth/login';
+      const endpointPath = '/auth/admin/login';
 
-      log.info(
-        'Calling POST $endpointPath with request: request',
-      );
+      log.info('Calling POST $endpointPath with request: request');
 
       final response = await api.requestWithResponse<dynamic>(
         endpointPath: endpointPath,
@@ -66,13 +66,15 @@ class AuthRepository {
       );
 
       log.info('Response from $endpointPath: ${response.data}');
-      final success = response.statusCode != null &&
+      final success =
+          response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300;
 
       if (!success) {
         return ApiOperationResponse.error(
-            'Request failed with status ${response.statusCode}');
+          'Request failed with status ${response.statusCode}',
+        );
       }
 
       final body = ApiParser.parseObject<LoginResponse>(
@@ -91,9 +93,7 @@ class AuthRepository {
     try {
       final endpointPath = '/auth/logout';
 
-      log.info(
-        'Calling POST $endpointPath with request: {}',
-      );
+      log.info('Calling POST $endpointPath with request: {}');
 
       final response = await api.requestWithResponse<dynamic>(
         endpointPath: endpointPath,
@@ -101,13 +101,15 @@ class AuthRepository {
       );
 
       log.info('Response from $endpointPath: ${response.data}');
-      final success = response.statusCode != null &&
+      final success =
+          response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300;
 
       if (!success) {
         return ApiOperationResponse.error(
-            'Request failed with status ${response.statusCode}');
+          'Request failed with status ${response.statusCode}',
+        );
       }
 
       final body = null;
@@ -123,9 +125,7 @@ class AuthRepository {
     try {
       final endpointPath = '/auth/refresh';
 
-      log.info(
-        'Calling POST $endpointPath with request: {}',
-      );
+      log.info('Calling POST $endpointPath with request: {}');
 
       final response = await api.requestWithResponse<dynamic>(
         endpointPath: endpointPath,
@@ -133,13 +133,15 @@ class AuthRepository {
       );
 
       log.info('Response from $endpointPath: ${response.data}');
-      final success = response.statusCode != null &&
+      final success =
+          response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300;
 
       if (!success) {
         return ApiOperationResponse.error(
-            'Request failed with status ${response.statusCode}');
+          'Request failed with status ${response.statusCode}',
+        );
       }
 
       final body = ApiParser.parseObject<LoginResponse>(

@@ -1,28 +1,38 @@
-import 'package:flutter/material.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/color_scheme.dart'
-    as shadcn_colors;
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart' as shadcn_theme;
+import 'package:flutter/material.dart' show Brightness;
 
+import 'package:ud_sass_app/core/theme/theme_app.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
+
+/// App appearance and startup route, resolved from persisted preferences.
+///
+/// The theme document is the source of truth for both Dashcn themes, matching
+/// the docs app's theme model.
 class LayoutSettings {
-  final shadcn_colors.ColorScheme colorScheme;
-  final double radius;
-  final double scaling;
-  final double surfaceOpacity;
-  final double surfaceBlur;
-  final shadcn_theme.Density density;
-  final String initialPath;
-  final String presetId;
-  final Brightness brightness;
-
   const LayoutSettings({
-    required this.colorScheme,
-    required this.radius,
-    required this.scaling,
-    required this.surfaceOpacity,
-    required this.surfaceBlur,
-    required this.density,
+    required this.themeDocument,
+    required this.themeMode,
     required this.initialPath,
-    required this.presetId,
-    required this.brightness,
+    required this.scaling,
+    required this.density,
   });
+
+  final ThemeApp themeDocument;
+  final dashcn.ThemeMode themeMode;
+  final String initialPath;
+  final double scaling;
+  final dashcn.Density? density;
+
+  String get presetId => themeDocument.id;
+
+  dashcn.ThemeData get lightTheme => _resolveTheme(Brightness.light);
+
+  dashcn.ThemeData get darkTheme => _resolveTheme(Brightness.dark);
+
+  dashcn.ThemeData _resolveTheme(Brightness brightness) {
+    final dashcn.ThemeData resolved = themeDocument.theme(brightness);
+    return resolved.copyWith(
+      scaling: () => scaling,
+      density: density == null ? null : () => density!,
+    );
+  }
 }

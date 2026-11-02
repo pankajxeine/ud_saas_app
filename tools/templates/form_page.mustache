@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart' hide Scaffold;
+import 'package:ud_sass_app/core/config/environment.dart';
+import 'package:ud_sass_app/core/widgets/dynamic_form/app_dynamic_form.dart';
+import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
+import '../model/{{requestModelFile}}.dart';
+import '../service/{{module}}_service.dart';
+
+class {{Module}}FormPage extends StatefulWidget {
+  const {{Module}}FormPage({super.key{{#updatePathParams}}, this.{{name}}{{/updatePathParams}}});
+
+  {{#updatePathParams}}
+  final {{datatype}}? {{name}};
+  {{/updatePathParams}}
+
+  @override
+  State<{{Module}}FormPage> createState() => _{{Module}}FormPageState();
+}
+
+class _{{Module}}FormPageState extends State<{{Module}}FormPage> {
+  String? _message;
+
+  Future<void> _submit(Map<String, dynamic> values) async {
+    final service = {{Module}}Service(baseUrl: ProfileConstants.api);
+    final requestValues = <String, dynamic>{
+      ...values,
+      {{#fields}}
+      {{#editable}}'{{baseName}}': {{#isIntegerFormField}}int.tryParse(values['{{baseName}}']?.toString() ?? ''),{{/isIntegerFormField}}{{^isIntegerFormField}}{{#isDoubleFormField}}double.tryParse(values['{{baseName}}']?.toString() ?? ''),{{/isDoubleFormField}}{{^isDoubleFormField}}values['{{baseName}}'],{{/isDoubleFormField}}{{/isIntegerFormField}}
+      {{/editable}}
+      {{/fields}}
+    };
+    final request = {{RequestClass}}.fromJson(requestValues);
+    try {
+      {{#hasUpdateEndpoint}}
+      if ({{#updatePathParams}}widget.{{name}} != null{{^last}} && {{/last}}{{/updatePathParams}}) {
+        final result = await service.{{updateEndpoint.methodName}}({{updateCallArgs}});
+        if (!result.status) throw Exception(result.message);
+        if (mounted) setState(() => _message = 'Updated successfully');
+        return;
+      }
+      {{/hasUpdateEndpoint}}
+      {{#hasCreateEndpoint}}
+      final result = await service.{{createEndpoint.methodName}}({{createCallArgs}});
+      if (!result.status) throw Exception(result.message);
+      if (mounted) setState(() => _message = 'Created successfully');
+      {{/hasCreateEndpoint}}
+    } catch (error) {
+      if (mounted) setState(() => _message = error.toString());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              AppDynamicForm(
+                fields: [
+                  {{#fields}}
+                  {{#editable}}
+                  AppDynamicField(
+                    name: '{{baseName}}',
+                    label: '{{label}}',
+                    type: AppDynamicFieldType.{{formFieldType}},
+                    required: {{required}},
+                    {{#hasMaxLength}}maxLength: {{maxLength}},{{/hasMaxLength}}
+                  ),
+                  {{/editable}}
+                  {{/fields}}
+                ],
+                config: const AppDynamicFormConfig(columns: 2, submitLabel: 'Save'),
+                onSubmit: _submit,
+              ),
+              if (_message != null) Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(_message!),
+              ),
+            ]),
+          ),
+        ),
+      );
+}

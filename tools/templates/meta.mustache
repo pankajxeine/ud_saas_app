@@ -1,0 +1,21 @@
+
+
+import 'package:ud_sass_app/core/config/entity_field/entity_field_meta.dart';
+
+const {{Module}}EntityMeta = EntityMeta(
+    entityName: '{{Module}}',
+    fields: [
+        {{#fields}}
+        EntityFieldMeta(
+            name:'{{baseName}}',
+            label:'{{label}}',
+            type: EntityFieldType.{{entityFieldType}},
+            required:{{required}},
+            {{#hasMaxLength}}
+            maxLength:{{maxLength}},
+            {{/hasMaxLength}}
+            editable: {{editable}},
+        ),
+        {{/fields}}
+    ],
+);

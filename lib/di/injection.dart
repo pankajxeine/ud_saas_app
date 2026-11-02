@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/theme/theme_cubit.dart';
 import '../core/layouts/bloc/navigation/navigation_cubit.dart';
 import '../core/layouts/bloc/layout/layout_cubit.dart';
 
@@ -15,8 +14,6 @@ Future<void> configureDependencies() async {
 
   sl.registerSingleton<SharedPreferences>(pref);
 
-  // Theme (singleton- persists across navigation)
-  sl.registerSingleton<AppThemeCubit>(AppThemeCubit(sl()));
   sl.registerSingleton<NavigationCubit>(NavigationCubit());
   sl.registerSingleton<LayoutCubit>(LayoutCubit());
 

@@ -1,254 +1,202 @@
-// import 'dart:convert';
+import 'package:flutter/material.dart' show Brightness;
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
-// import 'package:ud_sass_app/ui/shadcn/shared/theme/color_scheme.dart'
-//     as shadcn_colors;
-import 'package:ud_sass_app/ui/shadcn/shared/theme/preset_themes.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart' as shadcn_theme;
-import 'app_theme.dart';
 
-import 'theme_state.dart';
+import 'package:ud_sass_app/core/theme/theme_app.dart';
+import 'package:ud_sass_app/core/theme/theme_app_edits.dart';
+import 'package:ud_sass_app/core/theme/app_fonts.dart';
+import 'package:ud_sass_app/core/theme/theme_state.dart';
+import 'package:ud_sass_app/core/theme/theme_utils.dart'
+    show
+        kPrefsDensityBaseContainerPadding,
+        kPrefsDensityBaseContentPadding,
+        kPrefsDensityBaseGap,
+        kPrefsRadius,
+        kPrefsScaling,
+        kPrefsSurfaceBlur,
+        kPrefsSurfaceOpacity,
+        kPrefsThemeMode,
+        kPrefsThemePresetId,
+        loadSettings;
+import 'package:ud_sass_app/data/layout_setting.dart';
+import 'package:ud_sass_app/state/app_storage.dart' show kAppThemeDocumentKey;
+import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
-const String kPrefsThemePresetId = 'themePresetId';
-const String kPrefsThemeMode = 'themeMode';
-const String kPrefsCustomScheme = 'colorScheme';
-const String kPrefsCustomSchemeLight = 'colorSchemeLight';
-const String kPrefsCustomSchemeDark = 'colorSchemeDark';
-const String kPrefsRadius = 'radius';
-const String kPrefsScaling = 'scaling';
-const String kPrefsSurfaceOpacity = 'surfaceOpacity';
-const String kPrefsSurfaceBlur = 'surfaceBlur';
-const String kPrefsDensityBaseContainerPadding = 'densityBaseContainerPadding';
-const String kPrefsDensityBaseGap = 'densityBaseGap';
-const String kPrefsDensityBaseContentPadding = 'densityBaseContentPadding';
-const double kMinReadableSurfaceOpacity = 0.78;
-const String kPrefsFontSize = 'fontSize';
+class ThemeCubit extends Cubit<ThemeState> {
+  ThemeCubit({
+    required LayoutSettings initialSettings,
+    required this.preferences,
+  }) : super(ThemeState(settings: initialSettings));
 
-double normalizeDocsSurfaceOpacity(double opacity) {
-  return opacity.clamp(kMinReadableSurfaceOpacity, 1.0);
-}
+  final SharedPreferences preferences;
 
-class AppThemeCubit extends Cubit<AppThemeState> {
-  AppThemeCubit(this.prefs) : super(_load(prefs));
-  final SharedPreferences prefs;
-
-  static AppThemeState _load(SharedPreferences p) {
-    final brightness = p.getString(kPrefsThemeMode) == 'light'
-        ? Brightness.light
-        : Brightness.dark;
-    // final schemeName = p.getString(kPrefsCustomScheme) ?? 'zinc';
-    // final colorScheme = colorPresets.firstWhere((e) => e.name == schemeName,
-    //     orElse: () => colorPresets.first);
-
-    final densityName = p.getString(kPrefsDensityBaseGap) ?? 'normal';
-
-    final density = AppDensity.values.firstWhere(
-      (e) => e.name == densityName,
-      orElse: () => AppDensity.normal,
-    );
-    final fontSizeName = p.getString(kPrefsFontSize) ?? 'medium';
-
-    final fontSize = FontSize.values.firstWhere((e) => e.name == fontSizeName,
-        orElse: () => FontSize.medium);
-
-    final String presetId = p.getString(kPrefsThemePresetId) ?? 'default';
-
-    final preset = colorPresets.firstWhere((e) => e.id == presetId,
-        orElse: () => colorPresets.first);
-    final tokens = tokensFor(presetId, brightness);
-    return AppThemeState(
-      brightness: brightness,
-      preset: preset,
-      radius: p.getDouble(kPrefsRadius) ?? 6.0,
-      density: density,
-      scaling: p.getDouble(kPrefsScaling) ?? 1.0,
-      surfaceOpacity: p.getDouble(kPrefsSurfaceOpacity) ?? 1.0,
-      surfaceBlur: p.getDouble(kPrefsSurfaceBlur) ?? 0.0,
-      fontSize: fontSize,
-      presetId: presetId,
-      spacing: tokens.spacing,
-      tracking: tokens.tracking,
-      shadows: tokens.shadows,
-    );
-  }
-
-  void setPreset(String id) {
-    if (state.presetId == id) return;
-
-    final preset = colorPresets.firstWhere((preset) => preset.id == id,
-        orElse: () => colorPresets.first);
-    final tokens = state.brightness == Brightness.dark
-        ? preset.darkTokens
-        : preset.lightTokens;
-
-    final newData = state.copyWith(
-        preset: preset,
-        radius: tokens.radius,
-        spacing: tokens.spacing,
-        tracking: tokens.tracking,
-        shadows: tokens.shadows,
-        presetId: id);
-    _persistDensity(tokens.density);
-    prefs.setString(kPrefsThemePresetId, id);
-    emit(newData);
-  }
-
-  // void toggleTheme() =>
-  //     setBrightness(state.isDark ? Brightness.light : Brightness.dark);
-
-  void setBrightness(Brightness brightness) {
-    if (state.brightness == brightness) return;
-    if (state.presetId == 'default') {
-      //final storedScheme = prefs.getString(_customSchemeKey(brightness));
-      final newData = state.copyWith(brightness: brightness);
-      prefs.setString(kPrefsCustomScheme, 'default');
-      emit(newData);
-    } else {
-      final preset = colorPresets.firstWhere(
-          (preset) => preset.id == state.presetId,
-          orElse: () => colorPresets.first);
-      final tokens = brightness == Brightness.dark
-          ? preset.darkTokens
-          : preset.lightTokens;
-      final newData = state.copyWith(
-          preset: preset,
-          radius: tokens.radius,
-          spacing: tokens.spacing,
-          tracking: tokens.tracking,
-          shadows: tokens.shadows,
-          brightness: brightness);
-      _persistDensity(tokens.density);
-      prefs.setString(
-          kPrefsThemeMode, brightness == Brightness.dark ? 'dark' : 'light');
-      prefs.setString(kPrefsCustomScheme, preset.name);
-
-      emit(newData);
+  Future<void> setThemeMode(dashcn.ThemeMode themeMode) async {
+    if (themeMode == state.themeMode) {
+      return;
     }
-  }
 
-  void setCustomScheme(AppThemePreset preset) {
-    final newData = state.copyWith(preset: preset, presetId: preset.id);
-    prefs.setString(kPrefsThemePresetId, preset.id);
-    prefs.setString(kPrefsCustomScheme, preset.name);
-    // prefs.setString(_customSchemeKey(preset.colorScheme.brightness),
-    //     _encodeScheme(preset.colorScheme));
-    emit(newData);
-  }
+    final String storedMode = switch (themeMode) {
+      dashcn.ThemeMode.light => 'light',
+      dashcn.ThemeMode.dark => 'dark',
+      dashcn.ThemeMode.system => 'system',
+    };
+    final bool saved = await preferences.setString(kPrefsThemeMode, storedMode);
+    if (!saved) {
+      throw StateError('Failed to save the selected theme mode.');
+    }
 
-  void setRadius(double radius) {
-    final newData = state.copyWith(radius: radius);
-    prefs.setDouble(kPrefsRadius, radius);
-    emit(newData);
-  }
-
-  void setScaling(double scaling) {
-    final newData = state.copyWith(scaling: scaling);
-    prefs.setDouble(kPrefsScaling, scaling);
-    emit(newData);
-  }
-
-  void setFontSize(FontSize fontSize) {
-    final newData = state.copyWith(fontSize: fontSize);
-    prefs.setString(kPrefsFontSize, fontSize.name);
-    emit(newData);
-  }
-
-  void setSurfaceOpacity(double surfaceOpacity) {
-    final normalized = normalizeDocsSurfaceOpacity(surfaceOpacity);
-    final newData = state.copyWith(surfaceOpacity: normalized);
-    prefs.setDouble(kPrefsSurfaceOpacity, normalized);
-    emit(newData);
-  }
-
-  void setSurfaceBlur(double surfaceBlur) {
-    final newData = state.copyWith(
-      surfaceBlur: surfaceBlur,
-      surfaceOpacity: normalizeDocsSurfaceOpacity(state.surfaceOpacity),
+    emit(
+      state.copyWith(
+        settings: _copySettings(state.settings, themeMode: themeMode),
+      ),
     );
-    prefs.setDouble(kPrefsSurfaceBlur, surfaceBlur);
-    prefs.setDouble(kPrefsSurfaceOpacity, newData.surfaceOpacity);
-    emit(state.copyWith(surfaceBlur: surfaceBlur));
   }
 
-  void setDensity(AppDensity density) {
-    final newData = state.copyWith(density: density);
+  Future<void> setBrightness(Brightness brightness) => setThemeMode(
+    brightness == Brightness.dark
+        ? dashcn.ThemeMode.dark
+        : dashcn.ThemeMode.light,
+  );
 
-    _persistDensity(AppDensity.values
-        .firstWhere((e) => e.name == density.name,
-            orElse: () => AppDensity.normal)
-        .spacingMultiplier);
-    emit(newData);
-  }
+  Future<void> toggleTheme() => setThemeMode(
+    state.themeMode == dashcn.ThemeMode.light
+        ? dashcn.ThemeMode.dark
+        : dashcn.ThemeMode.light,
+  );
 
-  // Helpers
-  RegistryThemePresetTokens _tokensFor(String id, Brightness brightness) {
-    final preset = colorPresets.firstWhere((preset) => preset.id == id,
-        orElse: () => colorPresets.first);
-    return brightness == Brightness.dark
-        ? preset.darkTokens
-        : preset.lightTokens;
-  }
+  Future<void> setPreset(String presetId) =>
+      _saveThemeDocument(ThemeApp.fromPreset(presetId));
 
-  // String _encodeScheme(shadcn_colors.ColorScheme scheme) =>
-  //     jsonEncode(scheme.toMap());
+  Future<void> editTheme(ThemeApp Function(ThemeApp document) edit) =>
+      _saveThemeDocument(edit(state.settings.themeDocument));
 
-  // String _customSchemeKey(Brightness brightness) =>
-  //     brightness == Brightness.dark
-  //         ? kPrefsCustomSchemeDark
-  //         : kPrefsCustomSchemeLight;
-
-  void _persistDensity(shadcn_theme.Density density) {
-    prefs.setDouble(
-        kPrefsDensityBaseContainerPadding, density.baseContainerPadding);
-    prefs.setDouble(kPrefsDensityBaseGap, density.baseGap);
-    prefs.setDouble(
-        kPrefsDensityBaseContentPadding, density.baseContentPadding);
-  }
-
-  void resetAppearance() {
-    // Pick the default preset
-    final defaultPreset = colorPresets.firstWhere(
-      (preset) => preset.id == 'default',
-      orElse: () => colorPresets.first,
+  Future<void> setRadius(double radius) async {
+    if (!radius.isFinite || radius < 0) {
+      throw ArgumentError.value(
+        radius,
+        'radius',
+        'Must be finite and non-negative.',
+      );
+    }
+    await _saveThemeDocument(
+      state.settings.themeDocument.withRadiusPx(radius * 16),
     );
-    // Build a default AppThemeData using dark brightness
-    final tokens = _tokensFor(defaultPreset.id, Brightness.dark);
-
-    final def = AppThemeState(
-      preset: defaultPreset,
-      radius: tokens.radius,
-      density: AppDensity.normal,
-      spacing: tokens.spacing,
-      tracking: tokens.tracking,
-      shadows: tokens.shadows,
-      scaling: 1.0,
-      surfaceOpacity: kMinReadableSurfaceOpacity,
-      surfaceBlur: 0.0,
-      fontSize: FontSize.medium,
-      presetId: defaultPreset.id,
-      brightness: Brightness.dark,
-    );
-
-    // Persist defaults into SharedPreferences
-    prefs
-      ..setString(kPrefsThemePresetId, def.presetId)
-      ..setString(
-          kPrefsThemeMode, def.brightness == Brightness.dark ? 'dark' : 'light')
-      ..setString(kPrefsCustomScheme, 'default')
-      ..setString(kPrefsFontSize, def.fontSize.name)
-      ..setDouble(kPrefsRadius, def.radius ?? 0.25)
-      ..setDouble(kPrefsScaling, def.scaling)
-      ..setDouble(kPrefsSurfaceOpacity, def.surfaceOpacity)
-      ..setDouble(kPrefsSurfaceBlur, def.surfaceBlur);
-
-    _persistDensity(AppDensity.values
-        .firstWhere((e) => e.name == def.density.name,
-            orElse: () => AppDensity.normal)
-        .spacingMultiplier);
-
-    // Emit new state
-    emit(def);
   }
+
+  Future<void> setSurfaceOpacity(double opacity) async {
+    if (!opacity.isFinite || opacity < 0 || opacity > 1) {
+      throw ArgumentError.value(opacity, 'opacity', 'Must be between 0 and 1.');
+    }
+    await _saveThemeDocument(
+      state.settings.themeDocument.withSurfaceOpacity(opacity),
+    );
+  }
+
+  Future<void> setSurfaceBlur(double blur) async {
+    if (!blur.isFinite || blur < 0) {
+      throw ArgumentError.value(
+        blur,
+        'blur',
+        'Must be finite and non-negative.',
+      );
+    }
+    await _saveThemeDocument(
+      state.settings.themeDocument.withSurfaceBlur(blur),
+    );
+  }
+
+  Future<void> setScaling(double scaling) async {
+    if (!scaling.isFinite || scaling <= 0) {
+      throw ArgumentError.value(
+        scaling,
+        'scaling',
+        'Must be finite and positive.',
+      );
+    }
+    if (!await preferences.setDouble(kPrefsScaling, scaling)) {
+      throw StateError('Failed to save the selected interface scaling.');
+    }
+    emit(
+      state.copyWith(settings: _copySettings(state.settings, scaling: scaling)),
+    );
+  }
+
+  Future<void> setDensity(dashcn.Density density) async {
+    if (!await preferences.setDouble(
+      kPrefsDensityBaseContainerPadding,
+      density.baseContainerPadding,
+    )) {
+      throw StateError('Failed to save the selected container density.');
+    }
+    if (!await preferences.setDouble(kPrefsDensityBaseGap, density.baseGap)) {
+      throw StateError('Failed to save the selected gap density.');
+    }
+    if (!await preferences.setDouble(
+      kPrefsDensityBaseContentPadding,
+      density.baseContentPadding,
+    )) {
+      throw StateError('Failed to save the selected content density.');
+    }
+    emit(
+      state.copyWith(settings: _copySettings(state.settings, density: density)),
+    );
+  }
+
+  Future<void> resetAppearance() async {
+    const List<String> keys = <String>[
+      kAppThemeDocumentKey,
+      kPrefsThemePresetId,
+      kPrefsThemeMode,
+      kPrefsRadius,
+      kPrefsScaling,
+      kPrefsSurfaceOpacity,
+      kPrefsSurfaceBlur,
+      kPrefsDensityBaseContainerPadding,
+      kPrefsDensityBaseGap,
+      kPrefsDensityBaseContentPadding,
+      'colorScheme',
+      'colorSchemeLight',
+      'colorSchemeDark',
+    ];
+    for (final String key in keys) {
+      if (!await preferences.remove(key)) {
+        throw StateError('Failed to reset saved appearance preference "$key".');
+      }
+    }
+    emit(state.copyWith(settings: await loadSettings(preferences)));
+  }
+
+  Future<void> _saveThemeDocument(ThemeApp themeDocument) async {
+    for (final String family in themeDocument.fonts.values) {
+      await loadAppFonts(family);
+    }
+    if (!await preferences.setString(
+      kAppThemeDocumentKey,
+      themeDocument.json,
+    )) {
+      throw StateError('Failed to save the theme document.');
+    }
+    if (!await preferences.setString(kPrefsThemePresetId, themeDocument.id)) {
+      throw StateError('Failed to save the selected theme preset.');
+    }
+    emit(
+      state.copyWith(
+        settings: _copySettings(state.settings, themeDocument: themeDocument),
+      ),
+    );
+  }
+
+  LayoutSettings _copySettings(
+    LayoutSettings settings, {
+    ThemeApp? themeDocument,
+    dashcn.ThemeMode? themeMode,
+    double? scaling,
+    dashcn.Density? density,
+  }) => LayoutSettings(
+    themeDocument: themeDocument ?? settings.themeDocument,
+    themeMode: themeMode ?? settings.themeMode,
+    initialPath: settings.initialPath,
+    scaling: scaling ?? settings.scaling,
+    density: density ?? settings.density,
+  );
 }

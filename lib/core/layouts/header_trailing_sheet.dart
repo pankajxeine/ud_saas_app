@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Theme;
-import 'package:ud_sass_app/ui/shadcn/components/overlay/drawer/drawer.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'package:ud_sass_app/ui/dashcn/components/drawer.dart';
+import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 final profile = [
   (title: 'Name', value: 'Alexandru'),
@@ -35,8 +35,8 @@ class HeaderTrailingSheet extends StatelessWidget {
           return Container(
             constraints:
                 side == OverlayPosition.left || side == OverlayPosition.right
-                    ? const BoxConstraints(maxWidth: 512)
-                    : null,
+                ? const BoxConstraints(maxWidth: 512)
+                : null,
             // title: const Text('Edit Profile'),
             // description: const Text(
             //     "Make changes to your profile here. Click save when you're done"),

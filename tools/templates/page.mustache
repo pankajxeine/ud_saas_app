@@ -1,0 +1,144 @@
+import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
+import 'package:ud_sass_app/core/widgets/common/app_page_header.dart';
+import 'package:ud_sass_app/core/widgets/common/responsive_card_view.dart';
+import 'package:ud_sass_app/core/widgets/data_table/data_table.dart';
+import 'package:ud_sass_app/core/config/environment.dart';
+import 'package:ud_sass_app/core/widgets/components/loading.dart';
+{{#endpoint}}
+import '../service/{{moduleName}}_service.dart';
+import '../bloc/{{blocFieldName}}_bloc.dart';
+{{/endpoint}}
+
+{{#models}}
+import '../model/{{file}}';
+{{/models}}
+
+class {{Module}}Page extends StatelessWidget {
+  const {{Module}}Page({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    {{#endpoint}}
+    return BlocProvider<{{endpoint.OperationId}}Bloc>(
+      create: (_) => {{endpoint.OperationId}}Bloc(
+        {{endpoint.serviceName}}Service(baseUrl: ProfileConstants.api),
+      )..add(Load{{endpoint.OperationId}}Event()),
+      child: Scaffold(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppPageHeader(
+                title: '{{pageTitle}}',
+                breadcrumbs: const [],
+                {{#hasCreatePage}}
+                onAdd: () => context.go('{{{basePath}}}/new'),
+                {{/hasCreatePage}}
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: BlocBuilder<{{endpoint.OperationId}}Bloc, {{endpoint.OperationId}}State>(
+                  builder: (context, state) {
+                    switch (state) {
+                      case {{endpoint.OperationId}}Initial():
+                        return const Center(child: Text('Initial state'));
+                      case {{endpoint.OperationId}}Loading():
+                        return const Center(child: Loading());
+                      case {{endpoint.OperationId}}Error(:final message):
+                        return Center(child: Text(message));
+                      case {{endpoint.OperationId}}Success(:final response):
+                        final items = state.response.body?.data ??
+                            const <{{ResponseClass}}>[];
+                        final columns = <TrinaColumn>[
+                          {{#columns}}
+                          TrinaColumn(
+                            title: '{{baseName}}',
+                            field: '{{baseName}}',
+                            type: {{#isNumeric}}TrinaColumnType.number(){{/isNumeric}}{{^isNumeric}}TrinaColumnType.text(){{/isNumeric}},
+                          ),
+                          {{/columns}}
+                        ];
+                        final List<TrinaRow<dynamic>> rows = items
+                            .map<TrinaRow<dynamic>>(
+                              (item) => TrinaRow(
+                                cells: {
+                                  {{#columns}}
+                                  '{{baseName}}': TrinaCell(value: item.{{name}}),
+                                  {{/columns}}
+                                },
+                              ),
+                            )
+                            .toList(growable: false);
+
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            if (constraints.maxWidth < 600) {
+                              return ResponsiveCardView<{{ResponseClass}}>(
+                                items: items,
+                                titleBuilder: (item) => {{#hasCardTitleField}}
+                                    item.{{cardTitleField}}?.toString() ?? 'Record',
+                                    {{/hasCardTitleField}}{{^hasCardTitleField}}'Record',{{/hasCardTitleField}}
+                                {{#hasCardSubtitle}}
+                                subtitleBuilder: (item) =>
+                                    item.{{cardSubtitleField}}?.toString(),
+                                {{/hasCardSubtitle}}
+                                fieldsBuilder: (item) => [
+                                  {{#columns}}
+                                  ResponsiveCardField(
+                                    label: '{{baseName}}',
+                                    value: item.{{name}}?.toString() ?? '-',
+                                  ),
+                                  {{/columns}}
+                                ],
+                                {{#hasDetailPage}}
+                                onView: (item) {
+                                  if ({{detailRouteGuard}}) return;
+                                  context.go({{{detailRouteExpression}}});
+                                },
+                                {{/hasDetailPage}}
+                                {{#hasFormPage}}
+                                onEdit: (item) {
+                                  if ({{editRouteGuard}}) return;
+                                  context.go({{{editRouteExpression}}});
+                                },
+                                {{/hasFormPage}}
+                              );
+                            }
+                            return DataTable(
+                              columns: columns,
+                              rows: rows,
+                              {{#hasDetailPage}}
+                              onRowTap: (rowIdx) {
+                                final item = items[rowIdx];
+                                if ({{detailRouteGuard}}) return;
+                                context.go({{{detailRouteExpression}}});
+                              },
+                              {{/hasDetailPage}}
+                              {{#hasFormPage}}
+                              onRowEdit: (rowIdx) {
+                                final item = items[rowIdx];
+                                if ({{editRouteGuard}}) return;
+                                context.go({{{editRouteExpression}}});
+                              },
+                              {{/hasFormPage}}
+                            );
+                          },
+                        );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    {{/endpoint}}
+  }
+}

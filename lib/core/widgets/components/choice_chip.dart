@@ -28,6 +28,14 @@ class _ChoiceChipWrapperState<T> extends State<ChoiceChipWrapper<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant ChoiceChipWrapper<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue) {
+      _selectedValue = widget.initialValue;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,

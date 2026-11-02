@@ -1,8 +1,9 @@
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
-const Map<String, String> themeModes = {
-  'Light': 'light',
-  'Dark': 'dark',
+const Map<String, dashcn.ThemeMode> themeModes = {
+  'Light': dashcn.ThemeMode.light,
+  'Dark': dashcn.ThemeMode.dark,
+  'System': dashcn.ThemeMode.system,
 };
 
 const Map<String, double> radiusOptions = {
@@ -19,11 +20,11 @@ const Map<String, double> scalingOptions = {
   'Large': 1.15,
 };
 
-const Map<String, Density> densityOptions = {
-  'Compact': Density.compactDensity,
-  'Reduced': Density.reducedDensity,
-  'Default': Density.defaultDensity,
-  'Spacious': Density.spaciousDensity,
+const Map<String, dashcn.Density> densityOptions = {
+  'Compact': dashcn.Density.compactDensity,
+  'Reduced': dashcn.Density.reducedDensity,
+  'Default': dashcn.Density.defaultDensity,
+  'Spacious': dashcn.Density.spaciousDensity,
 };
 
 const Map<String, double> surfaceOpacityOptions = {
@@ -39,5 +40,3 @@ const Map<String, double> surfaceBlurOptions = {
   'Medium': 8.0,
   'Strong': 12.0,
 };
-
-// List<ThemePreset> get _presetOptions => DocsThemeController.presets;

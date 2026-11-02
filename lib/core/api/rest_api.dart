@@ -7,6 +7,11 @@ import '../config/local_storage.dart';
 typedef JsonMap = Map<String, dynamic>;
 typedef RestDecoder<T> = T Function(dynamic data);
 
+const String _domainAppStorageKey = 'app.type';
+const String _domainSlugStorageKey = 'app.slug';
+const String _defaultDomainApp = 'crm';
+const String _defaultDomainSlug = 'test_cpanel';
+
 enum RestMethod {
   get('GET'),
   post('POST'),
@@ -202,7 +207,7 @@ class RestApi {
     }
 
     try {
-      final requestHeaders = await _withStoredBearerToken(headers);
+      final requestHeaders = await _withStoredRequestHeaders(headers);
       final response = await _dio.request<dynamic>(
         path,
         data: body,
@@ -238,7 +243,7 @@ class RestApi {
     }
 
     try {
-      final requestHeaders = await _withStoredBearerToken(headers);
+      final requestHeaders = await _withStoredRequestHeaders(headers);
       final response = await _dio.request<T>(
         path,
         data: body,
@@ -256,10 +261,24 @@ class RestApi {
     }
   }
 
-  Future<Map<String, String>?> _withStoredBearerToken(
-    Map<String, String>? headers,
+  Future<Map<String, String>> _withStoredRequestHeaders(
+    Map<String, String>? providedHeaders,
   ) async {
-    if (headers?.containsKey('Authorization') ?? false) {
+    final Map<String, String> headers = <String, String>{...?providedHeaders};
+    if (!_containsHeader(headers, 'x-domain-app')) {
+      headers['x-domain-app'] = await _readStoredHeaderValue(
+        _domainAppStorageKey,
+        _defaultDomainApp,
+      );
+    }
+    if (!_containsHeader(headers, 'x-domain-slug')) {
+      headers['x-domain-slug'] = await _readStoredHeaderValue(
+        _domainSlugStorageKey,
+        _defaultDomainSlug,
+      );
+    }
+
+    if (_containsHeader(headers, 'authorization')) {
       return headers;
     }
 
@@ -268,8 +287,19 @@ class RestApi {
       return headers;
     }
 
-    return {...?headers, 'Authorization': 'Bearer $token'};
+    return {...headers, 'Authorization': 'Bearer $token'};
   }
+
+  Future<String> _readStoredHeaderValue(String key, String fallback) async {
+    final Object? storedValue = await AppLocalStorage().read(key);
+    if (storedValue is String && storedValue.trim().isNotEmpty) {
+      return storedValue.trim();
+    }
+    return fallback;
+  }
+
+  bool _containsHeader(Map<String, String> headers, String name) =>
+      headers.keys.any((String key) => key.toLowerCase() == name);
 
   AppException _mapDioException(DioException error) {
     final statusCode = error.response?.statusCode;

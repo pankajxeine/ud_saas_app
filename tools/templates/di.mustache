@@ -1,0 +1,12 @@
+import 'package:get_it/get_it.dart';
+import '{{module}}_repository.dart';
+import '{{module}}_service.dart';
+import '{{module}}_bloc.dart';
+
+final sl = GetIt.instance;
+
+void init{{Module}}Module() {
+  sl.registerLazySingleton<{{Module}}Repository>(() => {{Module}}Repository());
+  sl.registerLazySingleton<{{Module}}Service>(() => {{Module}}Service(sl<{{Module}}Repository>()));
+  sl.registerFactory<{{Module}}Bloc>(() => {{Module}}Bloc(sl<{{Module}}Service>()));
+}

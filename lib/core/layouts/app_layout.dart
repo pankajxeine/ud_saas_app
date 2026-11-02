@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart' hide Theme;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-// import 'package:ud_sass_app/ui/shadcn/components/control/button/button.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'package:ud_sass_app/core/navigation/app_route_location.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import 'bloc/layout/layout_cubit.dart';
 import 'bloc/layout/layout_state.dart';
@@ -11,10 +10,7 @@ import 'widgets/app_sidebar.dart';
 import 'widgets/app_bar.dart';
 
 class AppLayout extends StatelessWidget {
-  const AppLayout({
-    super.key,
-    required this.body,
-  });
+  const AppLayout({super.key, required this.body});
 
   final Widget body;
 
@@ -28,10 +24,10 @@ class AppLayout extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (context.mounted) {
               context.read<LayoutCubit>().updateSize(
-                    constraints.maxWidth,
-                    sm: kTabletBreakpoint,
-                    lg: kDesktopBreakpoint,
-                  );
+                constraints.maxWidth,
+                sm: kTabletBreakpoint,
+                lg: kDesktopBreakpoint,
+              );
             }
           });
 
@@ -78,8 +74,8 @@ class _AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final location = GoRouterState.of(context).matchedLocation;
+    final cs = Theme.of(context).colors;
+    final location = AppRouteLocation.maybeOf(context) ?? '/';
     final content = Column(
       children: [
         AppTopBar(
@@ -131,7 +127,7 @@ class _AppShell extends StatelessWidget {
 //       child: Row(
 //         children: [
 //           if (isMobile) ...[
-//             OutlineButton(
+//             Button(
 //               onPressed: MainLayoutScope.of(context).openDrawer,
 //               child: const Icon(Icons.menu),
 //             ),
@@ -156,12 +152,12 @@ class _AppShell extends StatelessWidget {
 //               style: Theme.of(context).typography.h4,
 //             ),
 //           ),
-//           OutlineButton(
+//           Button(
 //             onPressed: () {},
 //             child: const Icon(Icons.notifications_none_rounded),
 //           ),
 //           const SizedBox(width: 8),
-//           OutlineButton(
+//           Button(
 //             onPressed: () => context.go('/settings'),
 //             child: const Icon(Icons.settings_outlined),
 //           ),

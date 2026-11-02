@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  title: DocumentTypesResponse API
+  version: 1.0.0
+paths:
+  /document_types:
+    get:
+      operationId: listDocumentTypes
+      summary: Get all document_types
+      responses:
+        '200':
+          description: List of document_types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentTypesResponse'
+    post:
+      operationId: createDocumentType
+      summary: Create a new document_types
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentTypesRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentTypesResponse'
+
+  /document_types/{id}:
+    get:
+      operationId: getDocumentTypesById
+      summary: Get document_types by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: document_types object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentTypesResponse'
+    put:
+      operationId: updateDocumentType
+      summary: Update document_types by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentTypesRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentTypesResponse'
+    delete:
+      operationId: deleteDocumentType
+      summary: Delete document_types by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+components:
+  schemas:
+
+    DocumentTypesRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        status:
+          type: string
+        created_by:
+          type: integer
+        updated_by:
+          type: integer
+        deleted_at:
+          type: string
+          format: date-time
+
+    DocumentTypesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        status:
+          type: string
+        created_by:
+          type: integer
+        updated_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+  

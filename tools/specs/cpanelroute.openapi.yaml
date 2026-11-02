@@ -1,0 +1,66 @@
+openapi: 3.0.3
+info:
+  title: Cpanel Route API
+  version: 0.1.0
+servers:
+  - url: http://localhost:3001
+paths:
+  /cpanelroutes/:domain?:
+    get:
+      operationId: cpanelRouteDomain
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCpanelRouteDomainResponse'
+  /health:
+    get:
+      operationId: authHealth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /health/db:
+    get:
+      operationId: authHealthDb
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDbResponse'
+components:
+  schemas:
+    GetCpanelRouteDomainResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        api_endpoint:
+          type: string
+        settings:
+          type: object
+          additionalProperties:
+            type: string
+        
+      required: [domain]
+    HealthResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+      required: [ok]
+    HealthDbResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          db_status:
+            type: string
+      required: [ok]

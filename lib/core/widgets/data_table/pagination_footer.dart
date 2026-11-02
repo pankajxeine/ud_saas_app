@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart' hide IconButton, Theme;
 import 'package:trina_grid/trina_grid.dart';
 import 'package:ud_sass_app/core/widgets/components/tooltip_button.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import '../../layouts/responsive.dart';
 
@@ -17,7 +18,7 @@ class PaginationFooter extends StatefulWidget {
 
 class _PaginationFooterState extends State<PaginationFooter> {
   // Define available page sizes including the default
-  final List<int> availablePageSizes = [10, 20, 40, 50, 100];
+  final List<int> availablePageSizes = [10, 20, 25, 40, 50, 100];
 
   // Controller for the page input field
   final TextEditingController _pageController = TextEditingController();
@@ -30,7 +31,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colors;
     // Ensure state manager is properly initialized and has data
     if (widget.stateManager.refRows.isEmpty) {
       return const SizedBox.shrink();
@@ -38,7 +39,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
 
     // Get pagination values from state manager
     final currentPage = widget.stateManager.page;
-    //final pageSize = widget.stateManager.pageSize;
+    final pageSize = widget.stateManager.pageSize;
     final totalPage = widget.stateManager.totalPage;
     final totalRows = widget.stateManager.refRows.length;
 
@@ -56,42 +57,48 @@ class _PaginationFooterState extends State<PaginationFooter> {
       ),
       child: Row(
         children: [
-          // Page size selector
-          // Row(
-          //   children: [
-          //     const Text('Rows per page:'),
-          //     const SizedBox(width: 8),
-          //     DropdownButton<int>(
-          //       value: pageSize,
-          //       items: availablePageSizes.map((size) {
-          //         return DropdownMenuItem(value: size, child: Text('$size'));
-          //       }).toList(),
-          //       onChanged: (newSize) {
-          //         if (newSize != null) {
-          //           widget.stateManager.setPageSize(newSize);
-          //           widget.stateManager.setPage(1);
-          //           setState(() {});
-          //         }
-          //       },
-          //     ),
-          //   ],
-          // ),
-          const SizedBox(width: 24),
+          DropdownButtonHideUnderline(
+            child: DropdownButton<int>(
+              value: availablePageSizes.contains(pageSize) ? pageSize : null,
+              hint: const Text('Rows'),
+              isDense: true,
+              items: availablePageSizes
+                  .map(
+                    (size) => DropdownMenuItem<int>(
+                      value: size,
+                      child: Text('$size / page'),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (newSize) {
+                if (newSize != null) {
+                  widget.stateManager.setPageSize(newSize);
+                  widget.stateManager.setPage(1);
+                  setState(() {});
+                }
+              },
+            ),
+          ),
+          const SizedBox(width: 8),
           // Page navigation controls
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TooltipButton(
-                  icon: const Icon(BootstrapIcons.chevronBarLeft),
+                  size: ButtonSize.icon,
                   onPressed: currentPage > 1 ? () => _goToPage(1) : null,
-                  tooltip: 'First Page',
+                  label: 'First Page',
+                  child: const Icon(BootstrapIcons.chevronBarLeft),
                 ),
                 TooltipButton(
-                  icon: const Icon(BootstrapIcons.chevronLeft),
-                  onPressed:
-                      currentPage > 1 ? () => _goToPage(currentPage - 1) : null,
-                  tooltip: 'Previous Page',
+                  variant: ButtonVariant.outline,
+                  size: ButtonSize.icon,
+                  onPressed: currentPage > 1
+                      ? () => _goToPage(currentPage - 1)
+                      : null,
+                  label: 'Previous Page',
+                  child: const Icon(BootstrapIcons.chevronLeft),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -143,18 +150,20 @@ class _PaginationFooterState extends State<PaginationFooter> {
                   ),
                 ),
                 TooltipButton(
-                  icon: const Icon(BootstrapIcons.chevronRight),
+                  size: ButtonSize.icon,
                   onPressed: currentPage < totalPage
                       ? () => _goToPage(currentPage + 1)
                       : null,
-                  tooltip: 'Next Page',
+                  label: 'Next Page',
+                  child: const Icon(BootstrapIcons.chevronRight),
                 ),
                 TooltipButton(
-                  icon: const Icon(BootstrapIcons.chevronBarRight),
+                  size: ButtonSize.icon,
                   onPressed: currentPage < totalPage
                       ? () => _goToPage(totalPage)
                       : null,
-                  tooltip: 'Last Page',
+                  label: 'Last Page',
+                  child: const Icon(BootstrapIcons.chevronBarRight),
                 ),
               ],
             ),
@@ -184,7 +193,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

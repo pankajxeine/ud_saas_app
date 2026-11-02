@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart' hide IconButton, Theme;
 import 'package:trina_grid/trina_grid.dart';
-import 'package:ud_sass_app/ui/shadcn/components/control/button/button.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/theme/theme.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+
+import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 export 'package:trina_grid/trina_grid.dart'
     show
@@ -12,7 +13,11 @@ export 'package:trina_grid/trina_grid.dart'
         TrinaRow,
         TrinaCell,
         TrinaGridStateManager;
+export 'data_table_header.dart' show DataTableHeader;
+export 'mobile_data_table.dart' show MobileDataTableView, MobileDataTableFooter;
 
+import 'data_table_header.dart';
+import 'mobile_data_table.dart';
 import 'pagination_footer.dart';
 
 abstract final class AppRadius {
@@ -35,21 +40,34 @@ abstract final class AppRadius {
 /// This widget is where that is fixed, once, for every screen. It is also the
 /// clearest argument for the wrapper layer existing at all — the theming has to
 /// live somewhere, and this keeps it out of twenty-two feature files.
-class DataTable extends StatelessWidget {
+class DataTable extends StatefulWidget {
   const DataTable({
     super.key,
     required this.columns,
     required this.rows,
+    this.title,
+    this.subtitle,
+    this.headerActionsBuilder,
     this.onLoaded,
     this.onRowTap,
-    this.rowActionIcon = BootstrapIcons.arrowsMove,
+    this.onRowEdit,
+    this.rowActionIcon = BootstrapIcons.eye,
     this.rowActionTooltip = 'Open',
     this.pageSize = 25,
     this.paginate = true,
+    this.mobilePageSize = 10,
+    this.mobilePageSizes = const <int>[5, 10, 20, 50],
+    this.mobileRowKey,
+    this.onMobileSelectionChanged,
+    this.mobileBreakpoint = 640,
   });
 
   final List<TrinaColumn> columns;
   final List<TrinaRow<dynamic>> rows;
+  final String? title;
+  final String? subtitle;
+  final Widget Function(BuildContext context, bool compact)?
+  headerActionsBuilder;
   final void Function(TrinaGridStateManager)? onLoaded;
 
   /// Opens the row. Rendered as an explicit trailing action column, because
@@ -57,28 +75,152 @@ class DataTable extends StatelessWidget {
   /// a manual timing window that is easy to miss. Double-tap still works as a
   /// shortcut for anyone who tries it.
   final void Function(int rowIdx)? onRowTap;
+  final void Function(int rowIdx)? onRowEdit;
 
   final IconData rowActionIcon;
   final String rowActionTooltip;
   final int pageSize;
   final bool paginate;
+  final int mobilePageSize;
+  final List<int> mobilePageSizes;
+  final String Function(TrinaRow<dynamic> row)? mobileRowKey;
+  final ValueChanged<Set<String>>? onMobileSelectionChanged;
+  final double mobileBreakpoint;
 
-  void handleOnRowChecked(TrinaGridOnRowCheckedEvent event) {
-    if (event.isRow) {
-      // or event.isAll
-      print('Toggled A Row.');
-      print(event.row?.cells['column1']?.value);
-    } else {
-      print('Toggled All Rows.');
-      // print(stateManager.checkedRows.length);
+  @override
+  State<DataTable> createState() => _DataTableState();
+}
+
+class _DataTableState extends State<DataTable> {
+  int _mobilePage = 1;
+  late int _mobilePageSize = widget.mobilePageSize;
+  final Set<String> _selectedMobileRows = <String>{};
+
+  @override
+  void didUpdateWidget(covariant DataTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.mobilePageSize != oldWidget.mobilePageSize) {
+      _mobilePageSize = widget.mobilePageSize;
+      _mobilePage = 1;
     }
+    _mobilePage = _mobilePage.clamp(1, _mobilePageCount).toInt();
   }
 
   @override
   Widget build(BuildContext context) {
-    final c = Theme.of(context).colorScheme;
-    final t = Theme.of(context).typography;
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final bool compact = constraints.maxWidth < widget.mobileBreakpoint;
+        final Widget? header =
+            widget.title != null ||
+                widget.subtitle != null ||
+                widget.headerActionsBuilder != null
+            ? DataTableHeader(
+                title: widget.title ?? '',
+                subtitle: widget.subtitle,
+                actions: widget.headerActionsBuilder?.call(context, compact),
+                compact: compact,
+              )
+            : null;
 
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (header != null) ...<Widget>[header, const SizedBox(height: 16)],
+            Expanded(
+              child: compact ? _buildMobileView() : _buildDesktopGrid(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  int get _mobilePageCount =>
+      widget.rows.isEmpty ? 1 : (widget.rows.length / _mobilePageSize).ceil();
+
+  List<TrinaRow<dynamic>> get _mobileRows {
+    final int page = _mobilePage.clamp(1, _mobilePageCount).toInt();
+    final int start = (page - 1) * _mobilePageSize;
+    return widget.rows.skip(start).take(_mobilePageSize).toList();
+  }
+
+  String _rowKey(TrinaRow<dynamic> row) {
+    final String Function(TrinaRow<dynamic>)? keyBuilder = widget.mobileRowKey;
+    if (keyBuilder != null) {
+      return keyBuilder(row);
+    }
+    if (widget.columns.isNotEmpty) {
+      final Object? value = row.cells[widget.columns.first.field]?.value;
+      if (value != null) {
+        return value.toString();
+      }
+    }
+    return identityHashCode(row).toString();
+  }
+
+  void _toggleRowSelection(String key) {
+    setState(() {
+      if (!_selectedMobileRows.add(key)) {
+        _selectedMobileRows.remove(key);
+      }
+    });
+    widget.onMobileSelectionChanged?.call(
+      Set<String>.unmodifiable(_selectedMobileRows),
+    );
+  }
+
+  void _toggleVisibleSelection() {
+    final List<String> visibleKeys = _mobileRows.map(_rowKey).toList();
+    final bool allSelected =
+        visibleKeys.isNotEmpty &&
+        visibleKeys.every(_selectedMobileRows.contains);
+    setState(() {
+      if (allSelected) {
+        _selectedMobileRows.removeAll(visibleKeys);
+      } else {
+        _selectedMobileRows.addAll(visibleKeys);
+      }
+    });
+    widget.onMobileSelectionChanged?.call(
+      Set<String>.unmodifiable(_selectedMobileRows),
+    );
+  }
+
+  Widget _buildMobileView() => MobileDataTableView(
+    columns: widget.columns,
+    rows: _mobileRows,
+    selectedRowKeys: _selectedMobileRows,
+    rowKey: _rowKey,
+    onSelectionChanged: _toggleRowSelection,
+    onSelectVisible: _toggleVisibleSelection,
+    page: _mobilePage.clamp(1, _mobilePageCount).toInt(),
+    pageCount: _mobilePageCount,
+    pageSize: _mobilePageSize,
+    pageSizes: <int>{
+      ...widget.mobilePageSizes.where((int size) => size > 0),
+      _mobilePageSize,
+    }.toList()..sort(),
+    totalRows: widget.rows.length,
+    onPreviousPage: _mobilePage > 1
+        ? () => setState(() => _mobilePage--)
+        : null,
+    onNextPage: _mobilePage < _mobilePageCount
+        ? () => setState(() => _mobilePage++)
+        : null,
+    onPageSizeChanged: (int value) {
+      setState(() {
+        _mobilePageSize = value;
+        _mobilePage = 1;
+      });
+    },
+    onRowTap: widget.onRowTap,
+    rowIndexOffset: (_mobilePage - 1) * _mobilePageSize,
+  );
+
+  Widget _buildDesktopGrid(BuildContext context) {
+    final c = Theme.of(context).colors;
+    final t = Theme.of(context).typography;
     return ClipRRect(
       borderRadius: AppRadius.allMd,
       child: DecoratedBox(
@@ -88,13 +230,17 @@ class DataTable extends StatelessWidget {
         ),
         child: TrinaGrid(
           columns: [
-            ...columns,
-            if (onRowTap != null)
+            ...widget.columns,
+            if (widget.onRowTap != null || widget.onRowEdit != null)
               TrinaColumn(
                 title: '',
                 field: '_actions',
-                width: 64,
-                minWidth: 64,
+                width: widget.onRowTap != null && widget.onRowEdit != null
+                    ? 104
+                    : 64,
+                minWidth: widget.onRowTap != null && widget.onRowEdit != null
+                    ? 104
+                    : 64,
                 readOnly: true,
                 enableSorting: false,
                 enableColumnDrag: false,
@@ -102,21 +248,36 @@ class DataTable extends StatelessWidget {
                 enableDropToResize: false,
                 textAlign: TrinaColumnTextAlign.center,
                 type: TrinaColumnType.text(),
-                renderer: (ctx) => Center(
-                  child: IconButton.outline(
-                    icon: Icon(rowActionIcon, size: 16),
-                    // tooltip: rowActionTooltip,
-                    // color: c.mutedForeground,
-                    // splashRadius: 16,
-                    // visualDensity: VisualDensity.compact,
-                    onPressed: () => onRowTap!(ctx.rowIdx),
-                  ),
+                renderer: (ctx) => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.onRowTap != null)
+                      Tooltip(
+                        message: widget.rowActionTooltip,
+                        child: Button(
+                          size: ButtonSize.icon,
+                          variant: ButtonVariant.ghost,
+                          onPressed: () => widget.onRowTap!(ctx.rowIdx),
+                          child: Icon(widget.rowActionIcon, size: 16),
+                        ),
+                      ),
+                    if (widget.onRowEdit != null)
+                      Tooltip(
+                        message: 'Edit',
+                        child: Button(
+                          variant: ButtonVariant.ghost,
+                          onPressed: () => widget.onRowEdit!(ctx.rowIdx),
+                          size: ButtonSize.icon,
+                          child: const Icon(BootstrapIcons.pencil, size: 16),
+                        ),
+                      ),
+                  ],
                 ),
               ),
           ],
           rows: [
-            for (final row in rows)
-              if (onRowTap == null)
+            for (final row in widget.rows)
+              if (widget.onRowTap == null && widget.onRowEdit == null)
                 row
               else
                 TrinaRow(
@@ -127,11 +288,12 @@ class DataTable extends StatelessWidget {
                 ),
           ],
           onLoaded: (TrinaGridOnLoadedEvent e) {
-            if (paginate) e.stateManager.setPageSize(pageSize, notify: false);
-            onLoaded?.call(e.stateManager);
+            if (widget.paginate) {
+              e.stateManager.setPageSize(widget.pageSize, notify: false);
+            }
+            widget.onLoaded?.call(e.stateManager);
           },
-          onRowChecked: handleOnRowChecked,
-          createFooter: paginate
+          createFooter: widget.paginate
               ? (TrinaGridStateManager sm) => PaginationFooter(stateManager: sm)
               : null,
           configuration: TrinaGridConfiguration(

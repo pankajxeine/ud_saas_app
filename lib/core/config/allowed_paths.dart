@@ -9,16 +9,11 @@ List<String> allowedPaths = [
   '/login-otp-verify',
   '/authenticate/send-otp',
   '/authenticate/verify-otp',
-  '/emails',
-  '/home',
-  '/dashbaord'
 ];
 
 List<String> authPaths = [
   '/login',
   '/authenticate',
   '/login-otp',
-  '/login-otp-verify',
-  '/dashbaord',
-  '/settings'
+  '/login-otp-verify'
 ];
