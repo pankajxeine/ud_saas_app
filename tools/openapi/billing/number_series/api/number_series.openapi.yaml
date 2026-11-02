@@ -1,0 +1,223 @@
+openapi: 3.0.0
+x-sql-table: billing_number_series
+x-sql-references:
+  - column: "legal_entity_id"
+    table: "org_legal_entity"
+    key: "legal_entity_id"
+info:
+  title: NumberSeriesResponse API
+  version: 1.0.0
+paths:
+  /number_series:
+    get:
+      operationId: listNumberSeries
+      summary: Get all number_series
+      responses:
+        '200':
+          description: List of number_series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NumberSeriesResponse'
+    post:
+      operationId: createNumberSeries
+      summary: Create a new number_series
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumberSeriesRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberSeriesResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /number_series/{number_series_id}:
+    get:
+      operationId: getNumberSeriesById
+      summary: Get number_series by number_series_id
+      parameters:
+        - in: path
+          name: number_series_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: number_series object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberSeriesResponse'
+        '404':
+          description: number_series not found
+    put:
+      operationId: updateNumberSeries
+      summary: Update number_series by number_series_id
+      parameters:
+        - in: path
+          name: number_series_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumberSeriesUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberSeriesResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: number_series not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteNumberSeries
+      summary: Delete number_series by number_series_id
+      parameters:
+        - in: path
+          name: number_series_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: number_series not found
+components:
+  schemas:
+
+    NumberSeriesRequest:
+      type: object
+      required:
+        - legal_entity_id
+        - document_type
+        - fiscal_year
+        - prefix
+      additionalProperties: false
+      properties:
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        document_type:
+          type: string
+          maxLength: 12
+        fiscal_year:
+          type: integer
+          format: int32
+        prefix:
+          type: string
+          maxLength: 20
+        next_number:
+          type: integer
+          format: int64
+          default: 1
+        padding:
+          type: integer
+          format: int32
+          default: 6
+
+    NumberSeriesUpdateRequest:
+      type: object
+      required:
+        - legal_entity_id
+        - document_type
+        - fiscal_year
+        - prefix
+        - next_number
+        - padding
+      additionalProperties: false
+      properties:
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        document_type:
+          type: string
+          maxLength: 12
+        fiscal_year:
+          type: integer
+          format: int32
+        prefix:
+          type: string
+          maxLength: 20
+        next_number:
+          type: integer
+          format: int64
+          default: 1
+        padding:
+          type: integer
+          format: int32
+          default: 6
+
+    NumberSeriesResponse:
+      type: object
+      required:
+        - record_code
+        - number_series_id
+        - legal_entity_id
+        - document_type
+        - fiscal_year
+        - prefix
+        - next_number
+        - padding
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        number_series_id:
+          type: string
+          format: uuid
+          readOnly: true
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        document_type:
+          type: string
+          maxLength: 12
+        fiscal_year:
+          type: integer
+          format: int32
+        prefix:
+          type: string
+          maxLength: 20
+        next_number:
+          type: integer
+          format: int64
+          default: 1
+        padding:
+          type: integer
+          format: int32
+          default: 6
+  

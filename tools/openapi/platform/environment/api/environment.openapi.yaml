@@ -1,0 +1,250 @@
+openapi: 3.0.0
+x-sql-table: platform_environment
+x-sql-references:
+  - column: "region_code"
+    table: "platform_region"
+    key: "region_code"
+info:
+  title: EnvironmentResponse API
+  version: 1.0.0
+paths:
+  /environment:
+    get:
+      operationId: listEnvironment
+      summary: Get all environment
+      responses:
+        '200':
+          description: List of environment
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnvironmentResponse'
+    post:
+      operationId: createEnvironment
+      summary: Create a new environment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /environment/{environment_id}:
+    get:
+      operationId: getEnvironmentById
+      summary: Get environment by environment_id
+      parameters:
+        - in: path
+          name: environment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: environment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentResponse'
+        '404':
+          description: environment not found
+    put:
+      operationId: updateEnvironment
+      summary: Update environment by environment_id
+      parameters:
+        - in: path
+          name: environment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: environment not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEnvironment
+      summary: Delete environment by environment_id
+      parameters:
+        - in: path
+          name: environment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: environment not found
+components:
+  schemas:
+
+    EnvironmentRequest:
+      type: object
+      required:
+        - environment_code
+        - region_code
+      additionalProperties: false
+      properties:
+        environment_code:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        kind:
+          type: string
+          maxLength: 12
+          default: "production"
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        endpoint_url:
+          type: string
+          nullable: true
+        max_tenants:
+          type: integer
+          format: int32
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "active"
+
+    EnvironmentUpdateRequest:
+      type: object
+      required:
+        - environment_code
+        - region_code
+        - kind
+        - tenancy_model
+        - endpoint_url
+        - max_tenants
+        - status
+      additionalProperties: false
+      properties:
+        environment_code:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        kind:
+          type: string
+          maxLength: 12
+          default: "production"
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        endpoint_url:
+          type: string
+          nullable: true
+        max_tenants:
+          type: integer
+          format: int32
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "active"
+
+    EnvironmentResponse:
+      type: object
+      required:
+        - record_code
+        - environment_id
+        - environment_code
+        - region_code
+        - kind
+        - tenancy_model
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        environment_id:
+          type: string
+          format: uuid
+          readOnly: true
+        environment_code:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        kind:
+          type: string
+          maxLength: 12
+          default: "production"
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        endpoint_url:
+          type: string
+          nullable: true
+        max_tenants:
+          type: integer
+          format: int32
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "active"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

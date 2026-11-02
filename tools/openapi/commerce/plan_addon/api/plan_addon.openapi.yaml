@@ -1,0 +1,183 @@
+openapi: 3.0.0
+x-sql-table: commerce_plan_addon
+x-sql-references:
+  - column: "plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "addon_id"
+    table: "commerce_addon"
+    key: "addon_id"
+info:
+  title: PlanAddonResponse API
+  version: 1.0.0
+paths:
+  /plan_addon:
+    get:
+      operationId: listPlanAddon
+      summary: Get all plan_addon
+      responses:
+        '200':
+          description: List of plan_addon
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanAddonResponse'
+    post:
+      operationId: createPlanAddon
+      summary: Create a new plan_addon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanAddonRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanAddonResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /plan_addon/{plan_addon_id}:
+    get:
+      operationId: getPlanAddonById
+      summary: Get plan_addon by plan_addon_id
+      parameters:
+        - in: path
+          name: plan_addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: plan_addon object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanAddonResponse'
+        '404':
+          description: plan_addon not found
+    put:
+      operationId: updatePlanAddon
+      summary: Update plan_addon by plan_addon_id
+      parameters:
+        - in: path
+          name: plan_addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanAddonUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanAddonResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: plan_addon not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePlanAddon
+      summary: Delete plan_addon by plan_addon_id
+      parameters:
+        - in: path
+          name: plan_addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: plan_addon not found
+components:
+  schemas:
+
+    PlanAddonRequest:
+      type: object
+      required:
+        - plan_version_id
+        - addon_id
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+
+    PlanAddonUpdateRequest:
+      type: object
+      required:
+        - plan_version_id
+        - addon_id
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+
+    PlanAddonResponse:
+      type: object
+      required:
+        - record_code
+        - plan_addon_id
+        - plan_version_id
+        - addon_id
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        plan_addon_id:
+          type: string
+          format: uuid
+          readOnly: true
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+  

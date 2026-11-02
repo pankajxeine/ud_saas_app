@@ -1,0 +1,260 @@
+openapi: 3.0.0
+x-sql-table: iam_mfa_factor
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: MfaFactorResponse API
+  version: 1.0.0
+paths:
+  /mfa_factor:
+    get:
+      operationId: listMfaFactor
+      summary: Get all mfa_factor
+      responses:
+        '200':
+          description: List of mfa_factor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MfaFactorResponse'
+    post:
+      operationId: createMfaFactor
+      summary: Create a new mfa_factor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaFactorRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaFactorResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /mfa_factor/{mfa_factor_id}:
+    get:
+      operationId: getMfaFactorById
+      summary: Get mfa_factor by mfa_factor_id
+      parameters:
+        - in: path
+          name: mfa_factor_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: mfa_factor object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaFactorResponse'
+        '404':
+          description: mfa_factor not found
+    put:
+      operationId: updateMfaFactor
+      summary: Update mfa_factor by mfa_factor_id
+      parameters:
+        - in: path
+          name: mfa_factor_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaFactorUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaFactorResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: mfa_factor not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteMfaFactor
+      summary: Delete mfa_factor by mfa_factor_id
+      parameters:
+        - in: path
+          name: mfa_factor_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: mfa_factor not found
+components:
+  schemas:
+
+    MfaFactorRequest:
+      type: object
+      required:
+        - app_user_id
+        - kind
+        - secret_ref
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        kind:
+          type: string
+        label:
+          type: string
+          nullable: true
+          maxLength: 60
+        secret_ref:
+          type: string
+        webauthn_credential_id:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    MfaFactorUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - kind
+        - label
+        - secret_ref
+        - webauthn_credential_id
+        - is_primary
+        - verified_at
+        - last_used_at
+        - revoked_at
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        kind:
+          type: string
+        label:
+          type: string
+          nullable: true
+          maxLength: 60
+        secret_ref:
+          type: string
+        webauthn_credential_id:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    MfaFactorResponse:
+      type: object
+      required:
+        - record_code
+        - mfa_factor_id
+        - app_user_id
+        - kind
+        - secret_ref
+        - is_primary
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        mfa_factor_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        kind:
+          type: string
+        label:
+          type: string
+          nullable: true
+          maxLength: 60
+        secret_ref:
+          type: string
+        webauthn_credential_id:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

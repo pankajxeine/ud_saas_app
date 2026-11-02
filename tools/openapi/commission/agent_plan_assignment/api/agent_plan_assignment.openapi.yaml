@@ -1,0 +1,218 @@
+openapi: 3.0.0
+x-sql-table: commission_agent_plan_assignment
+x-sql-references:
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "commission_plan_id"
+    table: "commission_commission_plan"
+    key: "commission_plan_id"
+info:
+  title: AgentPlanAssignmentResponse API
+  version: 1.0.0
+paths:
+  /agent_plan_assignment:
+    get:
+      operationId: listAgentPlanAssignment
+      summary: Get all agent_plan_assignment
+      responses:
+        '200':
+          description: List of agent_plan_assignment
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentPlanAssignmentResponse'
+    post:
+      operationId: createAgentPlanAssignment
+      summary: Create a new agent_plan_assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentPlanAssignmentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPlanAssignmentResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /agent_plan_assignment/{agent_plan_assignment_id}:
+    get:
+      operationId: getAgentPlanAssignmentById
+      summary: Get agent_plan_assignment by agent_plan_assignment_id
+      parameters:
+        - in: path
+          name: agent_plan_assignment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: agent_plan_assignment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPlanAssignmentResponse'
+        '404':
+          description: agent_plan_assignment not found
+    put:
+      operationId: updateAgentPlanAssignment
+      summary: Update agent_plan_assignment by agent_plan_assignment_id
+      parameters:
+        - in: path
+          name: agent_plan_assignment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentPlanAssignmentUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPlanAssignmentResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: agent_plan_assignment not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAgentPlanAssignment
+      summary: Delete agent_plan_assignment by agent_plan_assignment_id
+      parameters:
+        - in: path
+          name: agent_plan_assignment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: agent_plan_assignment not found
+components:
+  schemas:
+
+    AgentPlanAssignmentRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - commission_plan_id
+        - valid_from
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    AgentPlanAssignmentUpdateRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - commission_plan_id
+        - valid_from
+        - valid_to
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    AgentPlanAssignmentResponse:
+      type: object
+      required:
+        - record_code
+        - agent_plan_assignment_id
+        - sales_agent_id
+        - commission_plan_id
+        - valid_from
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        agent_plan_assignment_id:
+          type: string
+          format: uuid
+          readOnly: true
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

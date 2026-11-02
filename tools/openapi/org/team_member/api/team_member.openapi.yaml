@@ -1,0 +1,231 @@
+openapi: 3.0.0
+x-sql-table: org_team_member
+x-sql-references:
+  - column: "team_id"
+    table: "org_team"
+    key: "team_id"
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: TeamMemberResponse API
+  version: 1.0.0
+paths:
+  /team_member:
+    get:
+      operationId: listTeamMember
+      summary: Get all team_member
+      responses:
+        '200':
+          description: List of team_member
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMemberResponse'
+    post:
+      operationId: createTeamMember
+      summary: Create a new team_member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMemberRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMemberResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /team_member/{team_member_id}:
+    get:
+      operationId: getTeamMemberById
+      summary: Get team_member by team_member_id
+      parameters:
+        - in: path
+          name: team_member_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: team_member object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMemberResponse'
+        '404':
+          description: team_member not found
+    put:
+      operationId: updateTeamMember
+      summary: Update team_member by team_member_id
+      parameters:
+        - in: path
+          name: team_member_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMemberUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMemberResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: team_member not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTeamMember
+      summary: Delete team_member by team_member_id
+      parameters:
+        - in: path
+          name: team_member_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: team_member not found
+components:
+  schemas:
+
+    TeamMemberRequest:
+      type: object
+      required:
+        - team_id
+        - app_user_id
+      additionalProperties: false
+      properties:
+        team_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_team"
+            column: "team_id"
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        member_role:
+          type: string
+          maxLength: 10
+          default: "member"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    TeamMemberUpdateRequest:
+      type: object
+      required:
+        - team_id
+        - app_user_id
+        - member_role
+        - valid_from
+        - valid_to
+      additionalProperties: false
+      properties:
+        team_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_team"
+            column: "team_id"
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        member_role:
+          type: string
+          maxLength: 10
+          default: "member"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    TeamMemberResponse:
+      type: object
+      required:
+        - record_code
+        - team_member_id
+        - team_id
+        - app_user_id
+        - member_role
+        - valid_from
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        team_member_id:
+          type: string
+          format: uuid
+          readOnly: true
+        team_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_team"
+            column: "team_id"
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        member_role:
+          type: string
+          maxLength: 10
+          default: "member"
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

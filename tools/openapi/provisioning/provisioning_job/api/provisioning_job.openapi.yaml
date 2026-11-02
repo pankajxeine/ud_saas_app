@@ -1,0 +1,348 @@
+openapi: 3.0.0
+x-sql-table: provisioning_provisioning_job
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "requested_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ProvisioningJobResponse API
+  version: 1.0.0
+paths:
+  /provisioning_job:
+    get:
+      operationId: listProvisioningJob
+      summary: Get all provisioning_job
+      responses:
+        '200':
+          description: List of provisioning_job
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvisioningJobResponse'
+    post:
+      operationId: createProvisioningJob
+      summary: Create a new provisioning_job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningJobRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningJobResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /provisioning_job/{job_id}:
+    get:
+      operationId: getProvisioningJobById
+      summary: Get provisioning_job by job_id
+      parameters:
+        - in: path
+          name: job_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: provisioning_job object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningJobResponse'
+        '404':
+          description: provisioning_job not found
+    put:
+      operationId: updateProvisioningJob
+      summary: Update provisioning_job by job_id
+      parameters:
+        - in: path
+          name: job_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningJobUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningJobResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: provisioning_job not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteProvisioningJob
+      summary: Delete provisioning_job by job_id
+      parameters:
+        - in: path
+          name: job_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: provisioning_job not found
+components:
+  schemas:
+
+    ProvisioningJobRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - job_type
+        - idempotency_key
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        job_type:
+          type: string
+          maxLength: 12
+        status:
+          type: string
+          maxLength: 12
+          default: "queued"
+        idempotency_key:
+          type: string
+          maxLength: 100
+        payload:
+          default: "{}"
+        result:
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        max_attempts:
+          type: integer
+          format: int32
+          default: 5
+        run_after:
+          type: string
+          format: date-time
+        locked_by:
+          type: string
+          nullable: true
+          maxLength: 60
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    ProvisioningJobUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - job_type
+        - status
+        - idempotency_key
+        - payload
+        - result
+        - attempts
+        - max_attempts
+        - run_after
+        - locked_by
+        - locked_until
+        - started_at
+        - finished_at
+        - last_error
+        - requested_by_user_id
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        job_type:
+          type: string
+          maxLength: 12
+        status:
+          type: string
+          maxLength: 12
+          default: "queued"
+        idempotency_key:
+          type: string
+          maxLength: 100
+        payload:
+          default: "{}"
+        result:
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        max_attempts:
+          type: integer
+          format: int32
+          default: 5
+        run_after:
+          type: string
+          format: date-time
+        locked_by:
+          type: string
+          nullable: true
+          maxLength: 60
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    ProvisioningJobResponse:
+      type: object
+      required:
+        - record_code
+        - job_id
+        - tenant_application_id
+        - job_type
+        - status
+        - idempotency_key
+        - payload
+        - attempts
+        - max_attempts
+        - run_after
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        job_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        job_type:
+          type: string
+          maxLength: 12
+        status:
+          type: string
+          maxLength: 12
+          default: "queued"
+        idempotency_key:
+          type: string
+          maxLength: 100
+        payload:
+          default: "{}"
+        result:
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        max_attempts:
+          type: integer
+          format: int32
+          default: 5
+        run_after:
+          type: string
+          format: date-time
+        locked_by:
+          type: string
+          nullable: true
+          maxLength: 60
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

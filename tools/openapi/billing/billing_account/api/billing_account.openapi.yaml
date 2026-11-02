@@ -1,0 +1,382 @@
+openapi: 3.0.0
+x-sql-table: billing_billing_account
+x-sql-references:
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "legal_entity_id"
+    table: "org_legal_entity"
+    key: "legal_entity_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "tax_jurisdiction_code"
+    table: "platform_tax_jurisdiction"
+    key: "jurisdiction_code"
+  - column: "bill_to_contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+  - column: "dunning_policy_id"
+    table: "billing_dunning_policy"
+    key: "dunning_policy_id"
+info:
+  title: BillingAccountResponse API
+  version: 1.0.0
+paths:
+  /billing_account:
+    get:
+      operationId: listBillingAccount
+      summary: Get all billing_account
+      responses:
+        '200':
+          description: List of billing_account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingAccountResponse'
+    post:
+      operationId: createBillingAccount
+      summary: Create a new billing_account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingAccountRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingAccountResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /billing_account/{billing_account_id}:
+    get:
+      operationId: getBillingAccountById
+      summary: Get billing_account by billing_account_id
+      parameters:
+        - in: path
+          name: billing_account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: billing_account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingAccountResponse'
+        '404':
+          description: billing_account not found
+    put:
+      operationId: updateBillingAccount
+      summary: Update billing_account by billing_account_id
+      parameters:
+        - in: path
+          name: billing_account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingAccountUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingAccountResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: billing_account not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteBillingAccount
+      summary: Delete billing_account by billing_account_id
+      parameters:
+        - in: path
+          name: billing_account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: billing_account not found
+components:
+  schemas:
+
+    BillingAccountRequest:
+      type: object
+      required:
+        - account_id
+        - legal_entity_id
+        - currency_code
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        tax_jurisdiction_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        is_tax_exempt:
+          type: boolean
+          default: false
+        bill_to_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        invoice_email:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        payment_terms_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 120
+          default: 15
+        auto_collect:
+          type: boolean
+          default: true
+        dunning_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+
+    BillingAccountUpdateRequest:
+      type: object
+      required:
+        - account_id
+        - legal_entity_id
+        - currency_code
+        - tax_jurisdiction_code
+        - tax_id
+        - is_tax_exempt
+        - bill_to_contact_id
+        - invoice_email
+        - billing_address
+        - payment_terms_days
+        - auto_collect
+        - dunning_policy_id
+        - status
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        tax_jurisdiction_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        is_tax_exempt:
+          type: boolean
+          default: false
+        bill_to_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        invoice_email:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        payment_terms_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 120
+          default: 15
+        auto_collect:
+          type: boolean
+          default: true
+        dunning_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+
+    BillingAccountResponse:
+      type: object
+      required:
+        - record_code
+        - billing_account_id
+        - account_id
+        - legal_entity_id
+        - currency_code
+        - is_tax_exempt
+        - payment_terms_days
+        - auto_collect
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        billing_account_id:
+          type: string
+          format: uuid
+          readOnly: true
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        tax_jurisdiction_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        is_tax_exempt:
+          type: boolean
+          default: false
+        bill_to_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        invoice_email:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        payment_terms_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 120
+          default: 15
+        auto_collect:
+          type: boolean
+          default: true
+        dunning_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

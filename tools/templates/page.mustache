@@ -1,8 +1,10 @@
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
+import 'package:flutter/material.dart' hide Scaffold, DataTable;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
+import 'package:ud_sass_app/core/navigation/app_navigation.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
+import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart';
 import 'package:ud_sass_app/core/widgets/common/app_page_header.dart';
 import 'package:ud_sass_app/core/widgets/common/responsive_card_view.dart';
 import 'package:ud_sass_app/core/widgets/data_table/data_table.dart';
@@ -11,11 +13,8 @@ import 'package:ud_sass_app/core/widgets/components/loading.dart';
 {{#endpoint}}
 import '../service/{{moduleName}}_service.dart';
 import '../bloc/{{blocFieldName}}_bloc.dart';
+import '../model/{{ResponseModelFile}}.dart';
 {{/endpoint}}
-
-{{#models}}
-import '../model/{{file}}';
-{{/models}}
 
 class {{Module}}Page extends StatelessWidget {
   const {{Module}}Page({super.key});
@@ -33,12 +32,9 @@ class {{Module}}Page extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppPageHeader(
+              const AppPageHeader(
                 title: '{{pageTitle}}',
                 breadcrumbs: const [],
-                {{#hasCreatePage}}
-                onAdd: () => context.go('{{{basePath}}}/new'),
-                {{/hasCreatePage}}
               ),
               const SizedBox(height: 16),
               Expanded(
@@ -52,7 +48,7 @@ class {{Module}}Page extends StatelessWidget {
                       case {{endpoint.OperationId}}Error(:final message):
                         return Center(child: Text(message));
                       case {{endpoint.OperationId}}Success(:final response):
-                        final items = state.response.body?.data ??
+                        final items = response.body?.data ??
                             const <{{ResponseClass}}>[];
                         final columns = <TrinaColumn>[
                           {{#columns}}
@@ -80,30 +76,40 @@ class {{Module}}Page extends StatelessWidget {
                             if (constraints.maxWidth < 600) {
                               return ResponsiveCardView<{{ResponseClass}}>(
                                 items: items,
-                                titleBuilder: (item) => {{#hasCardTitleField}}
+                                titleBuilder: (item) => {{#hasCardTitleField}}{{#cardTitleNullable}}
                                     item.{{cardTitleField}}?.toString() ?? 'Record',
+                                    {{/cardTitleNullable}}{{^cardTitleNullable}}item.{{cardTitleField}}.toString(),
+                                    {{/cardTitleNullable}}
                                     {{/hasCardTitleField}}{{^hasCardTitleField}}'Record',{{/hasCardTitleField}}
                                 {{#hasCardSubtitle}}
                                 subtitleBuilder: (item) =>
-                                    item.{{cardSubtitleField}}?.toString(),
+                                    {{#cardSubtitleNullable}}item.{{cardSubtitleField}}?.toString(){{/cardSubtitleNullable}}{{^cardSubtitleNullable}}item.{{cardSubtitleField}}.toString(){{/cardSubtitleNullable}},
                                 {{/hasCardSubtitle}}
                                 fieldsBuilder: (item) => [
                                   {{#columns}}
                                   ResponsiveCardField(
                                     label: '{{baseName}}',
+                                    {{#isNullable}}
                                     value: item.{{name}}?.toString() ?? '-',
+                                    {{/isNullable}}{{^isNullable}}
+                                    value: item.{{name}}.toString(),
+                                    {{/isNullable}}
                                   ),
                                   {{/columns}}
                                 ],
                                 {{#hasDetailPage}}
                                 onView: (item) {
+                                  {{#detailRouteGuard}}
                                   if ({{detailRouteGuard}}) return;
+                                  {{/detailRouteGuard}}
                                   context.go({{{detailRouteExpression}}});
                                 },
                                 {{/hasDetailPage}}
                                 {{#hasFormPage}}
                                 onEdit: (item) {
+                                  {{#editRouteGuard}}
                                   if ({{editRouteGuard}}) return;
+                                  {{/editRouteGuard}}
                                   context.go({{{editRouteExpression}}});
                                 },
                                 {{/hasFormPage}}
@@ -112,17 +118,33 @@ class {{Module}}Page extends StatelessWidget {
                             return DataTable(
                               columns: columns,
                               rows: rows,
+                              {{#hasCreatePage}}
+                              headerActionsBuilder: (context, compact) => Button(
+                                size: compact ? ButtonSize.icon : ButtonSize.sm,
+                                onPressed: () => context.go('{{{basePath}}}/new'),
+                                leading: compact
+                                    ? null
+                                    : const Icon(BootstrapIcons.plus, size: 16),
+                                child: compact
+                                    ? const Icon(BootstrapIcons.plus, size: 18)
+                                    : const Text('Add'),
+                              ),
+                              {{/hasCreatePage}}
                               {{#hasDetailPage}}
                               onRowTap: (rowIdx) {
                                 final item = items[rowIdx];
+                                {{#detailRouteGuard}}
                                 if ({{detailRouteGuard}}) return;
+                                {{/detailRouteGuard}}
                                 context.go({{{detailRouteExpression}}});
                               },
                               {{/hasDetailPage}}
                               {{#hasFormPage}}
                               onRowEdit: (rowIdx) {
                                 final item = items[rowIdx];
+                                {{#editRouteGuard}}
                                 if ({{editRouteGuard}}) return;
+                                {{/editRouteGuard}}
                                 context.go({{{editRouteExpression}}});
                               },
                               {{/hasFormPage}}

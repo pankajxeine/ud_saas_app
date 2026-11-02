@@ -1,0 +1,310 @@
+{
+  "entity": "Addon",
+  "table": "commerce_addon",
+  "primaryKey": "addon_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/addon"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/addon"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/addon/{addon_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/addon/{addon_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/addon/{addon_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "addon_id",
+        "label": "Addon Id"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "addon_code",
+        "label": "Addon Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "max_quantity",
+        "label": "Max Quantity"
+      },
+      {
+        "field": "purchase_mode",
+        "label": "Purchase Mode"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "addon_id",
+      "application_id",
+      "addon_code",
+      "name",
+      "description",
+      "max_quantity",
+      "purchase_mode",
+      "is_active",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "application_id",
+      "addon_code",
+      "name",
+      "description",
+      "max_quantity",
+      "purchase_mode",
+      "is_active"
+    ],
+    "update": [
+      "application_id",
+      "addon_code",
+      "name",
+      "description",
+      "max_quantity",
+      "purchase_mode",
+      "is_active"
+    ]
+  },
+  "references": {
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "addon_id",
+      "label": "Addon Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "addon_code",
+      "label": "Addon Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "max_quantity",
+      "label": "Max Quantity",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "purchase_mode",
+      "label": "Purchase Mode",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 16
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

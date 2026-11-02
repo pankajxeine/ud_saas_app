@@ -1,0 +1,172 @@
+openapi: 3.0.0
+x-sql-table: payment_acceptance_mode
+info:
+  title: AcceptanceModeResponse API
+  version: 1.0.0
+paths:
+  /acceptance_mode:
+    get:
+      operationId: listAcceptanceMode
+      summary: Get all acceptance_mode
+      responses:
+        '200':
+          description: List of acceptance_mode
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcceptanceModeResponse'
+    post:
+      operationId: createAcceptanceMode
+      summary: Create a new acceptance_mode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptanceModeRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceModeResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /acceptance_mode/{acceptance_mode_id}:
+    get:
+      operationId: getAcceptanceModeById
+      summary: Get acceptance_mode by acceptance_mode_id
+      parameters:
+        - in: path
+          name: acceptance_mode_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: acceptance_mode object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceModeResponse'
+        '404':
+          description: acceptance_mode not found
+    put:
+      operationId: updateAcceptanceMode
+      summary: Update acceptance_mode by acceptance_mode_id
+      parameters:
+        - in: path
+          name: acceptance_mode_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptanceModeUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceModeResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: acceptance_mode not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAcceptanceMode
+      summary: Delete acceptance_mode by acceptance_mode_id
+      parameters:
+        - in: path
+          name: acceptance_mode_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: acceptance_mode not found
+components:
+  schemas:
+
+    AcceptanceModeRequest:
+      type: object
+      required:
+        - mode_code
+        - name
+        - requires_gateway
+      additionalProperties: false
+      properties:
+        mode_code:
+          type: string
+        name:
+          type: string
+        requires_gateway:
+          type: boolean
+        is_active:
+          type: boolean
+          default: true
+
+    AcceptanceModeUpdateRequest:
+      type: object
+      required:
+        - mode_code
+        - name
+        - requires_gateway
+        - is_active
+      additionalProperties: false
+      properties:
+        mode_code:
+          type: string
+        name:
+          type: string
+        requires_gateway:
+          type: boolean
+        is_active:
+          type: boolean
+          default: true
+
+    AcceptanceModeResponse:
+      type: object
+      required:
+        - record_code
+        - acceptance_mode_id
+        - mode_code
+        - name
+        - requires_gateway
+        - is_active
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        acceptance_mode_id:
+          type: string
+          format: uuid
+          readOnly: true
+        mode_code:
+          type: string
+        name:
+          type: string
+        requires_gateway:
+          type: boolean
+        is_active:
+          type: boolean
+          default: true
+  

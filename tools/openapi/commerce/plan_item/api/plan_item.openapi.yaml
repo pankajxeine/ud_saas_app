@@ -1,0 +1,218 @@
+openapi: 3.0.0
+x-sql-table: commerce_plan_item
+x-sql-references:
+  - column: "module_id"
+    table: "catalog_feature"
+    key: "module_id"
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+  - column: "plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+info:
+  title: PlanItemResponse API
+  version: 1.0.0
+paths:
+  /plan_item:
+    get:
+      operationId: listPlanItem
+      summary: Get all plan_item
+      responses:
+        '200':
+          description: List of plan_item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanItemResponse'
+    post:
+      operationId: createPlanItem
+      summary: Create a new plan_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanItemRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanItemResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /plan_item/{plan_item_id}:
+    get:
+      operationId: getPlanItemById
+      summary: Get plan_item by plan_item_id
+      parameters:
+        - in: path
+          name: plan_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: plan_item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanItemResponse'
+        '404':
+          description: plan_item not found
+    put:
+      operationId: updatePlanItem
+      summary: Update plan_item by plan_item_id
+      parameters:
+        - in: path
+          name: plan_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanItemUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanItemResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: plan_item not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePlanItem
+      summary: Delete plan_item by plan_item_id
+      parameters:
+        - in: path
+          name: plan_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: plan_item not found
+components:
+  schemas:
+
+    PlanItemRequest:
+      type: object
+      required:
+        - plan_version_id
+        - module_id
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+
+    PlanItemUpdateRequest:
+      type: object
+      required:
+        - plan_version_id
+        - module_id
+        - feature_id
+        - value
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+
+    PlanItemResponse:
+      type: object
+      required:
+        - record_code
+        - plan_item_id
+        - plan_version_id
+        - module_id
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        plan_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+  

@@ -1,0 +1,241 @@
+openapi: 3.0.0
+x-sql-table: payment_payment_allocation
+x-sql-references:
+  - column: "payment_id"
+    table: "payment_payment"
+    key: "payment_id"
+  - column: "invoice_id"
+    table: "billing_invoice"
+    key: "invoice_id"
+  - column: "reversal_of_id"
+    table: "payment_payment_allocation"
+    key: "payment_allocation_id"
+info:
+  title: PaymentAllocationResponse API
+  version: 1.0.0
+paths:
+  /payment_allocation:
+    get:
+      operationId: listPaymentAllocation
+      summary: Get all payment_allocation
+      responses:
+        '200':
+          description: List of payment_allocation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentAllocationResponse'
+    post:
+      operationId: createPaymentAllocation
+      summary: Create a new payment_allocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAllocationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAllocationResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /payment_allocation/{payment_allocation_id}:
+    get:
+      operationId: getPaymentAllocationById
+      summary: Get payment_allocation by payment_allocation_id
+      parameters:
+        - in: path
+          name: payment_allocation_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: payment_allocation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAllocationResponse'
+        '404':
+          description: payment_allocation not found
+    put:
+      operationId: updatePaymentAllocation
+      summary: Update payment_allocation by payment_allocation_id
+      parameters:
+        - in: path
+          name: payment_allocation_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAllocationUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAllocationResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: payment_allocation not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePaymentAllocation
+      summary: Delete payment_allocation by payment_allocation_id
+      parameters:
+        - in: path
+          name: payment_allocation_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: payment_allocation not found
+components:
+  schemas:
+
+    PaymentAllocationRequest:
+      type: object
+      required:
+        - payment_id
+        - invoice_id
+        - amount
+      additionalProperties: false
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reversal_of_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        allocated_at:
+          type: string
+          format: date-time
+        allocated_by:
+          type: string
+          format: uuid
+          nullable: true
+
+    PaymentAllocationUpdateRequest:
+      type: object
+      required:
+        - payment_id
+        - invoice_id
+        - amount
+        - reversal_of_id
+        - allocated_at
+        - allocated_by
+      additionalProperties: false
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reversal_of_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        allocated_at:
+          type: string
+          format: date-time
+        allocated_by:
+          type: string
+          format: uuid
+          nullable: true
+
+    PaymentAllocationResponse:
+      type: object
+      required:
+        - record_code
+        - payment_allocation_id
+        - payment_id
+        - invoice_id
+        - amount
+        - allocated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        payment_allocation_id:
+          type: string
+          format: uuid
+          readOnly: true
+        payment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reversal_of_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        allocated_at:
+          type: string
+          format: date-time
+        allocated_by:
+          type: string
+          format: uuid
+          nullable: true
+  

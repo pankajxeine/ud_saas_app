@@ -1,0 +1,208 @@
+{
+  "entity": "DunningRun",
+  "table": "billing_dunning_run",
+  "primaryKey": "dunning_run_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/dunning_run"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/dunning_run"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/dunning_run/{dunning_run_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/dunning_run/{dunning_run_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/dunning_run/{dunning_run_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "dunning_run_id",
+        "label": "Dunning Run Id"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "executed_at",
+        "label": "Executed At"
+      },
+      {
+        "field": "result",
+        "label": "Result"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "dunning_run_id",
+      "invoice_id",
+      "step_no",
+      "action",
+      "executed_at",
+      "result"
+    ]
+  },
+  "form": {
+    "create": [
+      "invoice_id",
+      "step_no",
+      "action",
+      "executed_at",
+      "result"
+    ],
+    "update": [
+      "invoice_id",
+      "step_no",
+      "action",
+      "executed_at",
+      "result"
+    ]
+  },
+  "references": {
+    "invoice_id": {
+      "table": "billing_invoice",
+      "key": "invoice_id",
+      "lookup": {
+        "endpoint": "/billing_invoice"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "dunning_run_id",
+      "label": "Dunning Run Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "endpoint": "/billing_invoice",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 14
+    },
+    {
+      "name": "executed_at",
+      "label": "Executed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "result",
+      "label": "Result",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

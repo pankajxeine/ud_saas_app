@@ -1,0 +1,187 @@
+openapi: 3.0.0
+x-sql-table: iam_role_permission
+x-sql-references:
+  - column: "role_code"
+    table: "iam_role"
+    key: "role_code"
+  - column: "permission_code"
+    table: "iam_permission"
+    key: "permission_code"
+info:
+  title: RolePermissionResponse API
+  version: 1.0.0
+paths:
+  /role_permission:
+    get:
+      operationId: listRolePermission
+      summary: Get all role_permission
+      responses:
+        '200':
+          description: List of role_permission
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolePermissionResponse'
+    post:
+      operationId: createRolePermission
+      summary: Create a new role_permission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolePermissionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /role_permission/{role_permission_id}:
+    get:
+      operationId: getRolePermissionById
+      summary: Get role_permission by role_permission_id
+      parameters:
+        - in: path
+          name: role_permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: role_permission object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolePermissionResponse'
+        '404':
+          description: role_permission not found
+    put:
+      operationId: updateRolePermission
+      summary: Update role_permission by role_permission_id
+      parameters:
+        - in: path
+          name: role_permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolePermissionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: role_permission not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteRolePermission
+      summary: Delete role_permission by role_permission_id
+      parameters:
+        - in: path
+          name: role_permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: role_permission not found
+components:
+  schemas:
+
+    RolePermissionRequest:
+      type: object
+      required:
+        - role_code
+        - permission_code
+      additionalProperties: false
+      properties:
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        permission_code:
+          type: string
+          x-reference:
+            table: "iam_permission"
+            column: "permission_code"
+
+    RolePermissionUpdateRequest:
+      type: object
+      required:
+        - role_code
+        - permission_code
+      additionalProperties: false
+      properties:
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        permission_code:
+          type: string
+          x-reference:
+            table: "iam_permission"
+            column: "permission_code"
+
+    RolePermissionResponse:
+      type: object
+      required:
+        - record_code
+        - role_permission_id
+        - role_code
+        - permission_code
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        role_permission_id:
+          type: string
+          format: uuid
+          readOnly: true
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        permission_code:
+          type: string
+          x-reference:
+            table: "iam_permission"
+            column: "permission_code"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

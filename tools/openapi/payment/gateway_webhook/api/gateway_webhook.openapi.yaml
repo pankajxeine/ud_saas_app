@@ -1,0 +1,219 @@
+openapi: 3.0.0
+x-sql-table: payment_gateway_webhook
+info:
+  title: GatewayWebhookResponse API
+  version: 1.0.0
+paths:
+  /gateway_webhook:
+    get:
+      operationId: listGatewayWebhook
+      summary: Get all gateway_webhook
+      responses:
+        '200':
+          description: List of gateway_webhook
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GatewayWebhookResponse'
+    post:
+      operationId: createGatewayWebhook
+      summary: Create a new gateway_webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayWebhookRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayWebhookResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /gateway_webhook/{gateway_webhook_id}:
+    get:
+      operationId: getGatewayWebhookById
+      summary: Get gateway_webhook by gateway_webhook_id
+      parameters:
+        - in: path
+          name: gateway_webhook_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: gateway_webhook object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayWebhookResponse'
+        '404':
+          description: gateway_webhook not found
+    put:
+      operationId: updateGatewayWebhook
+      summary: Update gateway_webhook by gateway_webhook_id
+      parameters:
+        - in: path
+          name: gateway_webhook_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayWebhookUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayWebhookResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: gateway_webhook not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteGatewayWebhook
+      summary: Delete gateway_webhook by gateway_webhook_id
+      parameters:
+        - in: path
+          name: gateway_webhook_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: gateway_webhook not found
+components:
+  schemas:
+
+    GatewayWebhookRequest:
+      type: object
+      required:
+        - gateway
+        - event_id
+        - event_type
+        - payload
+        - signature_valid
+      additionalProperties: false
+      properties:
+        gateway:
+          type: string
+          maxLength: 20
+        event_id:
+          type: string
+          maxLength: 100
+        event_type:
+          type: string
+          maxLength: 80
+        payload:
+        signature_valid:
+          type: boolean
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error:
+          type: string
+          nullable: true
+
+    GatewayWebhookUpdateRequest:
+      type: object
+      required:
+        - gateway
+        - event_id
+        - event_type
+        - payload
+        - signature_valid
+        - received_at
+        - processed_at
+        - error
+      additionalProperties: false
+      properties:
+        gateway:
+          type: string
+          maxLength: 20
+        event_id:
+          type: string
+          maxLength: 100
+        event_type:
+          type: string
+          maxLength: 80
+        payload:
+        signature_valid:
+          type: boolean
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error:
+          type: string
+          nullable: true
+
+    GatewayWebhookResponse:
+      type: object
+      required:
+        - record_code
+        - gateway_webhook_id
+        - gateway
+        - event_id
+        - event_type
+        - payload
+        - signature_valid
+        - received_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        gateway_webhook_id:
+          type: string
+          format: uuid
+          readOnly: true
+        gateway:
+          type: string
+          maxLength: 20
+        event_id:
+          type: string
+          maxLength: 100
+        event_type:
+          type: string
+          maxLength: 80
+        payload:
+        signature_valid:
+          type: boolean
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error:
+          type: string
+          nullable: true
+  

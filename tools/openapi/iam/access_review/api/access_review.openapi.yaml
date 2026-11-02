@@ -1,0 +1,204 @@
+openapi: 3.0.0
+x-sql-table: iam_access_review
+info:
+  title: AccessReviewResponse API
+  version: 1.0.0
+paths:
+  /access_review:
+    get:
+      operationId: listAccessReview
+      summary: Get all access_review
+      responses:
+        '200':
+          description: List of access_review
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessReviewResponse'
+    post:
+      operationId: createAccessReview
+      summary: Create a new access_review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessReviewRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessReviewResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /access_review/{access_review_id}:
+    get:
+      operationId: getAccessReviewById
+      summary: Get access_review by access_review_id
+      parameters:
+        - in: path
+          name: access_review_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: access_review object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessReviewResponse'
+        '404':
+          description: access_review not found
+    put:
+      operationId: updateAccessReview
+      summary: Update access_review by access_review_id
+      parameters:
+        - in: path
+          name: access_review_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessReviewUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessReviewResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: access_review not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAccessReview
+      summary: Delete access_review by access_review_id
+      parameters:
+        - in: path
+          name: access_review_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: access_review not found
+components:
+  schemas:
+
+    AccessReviewRequest:
+      type: object
+      required:
+        - name
+        - period_label
+        - due_at
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        period_label:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        due_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AccessReviewUpdateRequest:
+      type: object
+      required:
+        - name
+        - period_label
+        - status
+        - due_at
+        - closed_at
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        period_label:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        due_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AccessReviewResponse:
+      type: object
+      required:
+        - record_code
+        - access_review_id
+        - name
+        - period_label
+        - status
+        - due_at
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        access_review_id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        period_label:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        due_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

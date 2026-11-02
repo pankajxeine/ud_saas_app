@@ -1,0 +1,268 @@
+{
+  "entity": "Territory",
+  "table": "org_territory",
+  "primaryKey": "territory_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/territory"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/territory"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/territory/{territory_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/territory/{territory_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/territory/{territory_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "territory_id",
+        "label": "Territory Id"
+      },
+      {
+        "field": "territory_code",
+        "label": "Territory Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "parent_territory_id",
+        "label": "Parent Territory Id"
+      },
+      {
+        "field": "country_codes",
+        "label": "Country Codes"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "territory_id",
+      "territory_code",
+      "name",
+      "parent_territory_id",
+      "country_codes",
+      "is_active",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "territory_code",
+      "name",
+      "parent_territory_id",
+      "country_codes",
+      "is_active"
+    ],
+    "update": [
+      "territory_code",
+      "name",
+      "parent_territory_id",
+      "country_codes",
+      "is_active"
+    ]
+  },
+  "references": {
+    "parent_territory_id": {
+      "table": "org_territory",
+      "key": "territory_id",
+      "lookup": {
+        "endpoint": "/org_territory"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "territory_id",
+      "label": "Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "territory_code",
+      "label": "Territory Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "parent_territory_id",
+      "label": "Parent Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_territory",
+        "column": "territory_id",
+        "lookup": {
+          "endpoint": "/org_territory",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "country_codes",
+      "label": "Country Codes",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 2
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

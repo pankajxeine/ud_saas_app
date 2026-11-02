@@ -1,0 +1,510 @@
+openapi: 3.0.0
+x-sql-table: billing_invoice
+x-sql-references:
+  - column: "billing_account_id"
+    table: "billing_billing_account"
+    key: "billing_account_id"
+  - column: "legal_entity_id"
+    table: "org_legal_entity"
+    key: "legal_entity_id"
+  - column: "subscription_id"
+    table: "subscription_subscription"
+    key: "subscription_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: InvoiceResponse API
+  version: 1.0.0
+paths:
+  /invoice:
+    get:
+      operationId: listInvoice
+      summary: Get all invoice
+      responses:
+        '200':
+          description: List of invoice
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceResponse'
+    post:
+      operationId: createInvoice
+      summary: Create a new invoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /invoice/{invoice_id}:
+    get:
+      operationId: getInvoiceById
+      summary: Get invoice by invoice_id
+      parameters:
+        - in: path
+          name: invoice_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '404':
+          description: invoice not found
+    put:
+      operationId: updateInvoice
+      summary: Update invoice by invoice_id
+      parameters:
+        - in: path
+          name: invoice_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: invoice not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteInvoice
+      summary: Delete invoice by invoice_id
+      parameters:
+        - in: path
+          name: invoice_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: invoice not found
+components:
+  schemas:
+
+    InvoiceRequest:
+      type: object
+      required:
+        - billing_account_id
+        - legal_entity_id
+        - currency_code
+      additionalProperties: false
+      properties:
+        invoice_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        invoice_type:
+          type: string
+          maxLength: 12
+          default: "subscription"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        status:
+          type: string
+          default: "draft"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        issue_date:
+          type: string
+          format: date
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        tax_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        amount_paid:
+          type: string
+          default: 0
+        amount_credited:
+          type: string
+          default: 0
+        balance_due:
+          type: string
+          nullable: true
+        fx_rate_to_functional:
+          type: number
+          format: double
+          nullable: true
+        finalized_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+        void_reason:
+          type: string
+          nullable: true
+        written_off_at:
+          type: string
+          format: date-time
+          nullable: true
+        pdf_ref:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+
+    InvoiceUpdateRequest:
+      type: object
+      required:
+        - invoice_number
+        - billing_account_id
+        - legal_entity_id
+        - subscription_id
+        - invoice_type
+        - currency_code
+        - status
+        - period_start
+        - period_end
+        - issue_date
+        - due_date
+        - subtotal
+        - discount_total
+        - tax_total
+        - total
+        - amount_paid
+        - amount_credited
+        - balance_due
+        - fx_rate_to_functional
+        - finalized_at
+        - paid_at
+        - voided_at
+        - void_reason
+        - written_off_at
+        - pdf_ref
+        - notes
+      additionalProperties: false
+      properties:
+        invoice_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        invoice_type:
+          type: string
+          maxLength: 12
+          default: "subscription"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        status:
+          type: string
+          default: "draft"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        issue_date:
+          type: string
+          format: date
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        tax_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        amount_paid:
+          type: string
+          default: 0
+        amount_credited:
+          type: string
+          default: 0
+        balance_due:
+          type: string
+          nullable: true
+        fx_rate_to_functional:
+          type: number
+          format: double
+          nullable: true
+        finalized_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+        void_reason:
+          type: string
+          nullable: true
+        written_off_at:
+          type: string
+          format: date-time
+          nullable: true
+        pdf_ref:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+
+    InvoiceResponse:
+      type: object
+      required:
+        - record_code
+        - invoice_id
+        - billing_account_id
+        - legal_entity_id
+        - invoice_type
+        - currency_code
+        - status
+        - subtotal
+        - discount_total
+        - tax_total
+        - total
+        - amount_paid
+        - amount_credited
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        invoice_id:
+          type: string
+          format: uuid
+          readOnly: true
+        invoice_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        invoice_type:
+          type: string
+          maxLength: 12
+          default: "subscription"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        status:
+          type: string
+          default: "draft"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        issue_date:
+          type: string
+          format: date
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        tax_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        amount_paid:
+          type: string
+          default: 0
+        amount_credited:
+          type: string
+          default: 0
+        balance_due:
+          type: string
+          nullable: true
+        fx_rate_to_functional:
+          type: number
+          format: double
+          nullable: true
+        finalized_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+        void_reason:
+          type: string
+          nullable: true
+        written_off_at:
+          type: string
+          format: date-time
+          nullable: true
+        pdf_ref:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

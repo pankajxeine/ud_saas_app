@@ -1,0 +1,172 @@
+openapi: 3.0.0
+x-sql-table: notify_suppression
+info:
+  title: SuppressionResponse API
+  version: 1.0.0
+paths:
+  /suppression:
+    get:
+      operationId: listSuppression
+      summary: Get all suppression
+      responses:
+        '200':
+          description: List of suppression
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SuppressionResponse'
+    post:
+      operationId: createSuppression
+      summary: Create a new suppression
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuppressionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppressionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /suppression/{suppression_id}:
+    get:
+      operationId: getSuppressionById
+      summary: Get suppression by suppression_id
+      parameters:
+        - in: path
+          name: suppression_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: suppression object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppressionResponse'
+        '404':
+          description: suppression not found
+    put:
+      operationId: updateSuppression
+      summary: Update suppression by suppression_id
+      parameters:
+        - in: path
+          name: suppression_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuppressionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppressionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: suppression not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSuppression
+      summary: Delete suppression by suppression_id
+      parameters:
+        - in: path
+          name: suppression_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: suppression not found
+components:
+  schemas:
+
+    SuppressionRequest:
+      type: object
+      required:
+        - channel
+        - address
+        - reason
+      additionalProperties: false
+      properties:
+        channel:
+          type: string
+          maxLength: 8
+        address:
+          type: string
+        reason:
+          type: string
+          maxLength: 12
+
+    SuppressionUpdateRequest:
+      type: object
+      required:
+        - channel
+        - address
+        - reason
+      additionalProperties: false
+      properties:
+        channel:
+          type: string
+          maxLength: 8
+        address:
+          type: string
+        reason:
+          type: string
+          maxLength: 12
+
+    SuppressionResponse:
+      type: object
+      required:
+        - record_code
+        - suppression_id
+        - channel
+        - address
+        - reason
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        suppression_id:
+          type: string
+          format: uuid
+          readOnly: true
+        channel:
+          type: string
+          maxLength: 8
+        address:
+          type: string
+        reason:
+          type: string
+          maxLength: 12
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

@@ -1,0 +1,434 @@
+openapi: 3.0.0
+x-sql-table: billing_invoice_line
+x-sql-references:
+  - column: "invoice_id"
+    table: "billing_invoice"
+    key: "invoice_id"
+  - column: "plan_price_id"
+    table: "commerce_plan_price"
+    key: "plan_price_id"
+  - column: "addon_price_id"
+    table: "commerce_addon_price"
+    key: "addon_price_id"
+  - column: "subscription_item_id"
+    table: "subscription_subscription_item"
+    key: "subscription_item_id"
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+  - column: "coupon_id"
+    table: "commerce_coupon"
+    key: "coupon_id"
+  - column: "tax_rate_id"
+    table: "platform_tax_rate"
+    key: "tax_rate_id"
+info:
+  title: InvoiceLineResponse API
+  version: 1.0.0
+paths:
+  /invoice_line:
+    get:
+      operationId: listInvoiceLine
+      summary: Get all invoice_line
+      responses:
+        '200':
+          description: List of invoice_line
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceLineResponse'
+    post:
+      operationId: createInvoiceLine
+      summary: Create a new invoice_line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceLineRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceLineResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /invoice_line/{invoice_line_id}:
+    get:
+      operationId: getInvoiceLineById
+      summary: Get invoice_line by invoice_line_id
+      parameters:
+        - in: path
+          name: invoice_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: invoice_line object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceLineResponse'
+        '404':
+          description: invoice_line not found
+    put:
+      operationId: updateInvoiceLine
+      summary: Update invoice_line by invoice_line_id
+      parameters:
+        - in: path
+          name: invoice_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceLineUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceLineResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: invoice_line not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteInvoiceLine
+      summary: Delete invoice_line by invoice_line_id
+      parameters:
+        - in: path
+          name: invoice_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: invoice_line not found
+components:
+  schemas:
+
+    InvoiceLineRequest:
+      type: object
+      required:
+        - invoice_id
+        - line_no
+        - line_type
+        - description
+        - unit_amount
+      additionalProperties: false
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        line_no:
+          type: integer
+          format: int32
+        line_type:
+          type: string
+          maxLength: 12
+        description:
+          type: string
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        subscription_item_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription_item"
+            column: "subscription_item_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        quantity:
+          type: number
+          format: double
+          default: 1
+        unit_amount:
+          type: string
+        discount_amount:
+          type: string
+          default: 0
+        tax_rate_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_tax_rate"
+            column: "tax_rate_id"
+        tax_rate:
+          type: string
+          default: 0
+        tax_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+
+    InvoiceLineUpdateRequest:
+      type: object
+      required:
+        - invoice_id
+        - line_no
+        - line_type
+        - description
+        - plan_price_id
+        - addon_price_id
+        - subscription_item_id
+        - feature_id
+        - coupon_id
+        - period_start
+        - period_end
+        - quantity
+        - unit_amount
+        - discount_amount
+        - tax_rate_id
+        - tax_rate
+        - tax_amount
+        - net_amount
+      additionalProperties: false
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        line_no:
+          type: integer
+          format: int32
+        line_type:
+          type: string
+          maxLength: 12
+        description:
+          type: string
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        subscription_item_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription_item"
+            column: "subscription_item_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        quantity:
+          type: number
+          format: double
+          default: 1
+        unit_amount:
+          type: string
+        discount_amount:
+          type: string
+          default: 0
+        tax_rate_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_tax_rate"
+            column: "tax_rate_id"
+        tax_rate:
+          type: string
+          default: 0
+        tax_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+
+    InvoiceLineResponse:
+      type: object
+      required:
+        - record_code
+        - invoice_line_id
+        - invoice_id
+        - line_no
+        - line_type
+        - description
+        - quantity
+        - unit_amount
+        - discount_amount
+        - tax_rate
+        - tax_amount
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        invoice_line_id:
+          type: string
+          format: uuid
+          readOnly: true
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        line_no:
+          type: integer
+          format: int32
+        line_type:
+          type: string
+          maxLength: 12
+        description:
+          type: string
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        subscription_item_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription_item"
+            column: "subscription_item_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        period_start:
+          type: string
+          format: date-time
+          nullable: true
+        period_end:
+          type: string
+          format: date-time
+          nullable: true
+        quantity:
+          type: number
+          format: double
+          default: 1
+        unit_amount:
+          type: string
+        discount_amount:
+          type: string
+          default: 0
+        tax_rate_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_tax_rate"
+            column: "tax_rate_id"
+        tax_rate:
+          type: string
+          default: 0
+        tax_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+  

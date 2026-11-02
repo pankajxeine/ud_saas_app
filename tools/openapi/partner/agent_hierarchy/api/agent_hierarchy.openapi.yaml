@@ -1,0 +1,195 @@
+openapi: 3.0.0
+x-sql-table: partner_agent_hierarchy
+x-sql-references:
+  - column: "ancestor_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "descendant_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+info:
+  title: AgentHierarchyResponse API
+  version: 1.0.0
+paths:
+  /agent_hierarchy:
+    get:
+      operationId: listAgentHierarchy
+      summary: Get all agent_hierarchy
+      responses:
+        '200':
+          description: List of agent_hierarchy
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentHierarchyResponse'
+    post:
+      operationId: createAgentHierarchy
+      summary: Create a new agent_hierarchy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentHierarchyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentHierarchyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /agent_hierarchy/{agent_hierarchy_id}:
+    get:
+      operationId: getAgentHierarchyById
+      summary: Get agent_hierarchy by agent_hierarchy_id
+      parameters:
+        - in: path
+          name: agent_hierarchy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: agent_hierarchy object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentHierarchyResponse'
+        '404':
+          description: agent_hierarchy not found
+    put:
+      operationId: updateAgentHierarchy
+      summary: Update agent_hierarchy by agent_hierarchy_id
+      parameters:
+        - in: path
+          name: agent_hierarchy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentHierarchyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentHierarchyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: agent_hierarchy not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAgentHierarchy
+      summary: Delete agent_hierarchy by agent_hierarchy_id
+      parameters:
+        - in: path
+          name: agent_hierarchy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: agent_hierarchy not found
+components:
+  schemas:
+
+    AgentHierarchyRequest:
+      type: object
+      required:
+        - ancestor_id
+        - descendant_id
+        - depth
+      additionalProperties: false
+      properties:
+        ancestor_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        descendant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        depth:
+          type: integer
+          format: int32
+
+    AgentHierarchyUpdateRequest:
+      type: object
+      required:
+        - ancestor_id
+        - descendant_id
+        - depth
+      additionalProperties: false
+      properties:
+        ancestor_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        descendant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        depth:
+          type: integer
+          format: int32
+
+    AgentHierarchyResponse:
+      type: object
+      required:
+        - record_code
+        - agent_hierarchy_id
+        - ancestor_id
+        - descendant_id
+        - depth
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        agent_hierarchy_id:
+          type: string
+          format: uuid
+          readOnly: true
+        ancestor_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        descendant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        depth:
+          type: integer
+          format: int32
+  

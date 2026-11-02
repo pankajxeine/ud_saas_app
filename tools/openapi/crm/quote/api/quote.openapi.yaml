@@ -1,0 +1,432 @@
+openapi: 3.0.0
+x-sql-table: crm_quote
+x-sql-references:
+  - column: "opportunity_id"
+    table: "crm_opportunity"
+    key: "opportunity_id"
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "price_book_id"
+    table: "commerce_price_book"
+    key: "price_book_id"
+  - column: "coupon_id"
+    table: "commerce_coupon"
+    key: "coupon_id"
+  - column: "approved_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "accepted_by_contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+info:
+  title: QuoteResponse API
+  version: 1.0.0
+paths:
+  /quote:
+    get:
+      operationId: listQuote
+      summary: Get all quote
+      responses:
+        '200':
+          description: List of quote
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteResponse'
+    post:
+      operationId: createQuote
+      summary: Create a new quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /quote/{quote_id}:
+    get:
+      operationId: getQuoteById
+      summary: Get quote by quote_id
+      parameters:
+        - in: path
+          name: quote_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: quote object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponse'
+        '404':
+          description: quote not found
+    put:
+      operationId: updateQuote
+      summary: Update quote by quote_id
+      parameters:
+        - in: path
+          name: quote_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: quote not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteQuote
+      summary: Delete quote by quote_id
+      parameters:
+        - in: path
+          name: quote_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: quote not found
+components:
+  schemas:
+
+    QuoteRequest:
+      type: object
+      required:
+        - opportunity_id
+        - account_id
+        - price_book_id
+        - valid_until
+      additionalProperties: false
+      properties:
+        quote_number:
+          type: string
+          maxLength: 20
+        opportunity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        valid_until:
+          type: string
+          format: date
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        max_discount_percent:
+          type: string
+          default: 0
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        terms:
+          type: string
+          nullable: true
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_by_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+
+    QuoteUpdateRequest:
+      type: object
+      required:
+        - quote_number
+        - opportunity_id
+        - account_id
+        - price_book_id
+        - status
+        - valid_until
+        - subtotal
+        - discount_total
+        - total
+        - max_discount_percent
+        - coupon_id
+        - terms
+        - approved_by_user_id
+        - approved_at
+        - sent_at
+        - accepted_at
+        - accepted_by_contact_id
+      additionalProperties: false
+      properties:
+        quote_number:
+          type: string
+          maxLength: 20
+        opportunity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        valid_until:
+          type: string
+          format: date
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        max_discount_percent:
+          type: string
+          default: 0
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        terms:
+          type: string
+          nullable: true
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_by_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+
+    QuoteResponse:
+      type: object
+      required:
+        - record_code
+        - quote_id
+        - quote_number
+        - opportunity_id
+        - account_id
+        - price_book_id
+        - status
+        - valid_until
+        - subtotal
+        - discount_total
+        - total
+        - max_discount_percent
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        quote_id:
+          type: string
+          format: uuid
+          readOnly: true
+        quote_number:
+          type: string
+          maxLength: 20
+        opportunity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        valid_until:
+          type: string
+          format: date
+        subtotal:
+          type: string
+          default: 0
+        discount_total:
+          type: string
+          default: 0
+        total:
+          type: string
+          default: 0
+        max_discount_percent:
+          type: string
+          default: 0
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        terms:
+          type: string
+          nullable: true
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_by_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

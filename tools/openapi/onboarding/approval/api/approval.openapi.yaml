@@ -1,0 +1,254 @@
+openapi: 3.0.0
+x-sql-table: onboarding_approval
+x-sql-references:
+  - column: "request_id"
+    table: "onboarding_onboarding_request"
+    key: "request_id"
+  - column: "approver_role_code"
+    table: "iam_role"
+    key: "role_code"
+  - column: "decided_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ApprovalResponse API
+  version: 1.0.0
+paths:
+  /approval:
+    get:
+      operationId: listApproval
+      summary: Get all approval
+      responses:
+        '200':
+          description: List of approval
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApprovalResponse'
+    post:
+      operationId: createApproval
+      summary: Create a new approval
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /approval/{approval_id}:
+    get:
+      operationId: getApprovalById
+      summary: Get approval by approval_id
+      parameters:
+        - in: path
+          name: approval_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: approval object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+        '404':
+          description: approval not found
+    put:
+      operationId: updateApproval
+      summary: Update approval by approval_id
+      parameters:
+        - in: path
+          name: approval_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: approval not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteApproval
+      summary: Delete approval by approval_id
+      parameters:
+        - in: path
+          name: approval_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: approval not found
+components:
+  schemas:
+
+    ApprovalRequest:
+      type: object
+      required:
+        - request_id
+        - step_no
+        - approver_role_code
+      additionalProperties: false
+      properties:
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        decision:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+
+    ApprovalUpdateRequest:
+      type: object
+      required:
+        - request_id
+        - step_no
+        - approver_role_code
+        - decision
+        - decided_by_user_id
+        - decided_at
+        - comment
+      additionalProperties: false
+      properties:
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        decision:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+
+    ApprovalResponse:
+      type: object
+      required:
+        - record_code
+        - approval_id
+        - request_id
+        - step_no
+        - approver_role_code
+        - decision
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        approval_id:
+          type: string
+          format: uuid
+          readOnly: true
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        decision:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+  

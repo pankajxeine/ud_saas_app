@@ -1,0 +1,477 @@
+{
+  "entity": "UserSession",
+  "table": "iam_user_session",
+  "primaryKey": "user_session_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/user_session"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/user_session"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/user_session/{user_session_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/user_session/{user_session_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/user_session/{user_session_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "user_session_id",
+        "label": "User Session Id"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "token_hash",
+        "label": "Token Hash"
+      },
+      {
+        "field": "scope_type",
+        "label": "Scope Type"
+      },
+      {
+        "field": "scope_id",
+        "label": "Scope Id"
+      },
+      {
+        "field": "auth_method",
+        "label": "Auth Method"
+      },
+      {
+        "field": "mfa_verified_at",
+        "label": "Mfa Verified At"
+      },
+      {
+        "field": "impersonating_tenant_id",
+        "label": "Impersonating Tenant Id"
+      },
+      {
+        "field": "impersonation_reason",
+        "label": "Impersonation Reason"
+      },
+      {
+        "field": "client_type",
+        "label": "Client Type"
+      },
+      {
+        "field": "ip_address",
+        "label": "Ip Address"
+      },
+      {
+        "field": "user_agent",
+        "label": "User Agent"
+      },
+      {
+        "field": "started_at",
+        "label": "Started At"
+      },
+      {
+        "field": "last_seen_at",
+        "label": "Last Seen At"
+      },
+      {
+        "field": "idle_expires_at",
+        "label": "Idle Expires At"
+      },
+      {
+        "field": "expires_at",
+        "label": "Expires At"
+      },
+      {
+        "field": "ended_at",
+        "label": "Ended At"
+      },
+      {
+        "field": "end_reason",
+        "label": "End Reason"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "user_session_id",
+      "app_user_id",
+      "token_hash",
+      "scope_type",
+      "scope_id",
+      "auth_method",
+      "mfa_verified_at",
+      "impersonating_tenant_id",
+      "impersonation_reason",
+      "client_type",
+      "ip_address",
+      "user_agent",
+      "started_at",
+      "last_seen_at",
+      "idle_expires_at",
+      "expires_at",
+      "ended_at",
+      "end_reason"
+    ]
+  },
+  "form": {
+    "create": [
+      "app_user_id",
+      "token_hash",
+      "scope_type",
+      "scope_id",
+      "auth_method",
+      "mfa_verified_at",
+      "impersonating_tenant_id",
+      "impersonation_reason",
+      "client_type",
+      "ip_address",
+      "user_agent",
+      "started_at",
+      "last_seen_at",
+      "idle_expires_at",
+      "expires_at",
+      "ended_at",
+      "end_reason"
+    ],
+    "update": [
+      "app_user_id",
+      "token_hash",
+      "scope_type",
+      "scope_id",
+      "auth_method",
+      "mfa_verified_at",
+      "impersonating_tenant_id",
+      "impersonation_reason",
+      "client_type",
+      "ip_address",
+      "user_agent",
+      "started_at",
+      "last_seen_at",
+      "idle_expires_at",
+      "expires_at",
+      "ended_at",
+      "end_reason"
+    ]
+  },
+  "references": {
+    "app_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "impersonating_tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "user_session_id",
+      "label": "User Session Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "token_hash",
+      "label": "Token Hash",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "scope_type",
+      "label": "Scope Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "scope_id",
+      "label": "Scope Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "auth_method",
+      "label": "Auth Method",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "mfa_verified_at",
+      "label": "Mfa Verified At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "impersonating_tenant_id",
+      "label": "Impersonating Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "impersonation_reason",
+      "label": "Impersonation Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "client_type",
+      "label": "Client Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "ip_address",
+      "label": "Ip Address",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "user_agent",
+      "label": "User Agent",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "started_at",
+      "label": "Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_seen_at",
+      "label": "Last Seen At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "idle_expires_at",
+      "label": "Idle Expires At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "expires_at",
+      "label": "Expires At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "ended_at",
+      "label": "Ended At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "end_reason",
+      "label": "End Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "entity": "TaxRate",
+  "table": "platform_tax_rate",
+  "primaryKey": "tax_rate_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/tax_rate"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/tax_rate"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/tax_rate/{tax_rate_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/tax_rate/{tax_rate_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/tax_rate/{tax_rate_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "tax_rate_id",
+        "label": "Tax Rate Id"
+      },
+      {
+        "field": "jurisdiction_code",
+        "label": "Jurisdiction Code"
+      },
+      {
+        "field": "tax_code",
+        "label": "Tax Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "rate",
+        "label": "Rate"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "tax_rate_id",
+      "jurisdiction_code",
+      "tax_code",
+      "name",
+      "rate",
+      "valid_from",
+      "valid_to",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "jurisdiction_code",
+      "tax_code",
+      "name",
+      "rate",
+      "valid_from",
+      "valid_to"
+    ],
+    "update": [
+      "jurisdiction_code",
+      "tax_code",
+      "name",
+      "rate",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "references": {
+    "jurisdiction_code": {
+      "table": "platform_tax_jurisdiction",
+      "key": "jurisdiction_code",
+      "lookup": {
+        "endpoint": "/platform_tax_jurisdiction"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tax_rate_id",
+      "label": "Tax Rate Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "jurisdiction_code",
+      "label": "Jurisdiction Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_tax_jurisdiction",
+        "column": "jurisdiction_code",
+        "lookup": {
+          "endpoint": "/platform_tax_jurisdiction",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tax_code",
+      "label": "Tax Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "rate",
+      "label": "Rate",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

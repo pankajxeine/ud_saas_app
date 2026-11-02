@@ -1,0 +1,208 @@
+openapi: 3.0.0
+x-sql-table: support_sla_policy
+x-sql-references:
+  - column: "calendar_id"
+    table: "platform_calendar"
+    key: "calendar_id"
+info:
+  title: SlaPolicyResponse API
+  version: 1.0.0
+paths:
+  /sla_policy:
+    get:
+      operationId: listSlaPolicy
+      summary: Get all sla_policy
+      responses:
+        '200':
+          description: List of sla_policy
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SlaPolicyResponse'
+    post:
+      operationId: createSlaPolicy
+      summary: Create a new sla_policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlaPolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlaPolicyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /sla_policy/{sla_policy_id}:
+    get:
+      operationId: getSlaPolicyById
+      summary: Get sla_policy by sla_policy_id
+      parameters:
+        - in: path
+          name: sla_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: sla_policy object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlaPolicyResponse'
+        '404':
+          description: sla_policy not found
+    put:
+      operationId: updateSlaPolicy
+      summary: Update sla_policy by sla_policy_id
+      parameters:
+        - in: path
+          name: sla_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlaPolicyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlaPolicyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: sla_policy not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSlaPolicy
+      summary: Delete sla_policy by sla_policy_id
+      parameters:
+        - in: path
+          name: sla_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: sla_policy not found
+components:
+  schemas:
+
+    SlaPolicyRequest:
+      type: object
+      required:
+        - policy_code
+        - name
+        - calendar_id
+      additionalProperties: false
+      properties:
+        policy_code:
+          type: string
+        name:
+          type: string
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        is_default:
+          type: boolean
+          default: false
+
+    SlaPolicyUpdateRequest:
+      type: object
+      required:
+        - policy_code
+        - name
+        - calendar_id
+        - is_default
+      additionalProperties: false
+      properties:
+        policy_code:
+          type: string
+        name:
+          type: string
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        is_default:
+          type: boolean
+          default: false
+
+    SlaPolicyResponse:
+      type: object
+      required:
+        - record_code
+        - sla_policy_id
+        - policy_code
+        - name
+        - calendar_id
+        - is_default
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        sla_policy_id:
+          type: string
+          format: uuid
+          readOnly: true
+        policy_code:
+          type: string
+        name:
+          type: string
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        is_default:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

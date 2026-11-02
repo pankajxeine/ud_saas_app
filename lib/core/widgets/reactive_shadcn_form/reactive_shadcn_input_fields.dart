@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/core/widgets/reactive_shadcn_form/entity_meta.dart';
 import 'package:ud_sass_app/core/widgets/reactive_shadcn_form/form_widgets/reactive_shadcn_text_field.dart';
 
@@ -13,49 +14,42 @@ class ReactiveShadcnInputField extends StatelessWidget {
       case EntityFieldType.text:
       case EntityFieldType.password:
       case EntityFieldType.email:
+      case EntityFieldType.phone:
+      case EntityFieldType.number:
+      case EntityFieldType.currency:
+      case EntityFieldType.date:
+      case EntityFieldType.dateRange:
+      case EntityFieldType.textarea:
         return ReactiveShadcnTextField(field: field);
 
-      // case EntityFieldType.number:
-      //   return ReactiveTextField<int>(
-      //     formControlName: field.name,
-      //     decoration: InputDecoration(labelText: field.label),
-      //     keyboardType: TextInputType.number,
-      //   );
+      case EntityFieldType.boolean:
+        return ReactiveFormField<bool, bool>(
+          formControlName: field.name,
+          builder: (state) => SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(field.label),
+            value: state.value ?? false,
+            onChanged: state.control.enabled ? state.didChange : null,
+          ),
+        );
 
-      // case EntityFieldType.boolean:
-      //   return Row(
-      //     children: [
-      //       ReactiveCheckbox(formControlName: field.name),
-      //       const SizedBox(width: 8),
-      //       Text(field.label),
-      //     ],
-      //   );
-
-      // case EntityFieldType.date:
-      //   return ReactiveDatePicker(
-      //     formControlName: field.name,
-      //     firstDate: DateTime(2000),
-      //     lastDate: DateTime(2100),
-      //     decoration: InputDecoration(labelText: field.label),
-      //   );
-
-      // case EntityFieldType.select:
-      //   return ReactiveDropdownField<String>(
-      //     formControlName: field.name,
-      //     decoration: InputDecoration(labelText: field.label),
-      //     items: field.options!
-      //         .map((opt) => DropdownMenuItem(value: opt, child: Text(opt)))
-      //         .toList(),
-      //   );
-
-      // case EntityFieldType.slider:
-      //   return ReactiveSlider(
-      //     formControlName: field.name,
-      //     min: 0,
-      //     max: 100,
-      //     divisions: 10,
-      //     labelBuilder: (value) => value.toString(),
-      //   );
+      case EntityFieldType.select:
+        return ReactiveFormField<String, String>(
+          formControlName: field.name,
+          builder: (state) => DropdownButtonFormField<String>(
+            initialValue: state.value,
+            decoration: InputDecoration(labelText: field.label),
+            items: field.options
+                ?.map(
+                  (option) => DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  ),
+                )
+                .toList(),
+            onChanged: state.control.enabled ? state.didChange : null,
+          ),
+        );
 
       default:
         return Text('Unsupported field type: ${field.type}');

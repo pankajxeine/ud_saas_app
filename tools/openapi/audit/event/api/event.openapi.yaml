@@ -1,0 +1,314 @@
+openapi: 3.0.0
+x-sql-table: audit_event
+info:
+  title: EventResponse API
+  version: 1.0.0
+paths:
+  /event:
+    get:
+      operationId: listEvent
+      summary: Get all event
+      responses:
+        '200':
+          description: List of event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventResponse'
+    post:
+      operationId: createEvent
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /event/{event_id}:
+    get:
+      operationId: getEventById
+      summary: Get event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '404':
+          description: event not found
+    put:
+      operationId: updateEvent
+      summary: Update event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: event not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEvent
+      summary: Delete event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: event not found
+components:
+  schemas:
+
+    EventRequest:
+      type: object
+      required:
+        - actor_type
+        - action
+        - entity_schema
+        - entity_table
+        - row_hash
+      additionalProperties: false
+      properties:
+        event_seq:
+          type: integer
+          format: int64
+        actor_type:
+          type: string
+          maxLength: 10
+        actor_id:
+          type: string
+          format: uuid
+          nullable: true
+        actor_ip:
+          type: string
+          nullable: true
+        request_id:
+          type: string
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        action:
+          type: string
+          maxLength: 10
+        entity_schema:
+          type: string
+        entity_table:
+          type: string
+        entity_id:
+          type: string
+          nullable: true
+        changed_columns:
+          type: string
+          nullable: true
+        old_values:
+          nullable: true
+        new_values:
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        prev_hash:
+          type: string
+          nullable: true
+        row_hash:
+          type: string
+
+    EventUpdateRequest:
+      type: object
+      required:
+        - event_seq
+        - actor_type
+        - actor_id
+        - actor_ip
+        - request_id
+        - impersonating_tenant_id
+        - tenant_id
+        - action
+        - entity_schema
+        - entity_table
+        - entity_id
+        - changed_columns
+        - old_values
+        - new_values
+        - reason
+        - prev_hash
+        - row_hash
+      additionalProperties: false
+      properties:
+        event_seq:
+          type: integer
+          format: int64
+        actor_type:
+          type: string
+          maxLength: 10
+        actor_id:
+          type: string
+          format: uuid
+          nullable: true
+        actor_ip:
+          type: string
+          nullable: true
+        request_id:
+          type: string
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        action:
+          type: string
+          maxLength: 10
+        entity_schema:
+          type: string
+        entity_table:
+          type: string
+        entity_id:
+          type: string
+          nullable: true
+        changed_columns:
+          type: string
+          nullable: true
+        old_values:
+          nullable: true
+        new_values:
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        prev_hash:
+          type: string
+          nullable: true
+        row_hash:
+          type: string
+
+    EventResponse:
+      type: object
+      required:
+        - record_code
+        - event_id
+        - event_seq
+        - occurred_at
+        - actor_type
+        - action
+        - entity_schema
+        - entity_table
+        - row_hash
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        event_id:
+          type: string
+          format: uuid
+          readOnly: true
+        event_seq:
+          type: integer
+          format: int64
+        occurred_at:
+          type: string
+          format: date-time
+          readOnly: true
+        actor_type:
+          type: string
+          maxLength: 10
+        actor_id:
+          type: string
+          format: uuid
+          nullable: true
+        actor_ip:
+          type: string
+          nullable: true
+        request_id:
+          type: string
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        action:
+          type: string
+          maxLength: 10
+        entity_schema:
+          type: string
+        entity_table:
+          type: string
+        entity_id:
+          type: string
+          nullable: true
+        changed_columns:
+          type: string
+          nullable: true
+        old_values:
+          nullable: true
+        new_values:
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        prev_hash:
+          type: string
+          nullable: true
+        row_hash:
+          type: string
+  

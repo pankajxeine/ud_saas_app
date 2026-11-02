@@ -44,6 +44,15 @@ class _State extends State<ReactiveShadcnTextField> {
             Input(
               controller: _ctrl,
               placeholder: Text(widget.field.placeholder ?? ''),
+              keyboardType: switch (widget.field.type) {
+                EntityFieldType.email => TextInputType.emailAddress,
+                EntityFieldType.phone => TextInputType.phone,
+                EntityFieldType.number || EntityFieldType.currency =>
+                  const TextInputType.numberWithOptions(decimal: true),
+                _ => TextInputType.text,
+              },
+              maxLines: widget.field.type == EntityFieldType.textarea ? 4 : 1,
+              maxLength: widget.field.maxLength,
               features: [
                 if ((widget.field.features?['showClearButton'] as bool?) ??
                     false)

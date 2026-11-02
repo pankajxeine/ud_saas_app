@@ -1,0 +1,230 @@
+{
+  "entity": "NumberSeries",
+  "table": "billing_number_series",
+  "primaryKey": "number_series_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/number_series"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/number_series"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/number_series/{number_series_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/number_series/{number_series_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/number_series/{number_series_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "number_series_id",
+        "label": "Number Series Id"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "document_type",
+        "label": "Document Type"
+      },
+      {
+        "field": "fiscal_year",
+        "label": "Fiscal Year"
+      },
+      {
+        "field": "prefix",
+        "label": "Prefix"
+      },
+      {
+        "field": "next_number",
+        "label": "Next Number"
+      },
+      {
+        "field": "padding",
+        "label": "Padding"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "number_series_id",
+      "legal_entity_id",
+      "document_type",
+      "fiscal_year",
+      "prefix",
+      "next_number",
+      "padding"
+    ]
+  },
+  "form": {
+    "create": [
+      "legal_entity_id",
+      "document_type",
+      "fiscal_year",
+      "prefix",
+      "next_number",
+      "padding"
+    ],
+    "update": [
+      "legal_entity_id",
+      "document_type",
+      "fiscal_year",
+      "prefix",
+      "next_number",
+      "padding"
+    ]
+  },
+  "references": {
+    "legal_entity_id": {
+      "table": "org_legal_entity",
+      "key": "legal_entity_id",
+      "lookup": {
+        "endpoint": "/org_legal_entity"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "number_series_id",
+      "label": "Number Series Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "endpoint": "/org_legal_entity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "document_type",
+      "label": "Document Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "fiscal_year",
+      "label": "Fiscal Year",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "prefix",
+      "label": "Prefix",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "next_number",
+      "label": "Next Number",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "padding",
+      "label": "Padding",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

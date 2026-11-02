@@ -1,0 +1,197 @@
+openapi: 3.0.0
+x-sql-table: notify_template_locale
+x-sql-references:
+  - column: "template_version_id"
+    table: "notify_template_version"
+    key: "template_version_id"
+info:
+  title: TemplateLocaleResponse API
+  version: 1.0.0
+paths:
+  /template_locale:
+    get:
+      operationId: listTemplateLocale
+      summary: Get all template_locale
+      responses:
+        '200':
+          description: List of template_locale
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateLocaleResponse'
+    post:
+      operationId: createTemplateLocale
+      summary: Create a new template_locale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateLocaleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateLocaleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /template_locale/{template_locale_id}:
+    get:
+      operationId: getTemplateLocaleById
+      summary: Get template_locale by template_locale_id
+      parameters:
+        - in: path
+          name: template_locale_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: template_locale object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateLocaleResponse'
+        '404':
+          description: template_locale not found
+    put:
+      operationId: updateTemplateLocale
+      summary: Update template_locale by template_locale_id
+      parameters:
+        - in: path
+          name: template_locale_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateLocaleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateLocaleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: template_locale not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTemplateLocale
+      summary: Delete template_locale by template_locale_id
+      parameters:
+        - in: path
+          name: template_locale_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: template_locale not found
+components:
+  schemas:
+
+    TemplateLocaleRequest:
+      type: object
+      required:
+        - template_version_id
+        - locale
+        - body_text
+      additionalProperties: false
+      properties:
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        subject:
+          type: string
+          nullable: true
+        body_html:
+          type: string
+          nullable: true
+        body_text:
+          type: string
+
+    TemplateLocaleUpdateRequest:
+      type: object
+      required:
+        - template_version_id
+        - locale
+        - subject
+        - body_html
+        - body_text
+      additionalProperties: false
+      properties:
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        subject:
+          type: string
+          nullable: true
+        body_html:
+          type: string
+          nullable: true
+        body_text:
+          type: string
+
+    TemplateLocaleResponse:
+      type: object
+      required:
+        - record_code
+        - template_locale_id
+        - template_version_id
+        - locale
+        - body_text
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        template_locale_id:
+          type: string
+          format: uuid
+          readOnly: true
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        subject:
+          type: string
+          nullable: true
+        body_html:
+          type: string
+          nullable: true
+        body_text:
+          type: string
+  

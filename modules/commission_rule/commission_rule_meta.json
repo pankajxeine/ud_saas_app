@@ -1,0 +1,353 @@
+{
+  "entity": "CommissionRule",
+  "table": "commission_commission_rule",
+  "primaryKey": "commission_rule_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/commission_rule"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/commission_rule"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/commission_rule/{commission_rule_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/commission_rule/{commission_rule_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/commission_rule/{commission_rule_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "commission_rule_id",
+        "label": "Commission Rule Id"
+      },
+      {
+        "field": "commission_plan_id",
+        "label": "Commission Plan Id"
+      },
+      {
+        "field": "hierarchy_depth",
+        "label": "Hierarchy Depth"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "plan_id",
+        "label": "Plan Id"
+      },
+      {
+        "field": "line_types",
+        "label": "Line Types"
+      },
+      {
+        "field": "from_month",
+        "label": "From Month"
+      },
+      {
+        "field": "to_month",
+        "label": "To Month"
+      },
+      {
+        "field": "rate_percent",
+        "label": "Rate Percent"
+      },
+      {
+        "field": "priority",
+        "label": "Priority"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "commission_rule_id",
+      "commission_plan_id",
+      "hierarchy_depth",
+      "application_id",
+      "plan_id",
+      "line_types",
+      "from_month",
+      "to_month",
+      "rate_percent",
+      "priority",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "commission_plan_id",
+      "hierarchy_depth",
+      "application_id",
+      "plan_id",
+      "line_types",
+      "from_month",
+      "to_month",
+      "rate_percent",
+      "priority"
+    ],
+    "update": [
+      "commission_plan_id",
+      "hierarchy_depth",
+      "application_id",
+      "plan_id",
+      "line_types",
+      "from_month",
+      "to_month",
+      "rate_percent",
+      "priority"
+    ]
+  },
+  "references": {
+    "commission_plan_id": {
+      "table": "commission_commission_plan",
+      "key": "commission_plan_id",
+      "lookup": {
+        "endpoint": "/commission_commission_plan"
+      }
+    },
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    },
+    "plan_id": {
+      "table": "commerce_plan",
+      "key": "plan_id",
+      "lookup": {
+        "endpoint": "/commerce_plan"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "commission_rule_id",
+      "label": "Commission Rule Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "commission_plan_id",
+      "label": "Commission Plan Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commission_commission_plan",
+        "column": "commission_plan_id",
+        "lookup": {
+          "endpoint": "/commission_commission_plan",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "hierarchy_depth",
+      "label": "Hierarchy Depth",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "minimum": 0,
+      "maximum": 5
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "plan_id",
+      "label": "Plan Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan",
+        "column": "plan_id",
+        "lookup": {
+          "endpoint": "/commerce_plan",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "line_types",
+      "label": "Line Types",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "from_month",
+      "label": "From Month",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "to_month",
+      "label": "To Month",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "rate_percent",
+      "label": "Rate Percent",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "priority",
+      "label": "Priority",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

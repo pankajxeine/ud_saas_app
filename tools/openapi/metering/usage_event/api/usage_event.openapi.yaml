@@ -1,0 +1,243 @@
+openapi: 3.0.0
+x-sql-table: metering_usage_event
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "meter_id"
+    table: "metering_meter"
+    key: "meter_id"
+info:
+  title: UsageEventResponse API
+  version: 1.0.0
+paths:
+  /usage_event:
+    get:
+      operationId: listUsageEvent
+      summary: Get all usage_event
+      responses:
+        '200':
+          description: List of usage_event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsageEventResponse'
+    post:
+      operationId: createUsageEvent
+      summary: Create a new usage_event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsageEventRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageEventResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /usage_event/{usage_event_id}:
+    get:
+      operationId: getUsageEventById
+      summary: Get usage_event by usage_event_id
+      parameters:
+        - in: path
+          name: usage_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: usage_event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageEventResponse'
+        '404':
+          description: usage_event not found
+    put:
+      operationId: updateUsageEvent
+      summary: Update usage_event by usage_event_id
+      parameters:
+        - in: path
+          name: usage_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsageEventUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageEventResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: usage_event not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteUsageEvent
+      summary: Delete usage_event by usage_event_id
+      parameters:
+        - in: path
+          name: usage_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: usage_event not found
+components:
+  schemas:
+
+    UsageEventRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - meter_id
+        - quantity
+        - idempotency_key
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        quantity:
+          type: number
+          format: double
+        received_at:
+          type: string
+          format: date-time
+        idempotency_key:
+          type: string
+          maxLength: 100
+        source:
+          type: string
+          nullable: true
+          maxLength: 40
+        attributes:
+          nullable: true
+
+    UsageEventUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - meter_id
+        - quantity
+        - received_at
+        - idempotency_key
+        - source
+        - attributes
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        quantity:
+          type: number
+          format: double
+        received_at:
+          type: string
+          format: date-time
+        idempotency_key:
+          type: string
+          maxLength: 100
+        source:
+          type: string
+          nullable: true
+          maxLength: 40
+        attributes:
+          nullable: true
+
+    UsageEventResponse:
+      type: object
+      required:
+        - record_code
+        - usage_event_id
+        - tenant_application_id
+        - meter_id
+        - quantity
+        - occurred_at
+        - received_at
+        - idempotency_key
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        usage_event_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        quantity:
+          type: number
+          format: double
+        occurred_at:
+          type: string
+          format: date-time
+          readOnly: true
+        received_at:
+          type: string
+          format: date-time
+        idempotency_key:
+          type: string
+          maxLength: 100
+        source:
+          type: string
+          nullable: true
+          maxLength: 40
+        attributes:
+          nullable: true
+  

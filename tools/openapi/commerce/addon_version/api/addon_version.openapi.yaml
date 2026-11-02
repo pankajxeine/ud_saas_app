@@ -1,0 +1,231 @@
+openapi: 3.0.0
+x-sql-table: commerce_addon_version
+x-sql-references:
+  - column: "addon_id"
+    table: "commerce_addon"
+    key: "addon_id"
+info:
+  title: AddonVersionResponse API
+  version: 1.0.0
+paths:
+  /addon_version:
+    get:
+      operationId: listAddonVersion
+      summary: Get all addon_version
+      responses:
+        '200':
+          description: List of addon_version
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddonVersionResponse'
+    post:
+      operationId: createAddonVersion
+      summary: Create a new addon_version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonVersionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonVersionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /addon_version/{addon_version_id}:
+    get:
+      operationId: getAddonVersionById
+      summary: Get addon_version by addon_version_id
+      parameters:
+        - in: path
+          name: addon_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: addon_version object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonVersionResponse'
+        '404':
+          description: addon_version not found
+    put:
+      operationId: updateAddonVersion
+      summary: Update addon_version by addon_version_id
+      parameters:
+        - in: path
+          name: addon_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonVersionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonVersionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: addon_version not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAddonVersion
+      summary: Delete addon_version by addon_version_id
+      parameters:
+        - in: path
+          name: addon_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: addon_version not found
+components:
+  schemas:
+
+    AddonVersionRequest:
+      type: object
+      required:
+        - addon_id
+        - version_no
+      additionalProperties: false
+      properties:
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AddonVersionUpdateRequest:
+      type: object
+      required:
+        - addon_id
+        - version_no
+        - status
+        - published_at
+        - retired_at
+      additionalProperties: false
+      properties:
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AddonVersionResponse:
+      type: object
+      required:
+        - record_code
+        - addon_version_id
+        - addon_id
+        - version_no
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        addon_version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        addon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon"
+            column: "addon_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

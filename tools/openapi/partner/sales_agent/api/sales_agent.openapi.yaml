@@ -1,0 +1,448 @@
+openapi: 3.0.0
+x-sql-table: partner_sales_agent
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "country_code"
+    table: "platform_country"
+    key: "country_code"
+  - column: "territory_id"
+    table: "org_territory"
+    key: "territory_id"
+  - column: "branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "parent_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "payout_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: SalesAgentResponse API
+  version: 1.0.0
+paths:
+  /sales_agent:
+    get:
+      operationId: listSalesAgent
+      summary: Get all sales_agent
+      responses:
+        '200':
+          description: List of sales_agent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalesAgentResponse'
+    post:
+      operationId: createSalesAgent
+      summary: Create a new sales_agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalesAgentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesAgentResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /sales_agent/{sales_agent_id}:
+    get:
+      operationId: getSalesAgentById
+      summary: Get sales_agent by sales_agent_id
+      parameters:
+        - in: path
+          name: sales_agent_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: sales_agent object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesAgentResponse'
+        '404':
+          description: sales_agent not found
+    put:
+      operationId: updateSalesAgent
+      summary: Update sales_agent by sales_agent_id
+      parameters:
+        - in: path
+          name: sales_agent_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalesAgentUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesAgentResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: sales_agent not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSalesAgent
+      summary: Delete sales_agent by sales_agent_id
+      parameters:
+        - in: path
+          name: sales_agent_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: sales_agent not found
+components:
+  schemas:
+
+    SalesAgentRequest:
+      type: object
+      required:
+        - agent_code
+        - agent_type
+        - legal_name
+        - display_name
+        - email
+        - country_code
+        - payout_currency_code
+      additionalProperties: false
+      properties:
+        agent_code:
+          type: string
+          maxLength: 20
+        agent_type:
+          type: string
+          maxLength: 10
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        parent_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        tier:
+          type: string
+          maxLength: 10
+          default: "standard"
+        status:
+          type: string
+          maxLength: 12
+          default: "onboarding"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        payout_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        payout_account_ref:
+          type: string
+          nullable: true
+        kyc_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        contract_start:
+          type: string
+          format: date
+          nullable: true
+        contract_end:
+          type: string
+          format: date
+          nullable: true
+
+    SalesAgentUpdateRequest:
+      type: object
+      required:
+        - agent_code
+        - agent_type
+        - app_user_id
+        - legal_name
+        - display_name
+        - email
+        - phone
+        - country_code
+        - territory_id
+        - branch_id
+        - parent_agent_id
+        - tier
+        - status
+        - tax_id
+        - payout_currency_code
+        - payout_account_ref
+        - kyc_verified_at
+        - contract_start
+        - contract_end
+      additionalProperties: false
+      properties:
+        agent_code:
+          type: string
+          maxLength: 20
+        agent_type:
+          type: string
+          maxLength: 10
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        parent_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        tier:
+          type: string
+          maxLength: 10
+          default: "standard"
+        status:
+          type: string
+          maxLength: 12
+          default: "onboarding"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        payout_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        payout_account_ref:
+          type: string
+          nullable: true
+        kyc_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        contract_start:
+          type: string
+          format: date
+          nullable: true
+        contract_end:
+          type: string
+          format: date
+          nullable: true
+
+    SalesAgentResponse:
+      type: object
+      required:
+        - record_code
+        - sales_agent_id
+        - agent_code
+        - agent_type
+        - legal_name
+        - display_name
+        - email
+        - country_code
+        - tier
+        - status
+        - payout_currency_code
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        sales_agent_id:
+          type: string
+          format: uuid
+          readOnly: true
+        agent_code:
+          type: string
+          maxLength: 20
+        agent_type:
+          type: string
+          maxLength: 10
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        parent_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        tier:
+          type: string
+          maxLength: 10
+          default: "standard"
+        status:
+          type: string
+          maxLength: 12
+          default: "onboarding"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        payout_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        payout_account_ref:
+          type: string
+          nullable: true
+        kyc_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        contract_start:
+          type: string
+          format: date
+          nullable: true
+        contract_end:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,0 +1,210 @@
+openapi: 3.0.0
+x-sql-table: iam_role_conflict
+x-sql-references:
+  - column: "role_code_a"
+    table: "iam_role"
+    key: "role_code"
+  - column: "role_code_b"
+    table: "iam_role"
+    key: "role_code"
+info:
+  title: RoleConflictResponse API
+  version: 1.0.0
+paths:
+  /role_conflict:
+    get:
+      operationId: listRoleConflict
+      summary: Get all role_conflict
+      responses:
+        '200':
+          description: List of role_conflict
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleConflictResponse'
+    post:
+      operationId: createRoleConflict
+      summary: Create a new role_conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleConflictRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleConflictResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /role_conflict/{role_conflict_id}:
+    get:
+      operationId: getRoleConflictById
+      summary: Get role_conflict by role_conflict_id
+      parameters:
+        - in: path
+          name: role_conflict_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: role_conflict object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleConflictResponse'
+        '404':
+          description: role_conflict not found
+    put:
+      operationId: updateRoleConflict
+      summary: Update role_conflict by role_conflict_id
+      parameters:
+        - in: path
+          name: role_conflict_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleConflictUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleConflictResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: role_conflict not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteRoleConflict
+      summary: Delete role_conflict by role_conflict_id
+      parameters:
+        - in: path
+          name: role_conflict_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: role_conflict not found
+components:
+  schemas:
+
+    RoleConflictRequest:
+      type: object
+      required:
+        - role_code_a
+        - role_code_b
+        - rationale
+      additionalProperties: false
+      properties:
+        role_code_a:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        role_code_b:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        severity:
+          type: string
+          maxLength: 10
+          default: "block"
+        rationale:
+          type: string
+
+    RoleConflictUpdateRequest:
+      type: object
+      required:
+        - role_code_a
+        - role_code_b
+        - severity
+        - rationale
+      additionalProperties: false
+      properties:
+        role_code_a:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        role_code_b:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        severity:
+          type: string
+          maxLength: 10
+          default: "block"
+        rationale:
+          type: string
+
+    RoleConflictResponse:
+      type: object
+      required:
+        - record_code
+        - role_conflict_id
+        - role_code_a
+        - role_code_b
+        - severity
+        - rationale
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        role_conflict_id:
+          type: string
+          format: uuid
+          readOnly: true
+        role_code_a:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        role_code_b:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        severity:
+          type: string
+          maxLength: 10
+          default: "block"
+        rationale:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

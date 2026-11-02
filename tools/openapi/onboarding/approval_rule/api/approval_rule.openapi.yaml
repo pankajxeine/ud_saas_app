@@ -1,0 +1,214 @@
+openapi: 3.0.0
+x-sql-table: onboarding_approval_rule
+x-sql-references:
+  - column: "approver_role_code"
+    table: "iam_role"
+    key: "role_code"
+info:
+  title: ApprovalRuleResponse API
+  version: 1.0.0
+paths:
+  /approval_rule:
+    get:
+      operationId: listApprovalRule
+      summary: Get all approval_rule
+      responses:
+        '200':
+          description: List of approval_rule
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApprovalRuleResponse'
+    post:
+      operationId: createApprovalRule
+      summary: Create a new approval_rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalRuleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRuleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /approval_rule/{approval_rule_id}:
+    get:
+      operationId: getApprovalRuleById
+      summary: Get approval_rule by approval_rule_id
+      parameters:
+        - in: path
+          name: approval_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: approval_rule object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRuleResponse'
+        '404':
+          description: approval_rule not found
+    put:
+      operationId: updateApprovalRule
+      summary: Update approval_rule by approval_rule_id
+      parameters:
+        - in: path
+          name: approval_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalRuleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRuleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: approval_rule not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteApprovalRule
+      summary: Delete approval_rule by approval_rule_id
+      parameters:
+        - in: path
+          name: approval_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: approval_rule not found
+components:
+  schemas:
+
+    ApprovalRuleRequest:
+      type: object
+      required:
+        - step_no
+        - approver_role_code
+        - applies_if
+      additionalProperties: false
+      properties:
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        applies_if:
+          type: string
+          maxLength: 20
+        threshold:
+          type: number
+          format: double
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    ApprovalRuleUpdateRequest:
+      type: object
+      required:
+        - step_no
+        - approver_role_code
+        - applies_if
+        - threshold
+        - is_active
+      additionalProperties: false
+      properties:
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        applies_if:
+          type: string
+          maxLength: 20
+        threshold:
+          type: number
+          format: double
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    ApprovalRuleResponse:
+      type: object
+      required:
+        - record_code
+        - approval_rule_id
+        - step_no
+        - approver_role_code
+        - applies_if
+        - is_active
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        approval_rule_id:
+          type: string
+          format: uuid
+          readOnly: true
+        step_no:
+          type: integer
+          format: int32
+        approver_role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        applies_if:
+          type: string
+          maxLength: 20
+        threshold:
+          type: number
+          format: double
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

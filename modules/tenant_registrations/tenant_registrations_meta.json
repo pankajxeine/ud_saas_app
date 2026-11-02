@@ -1,0 +1,267 @@
+{
+  "entity": "TenantRegistrations",
+  "table": "tenant_registrations",
+  "primaryKey": "registration_id",
+  "displayField": "registration_id",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/tenant_registrations"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/tenant_registrations"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/tenant_registrations/{registration_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/tenant_registrations/{registration_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/tenant_registrations/{registration_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "registration_id",
+        "label": "Registration Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "route_id",
+        "label": "Route Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "requested_at",
+        "label": "Requested At"
+      },
+      {
+        "field": "completed_at",
+        "label": "Completed At"
+      },
+      {
+        "field": "error_message",
+        "label": "Error Message"
+      },
+      {
+        "field": "metadata",
+        "label": "Metadata"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "registration_id",
+      "tenant_id",
+      "route_id",
+      "status",
+      "requested_at",
+      "completed_at",
+      "error_message",
+      "metadata",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_id",
+      "route_id",
+      "status",
+      "requested_at",
+      "completed_at",
+      "error_message",
+      "metadata"
+    ],
+    "update": [
+      "tenant_id",
+      "route_id",
+      "status",
+      "requested_at",
+      "completed_at",
+      "error_message",
+      "metadata"
+    ]
+  },
+  "references": {
+    "route_id": {
+      "table": "domains_route",
+      "key": "route_id",
+      "lookup": {
+        "endpoint": "/domains_route"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "registration_id",
+      "label": "Registration Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "route_id",
+      "label": "Route Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "domains_route",
+        "column": "route_id",
+        "lookup": {
+          "endpoint": "/domains_route",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "provisioning",
+        "active",
+        "failed",
+        "suspended",
+        "deprovisioned"
+      ]
+    },
+    {
+      "name": "requested_at",
+      "label": "Requested At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "completed_at",
+      "label": "Completed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "error_message",
+      "label": "Error Message",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "metadata",
+      "label": "Metadata",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

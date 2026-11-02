@@ -1,0 +1,226 @@
+openapi: 3.0.0
+x-sql-table: platform_lookup_value
+x-sql-references:
+  - column: "lookup_type_code"
+    table: "platform_lookup_type"
+    key: "lookup_type_code"
+info:
+  title: LookupValueResponse API
+  version: 1.0.0
+paths:
+  /lookup_value:
+    get:
+      operationId: listLookupValue
+      summary: Get all lookup_value
+      responses:
+        '200':
+          description: List of lookup_value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LookupValueResponse'
+    post:
+      operationId: createLookupValue
+      summary: Create a new lookup_value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupValueRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupValueResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /lookup_value/{lookup_value_id}:
+    get:
+      operationId: getLookupValueById
+      summary: Get lookup_value by lookup_value_id
+      parameters:
+        - in: path
+          name: lookup_value_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: lookup_value object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupValueResponse'
+        '404':
+          description: lookup_value not found
+    put:
+      operationId: updateLookupValue
+      summary: Update lookup_value by lookup_value_id
+      parameters:
+        - in: path
+          name: lookup_value_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupValueUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupValueResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: lookup_value not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLookupValue
+      summary: Delete lookup_value by lookup_value_id
+      parameters:
+        - in: path
+          name: lookup_value_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: lookup_value not found
+components:
+  schemas:
+
+    LookupValueRequest:
+      type: object
+      required:
+        - lookup_type_code
+        - value_code
+        - label
+      additionalProperties: false
+      properties:
+        lookup_type_code:
+          type: string
+          x-reference:
+            table: "platform_lookup_type"
+            column: "lookup_type_code"
+        value_code:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+          nullable: true
+        metadata:
+          nullable: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    LookupValueUpdateRequest:
+      type: object
+      required:
+        - lookup_type_code
+        - value_code
+        - label
+        - description
+        - metadata
+        - sort_order
+        - is_active
+      additionalProperties: false
+      properties:
+        lookup_type_code:
+          type: string
+          x-reference:
+            table: "platform_lookup_type"
+            column: "lookup_type_code"
+        value_code:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+          nullable: true
+        metadata:
+          nullable: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    LookupValueResponse:
+      type: object
+      required:
+        - record_code
+        - lookup_value_id
+        - lookup_type_code
+        - value_code
+        - label
+        - sort_order
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        lookup_value_id:
+          type: string
+          format: uuid
+          readOnly: true
+        lookup_type_code:
+          type: string
+          x-reference:
+            table: "platform_lookup_type"
+            column: "lookup_type_code"
+        value_code:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+          nullable: true
+        metadata:
+          nullable: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

@@ -1,0 +1,180 @@
+openapi: 3.0.0
+x-sql-table: sys_state_transition
+info:
+  title: StateTransitionResponse API
+  version: 1.0.0
+paths:
+  /state_transition:
+    get:
+      operationId: listStateTransition
+      summary: Get all state_transition
+      responses:
+        '200':
+          description: List of state_transition
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StateTransitionResponse'
+    post:
+      operationId: createStateTransition
+      summary: Create a new state_transition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateTransitionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateTransitionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /state_transition/{state_transition_id}:
+    get:
+      operationId: getStateTransitionById
+      summary: Get state_transition by state_transition_id
+      parameters:
+        - in: path
+          name: state_transition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: state_transition object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateTransitionResponse'
+        '404':
+          description: state_transition not found
+    put:
+      operationId: updateStateTransition
+      summary: Update state_transition by state_transition_id
+      parameters:
+        - in: path
+          name: state_transition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateTransitionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateTransitionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: state_transition not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteStateTransition
+      summary: Delete state_transition by state_transition_id
+      parameters:
+        - in: path
+          name: state_transition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: state_transition not found
+components:
+  schemas:
+
+    StateTransitionRequest:
+      type: object
+      required:
+        - entity
+        - from_state
+        - to_state
+      additionalProperties: false
+      properties:
+        entity:
+          type: string
+          maxLength: 60
+        from_state:
+          type: string
+          maxLength: 30
+        to_state:
+          type: string
+          maxLength: 30
+        description:
+          type: string
+          nullable: true
+
+    StateTransitionUpdateRequest:
+      type: object
+      required:
+        - entity
+        - from_state
+        - to_state
+        - description
+      additionalProperties: false
+      properties:
+        entity:
+          type: string
+          maxLength: 60
+        from_state:
+          type: string
+          maxLength: 30
+        to_state:
+          type: string
+          maxLength: 30
+        description:
+          type: string
+          nullable: true
+
+    StateTransitionResponse:
+      type: object
+      required:
+        - record_code
+        - state_transition_id
+        - entity
+        - from_state
+        - to_state
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        state_transition_id:
+          type: string
+          format: uuid
+          readOnly: true
+        entity:
+          type: string
+          maxLength: 60
+        from_state:
+          type: string
+          maxLength: 30
+        to_state:
+          type: string
+          maxLength: 30
+        description:
+          type: string
+          nullable: true
+  

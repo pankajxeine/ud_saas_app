@@ -1,0 +1,380 @@
+{
+  "entity": "ApiToken",
+  "table": "iam_api_token",
+  "primaryKey": "api_token_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/api_token"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/api_token"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/api_token/{api_token_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/api_token/{api_token_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/api_token/{api_token_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "api_token_id",
+        "label": "Api Token Id"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "token_prefix",
+        "label": "Token Prefix"
+      },
+      {
+        "field": "secret_hash",
+        "label": "Secret Hash"
+      },
+      {
+        "field": "permission_codes",
+        "label": "Permission Codes"
+      },
+      {
+        "field": "ip_allowlist",
+        "label": "Ip Allowlist"
+      },
+      {
+        "field": "expires_at",
+        "label": "Expires At"
+      },
+      {
+        "field": "last_used_at",
+        "label": "Last Used At"
+      },
+      {
+        "field": "last_used_ip",
+        "label": "Last Used Ip"
+      },
+      {
+        "field": "revoked_at",
+        "label": "Revoked At"
+      },
+      {
+        "field": "revoked_by_user_id",
+        "label": "Revoked By User Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "api_token_id",
+      "app_user_id",
+      "name",
+      "token_prefix",
+      "secret_hash",
+      "permission_codes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "last_used_ip",
+      "revoked_at",
+      "revoked_by_user_id",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "app_user_id",
+      "name",
+      "token_prefix",
+      "secret_hash",
+      "permission_codes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "last_used_ip",
+      "revoked_at",
+      "revoked_by_user_id"
+    ],
+    "update": [
+      "app_user_id",
+      "name",
+      "token_prefix",
+      "secret_hash",
+      "permission_codes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "last_used_ip",
+      "revoked_at",
+      "revoked_by_user_id"
+    ]
+  },
+  "references": {
+    "app_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "revoked_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "api_token_id",
+      "label": "Api Token Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 60
+    },
+    {
+      "name": "token_prefix",
+      "label": "Token Prefix",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "secret_hash",
+      "label": "Secret Hash",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "permission_codes",
+      "label": "Permission Codes",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "ip_allowlist",
+      "label": "Ip Allowlist",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "expires_at",
+      "label": "Expires At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_used_at",
+      "label": "Last Used At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_used_ip",
+      "label": "Last Used Ip",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "revoked_at",
+      "label": "Revoked At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "revoked_by_user_id",
+      "label": "Revoked By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

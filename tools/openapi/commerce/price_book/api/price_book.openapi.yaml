@@ -1,0 +1,265 @@
+openapi: 3.0.0
+x-sql-table: commerce_price_book
+x-sql-references:
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "legal_entity_id"
+    table: "org_legal_entity"
+    key: "legal_entity_id"
+info:
+  title: PriceBookResponse API
+  version: 1.0.0
+paths:
+  /price_book:
+    get:
+      operationId: listPriceBook
+      summary: Get all price_book
+      responses:
+        '200':
+          description: List of price_book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceBookResponse'
+    post:
+      operationId: createPriceBook
+      summary: Create a new price_book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /price_book/{price_book_id}:
+    get:
+      operationId: getPriceBookById
+      summary: Get price_book by price_book_id
+      parameters:
+        - in: path
+          name: price_book_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: price_book object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookResponse'
+        '404':
+          description: price_book not found
+    put:
+      operationId: updatePriceBook
+      summary: Update price_book by price_book_id
+      parameters:
+        - in: path
+          name: price_book_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: price_book not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePriceBook
+      summary: Delete price_book by price_book_id
+      parameters:
+        - in: path
+          name: price_book_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: price_book not found
+components:
+  schemas:
+
+    PriceBookRequest:
+      type: object
+      required:
+        - price_book_code
+        - name
+        - currency_code
+      additionalProperties: false
+      properties:
+        price_book_code:
+          type: string
+        name:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        legal_entity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        is_default:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    PriceBookUpdateRequest:
+      type: object
+      required:
+        - price_book_code
+        - name
+        - currency_code
+        - legal_entity_id
+        - is_default
+        - valid_from
+        - valid_to
+        - is_active
+      additionalProperties: false
+      properties:
+        price_book_code:
+          type: string
+        name:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        legal_entity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        is_default:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    PriceBookResponse:
+      type: object
+      required:
+        - record_code
+        - price_book_id
+        - price_book_code
+        - name
+        - currency_code
+        - is_default
+        - valid_from
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        price_book_id:
+          type: string
+          format: uuid
+          readOnly: true
+        price_book_code:
+          type: string
+        name:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        legal_entity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        is_default:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

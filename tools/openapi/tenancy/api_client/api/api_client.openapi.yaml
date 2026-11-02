@@ -1,0 +1,288 @@
+openapi: 3.0.0
+x-sql-table: tenancy_api_client
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: ApiClientResponse API
+  version: 1.0.0
+paths:
+  /api_client:
+    get:
+      operationId: listApiClient
+      summary: Get all api_client
+      responses:
+        '200':
+          description: List of api_client
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiClientResponse'
+    post:
+      operationId: createApiClient
+      summary: Create a new api_client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClientRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClientResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /api_client/{api_client_id}:
+    get:
+      operationId: getApiClientById
+      summary: Get api_client by api_client_id
+      parameters:
+        - in: path
+          name: api_client_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: api_client object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClientResponse'
+        '404':
+          description: api_client not found
+    put:
+      operationId: updateApiClient
+      summary: Update api_client by api_client_id
+      parameters:
+        - in: path
+          name: api_client_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClientUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClientResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: api_client not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteApiClient
+      summary: Delete api_client by api_client_id
+      parameters:
+        - in: path
+          name: api_client_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: api_client not found
+components:
+  schemas:
+
+    ApiClientRequest:
+      type: object
+      required:
+        - name
+        - client_key
+        - secret_hash
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          maxLength: 60
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        client_key:
+          type: string
+          maxLength: 40
+        secret_hash:
+          type: string
+        scopes:
+          type: string
+          default: "{access:read}"
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ApiClientUpdateRequest:
+      type: object
+      required:
+        - name
+        - tenant_application_id
+        - application_id
+        - client_key
+        - secret_hash
+        - scopes
+        - ip_allowlist
+        - expires_at
+        - last_used_at
+        - revoked_at
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          maxLength: 60
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        client_key:
+          type: string
+          maxLength: 40
+        secret_hash:
+          type: string
+        scopes:
+          type: string
+          default: "{access:read}"
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ApiClientResponse:
+      type: object
+      required:
+        - record_code
+        - api_client_id
+        - name
+        - client_key
+        - secret_hash
+        - scopes
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        api_client_id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 60
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        client_key:
+          type: string
+          maxLength: 40
+        secret_hash:
+          type: string
+        scopes:
+          type: string
+          default: "{access:read}"
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

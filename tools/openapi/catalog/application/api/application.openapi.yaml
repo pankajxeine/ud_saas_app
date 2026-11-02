@@ -1,0 +1,289 @@
+openapi: 3.0.0
+x-sql-table: catalog_application
+x-sql-references:
+  - column: "industry_code"
+    table: "platform_industry"
+    key: "industry_code"
+info:
+  title: ApplicationResponse API
+  version: 1.0.0
+paths:
+  /application:
+    get:
+      operationId: listApplication
+      summary: Get all application
+      responses:
+        '200':
+          description: List of application
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicationResponse'
+    post:
+      operationId: createApplication
+      summary: Create a new application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /application/{application_id}:
+    get:
+      operationId: getApplicationById
+      summary: Get application by application_id
+      parameters:
+        - in: path
+          name: application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: application object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '404':
+          description: application not found
+    put:
+      operationId: updateApplication
+      summary: Update application by application_id
+      parameters:
+        - in: path
+          name: application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: application not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteApplication
+      summary: Delete application by application_id
+      parameters:
+        - in: path
+          name: application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: application not found
+components:
+  schemas:
+
+    ApplicationRequest:
+      type: object
+      required:
+        - application_code
+        - name
+        - industry_code
+        - base_domain
+      additionalProperties: false
+      properties:
+        application_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        industry_code:
+          type: string
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        base_domain:
+          type: string
+        supports_custom_domain:
+          type: boolean
+          default: true
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        snapshot_ttl_sec:
+          type: integer
+          format: int32
+          minimum: 30
+          maximum: 86400
+          default: 300
+        grace_days_default:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 7
+        is_active:
+          type: boolean
+          default: true
+
+    ApplicationUpdateRequest:
+      type: object
+      required:
+        - application_code
+        - name
+        - description
+        - industry_code
+        - base_domain
+        - supports_custom_domain
+        - tenancy_model
+        - snapshot_ttl_sec
+        - grace_days_default
+        - is_active
+      additionalProperties: false
+      properties:
+        application_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        industry_code:
+          type: string
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        base_domain:
+          type: string
+        supports_custom_domain:
+          type: boolean
+          default: true
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        snapshot_ttl_sec:
+          type: integer
+          format: int32
+          minimum: 30
+          maximum: 86400
+          default: 300
+        grace_days_default:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 7
+        is_active:
+          type: boolean
+          default: true
+
+    ApplicationResponse:
+      type: object
+      required:
+        - record_code
+        - application_id
+        - application_code
+        - name
+        - industry_code
+        - base_domain
+        - supports_custom_domain
+        - tenancy_model
+        - snapshot_ttl_sec
+        - grace_days_default
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        application_id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        industry_code:
+          type: string
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        base_domain:
+          type: string
+        supports_custom_domain:
+          type: boolean
+          default: true
+        tenancy_model:
+          type: string
+          maxLength: 12
+          default: "pooled"
+        snapshot_ttl_sec:
+          type: integer
+          format: int32
+          minimum: 30
+          maximum: 86400
+          default: 300
+        grace_days_default:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 7
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

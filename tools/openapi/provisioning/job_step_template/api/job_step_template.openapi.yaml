@@ -1,0 +1,197 @@
+openapi: 3.0.0
+x-sql-table: provisioning_job_step_template
+info:
+  title: JobStepTemplateResponse API
+  version: 1.0.0
+paths:
+  /job_step_template:
+    get:
+      operationId: listJobStepTemplate
+      summary: Get all job_step_template
+      responses:
+        '200':
+          description: List of job_step_template
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobStepTemplateResponse'
+    post:
+      operationId: createJobStepTemplate
+      summary: Create a new job_step_template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobStepTemplateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStepTemplateResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /job_step_template/{job_step_template_id}:
+    get:
+      operationId: getJobStepTemplateById
+      summary: Get job_step_template by job_step_template_id
+      parameters:
+        - in: path
+          name: job_step_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: job_step_template object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStepTemplateResponse'
+        '404':
+          description: job_step_template not found
+    put:
+      operationId: updateJobStepTemplate
+      summary: Update job_step_template by job_step_template_id
+      parameters:
+        - in: path
+          name: job_step_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobStepTemplateUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStepTemplateResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: job_step_template not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteJobStepTemplate
+      summary: Delete job_step_template by job_step_template_id
+      parameters:
+        - in: path
+          name: job_step_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: job_step_template not found
+components:
+  schemas:
+
+    JobStepTemplateRequest:
+      type: object
+      required:
+        - job_type
+        - step_no
+        - step_code
+      additionalProperties: false
+      properties:
+        job_type:
+          type: string
+          maxLength: 12
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        timeout_seconds:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 86400
+          default: 300
+
+    JobStepTemplateUpdateRequest:
+      type: object
+      required:
+        - job_type
+        - step_no
+        - step_code
+        - compensation_step_code
+        - timeout_seconds
+      additionalProperties: false
+      properties:
+        job_type:
+          type: string
+          maxLength: 12
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        timeout_seconds:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 86400
+          default: 300
+
+    JobStepTemplateResponse:
+      type: object
+      required:
+        - record_code
+        - job_step_template_id
+        - job_type
+        - step_no
+        - step_code
+        - timeout_seconds
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        job_step_template_id:
+          type: string
+          format: uuid
+          readOnly: true
+        job_type:
+          type: string
+          maxLength: 12
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        timeout_seconds:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 86400
+          default: 300
+  

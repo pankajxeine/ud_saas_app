@@ -1,0 +1,312 @@
+{
+  "entity": "Environment",
+  "table": "platform_environment",
+  "primaryKey": "environment_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/environment"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/environment"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/environment/{environment_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/environment/{environment_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/environment/{environment_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "environment_id",
+        "label": "Environment Id"
+      },
+      {
+        "field": "environment_code",
+        "label": "Environment Code"
+      },
+      {
+        "field": "region_code",
+        "label": "Region Code"
+      },
+      {
+        "field": "kind",
+        "label": "Kind"
+      },
+      {
+        "field": "tenancy_model",
+        "label": "Tenancy Model"
+      },
+      {
+        "field": "endpoint_url",
+        "label": "Endpoint Url"
+      },
+      {
+        "field": "max_tenants",
+        "label": "Max Tenants"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "environment_id",
+      "environment_code",
+      "region_code",
+      "kind",
+      "tenancy_model",
+      "endpoint_url",
+      "max_tenants",
+      "status",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "environment_code",
+      "region_code",
+      "kind",
+      "tenancy_model",
+      "endpoint_url",
+      "max_tenants",
+      "status"
+    ],
+    "update": [
+      "environment_code",
+      "region_code",
+      "kind",
+      "tenancy_model",
+      "endpoint_url",
+      "max_tenants",
+      "status"
+    ]
+  },
+  "references": {
+    "region_code": {
+      "table": "platform_region",
+      "key": "region_code",
+      "lookup": {
+        "endpoint": "/platform_region"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "environment_id",
+      "label": "Environment Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "environment_code",
+      "label": "Environment Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "region_code",
+      "label": "Region Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_region",
+        "column": "region_code",
+        "lookup": {
+          "endpoint": "/platform_region",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "kind",
+      "label": "Kind",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "tenancy_model",
+      "label": "Tenancy Model",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "endpoint_url",
+      "label": "Endpoint Url",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "max_tenants",
+      "label": "Max Tenants",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

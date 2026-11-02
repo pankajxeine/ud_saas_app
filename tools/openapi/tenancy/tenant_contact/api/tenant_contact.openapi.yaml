@@ -1,0 +1,205 @@
+openapi: 3.0.0
+x-sql-table: tenancy_tenant_contact
+x-sql-references:
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+info:
+  title: TenantContactResponse API
+  version: 1.0.0
+paths:
+  /tenant_contact:
+    get:
+      operationId: listTenantContact
+      summary: Get all tenant_contact
+      responses:
+        '200':
+          description: List of tenant_contact
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantContactResponse'
+    post:
+      operationId: createTenantContact
+      summary: Create a new tenant_contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantContactRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantContactResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_contact/{tenant_contact_id}:
+    get:
+      operationId: getTenantContactById
+      summary: Get tenant_contact by tenant_contact_id
+      parameters:
+        - in: path
+          name: tenant_contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_contact object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantContactResponse'
+        '404':
+          description: tenant_contact not found
+    put:
+      operationId: updateTenantContact
+      summary: Update tenant_contact by tenant_contact_id
+      parameters:
+        - in: path
+          name: tenant_contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantContactUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantContactResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_contact not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantContact
+      summary: Delete tenant_contact by tenant_contact_id
+      parameters:
+        - in: path
+          name: tenant_contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_contact not found
+components:
+  schemas:
+
+    TenantContactRequest:
+      type: object
+      required:
+        - tenant_id
+        - contact_id
+        - contact_role
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        contact_role:
+          type: string
+          maxLength: 12
+
+    TenantContactUpdateRequest:
+      type: object
+      required:
+        - tenant_id
+        - contact_id
+        - contact_role
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        contact_role:
+          type: string
+          maxLength: 12
+
+    TenantContactResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_contact_id
+        - tenant_id
+        - contact_id
+        - contact_role
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_contact_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        contact_role:
+          type: string
+          maxLength: 12
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

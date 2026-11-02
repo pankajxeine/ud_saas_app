@@ -60,6 +60,7 @@ class DataTable extends StatefulWidget {
     this.mobileRowKey,
     this.onMobileSelectionChanged,
     this.mobileBreakpoint = 640,
+    this.customHeader,
   });
 
   final List<TrinaColumn> columns;
@@ -69,6 +70,7 @@ class DataTable extends StatefulWidget {
   final Widget Function(BuildContext context, bool compact)?
   headerActionsBuilder;
   final void Function(TrinaGridStateManager)? onLoaded;
+  final Widget? customHeader;
 
   /// Opens the row. Rendered as an explicit trailing action column, because
   /// double-tap is undiscoverable and, on desktop, trina_grid detects it with
@@ -111,24 +113,21 @@ class _DataTableState extends State<DataTable> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final bool compact = constraints.maxWidth < widget.mobileBreakpoint;
-        final Widget? header =
+        final bool hasHeader =
+            widget.customHeader != null ||
             widget.title != null ||
-                widget.subtitle != null ||
-                widget.headerActionsBuilder != null
-            ? DataTableHeader(
-                title: widget.title ?? '',
-                subtitle: widget.subtitle,
-                actions: widget.headerActionsBuilder?.call(context, compact),
-                compact: compact,
-              )
-            : null;
-
+            widget.subtitle != null;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (header != null) ...<Widget>[header, const SizedBox(height: 16)],
+            if (!compact && hasHeader) ...<Widget>[
+              _header(context, constraints, includeActions: false),
+              const SizedBox(height: 8),
+            ],
             Expanded(
-              child: compact ? _buildMobileView() : _buildDesktopGrid(context),
+              child: compact
+                  ? _buildMobileView(_header(context, constraints))
+                  : _buildDesktopGrid(context),
             ),
           ],
         );
@@ -187,9 +186,11 @@ class _DataTableState extends State<DataTable> {
     );
   }
 
-  Widget _buildMobileView() => MobileDataTableView(
+  Widget _buildMobileView(Widget header) => MobileDataTableView(
+    title: widget.title,
     columns: widget.columns,
     rows: _mobileRows,
+    header: header,
     selectedRowKeys: _selectedMobileRows,
     rowKey: _rowKey,
     onSelectionChanged: _toggleRowSelection,
@@ -221,10 +222,15 @@ class _DataTableState extends State<DataTable> {
   Widget _buildDesktopGrid(BuildContext context) {
     final c = Theme.of(context).colors;
     final t = Theme.of(context).typography;
+    final bool hasFilterableColumns = widget.columns.any(
+      (TrinaColumn column) => !column.hide && column.filterWidgetDelegate != null,
+    );
+    final bool hasHeaderActions = widget.headerActionsBuilder != null;
     return ClipRRect(
       borderRadius: AppRadius.allMd,
       child: DecoratedBox(
         decoration: BoxDecoration(
+          color: c.card,
           border: Border.all(color: c.border),
           borderRadius: AppRadius.allMd,
         ),
@@ -296,6 +302,41 @@ class _DataTableState extends State<DataTable> {
           createFooter: widget.paginate
               ? (TrinaGridStateManager sm) => PaginationFooter(stateManager: sm)
               : null,
+          createHeader: hasFilterableColumns || hasHeaderActions
+              ? (TrinaGridStateManager stateManager) => SizedBox(
+                  height: 52,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          if (hasHeaderActions)
+                            widget.headerActionsBuilder!(context, false),
+                          if (hasHeaderActions && hasFilterableColumns)
+                            const SizedBox(width: 8),
+                          if (hasFilterableColumns)
+                            Tooltip(
+                              message: 'Toggle filters',
+                              child: Button(
+                                variant: ButtonVariant.ghost,
+                                size: ButtonSize.icon,
+                                onPressed: () => stateManager.setShowColumnFilter(
+                                  !stateManager.showColumnFilter,
+                                ),
+                                child: const Icon(
+                                  BootstrapIcons.funnel,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : null,
           configuration: TrinaGridConfiguration(
             columnSize: const TrinaGridColumnSizeConfig(
               // Fixes the dead zone: columns scale to fill available width.
@@ -348,6 +389,26 @@ class _DataTableState extends State<DataTable> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _header(
+    BuildContext context,
+    BoxConstraints constraints, {
+    bool includeActions = true,
+  }) {
+    if (widget.customHeader != null) {
+      return widget.customHeader!;
+    }
+
+    final bool compact = constraints.maxWidth < widget.mobileBreakpoint;
+    return DataTableHeader(
+      title: widget.title ?? '',
+      subtitle: widget.subtitle,
+      actions: includeActions
+          ? widget.headerActionsBuilder?.call(context, compact)
+          : null,
+      compact: compact,
     );
   }
 }

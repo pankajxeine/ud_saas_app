@@ -1,0 +1,344 @@
+openapi: 3.0.0
+x-sql-table: commerce_plan_version
+x-sql-references:
+  - column: "plan_id"
+    table: "commerce_plan"
+    key: "plan_id"
+  - column: "published_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "sla_policy_id"
+    table: "support_sla_policy"
+    key: "sla_policy_id"
+info:
+  title: PlanVersionResponse API
+  version: 1.0.0
+paths:
+  /plan_version:
+    get:
+      operationId: listPlanVersion
+      summary: Get all plan_version
+      responses:
+        '200':
+          description: List of plan_version
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanVersionResponse'
+    post:
+      operationId: createPlanVersion
+      summary: Create a new plan_version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanVersionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanVersionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /plan_version/{plan_version_id}:
+    get:
+      operationId: getPlanVersionById
+      summary: Get plan_version by plan_version_id
+      parameters:
+        - in: path
+          name: plan_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: plan_version object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanVersionResponse'
+        '404':
+          description: plan_version not found
+    put:
+      operationId: updatePlanVersion
+      summary: Update plan_version by plan_version_id
+      parameters:
+        - in: path
+          name: plan_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanVersionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanVersionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: plan_version not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePlanVersion
+      summary: Delete plan_version by plan_version_id
+      parameters:
+        - in: path
+          name: plan_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: plan_version not found
+components:
+  schemas:
+
+    PlanVersionRequest:
+      type: object
+      required:
+        - plan_id
+        - version_no
+      additionalProperties: false
+      properties:
+        plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        trial_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 0
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+        min_term_months:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 60
+          default: 1
+        sla_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        notes:
+          type: string
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    PlanVersionUpdateRequest:
+      type: object
+      required:
+        - plan_id
+        - version_no
+        - status
+        - trial_days
+        - grace_days
+        - min_term_months
+        - sla_policy_id
+        - notes
+        - published_at
+        - published_by_user_id
+        - retired_at
+      additionalProperties: false
+      properties:
+        plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        trial_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 0
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+        min_term_months:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 60
+          default: 1
+        sla_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        notes:
+          type: string
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    PlanVersionResponse:
+      type: object
+      required:
+        - record_code
+        - plan_version_id
+        - plan_id
+        - version_no
+        - status
+        - trial_days
+        - min_term_months
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        plan_version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        trial_days:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 90
+          default: 0
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+        min_term_months:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 60
+          default: 1
+        sla_policy_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        notes:
+          type: string
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        retired_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

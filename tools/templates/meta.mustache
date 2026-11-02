@@ -1,15 +1,16 @@
 
 
-import 'package:ud_sass_app/core/config/entity_field/entity_field_meta.dart';
+import 'package:ud_sass_app/core/config/entity_field/entity_field_meta.dart'
+    as display;
 
-const {{Module}}EntityMeta = EntityMeta(
+const {{moduleCamel}}EntityMeta = display.EntityMeta(
     entityName: '{{Module}}',
     fields: [
         {{#fields}}
-        EntityFieldMeta(
+        display.EntityFieldMeta(
             name:'{{baseName}}',
             label:'{{label}}',
-            type: EntityFieldType.{{entityFieldType}},
+            type: display.EntityFieldType.{{entityFieldType}},
             required:{{required}},
             {{#hasMaxLength}}
             maxLength:{{maxLength}},
@@ -19,3 +20,49 @@ const {{Module}}EntityMeta = EntityMeta(
         {{/fields}}
     ],
 );
+
+const Map<String, dynamic> {{moduleCamel}}FormSchema = <String, dynamic>{
+  'entityName': '{{Module}}',
+  'fields': <Map<String, dynamic>>[
+    {{#formFields}}
+    <String, dynamic>{
+      'name': '{{baseName}}',
+      'label': '{{label}}',
+      'type': '{{entityFieldType}}',
+      'editable': true,
+      'valueType': '{{valueType}}',
+      'validationRules': <String, dynamic>{
+        {{#validationRules}}
+        '{{key}}': {{{value}}},
+        {{/validationRules}}
+      },
+      'options': <String>[{{#optionLiterals}}{{{.}}},{{/optionLiterals}}],
+      {{#hasMaxLength}}
+      'maxLength': {{maxLength}},
+      {{/hasMaxLength}}
+      {{#hasDefaultValue}}
+      'initialValue': {{{defaultValueLiteral}}},
+      {{/hasDefaultValue}}
+    },
+    {{/formFields}}
+  ],
+};
+
+Map<String, dynamic> build{{Module}}FormSchema({
+  Map<String, dynamic> initialValues = const <String, dynamic>{},
+}) {
+  final fields =
+      {{moduleCamel}}FormSchema['fields'] as List<Map<String, dynamic>>;
+  return <String, dynamic>{
+    'entityName': {{moduleCamel}}FormSchema['entityName'],
+    'fields': <Map<String, dynamic>>[
+      for (final field in fields)
+        <String, dynamic>{
+          ...field,
+          'initialValue': initialValues.containsKey(field['name'])
+              ? initialValues[field['name']]
+              : field['initialValue'],
+        },
+    ],
+  };
+}

@@ -1,0 +1,359 @@
+{
+  "entity": "ApiClient",
+  "table": "tenancy_api_client",
+  "primaryKey": "api_client_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/api_client"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/api_client"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/api_client/{api_client_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/api_client/{api_client_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/api_client/{api_client_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "api_client_id",
+        "label": "Api Client Id"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "client_key",
+        "label": "Client Key"
+      },
+      {
+        "field": "secret_hash",
+        "label": "Secret Hash"
+      },
+      {
+        "field": "scopes",
+        "label": "Scopes"
+      },
+      {
+        "field": "ip_allowlist",
+        "label": "Ip Allowlist"
+      },
+      {
+        "field": "expires_at",
+        "label": "Expires At"
+      },
+      {
+        "field": "last_used_at",
+        "label": "Last Used At"
+      },
+      {
+        "field": "revoked_at",
+        "label": "Revoked At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "api_client_id",
+      "name",
+      "tenant_application_id",
+      "application_id",
+      "client_key",
+      "secret_hash",
+      "scopes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "revoked_at",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "name",
+      "tenant_application_id",
+      "application_id",
+      "client_key",
+      "secret_hash",
+      "scopes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "revoked_at"
+    ],
+    "update": [
+      "name",
+      "tenant_application_id",
+      "application_id",
+      "client_key",
+      "secret_hash",
+      "scopes",
+      "ip_allowlist",
+      "expires_at",
+      "last_used_at",
+      "revoked_at"
+    ]
+  },
+  "references": {
+    "tenant_application_id": {
+      "table": "tenancy_tenant_application",
+      "key": "tenant_application_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant_application"
+      }
+    },
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "api_client_id",
+      "label": "Api Client Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 60
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "client_key",
+      "label": "Client Key",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "secret_hash",
+      "label": "Secret Hash",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "scopes",
+      "label": "Scopes",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "ip_allowlist",
+      "label": "Ip Allowlist",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "expires_at",
+      "label": "Expires At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_used_at",
+      "label": "Last Used At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "revoked_at",
+      "label": "Revoked At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

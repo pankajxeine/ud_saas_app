@@ -1,0 +1,246 @@
+openapi: 3.0.0
+x-sql-table: org_team
+x-sql-references:
+  - column: "branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "lead_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: TeamResponse API
+  version: 1.0.0
+paths:
+  /team:
+    get:
+      operationId: listTeam
+      summary: Get all team
+      responses:
+        '200':
+          description: List of team
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamResponse'
+    post:
+      operationId: createTeam
+      summary: Create a new team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /team/{team_id}:
+    get:
+      operationId: getTeamById
+      summary: Get team by team_id
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: team object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '404':
+          description: team not found
+    put:
+      operationId: updateTeam
+      summary: Update team by team_id
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: team not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTeam
+      summary: Delete team by team_id
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: team not found
+components:
+  schemas:
+
+    TeamRequest:
+      type: object
+      required:
+        - team_code
+        - name
+        - function
+      additionalProperties: false
+      properties:
+        team_code:
+          type: string
+        name:
+          type: string
+        function:
+          type: string
+          maxLength: 20
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lead_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+
+    TeamUpdateRequest:
+      type: object
+      required:
+        - team_code
+        - name
+        - function
+        - branch_id
+        - lead_user_id
+        - is_active
+      additionalProperties: false
+      properties:
+        team_code:
+          type: string
+        name:
+          type: string
+        function:
+          type: string
+          maxLength: 20
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lead_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+
+    TeamResponse:
+      type: object
+      required:
+        - record_code
+        - team_id
+        - team_code
+        - name
+        - function
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        team_id:
+          type: string
+          format: uuid
+          readOnly: true
+        team_code:
+          type: string
+        name:
+          type: string
+        function:
+          type: string
+          maxLength: 20
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lead_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

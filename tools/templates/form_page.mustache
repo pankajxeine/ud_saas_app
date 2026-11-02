@@ -1,12 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart' hide Scaffold;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
-import 'package:ud_sass_app/core/widgets/dynamic_form/app_dynamic_form.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
-import '../model/{{requestModelFile}}.dart';
+import 'package:ud_sass_app/core/navigation/app_navigation.dart';
+import 'package:ud_sass_app/core/widgets/components/loading.dart';
+import 'package:ud_sass_app/core/widgets/reactive_shadcn_form/entity_meta.dart'
+    as reactive;
+import 'package:ud_sass_app/core/widgets/reactive_shadcn_form/reactive_shadcn_form.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart';
+import '../meta/{{module}}_meta.dart';
 import '../service/{{module}}_service.dart';
+{{#hasCreateEndpoint}}
+import '../bloc/{{createEndpoint.blocFieldName}}_bloc.dart';
+{{/hasCreateEndpoint}}
+{{#hasUpdateEndpoint}}
+import '../bloc/{{updateEndpoint.blocFieldName}}_bloc.dart';
+{{/hasUpdateEndpoint}}
+{{#hasDetailEndpoint}}
+import '../bloc/{{detailEndpoint.blocFieldName}}_bloc.dart';
+{{/hasDetailEndpoint}}
+{{#hasCreateEndpoint}}
+import '../model/{{createEndpoint.RequestModelFile}}.dart';
+{{/hasCreateEndpoint}}
+{{#hasDistinctUpdateRequest}}
+import '../model/{{updateEndpoint.RequestModelFile}}.dart';
+{{/hasDistinctUpdateRequest}}
 
 class {{Module}}FormPage extends StatefulWidget {
-  const {{Module}}FormPage({super.key{{#updatePathParams}}, this.{{name}}{{/updatePathParams}}});
+  const {{Module}}FormPage({
+    super.key,
+    {{#updatePathParams}}
+    this.{{name}},
+    {{/updatePathParams}}
+  });
 
   {{#updatePathParams}}
   final {{datatype}}? {{name}};
@@ -17,66 +46,242 @@ class {{Module}}FormPage extends StatefulWidget {
 }
 
 class _{{Module}}FormPageState extends State<{{Module}}FormPage> {
+  late reactive.EntityMeta _meta;
+  late FormGroup _form;
   String? _message;
+  bool _saving = false;
 
-  Future<void> _submit(Map<String, dynamic> values) async {
-    final service = {{Module}}Service(baseUrl: ProfileConstants.api);
-    final requestValues = <String, dynamic>{
-      ...values,
-      {{#fields}}
-      {{#editable}}'{{baseName}}': {{#isIntegerFormField}}int.tryParse(values['{{baseName}}']?.toString() ?? ''),{{/isIntegerFormField}}{{^isIntegerFormField}}{{#isDoubleFormField}}double.tryParse(values['{{baseName}}']?.toString() ?? ''),{{/isDoubleFormField}}{{^isDoubleFormField}}values['{{baseName}}'],{{/isDoubleFormField}}{{/isIntegerFormField}}
-      {{/editable}}
-      {{/fields}}
-    };
-    final request = {{RequestClass}}.fromJson(requestValues);
-    try {
-      {{#hasUpdateEndpoint}}
-      if ({{#updatePathParams}}widget.{{name}} != null{{^last}} && {{/last}}{{/updatePathParams}}) {
-        final result = await service.{{updateEndpoint.methodName}}({{updateCallArgs}});
-        if (!result.status) throw Exception(result.message);
-        if (mounted) setState(() => _message = 'Updated successfully');
-        return;
-      }
-      {{/hasUpdateEndpoint}}
-      {{#hasCreateEndpoint}}
-      final result = await service.{{createEndpoint.methodName}}({{createCallArgs}});
-      if (!result.status) throw Exception(result.message);
-      if (mounted) setState(() => _message = 'Created successfully');
-      {{/hasCreateEndpoint}}
-    } catch (error) {
-      if (mounted) setState(() => _message = error.toString());
-    }
+  {{#hasUpdateEndpoint}}
+  bool get _isEditing => {{{updatePathGuard}}};
+  {{/hasUpdateEndpoint}}
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeForm();
+  }
+
+  void _initializeForm({Map<String, dynamic> initialValues = const {}}) {
+    _meta = reactive.entityMetaFromJson(
+      build{{Module}}FormSchema(initialValues: initialValues),
+    );
+    _form = _meta.toFormGroup(
+      mode: {{#hasUpdateEndpoint}}_isEditing
+          ? reactive.EntityMode.edit
+          : {{/hasUpdateEndpoint}}reactive.EntityMode.create,
+    );
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              AppDynamicForm(
-                fields: [
-                  {{#fields}}
-                  {{#editable}}
-                  AppDynamicField(
-                    name: '{{baseName}}',
-                    label: '{{label}}',
-                    type: AppDynamicFieldType.{{formFieldType}},
-                    required: {{required}},
-                    {{#hasMaxLength}}maxLength: {{maxLength}},{{/hasMaxLength}}
-                  ),
-                  {{/editable}}
-                  {{/fields}}
-                ],
-                config: const AppDynamicFormConfig(columns: 2, submitLabel: 'Save'),
-                onSubmit: _submit,
+  void dispose() {
+    _form.dispose();
+    super.dispose();
+  }
+
+  Map<String, dynamic> _requestValues(Map<String, dynamic> values) {
+    final requestValues = <String, dynamic>{...values};
+    {{#formFields}}
+    {{#isIntegerFormField}}
+    requestValues['{{baseName}}'] = int.tryParse(
+      values['{{baseName}}']?.toString() ?? '',
+    );
+    {{/isIntegerFormField}}
+    {{#isDoubleFormField}}
+    requestValues['{{baseName}}'] = double.tryParse(
+      values['{{baseName}}']?.toString() ?? '',
+    );
+    {{/isDoubleFormField}}
+    {{#isDynamicFormField}}
+    final jsonValue{{name}} = values['{{baseName}}']?.toString() ?? '';
+    requestValues['{{baseName}}'] = jsonValue{{name}}.isEmpty
+        ? null
+        : jsonDecode(jsonValue{{name}});
+    {{/isDynamicFormField}}
+    {{/formFields}}
+    return requestValues;
+  }
+
+  void _submit(BuildContext context) {
+    _form.markAllAsTouched();
+    if (!_form.valid) return;
+
+    setState(() {
+      _saving = true;
+      _message = null;
+    });
+    late final Map<String, dynamic> values;
+    try {
+      values = _requestValues(_form.value);
+    } on FormatException {
+      _handleSaveResult('Enter valid JSON for structured fields');
+      return;
+    }
+
+    {{#hasUpdateEndpoint}}
+    if (_isEditing) {
+      final request = {{updateEndpoint.RequestClass}}.fromJson(values);
+      context.read<{{updateEndpoint.OperationId}}Bloc>().add(
+        Load{{updateEndpoint.OperationId}}Event({{{updateBlocArgs}}}),
+      );
+      return;
+    }
+    {{/hasUpdateEndpoint}}
+
+    {{#hasCreateEndpoint}}
+    final request = {{createEndpoint.RequestClass}}.fromJson(values);
+    context.read<{{createEndpoint.OperationId}}Bloc>().add(
+      Load{{createEndpoint.OperationId}}Event({{{createBlocArgs}}}),
+    );
+    {{/hasCreateEndpoint}}
+  }
+
+  void _handleSaveResult(String message) {
+    if (!mounted) return;
+    setState(() {
+      _saving = false;
+      _message = message;
+    });
+  }
+
+  {{#hasDetailEndpoint}}
+  void _handleDetailState(
+    BuildContext context,
+    {{detailEndpoint.OperationId}}State state,
+  ) {
+    if (state is {{detailEndpoint.OperationId}}Success) {
+      final item = state.response.body;
+      if (item == null) {
+        _handleSaveResult('Record not found');
+        return;
+      }
+      setState(() {
+        _form.dispose();
+        _initializeForm(initialValues: item.toJson());
+      });
+    }
+  }
+  {{/hasDetailEndpoint}}
+
+  Widget _buildForm(BuildContext context) => ReactiveForm(
+    formGroup: _form,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ReactiveShadcnForm(
+          meta: _meta,
+          form: _form,
+          wrapWithReactiveForm: false,
+        ),
+        const SizedBox(height: 16),
+        if (_message != null) ...[
+          Text(_message!),
+          const SizedBox(height: 12),
+        ],
+        ReactiveFormConsumer(
+          builder: (context, form, child) => Align(
+            alignment: Alignment.centerRight,
+            child: Button(
+              onPressed: _saving || form.disabled
+                  ? null
+                  : () => _submit(context),
+              child: Text(
+                _saving
+                    ? 'Saving...'
+                    : {{#hasUpdateEndpoint}}_isEditing ? 'Update' : {{/hasUpdateEndpoint}}'Create',
               ),
-              if (_message != null) Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(_message!),
-              ),
-            ]),
+            ),
           ),
         ),
+      ],
+    ),
+  );
+
+  Widget _buildContent(BuildContext context) {
+    {{#hasDetailEndpoint}}
+    {{#hasUpdateEndpoint}}
+    if (_isEditing) {
+      return BlocConsumer<{{detailEndpoint.OperationId}}Bloc,
+          {{detailEndpoint.OperationId}}State>(
+        listener: _handleDetailState,
+        builder: (context, state) {
+          if (state is {{detailEndpoint.OperationId}}Loading) {
+            return const Center(child: Loading());
+          }
+          if (state is {{detailEndpoint.OperationId}}Error) {
+            return Center(child: Text(state.message));
+          }
+          return _buildForm(context);
+        },
       );
+    }
+    {{/hasUpdateEndpoint}}
+    {{/hasDetailEndpoint}}
+    return _buildForm(context);
+  }
+
+  @override
+  Widget build(BuildContext context) => MultiBlocProvider(
+    providers: [
+      {{#hasCreateEndpoint}}
+      BlocProvider<{{createEndpoint.OperationId}}Bloc>(
+        create: (_) => {{createEndpoint.OperationId}}Bloc(
+          {{Module}}Service(baseUrl: ProfileConstants.api),
+        ),
+      ),
+      {{/hasCreateEndpoint}}
+      {{#hasUpdateEndpoint}}
+      BlocProvider<{{updateEndpoint.OperationId}}Bloc>(
+        create: (_) => {{updateEndpoint.OperationId}}Bloc(
+          {{Module}}Service(baseUrl: ProfileConstants.api),
+        ),
+      ),
+      {{/hasUpdateEndpoint}}
+      {{#hasDetailEndpoint}}
+      {{#hasUpdateEndpoint}}
+      if (_isEditing)
+        BlocProvider<{{detailEndpoint.OperationId}}Bloc>(
+          create: (_) => {{detailEndpoint.OperationId}}Bloc(
+            {{Module}}Service(baseUrl: ProfileConstants.api),
+          )..add(
+            Load{{detailEndpoint.OperationId}}Event({{{detailBlocArgs}}}),
+          ),
+        ),
+      {{/hasUpdateEndpoint}}
+      {{/hasDetailEndpoint}}
+    ],
+    child: MultiBlocListener(
+      listeners: [
+        {{#hasCreateEndpoint}}
+        BlocListener<{{createEndpoint.OperationId}}Bloc,
+            {{createEndpoint.OperationId}}State>(
+          listener: (context, state) {
+            if (state is {{createEndpoint.OperationId}}Success) {
+              context.go('{{{basePath}}}');
+            } else if (state is {{createEndpoint.OperationId}}Error) {
+              _handleSaveResult(state.message);
+            }
+          },
+        ),
+        {{/hasCreateEndpoint}}
+        {{#hasUpdateEndpoint}}
+        BlocListener<{{updateEndpoint.OperationId}}Bloc,
+            {{updateEndpoint.OperationId}}State>(
+          listener: (context, state) {
+            if (state is {{updateEndpoint.OperationId}}Success) {
+              context.go('{{{basePath}}}');
+            } else if (state is {{updateEndpoint.OperationId}}Error) {
+              _handleSaveResult(state.message);
+            }
+          },
+        ),
+        {{/hasUpdateEndpoint}}
+      ],
+      child: Scaffold(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(child: _buildContent(context)),
+        ),
+      ),
+    ),
+  );
 }

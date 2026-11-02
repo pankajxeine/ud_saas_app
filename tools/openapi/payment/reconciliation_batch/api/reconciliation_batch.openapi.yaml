@@ -1,0 +1,278 @@
+openapi: 3.0.0
+x-sql-table: payment_reconciliation_batch
+x-sql-references:
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "closed_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ReconciliationBatchResponse API
+  version: 1.0.0
+paths:
+  /reconciliation_batch:
+    get:
+      operationId: listReconciliationBatch
+      summary: Get all reconciliation_batch
+      responses:
+        '200':
+          description: List of reconciliation_batch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReconciliationBatchResponse'
+    post:
+      operationId: createReconciliationBatch
+      summary: Create a new reconciliation_batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconciliationBatchRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationBatchResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /reconciliation_batch/{reconciliation_batch_id}:
+    get:
+      operationId: getReconciliationBatchById
+      summary: Get reconciliation_batch by reconciliation_batch_id
+      parameters:
+        - in: path
+          name: reconciliation_batch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: reconciliation_batch object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationBatchResponse'
+        '404':
+          description: reconciliation_batch not found
+    put:
+      operationId: updateReconciliationBatch
+      summary: Update reconciliation_batch by reconciliation_batch_id
+      parameters:
+        - in: path
+          name: reconciliation_batch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconciliationBatchUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationBatchResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: reconciliation_batch not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteReconciliationBatch
+      summary: Delete reconciliation_batch by reconciliation_batch_id
+      parameters:
+        - in: path
+          name: reconciliation_batch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: reconciliation_batch not found
+components:
+  schemas:
+
+    ReconciliationBatchRequest:
+      type: object
+      required:
+        - gateway
+        - settlement_ref
+        - settlement_date
+        - currency_code
+        - gross_amount
+        - net_amount
+      additionalProperties: false
+      properties:
+        gateway:
+          type: string
+          maxLength: 20
+        settlement_ref:
+          type: string
+          maxLength: 100
+        settlement_date:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        closed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ReconciliationBatchUpdateRequest:
+      type: object
+      required:
+        - gateway
+        - settlement_ref
+        - settlement_date
+        - currency_code
+        - gross_amount
+        - fee_amount
+        - net_amount
+        - status
+        - closed_by_user_id
+        - closed_at
+      additionalProperties: false
+      properties:
+        gateway:
+          type: string
+          maxLength: 20
+        settlement_ref:
+          type: string
+          maxLength: 100
+        settlement_date:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        closed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ReconciliationBatchResponse:
+      type: object
+      required:
+        - record_code
+        - reconciliation_batch_id
+        - gateway
+        - settlement_ref
+        - settlement_date
+        - currency_code
+        - gross_amount
+        - fee_amount
+        - net_amount
+        - status
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        reconciliation_batch_id:
+          type: string
+          format: uuid
+          readOnly: true
+        gateway:
+          type: string
+          maxLength: 20
+        settlement_ref:
+          type: string
+          maxLength: 100
+        settlement_date:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "open"
+        closed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

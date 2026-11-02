@@ -1,0 +1,189 @@
+openapi: 3.0.0
+x-sql-table: platform_calendar
+info:
+  title: CalendarResponse API
+  version: 1.0.0
+paths:
+  /calendar:
+    get:
+      operationId: listCalendar
+      summary: Get all calendar
+      responses:
+        '200':
+          description: List of calendar
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarResponse'
+    post:
+      operationId: createCalendar
+      summary: Create a new calendar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /calendar/{calendar_id}:
+    get:
+      operationId: getCalendarById
+      summary: Get calendar by calendar_id
+      parameters:
+        - in: path
+          name: calendar_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: calendar object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+        '404':
+          description: calendar not found
+    put:
+      operationId: updateCalendar
+      summary: Update calendar by calendar_id
+      parameters:
+        - in: path
+          name: calendar_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: calendar not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCalendar
+      summary: Delete calendar by calendar_id
+      parameters:
+        - in: path
+          name: calendar_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: calendar not found
+components:
+  schemas:
+
+    CalendarRequest:
+      type: object
+      required:
+        - calendar_code
+        - name
+        - timezone
+      additionalProperties: false
+      properties:
+        calendar_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+        is_24x7:
+          type: boolean
+          default: false
+        business_hours:
+          nullable: true
+
+    CalendarUpdateRequest:
+      type: object
+      required:
+        - calendar_code
+        - name
+        - timezone
+        - is_24x7
+        - business_hours
+      additionalProperties: false
+      properties:
+        calendar_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+        is_24x7:
+          type: boolean
+          default: false
+        business_hours:
+          nullable: true
+
+    CalendarResponse:
+      type: object
+      required:
+        - record_code
+        - calendar_id
+        - calendar_code
+        - name
+        - timezone
+        - is_24x7
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        calendar_id:
+          type: string
+          format: uuid
+          readOnly: true
+        calendar_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+        is_24x7:
+          type: boolean
+          default: false
+        business_hours:
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

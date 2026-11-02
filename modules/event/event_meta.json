@@ -1,0 +1,464 @@
+{
+  "entity": "Event",
+  "table": "audit_event",
+  "primaryKey": "event_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/event"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/event"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/event/{event_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/event/{event_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/event/{event_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "event_id",
+        "label": "Event Id"
+      },
+      {
+        "field": "event_seq",
+        "label": "Event Seq"
+      },
+      {
+        "field": "occurred_at",
+        "label": "Occurred At"
+      },
+      {
+        "field": "actor_type",
+        "label": "Actor Type"
+      },
+      {
+        "field": "actor_id",
+        "label": "Actor Id"
+      },
+      {
+        "field": "actor_ip",
+        "label": "Actor Ip"
+      },
+      {
+        "field": "request_id",
+        "label": "Request Id"
+      },
+      {
+        "field": "impersonating_tenant_id",
+        "label": "Impersonating Tenant Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "entity_schema",
+        "label": "Entity Schema"
+      },
+      {
+        "field": "entity_table",
+        "label": "Entity Table"
+      },
+      {
+        "field": "entity_id",
+        "label": "Entity Id"
+      },
+      {
+        "field": "changed_columns",
+        "label": "Changed Columns"
+      },
+      {
+        "field": "old_values",
+        "label": "Old Values"
+      },
+      {
+        "field": "new_values",
+        "label": "New Values"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "prev_hash",
+        "label": "Prev Hash"
+      },
+      {
+        "field": "row_hash",
+        "label": "Row Hash"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "event_id",
+      "event_seq",
+      "occurred_at",
+      "actor_type",
+      "actor_id",
+      "actor_ip",
+      "request_id",
+      "impersonating_tenant_id",
+      "tenant_id",
+      "action",
+      "entity_schema",
+      "entity_table",
+      "entity_id",
+      "changed_columns",
+      "old_values",
+      "new_values",
+      "reason",
+      "prev_hash",
+      "row_hash"
+    ]
+  },
+  "form": {
+    "create": [
+      "event_seq",
+      "actor_type",
+      "actor_id",
+      "actor_ip",
+      "request_id",
+      "impersonating_tenant_id",
+      "tenant_id",
+      "action",
+      "entity_schema",
+      "entity_table",
+      "entity_id",
+      "changed_columns",
+      "old_values",
+      "new_values",
+      "reason",
+      "prev_hash",
+      "row_hash"
+    ],
+    "update": [
+      "event_seq",
+      "actor_type",
+      "actor_id",
+      "actor_ip",
+      "request_id",
+      "impersonating_tenant_id",
+      "tenant_id",
+      "action",
+      "entity_schema",
+      "entity_table",
+      "entity_id",
+      "changed_columns",
+      "old_values",
+      "new_values",
+      "reason",
+      "prev_hash",
+      "row_hash"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "event_id",
+      "label": "Event Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "event_seq",
+      "label": "Event Seq",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "occurred_at",
+      "label": "Occurred At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "actor_type",
+      "label": "Actor Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "actor_id",
+      "label": "Actor Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "actor_ip",
+      "label": "Actor Ip",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "request_id",
+      "label": "Request Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "impersonating_tenant_id",
+      "label": "Impersonating Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "entity_schema",
+      "label": "Entity Schema",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "entity_table",
+      "label": "Entity Table",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "entity_id",
+      "label": "Entity Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "changed_columns",
+      "label": "Changed Columns",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "old_values",
+      "label": "Old Values",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "new_values",
+      "label": "New Values",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "prev_hash",
+      "label": "Prev Hash",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "row_hash",
+      "label": "Row Hash",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

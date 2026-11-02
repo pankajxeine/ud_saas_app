@@ -1,0 +1,218 @@
+openapi: 3.0.0
+x-sql-table: commerce_addon_item
+x-sql-references:
+  - column: "module_id"
+    table: "catalog_feature"
+    key: "module_id"
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+  - column: "addon_version_id"
+    table: "commerce_addon_version"
+    key: "addon_version_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+info:
+  title: AddonItemResponse API
+  version: 1.0.0
+paths:
+  /addon_item:
+    get:
+      operationId: listAddonItem
+      summary: Get all addon_item
+      responses:
+        '200':
+          description: List of addon_item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddonItemResponse'
+    post:
+      operationId: createAddonItem
+      summary: Create a new addon_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonItemRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonItemResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /addon_item/{addon_item_id}:
+    get:
+      operationId: getAddonItemById
+      summary: Get addon_item by addon_item_id
+      parameters:
+        - in: path
+          name: addon_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: addon_item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonItemResponse'
+        '404':
+          description: addon_item not found
+    put:
+      operationId: updateAddonItem
+      summary: Update addon_item by addon_item_id
+      parameters:
+        - in: path
+          name: addon_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonItemUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonItemResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: addon_item not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAddonItem
+      summary: Delete addon_item by addon_item_id
+      parameters:
+        - in: path
+          name: addon_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: addon_item not found
+components:
+  schemas:
+
+    AddonItemRequest:
+      type: object
+      required:
+        - addon_version_id
+        - module_id
+      additionalProperties: false
+      properties:
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+
+    AddonItemUpdateRequest:
+      type: object
+      required:
+        - addon_version_id
+        - module_id
+        - feature_id
+        - value
+      additionalProperties: false
+      properties:
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+
+    AddonItemResponse:
+      type: object
+      required:
+        - record_code
+        - addon_item_id
+        - addon_version_id
+        - module_id
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        addon_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+          nullable: true
+  

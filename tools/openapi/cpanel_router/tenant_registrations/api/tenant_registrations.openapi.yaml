@@ -1,0 +1,249 @@
+openapi: 3.0.0
+x-sql-table: tenant_registrations
+x-sql-references:
+  - column: "route_id"
+    table: "domains_route"
+    key: "route_id"
+info:
+  title: TenantRegistrationsResponse API
+  version: 1.0.0
+paths:
+  /tenant_registrations:
+    get:
+      operationId: listTenantRegistrations
+      summary: Get all tenant_registrations
+      responses:
+        '200':
+          description: List of tenant_registrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantRegistrationsResponse'
+    post:
+      operationId: createTenantRegistrations
+      summary: Create a new tenant_registrations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantRegistrationsRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRegistrationsResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_registrations/{registration_id}:
+    get:
+      operationId: getTenantRegistrationsById
+      summary: Get tenant_registrations by registration_id
+      parameters:
+        - in: path
+          name: registration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_registrations object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRegistrationsResponse'
+        '404':
+          description: tenant_registrations not found
+    put:
+      operationId: updateTenantRegistrations
+      summary: Update tenant_registrations by registration_id
+      parameters:
+        - in: path
+          name: registration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantRegistrationsUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRegistrationsResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_registrations not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantRegistrations
+      summary: Delete tenant_registrations by registration_id
+      parameters:
+        - in: path
+          name: registration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_registrations not found
+components:
+  schemas:
+
+    TenantRegistrationsRequest:
+      type: object
+      required:
+        - tenant_id
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        status:
+          type: string
+          default: "provisioning"
+          enum:
+            - "provisioning"
+            - "active"
+            - "failed"
+            - "suspended"
+            - "deprovisioned"
+        requested_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        metadata:
+          default: "{}"
+
+    TenantRegistrationsUpdateRequest:
+      type: object
+      required:
+        - tenant_id
+        - route_id
+        - status
+        - requested_at
+        - completed_at
+        - error_message
+        - metadata
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        status:
+          type: string
+          default: "provisioning"
+          enum:
+            - "provisioning"
+            - "active"
+            - "failed"
+            - "suspended"
+            - "deprovisioned"
+        requested_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        metadata:
+          default: "{}"
+
+    TenantRegistrationsResponse:
+      type: object
+      required:
+        - registration_id
+        - tenant_id
+        - status
+        - requested_at
+        - metadata
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        registration_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+        route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        status:
+          type: string
+          default: "provisioning"
+          enum:
+            - "provisioning"
+            - "active"
+            - "failed"
+            - "suspended"
+            - "deprovisioned"
+        requested_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        metadata:
+          default: "{}"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

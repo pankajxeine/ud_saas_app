@@ -1,0 +1,260 @@
+{
+  "entity": "Country",
+  "table": "platform_country",
+  "primaryKey": "country_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/country"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/country"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/country/{country_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/country/{country_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/country/{country_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "country_id",
+        "label": "Country Id"
+      },
+      {
+        "field": "country_code",
+        "label": "Country Code"
+      },
+      {
+        "field": "iso3",
+        "label": "Iso3"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "phone_prefix",
+        "label": "Phone Prefix"
+      },
+      {
+        "field": "default_currency_code",
+        "label": "Default Currency Code"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "country_id",
+      "country_code",
+      "iso3",
+      "name",
+      "phone_prefix",
+      "default_currency_code",
+      "is_active",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "country_code",
+      "iso3",
+      "name",
+      "phone_prefix",
+      "default_currency_code",
+      "is_active"
+    ],
+    "update": [
+      "country_code",
+      "iso3",
+      "name",
+      "phone_prefix",
+      "default_currency_code",
+      "is_active"
+    ]
+  },
+  "references": {
+    "default_currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "country_id",
+      "label": "Country Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "country_code",
+      "label": "Country Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "iso3",
+      "label": "Iso3",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 3
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "phone_prefix",
+      "label": "Phone Prefix",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 5
+    },
+    {
+      "name": "default_currency_code",
+      "label": "Default Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

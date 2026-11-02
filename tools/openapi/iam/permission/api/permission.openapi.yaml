@@ -1,0 +1,265 @@
+openapi: 3.0.0
+x-sql-table: iam_permission
+info:
+  title: PermissionResponse API
+  version: 1.0.0
+paths:
+  /permission:
+    get:
+      operationId: listPermission
+      summary: Get all permission
+      responses:
+        '200':
+          description: List of permission
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermissionResponse'
+    post:
+      operationId: createPermission
+      summary: Create a new permission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /permission/{permission_id}:
+    get:
+      operationId: getPermissionById
+      summary: Get permission by permission_id
+      parameters:
+        - in: path
+          name: permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: permission object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionResponse'
+        '404':
+          description: permission not found
+    put:
+      operationId: updatePermission
+      summary: Update permission by permission_id
+      parameters:
+        - in: path
+          name: permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: permission not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePermission
+      summary: Delete permission by permission_id
+      parameters:
+        - in: path
+          name: permission_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: permission not found
+components:
+  schemas:
+
+    PermissionRequest:
+      type: object
+      required:
+        - permission_code
+        - module
+        - resource
+        - action
+        - name
+      additionalProperties: false
+      properties:
+        permission_code:
+          type: string
+        module:
+          type: string
+          maxLength: 20
+        resource:
+          type: string
+          maxLength: 40
+        action:
+          type: string
+          maxLength: 12
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+        requires_mfa:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    PermissionUpdateRequest:
+      type: object
+      required:
+        - permission_code
+        - module
+        - resource
+        - action
+        - name
+        - description
+        - is_sensitive
+        - requires_mfa
+        - sort_order
+        - is_active
+      additionalProperties: false
+      properties:
+        permission_code:
+          type: string
+        module:
+          type: string
+          maxLength: 20
+        resource:
+          type: string
+          maxLength: 40
+        action:
+          type: string
+          maxLength: 12
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+        requires_mfa:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    PermissionResponse:
+      type: object
+      required:
+        - record_code
+        - permission_id
+        - permission_code
+        - module
+        - resource
+        - action
+        - name
+        - is_sensitive
+        - requires_mfa
+        - sort_order
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        permission_id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission_code:
+          type: string
+        module:
+          type: string
+          maxLength: 20
+        resource:
+          type: string
+          maxLength: 40
+        action:
+          type: string
+          maxLength: 12
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+        requires_mfa:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

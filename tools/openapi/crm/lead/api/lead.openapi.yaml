@@ -1,0 +1,463 @@
+openapi: 3.0.0
+x-sql-table: crm_lead
+x-sql-references:
+  - column: "campaign_id"
+    table: "crm_campaign"
+    key: "campaign_id"
+  - column: "country_code"
+    table: "platform_country"
+    key: "country_code"
+  - column: "industry_code"
+    table: "platform_industry"
+    key: "industry_code"
+  - column: "interested_application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "owner_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "converted_account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+info:
+  title: LeadResponse API
+  version: 1.0.0
+paths:
+  /lead:
+    get:
+      operationId: listLead
+      summary: Get all lead
+      responses:
+        '200':
+          description: List of lead
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeadResponse'
+    post:
+      operationId: createLead
+      summary: Create a new lead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /lead/{lead_id}:
+    get:
+      operationId: getLeadById
+      summary: Get lead by lead_id
+      parameters:
+        - in: path
+          name: lead_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: lead object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '404':
+          description: lead not found
+    put:
+      operationId: updateLead
+      summary: Update lead by lead_id
+      parameters:
+        - in: path
+          name: lead_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: lead not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLead
+      summary: Delete lead by lead_id
+      parameters:
+        - in: path
+          name: lead_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: lead not found
+components:
+  schemas:
+
+    LeadRequest:
+      type: object
+      required:
+        - source
+        - company_name
+        - contact_name
+        - email
+      additionalProperties: false
+      properties:
+        lead_number:
+          type: string
+          maxLength: 20
+        source:
+          type: string
+        campaign_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_campaign"
+            column: "campaign_id"
+        company_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        interested_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        status:
+          type: string
+          maxLength: 12
+          default: "new"
+        score:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        converted_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        converted_at:
+          type: string
+          format: date-time
+          nullable: true
+        disqualify_reason:
+          type: string
+          nullable: true
+
+    LeadUpdateRequest:
+      type: object
+      required:
+        - lead_number
+        - source
+        - campaign_id
+        - company_name
+        - contact_name
+        - email
+        - phone
+        - country_code
+        - industry_code
+        - interested_application_id
+        - status
+        - score
+        - owner_user_id
+        - sales_agent_id
+        - branch_id
+        - converted_account_id
+        - converted_at
+        - disqualify_reason
+      additionalProperties: false
+      properties:
+        lead_number:
+          type: string
+          maxLength: 20
+        source:
+          type: string
+        campaign_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_campaign"
+            column: "campaign_id"
+        company_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        interested_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        status:
+          type: string
+          maxLength: 12
+          default: "new"
+        score:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        converted_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        converted_at:
+          type: string
+          format: date-time
+          nullable: true
+        disqualify_reason:
+          type: string
+          nullable: true
+
+    LeadResponse:
+      type: object
+      required:
+        - record_code
+        - lead_id
+        - lead_number
+        - source
+        - company_name
+        - contact_name
+        - email
+        - status
+        - score
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        lead_id:
+          type: string
+          format: uuid
+          readOnly: true
+        lead_number:
+          type: string
+          maxLength: 20
+        source:
+          type: string
+        campaign_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_campaign"
+            column: "campaign_id"
+        company_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        interested_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        status:
+          type: string
+          maxLength: 12
+          default: "new"
+        score:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        converted_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        converted_at:
+          type: string
+          format: date-time
+          nullable: true
+        disqualify_reason:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

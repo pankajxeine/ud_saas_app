@@ -1,0 +1,183 @@
+openapi: 3.0.0
+x-sql-table: catalog_module_dependency
+x-sql-references:
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+  - column: "requires_module_id"
+    table: "catalog_module"
+    key: "module_id"
+info:
+  title: ModuleDependencyResponse API
+  version: 1.0.0
+paths:
+  /module_dependency:
+    get:
+      operationId: listModuleDependency
+      summary: Get all module_dependency
+      responses:
+        '200':
+          description: List of module_dependency
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModuleDependencyResponse'
+    post:
+      operationId: createModuleDependency
+      summary: Create a new module_dependency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDependencyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDependencyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /module_dependency/{module_dependency_id}:
+    get:
+      operationId: getModuleDependencyById
+      summary: Get module_dependency by module_dependency_id
+      parameters:
+        - in: path
+          name: module_dependency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: module_dependency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDependencyResponse'
+        '404':
+          description: module_dependency not found
+    put:
+      operationId: updateModuleDependency
+      summary: Update module_dependency by module_dependency_id
+      parameters:
+        - in: path
+          name: module_dependency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDependencyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDependencyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: module_dependency not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteModuleDependency
+      summary: Delete module_dependency by module_dependency_id
+      parameters:
+        - in: path
+          name: module_dependency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: module_dependency not found
+components:
+  schemas:
+
+    ModuleDependencyRequest:
+      type: object
+      required:
+        - module_id
+        - requires_module_id
+      additionalProperties: false
+      properties:
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        requires_module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+
+    ModuleDependencyUpdateRequest:
+      type: object
+      required:
+        - module_id
+        - requires_module_id
+      additionalProperties: false
+      properties:
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        requires_module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+
+    ModuleDependencyResponse:
+      type: object
+      required:
+        - record_code
+        - module_dependency_id
+        - module_id
+        - requires_module_id
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        module_dependency_id:
+          type: string
+          format: uuid
+          readOnly: true
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        requires_module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+  

@@ -1,0 +1,279 @@
+{
+  "entity": "TenantRoleTemplate",
+  "table": "catalog_tenant_role_template",
+  "primaryKey": "tenant_role_template_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/tenant_role_template"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/tenant_role_template"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/tenant_role_template/{tenant_role_template_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/tenant_role_template/{tenant_role_template_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/tenant_role_template/{tenant_role_template_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "tenant_role_template_id",
+        "label": "Tenant Role Template Id"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "role_code",
+        "label": "Role Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "permission_codes",
+        "label": "Permission Codes"
+      },
+      {
+        "field": "is_tenant_admin",
+        "label": "Is Tenant Admin"
+      },
+      {
+        "field": "sort_order",
+        "label": "Sort Order"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "tenant_role_template_id",
+      "application_id",
+      "role_code",
+      "name",
+      "description",
+      "permission_codes",
+      "is_tenant_admin",
+      "sort_order",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "application_id",
+      "role_code",
+      "name",
+      "description",
+      "permission_codes",
+      "is_tenant_admin",
+      "sort_order"
+    ],
+    "update": [
+      "application_id",
+      "role_code",
+      "name",
+      "description",
+      "permission_codes",
+      "is_tenant_admin",
+      "sort_order"
+    ]
+  },
+  "references": {
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_role_template_id",
+      "label": "Tenant Role Template Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "role_code",
+      "label": "Role Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "permission_codes",
+      "label": "Permission Codes",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_tenant_admin",
+      "label": "Is Tenant Admin",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "sort_order",
+      "label": "Sort Order",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

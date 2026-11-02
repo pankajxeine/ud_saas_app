@@ -1,0 +1,266 @@
+{
+  "entity": "DeliveryAttempt",
+  "table": "notify_delivery_attempt",
+  "primaryKey": "delivery_attempt_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/delivery_attempt"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/delivery_attempt"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/delivery_attempt/{delivery_attempt_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/delivery_attempt/{delivery_attempt_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/delivery_attempt/{delivery_attempt_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "delivery_attempt_id",
+        "label": "Delivery Attempt Id"
+      },
+      {
+        "field": "notification_id",
+        "label": "Notification Id"
+      },
+      {
+        "field": "attempt_no",
+        "label": "Attempt No"
+      },
+      {
+        "field": "provider_code",
+        "label": "Provider Code"
+      },
+      {
+        "field": "provider_message_id",
+        "label": "Provider Message Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "error",
+        "label": "Error"
+      },
+      {
+        "field": "attempted_at",
+        "label": "Attempted At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "delivery_attempt_id",
+      "notification_id",
+      "attempt_no",
+      "provider_code",
+      "provider_message_id",
+      "status",
+      "error",
+      "attempted_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "notification_id",
+      "attempt_no",
+      "provider_code",
+      "provider_message_id",
+      "status",
+      "error",
+      "attempted_at"
+    ],
+    "update": [
+      "notification_id",
+      "attempt_no",
+      "provider_code",
+      "provider_message_id",
+      "status",
+      "error",
+      "attempted_at"
+    ]
+  },
+  "references": {
+    "notification_id": {
+      "table": "notify_notification",
+      "key": "notification_id",
+      "lookup": {
+        "endpoint": "/notify_notification"
+      }
+    },
+    "provider_code": {
+      "table": "notify_channel_provider",
+      "key": "provider_code",
+      "lookup": {
+        "endpoint": "/notify_channel_provider"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "delivery_attempt_id",
+      "label": "Delivery Attempt Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "notification_id",
+      "label": "Notification Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "notify_notification",
+        "column": "notification_id",
+        "lookup": {
+          "endpoint": "/notify_notification",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "attempt_no",
+      "label": "Attempt No",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "provider_code",
+      "label": "Provider Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "notify_channel_provider",
+        "column": "provider_code",
+        "lookup": {
+          "endpoint": "/notify_channel_provider",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "provider_message_id",
+      "label": "Provider Message Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 120
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "error",
+      "label": "Error",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "attempted_at",
+      "label": "Attempted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

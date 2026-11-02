@@ -1,0 +1,220 @@
+openapi: 3.0.0
+x-sql-table: platform_tax_rate
+x-sql-references:
+  - column: "jurisdiction_code"
+    table: "platform_tax_jurisdiction"
+    key: "jurisdiction_code"
+info:
+  title: TaxRateResponse API
+  version: 1.0.0
+paths:
+  /tax_rate:
+    get:
+      operationId: listTaxRate
+      summary: Get all tax_rate
+      responses:
+        '200':
+          description: List of tax_rate
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxRateResponse'
+    post:
+      operationId: createTaxRate
+      summary: Create a new tax_rate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRateResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tax_rate/{tax_rate_id}:
+    get:
+      operationId: getTaxRateById
+      summary: Get tax_rate by tax_rate_id
+      parameters:
+        - in: path
+          name: tax_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tax_rate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRateResponse'
+        '404':
+          description: tax_rate not found
+    put:
+      operationId: updateTaxRate
+      summary: Update tax_rate by tax_rate_id
+      parameters:
+        - in: path
+          name: tax_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRateUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRateResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tax_rate not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTaxRate
+      summary: Delete tax_rate by tax_rate_id
+      parameters:
+        - in: path
+          name: tax_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tax_rate not found
+components:
+  schemas:
+
+    TaxRateRequest:
+      type: object
+      required:
+        - jurisdiction_code
+        - name
+        - rate
+        - valid_from
+      additionalProperties: false
+      properties:
+        jurisdiction_code:
+          type: string
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_code:
+          type: string
+          default: "standard"
+        name:
+          type: string
+        rate:
+          type: string
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    TaxRateUpdateRequest:
+      type: object
+      required:
+        - jurisdiction_code
+        - tax_code
+        - name
+        - rate
+        - valid_from
+        - valid_to
+      additionalProperties: false
+      properties:
+        jurisdiction_code:
+          type: string
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_code:
+          type: string
+          default: "standard"
+        name:
+          type: string
+        rate:
+          type: string
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+
+    TaxRateResponse:
+      type: object
+      required:
+        - record_code
+        - tax_rate_id
+        - jurisdiction_code
+        - tax_code
+        - name
+        - rate
+        - valid_from
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tax_rate_id:
+          type: string
+          format: uuid
+          readOnly: true
+        jurisdiction_code:
+          type: string
+          x-reference:
+            table: "platform_tax_jurisdiction"
+            column: "jurisdiction_code"
+        tax_code:
+          type: string
+          default: "standard"
+        name:
+          type: string
+        rate:
+          type: string
+        valid_from:
+          type: string
+          format: date
+        valid_to:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

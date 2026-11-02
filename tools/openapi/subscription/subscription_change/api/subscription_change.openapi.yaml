@@ -1,0 +1,334 @@
+openapi: 3.0.0
+x-sql-table: subscription_subscription_change
+x-sql-references:
+  - column: "subscription_id"
+    table: "subscription_subscription"
+    key: "subscription_id"
+  - column: "from_plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "to_plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "requested_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: SubscriptionChangeResponse API
+  version: 1.0.0
+paths:
+  /subscription_change:
+    get:
+      operationId: listSubscriptionChange
+      summary: Get all subscription_change
+      responses:
+        '200':
+          description: List of subscription_change
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionChangeResponse'
+    post:
+      operationId: createSubscriptionChange
+      summary: Create a new subscription_change
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionChangeRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionChangeResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /subscription_change/{subscription_change_id}:
+    get:
+      operationId: getSubscriptionChangeById
+      summary: Get subscription_change by subscription_change_id
+      parameters:
+        - in: path
+          name: subscription_change_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: subscription_change object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionChangeResponse'
+        '404':
+          description: subscription_change not found
+    put:
+      operationId: updateSubscriptionChange
+      summary: Update subscription_change by subscription_change_id
+      parameters:
+        - in: path
+          name: subscription_change_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionChangeUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionChangeResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: subscription_change not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSubscriptionChange
+      summary: Delete subscription_change by subscription_change_id
+      parameters:
+        - in: path
+          name: subscription_change_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: subscription_change not found
+components:
+  schemas:
+
+    SubscriptionChangeRequest:
+      type: object
+      required:
+        - subscription_id
+        - change_type
+      additionalProperties: false
+      properties:
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        change_type:
+          type: string
+          maxLength: 16
+        from_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        to_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        from_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        to_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        effective_at:
+          type: string
+          format: date-time
+        proration_amount:
+          type: string
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    SubscriptionChangeUpdateRequest:
+      type: object
+      required:
+        - subscription_id
+        - change_type
+        - from_plan_version_id
+        - to_plan_version_id
+        - from_quantity
+        - to_quantity
+        - from_status
+        - to_status
+        - effective_at
+        - proration_amount
+        - reason
+        - requested_by_user_id
+      additionalProperties: false
+      properties:
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        change_type:
+          type: string
+          maxLength: 16
+        from_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        to_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        from_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        to_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        effective_at:
+          type: string
+          format: date-time
+        proration_amount:
+          type: string
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    SubscriptionChangeResponse:
+      type: object
+      required:
+        - record_code
+        - subscription_change_id
+        - subscription_id
+        - change_type
+        - effective_at
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        subscription_change_id:
+          type: string
+          format: uuid
+          readOnly: true
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        change_type:
+          type: string
+          maxLength: 16
+        from_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        to_plan_version_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        from_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        to_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        effective_at:
+          type: string
+          format: date-time
+        proration_amount:
+          type: string
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+        requested_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

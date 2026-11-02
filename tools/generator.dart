@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'package:mustache_template/mustache.dart';
@@ -13,12 +14,24 @@ final log = Logger(
   ),
 );
 
-void main() async {
+void main(List<String> args) async {
   log.i('🚀 Starting generator...');
 
-  final specsDir = Directory('specs');
+  final specsDir = Directory(_argumentValue(args, '--input') ?? 'openapi');
   final templatesDir = Directory('templates');
-  final outputDir = Directory('../lib/modules');
+  final outputDir = Directory(
+    _argumentValue(args, '--output') ?? '../lib/modules',
+  );
+  final routesDir = Directory(
+    _argumentValue(args, '--routes') ?? '../lib/routes',
+  );
+  final selectedSpec = _argumentValue(args, '--spec');
+  if (!specsDir.existsSync()) {
+    throw StateError('OpenAPI input directory not found: ${specsDir.path}');
+  }
+  if (!templatesDir.existsSync()) {
+    throw StateError('Templates directory not found: ${templatesDir.path}');
+  }
 
   if (!outputDir.existsSync()) {
     outputDir.createSync(recursive: true);
@@ -26,12 +39,28 @@ void main() async {
   }
 
   final specsRoot = specsDir.absolute.path;
-  final specFiles = specsDir.listSync(recursive: true).whereType<File>().where((
-    file,
-  ) {
-    final extension = file.path.toLowerCase();
-    return extension.endsWith('.yaml') || extension.endsWith('.yml');
-  });
+  final specFiles = selectedSpec == null
+      ? specsDir.listSync(recursive: true).whereType<File>().where((file) {
+          final extension = file.path.toLowerCase();
+          return extension.endsWith('.yaml') || extension.endsWith('.yml');
+        }).toList()
+      : <File>[File(selectedSpec).absolute];
+  if (specFiles.isEmpty) {
+    throw StateError('No OpenAPI YAML files found under ${specsDir.path}');
+  }
+  for (final specFile in specFiles) {
+    if (!specFile.existsSync()) {
+      throw StateError('OpenAPI spec not found: ${specFile.path}');
+    }
+    if (!specFile.absolute.path.startsWith(
+          '$specsRoot${Platform.pathSeparator}',
+        ) &&
+        specFile.absolute.path != specsRoot) {
+      throw ArgumentError(
+        'Selected spec must be inside ${specsDir.path}: ${specFile.path}',
+      );
+    }
+  }
   final generatedRoutes = <Map<String, dynamic>>[];
 
   for (var file in specFiles) {
@@ -40,8 +69,8 @@ void main() async {
     final moduleName = file.uri.pathSegments.last.split('.').first;
     log.i('Generating module: $moduleName');
 
-    // Mirror the spec's directory structure beneath lib/modules. For example,
-    // specs/cpanel/accounts/users.openapi.yaml generates into
+    // Mirror the OpenAPI directory structure beneath lib/modules. For example,
+    // openapi/cpanel/accounts/users.openapi.yaml generates into
     // lib/modules/cpanel/accounts/users.
     final relativeParent = file.parent.absolute.path
         .substring(specsRoot.length)
@@ -81,11 +110,14 @@ void main() async {
     final modelFieldsByClass = <String, List<Map<String, dynamic>>>{};
     for (var entry in schemas.entries) {
       final className = entry.key;
-      if (entry.key.toLowerCase().contains('request')) requestClass = className;
-      if (entry.key.toLowerCase().contains('response'))
+      if (entry.key.toLowerCase().contains('request')) {
+        requestClass = className;
+      }
+      if (entry.key.toLowerCase().contains('response')) {
         responseClass = className;
+      }
 
-      print("className:" + className);
+      log.d('Generating model: $className');
       final schema = entry.value as Map;
       final requiredRaw = schema['required'];
       final requiredList = (requiredRaw is Iterable)
@@ -95,11 +127,24 @@ void main() async {
       final vars = (schema['properties'] ?? {}).entries
           .map((prop) {
             final propName = prop.key as String;
-            final propSchema = prop.value as Map;
+            if (prop.value is! Map) {
+              log.w(
+                'Schema missing for $className.$propName; treating it as JSON data',
+              );
+            }
+            final propSchema = prop.value is Map
+                ? prop.value as Map
+                : const <String, dynamic>{};
             final baseType = _mapType(propSchema['type']);
-            final isRequired = requiredList.contains(propName);
-            final datatype = isRequired ? baseType : '$baseType?';
-            final castType = isRequired ? baseType : '$baseType?';
+            final modelRequired = requiredList.contains(propName);
+            final isNullable = propSchema['nullable'] == true;
+            final isRequired = modelRequired && !isNullable;
+            final datatype = baseType == 'dynamic'
+                ? 'dynamic'
+                : modelRequired && !isNullable
+                ? baseType
+                : '$baseType?';
+            final castType = datatype;
             final maxLength = propSchema['maxLength'];
             final entityFieldType = _entityFieldType(
               propName,
@@ -111,19 +156,30 @@ void main() async {
               'datatype': datatype,
               'baseName': propName,
               'required': isRequired,
+              'isNullable': datatype.endsWith('?'),
+              'modelRequired': modelRequired,
               'castType': castType,
-              'nullableSuffix': isRequired ? '' : '?',
-              'isNumeric': baseType == 'int' || baseType == 'bouble',
+              'isNumeric': baseType == 'int' || baseType == 'double',
               'isSensitive': _isSensitiveField(propName),
               'label': _toLabel(propName),
               'maxLength': maxLength,
               'hasMaxLength': maxLength is int,
               'entityFieldType': entityFieldType,
-              'formFieldType': _appDynamicFieldType(entityFieldType),
               'isIntegerFormField': baseType == 'int',
               'isDoubleFormField': baseType == 'double',
-              'isNumericField': entityFieldType == 'numer',
-              'isBooleanField': entityFieldType == 'boolean',
+              'isDynamicFormField': baseType == 'dynamic',
+              'valueType': baseType,
+              'hasDefaultValue': propSchema.containsKey('default'),
+              'defaultValueLiteral': propSchema.containsKey('default')
+                  ? _dartLiteral(propSchema['default'])
+                  : 'null',
+              'validationRules': _validationRules(
+                propSchema,
+                required: isRequired,
+              ),
+              'optionLiterals': (propSchema['enum'] as List? ?? const [])
+                  .map(_dartLiteral)
+                  .toList(),
             };
           })
           .toList()
@@ -152,9 +208,27 @@ void main() async {
         .toList();
 
     final primaryEntityClass = responseClass ?? requestClass;
-    final requestFieldNames = (modelFieldsByClass[requestClass] ?? [])
-        .map((f) => f['baseName'] as String)
-        .toSet();
+    final paths = yaml['paths'] ?? {};
+    final requestClasses = <String>{};
+    for (final pathEntry in paths.entries) {
+      final operations = pathEntry.value as Map;
+      for (final operation in operations.values) {
+        final requestBody = operation['requestBody'] as Map?;
+        final requestSchema =
+            requestBody?['content']?['application/json']?['schema'];
+        final requestModel = _extractRefClass(requestSchema);
+        if (requestModel != null) requestClasses.add(requestModel);
+      }
+    }
+    final requestFieldsByName = <String, Map<String, dynamic>>{};
+    for (final className in requestClasses) {
+      for (final field in modelFieldsByClass[className] ?? const []) {
+        if (field['isSensitive'] != true) {
+          requestFieldsByName[field['baseName'] as String] = field;
+        }
+      }
+    }
+    final requestFieldNames = requestFieldsByName.keys.toSet();
     final entityFields = (modelFieldsByClass[primaryEntityClass] ?? [])
         .where((f) => f['isSensitive'] != true)
         .map(
@@ -166,9 +240,9 @@ void main() async {
           },
         )
         .toSet();
+    final formFields = requestFieldsByName.values.toList();
 
     // Collect endpoints
-    final paths = yaml['paths'] ?? {};
     final endpoints = <Map<String, dynamic>>[];
 
     for (var entry in paths.entries) {
@@ -193,6 +267,7 @@ void main() async {
             'original': paramName,
             'datatype': _mapType(paramSchema['type'] as String?),
             'required': p['required'] == true,
+            'in': 'path',
           };
         }).toList();
 
@@ -210,6 +285,7 @@ void main() async {
                 ? _mapType(paramSchema['type'] as String?)
                 : '${_mapType(paramSchema['type'] as String?)}?',
             'required': isRequired,
+            'in': 'query',
           };
         }).toList();
 
@@ -224,7 +300,7 @@ void main() async {
           );
         }
 
-        print("path : $path , httpMethod $httpMethod");
+        log.d('Path: $path, method: $httpMethod');
 
         final requestBody = op['requestBody'] as Map?;
         final requestBodySchema =
@@ -240,11 +316,9 @@ void main() async {
 
         // Determine response shape for decoder
         Map? successResponse;
-        String? successStatusCode;
         if (op['responses'] is Map) {
           for (var r in (op['responses'] as Map).entries) {
             if ((r.key as String).startsWith('2')) {
-              successStatusCode = r.key as String;
               successResponse = r.value as Map?;
               break;
             }
@@ -326,6 +400,10 @@ void main() async {
           'serviceName': _toUpperCamel(moduleName),
           'RequestClass': requestBodyClass,
           'ResponseClass': responseClassForEndpoint,
+          'RequestModelFile': _toSnakeCase(requestBodyClass),
+          'ResponseModelFile': _toSnakeCase(responseClassForEndpoint),
+          'hasTypedRequest':
+              hasRequestBody && requestBodyClass != 'Map<String, dynamic>',
           'ResponseType': responseType,
           'path': path,
           'httpMethod': httpMethod,
@@ -452,10 +530,17 @@ void main() async {
     final titleIndex = listColumns.indexWhere(
       (field) => field['name'] == cardTitleField,
     );
+    final cardTitleNullable = titleIndex >= 0
+        ? listColumns[titleIndex]['isNullable'] == true
+        : false;
     final cardSubtitleField =
         titleIndex >= 0 && titleIndex + 1 < listColumns.length
         ? listColumns[titleIndex + 1]['name']
         : null;
+    final cardSubtitleNullable =
+        titleIndex >= 0 &&
+        titleIndex + 1 < listColumns.length &&
+        listColumns[titleIndex + 1]['isNullable'] == true;
 
     if (listEndpoint.isNotEmpty) {
       await _generateFile(
@@ -476,11 +561,13 @@ void main() async {
           'hasFormPage': canGenerateForm && editRouteExpression != null,
           'editRouteExpression': editRouteExpression,
           'editRouteGuard': _itemRouteGuard(updateEndpoint),
-          'hasCreatePage': canGenerateForm,
+          'hasCreatePage': canGenerateForm && createEndpoint.isNotEmpty,
           'cardTitleField': cardTitleField,
           'hasCardTitleField': cardTitleField != null,
+          'cardTitleNullable': cardTitleNullable,
           'cardSubtitleField': cardSubtitleField,
           'hasCardSubtitle': cardSubtitleField != null,
+          'cardSubtitleNullable': cardSubtitleNullable,
         },
         coreImport: coreImport,
       );
@@ -491,12 +578,12 @@ void main() async {
     }
 
     if (entityFields.isNotEmpty) {
-      _generateFile(
+      await _generateFile(
         'meta',
         templatesDir,
         metaDir,
         moduleName,
-        extra: {'fields': entityFields},
+        extra: {'fields': entityFields, 'formFields': formFields},
       );
 
       if (detailEndpoint.isNotEmpty) {
@@ -509,7 +596,18 @@ void main() async {
           requestClass: requestClass,
           responseClass: responseClass,
           endpoint: detailEndpoint,
-          extra: {'fields': entityFields},
+          extra: {
+            'fields': entityFields,
+            'hasDeletePage': deleteEndpoint.isNotEmpty,
+            'deleteRouteExpression': deleteEndpoint.isNotEmpty
+                ? _itemRouteExpression(
+                    routePath,
+                    (deleteEndpoint['pathParams'] as List).cast<Map>(),
+                    suffix: '/delete',
+                  )
+                : null,
+            'deleteRouteGuard': _itemRouteGuard(deleteEndpoint),
+          },
         );
       } else {
         log.w(
@@ -529,19 +627,34 @@ void main() async {
           endpoint: updateEndpoint.isNotEmpty ? updateEndpoint : createEndpoint,
           extra: {
             'fields': entityFields,
+            'formFields': formFields,
             'hasCreateEndpoint': createEndpoint.isNotEmpty,
             'hasUpdateEndpoint': updateEndpoint.isNotEmpty,
+            'hasDistinctUpdateRequest':
+                updateEndpoint.isNotEmpty &&
+                updateEndpoint['RequestClass'] !=
+                    createEndpoint['RequestClass'],
+            'hasDetailEndpoint': detailEndpoint.isNotEmpty,
+            'basePath': routePath,
+            'detailEndpoint': detailEndpoint,
             'createEndpoint': createEndpoint,
             'updateEndpoint': updateEndpoint,
-            'requestModelFile': _toSnakeCase(requestClass!),
+            'detailBlocArgs': _blocEventArguments(
+              detailEndpoint,
+              useWidgetParams: true,
+            ),
+            'createBlocArgs': _blocEventArguments(
+              createEndpoint,
+              useWidgetParams: true,
+            ),
+            'updateBlocArgs': _blocEventArguments(
+              updateEndpoint,
+              useWidgetParams: true,
+            ),
+            'updatePathGuard': _widgetPathGuard(updateEndpoint),
             'updatePathParams': _withLastFlag(
               (updateEndpoint['pathParams'] ?? <Map<String, dynamic>>[])
                   .cast<Map<String, dynamic>>(),
-            ),
-            'createCallArgs': _widgetCallArguments(createEndpoint),
-            'updateCallArgs': _widgetCallArguments(
-              updateEndpoint,
-              assertWidgetParamsNonNull: true,
             ),
           },
           coreImport: coreImport,
@@ -560,7 +673,10 @@ void main() async {
         viewDir,
         moduleName,
         endpoint: deleteEndpoint,
-        extra: {'deleteCallArgs': _widgetCallArguments(deleteEndpoint)},
+        extra: {
+          'basePath': routePath,
+          'deleteBlocArgs': _blocEventArguments(deleteEndpoint),
+        },
         coreImport: coreImport,
       );
     }
@@ -573,7 +689,7 @@ void main() async {
       'view',
     ].join('/');
     generatedRoutes.add({
-      'alias': 'generatedModule${generatedRoutes.length}',
+      'alias': 'generated_module_${generatedRoutes.length}',
       'basePath': routePath,
       'pageClass': '${_toUpperCamel(moduleName)}Page',
       'pageImport': '$moduleImportPath/${_toSnakeCase(moduleName)}_page.dart',
@@ -587,6 +703,11 @@ void main() async {
       'formImport':
           '$moduleImportPath/${_toSnakeCase(moduleName)}_form_page.dart',
       'hasFormPage': canGenerateForm,
+      'hasCreatePage': canGenerateForm && createEndpoint.isNotEmpty,
+      'hasUpdatePage':
+          canGenerateForm &&
+          updateEndpoint.isNotEmpty &&
+          (updateEndpoint['pathParams'] as List).isNotEmpty,
       'updateParams': updateEndpoint['pathParams'] ?? <Map<String, dynamic>>[],
       'deletePageClass': '${_toUpperCamel(moduleName)}DeletePage',
       'deleteImport':
@@ -644,7 +765,7 @@ void main() async {
     log.i('Generated index file for module: $moduleName');
   }
 
-  await _writeGeneratedRoutes(Directory('../lib/routes'), generatedRoutes);
+  await _writeGeneratedRoutes(routesDir, generatedRoutes);
   log.i('✅ Generator finished successfully.');
 }
 
@@ -665,13 +786,13 @@ Future<void> _generateFile(
 
   final templateFile = File('${templatesDir.path}/$type.mustache');
   if (!templateFile.existsSync()) {
-    log.e('Template not found: ${templateFile.path}');
-    return;
+    throw StateError('Template not found: ${templateFile.path}');
   }
 
   final template = Template(await templateFile.readAsString(), name: type);
   final content = template.renderString({
     'module': _toSnakeCase(name),
+    'moduleCamel': _toLowerCamelCase(name),
     'Module': _toUpperCamel(name),
     'models': models ?? [],
     'RequestClass': requestClass ?? 'Request',
@@ -745,11 +866,13 @@ Future<void> _writeGeneratedRoutes(
       );
     }
     if (module['hasFormPage'] == true) {
-      lines.add(
-        '  AppRouteDefinition(path: \'$base/new\', builder: (_) => const $alias.${module['formPageClass']}()),',
-      );
+      if (module['hasCreatePage'] == true) {
+        lines.add(
+          '  AppRouteDefinition(path: \'$base/new\', builder: (_) => const $alias.${module['formPageClass']}()),',
+        );
+      }
       final params = (module['updateParams'] as List).cast<Map>();
-      if (params.isNotEmpty) {
+      if (module['hasUpdatePage'] == true && params.isNotEmpty) {
         final path = _routePath(base, params, suffix: '/edit');
         final args = _routeArguments(params);
         lines.add(
@@ -786,13 +909,19 @@ String _itemRouteExpression(
   final segments = params
       .map((param) => r'${item.' + param['name'].toString() + '}')
       .join('/');
-  return "'$base/$segments$suffix'";
+  return "'${segments.isEmpty ? base : '$base/$segments'}$suffix'";
 }
 
 String? _itemRouteGuard(Map<String, dynamic> endpoint) {
   final params = (endpoint['pathParams'] as List? ?? const []).cast<Map>();
   if (params.isEmpty) return null;
   final field = params.first['name'];
+  final fields = (endpoint['columns'] as List? ?? const [])
+      .cast<Map<String, dynamic>>();
+  final matchingField = fields.where((entry) => entry['name'] == field);
+  if (matchingField.isNotEmpty && matchingField.first['isNullable'] != true) {
+    return null;
+  }
   return 'item.$field == null';
 }
 
@@ -815,41 +944,10 @@ String _routeParameterExpression(Map param) {
   }
 }
 
-String _appDynamicFieldType(String entityFieldType) {
-  switch (entityFieldType) {
-    case 'email':
-      return 'email';
-    case 'password':
-      return 'password';
-    case 'number':
-      return 'number';
-    case 'textarea':
-      return 'multiline';
-    default:
-      return 'text';
-  }
-}
-
 List<Map<String, dynamic>> _withLastFlag(List<Map<String, dynamic>> params) => [
   for (var i = 0; i < params.length; i++)
     {...params[i], 'last': i == params.length - 1},
 ];
-
-String _widgetCallArguments(
-  Map<String, dynamic> endpoint, {
-  bool assertWidgetParamsNonNull = false,
-}) {
-  if (endpoint.isEmpty) return '';
-  final args = <String>[];
-  for (final param in (endpoint['pathParams'] as List? ?? const [])) {
-    args.add('widget.${param['name']}${assertWidgetParamsNonNull ? '!' : ''}');
-  }
-  if (endpoint['hasRequestBody'] == true) args.add('request');
-  for (final _ in (endpoint['queryParams'] as List? ?? const [])) {
-    args.add('null');
-  }
-  return args.join(', ');
-}
 
 bool _isSensitiveField(String propName) {
   final lower = propName.toLowerCase();
@@ -867,9 +965,16 @@ String _entityFieldType(String propName, Map propSchema, String baseType) {
   if (lower.contains('email')) return 'email';
   if (lower.contains('phone')) return 'phone';
   if (baseType == 'bool') return 'boolean';
-  if (format == 'data-type' || format == 'date' || lower.contains('date')) {
+  if (format?.startsWith('date') == true ||
+      lower == 'date' ||
+      lower.contains('date_') ||
+      lower.endsWith('_date')) {
     return 'date';
   }
+  if (propSchema['enum'] is List && (propSchema['enum'] as List).isNotEmpty) {
+    return 'select';
+  }
+  if (baseType == 'dynamic') return 'textarea';
   if (baseType == 'int' || baseType == 'double') return 'number';
   if (maxLength is int && maxLength > 100) return 'textarea';
   return 'text';
@@ -903,6 +1008,98 @@ String _toSnakeCase(String input) {
       .toLowerCase();
 }
 
+String? _argumentValue(List<String> args, String name) {
+  final index = args.indexOf(name);
+  if (index == -1) return null;
+  if (index + 1 >= args.length || args[index + 1].startsWith('--')) {
+    throw ArgumentError('Expected a value after $name');
+  }
+  return args[index + 1];
+}
+
+String _dartLiteral(dynamic value) {
+  if (value is String) return jsonEncode(value);
+  if (value == null || value is num || value is bool) {
+    return value.toString();
+  }
+  if (value is Map) {
+    final entries = value.entries
+        .map(
+          (entry) =>
+              '${jsonEncode(entry.key.toString())}: ${_dartLiteral(entry.value)}',
+        )
+        .join(', ');
+    return '{$entries}';
+  }
+  if (value is Iterable) {
+    return '[${value.map(_dartLiteral).join(', ')}]';
+  }
+  throw ArgumentError('Unsupported OpenAPI default value: $value');
+}
+
+List<Map<String, dynamic>> _validationRules(
+  Map schema, {
+  bool required = false,
+}) {
+  final rules = <Map<String, dynamic>>[];
+  if (required == true) {
+    rules.add({'key': 'required', 'value': true});
+  }
+  if (schema['format'] == 'email') {
+    rules.add({'key': 'email', 'value': true});
+  }
+  if (schema['type'] == 'integer' || schema['type'] == 'number') {
+    rules.add({'key': 'number', 'value': true});
+  }
+  for (final key in ['minLength', 'maxLength', 'minimum', 'maximum']) {
+    final value = schema[key];
+    if (value is num) {
+      rules.add({
+        'key': switch (key) {
+          'minLength' => 'minLength',
+          'maxLength' => 'maxLength',
+          'minimum' => 'min',
+          'maximum' => 'max',
+          _ => key,
+        },
+        'value': value,
+      });
+    }
+  }
+  if (schema['pattern'] is String) {
+    rules.add({'key': 'pattern', 'value': _dartLiteral(schema['pattern'])});
+  }
+  return rules;
+}
+
+String _blocEventArguments(
+  Map<String, dynamic> endpoint, {
+  bool useWidgetParams = false,
+}) {
+  if (endpoint.isEmpty) return '';
+  final args = <String>[];
+  for (final param in (endpoint['parameters'] as List? ?? const [])) {
+    final name = param['name'] as String;
+    switch (param['in']) {
+      case 'path':
+        args.add('$name: ${useWidgetParams ? 'widget.$name!' : name}');
+        break;
+      case 'body':
+        args.add('$name: request');
+        break;
+      case 'query':
+        args.add('$name: null');
+        break;
+    }
+  }
+  return args.join(', ');
+}
+
+String _widgetPathGuard(Map<String, dynamic> endpoint) {
+  final params = (endpoint['pathParams'] as List? ?? const []);
+  return params.map((param) => 'widget.${param['name']} != null').join(' && ');
+}
+
 String _toUpperCamel(String input) {
   // Normalize: replace non-alphanumeric with underscores
   final normalized = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
@@ -916,8 +1113,8 @@ String _toUpperCamel(String input) {
 }
 
 String? _extractRefClass(dynamic schema) {
-  if (schema is Map && schema[r'\$ref'] is String) {
-    final ref = schema[r'\$ref'] as String;
+  if (schema is Map && schema['\$ref'] is String) {
+    final ref = schema['\$ref'] as String;
     return ref.split('/').last;
   }
   if (schema is Map && schema['items'] is Map) {

@@ -1,0 +1,591 @@
+{
+  "entity": "Opportunity",
+  "table": "crm_opportunity",
+  "primaryKey": "opportunity_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/opportunity"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/opportunity"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/opportunity/{opportunity_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/opportunity/{opportunity_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/opportunity/{opportunity_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "opportunity_id",
+        "label": "Opportunity Id"
+      },
+      {
+        "field": "opportunity_number",
+        "label": "Opportunity Number"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "lead_id",
+        "label": "Lead Id"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "deal_type",
+        "label": "Deal Type"
+      },
+      {
+        "field": "stage",
+        "label": "Stage"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "probability",
+        "label": "Probability"
+      },
+      {
+        "field": "expected_close_date",
+        "label": "Expected Close Date"
+      },
+      {
+        "field": "owner_user_id",
+        "label": "Owner User Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "branch_id",
+        "label": "Branch Id"
+      },
+      {
+        "field": "lost_reason",
+        "label": "Lost Reason"
+      },
+      {
+        "field": "closed_at",
+        "label": "Closed At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "opportunity_id",
+      "opportunity_number",
+      "account_id",
+      "lead_id",
+      "name",
+      "application_id",
+      "deal_type",
+      "stage",
+      "amount",
+      "currency_code",
+      "probability",
+      "expected_close_date",
+      "owner_user_id",
+      "sales_agent_id",
+      "branch_id",
+      "lost_reason",
+      "closed_at",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "opportunity_number",
+      "account_id",
+      "lead_id",
+      "name",
+      "application_id",
+      "deal_type",
+      "stage",
+      "amount",
+      "currency_code",
+      "probability",
+      "expected_close_date",
+      "owner_user_id",
+      "sales_agent_id",
+      "branch_id",
+      "lost_reason",
+      "closed_at"
+    ],
+    "update": [
+      "opportunity_number",
+      "account_id",
+      "lead_id",
+      "name",
+      "application_id",
+      "deal_type",
+      "stage",
+      "amount",
+      "currency_code",
+      "probability",
+      "expected_close_date",
+      "owner_user_id",
+      "sales_agent_id",
+      "branch_id",
+      "lost_reason",
+      "closed_at"
+    ]
+  },
+  "references": {
+    "account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "lead_id": {
+      "table": "crm_lead",
+      "key": "lead_id",
+      "lookup": {
+        "endpoint": "/crm_lead"
+      }
+    },
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "owner_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "branch_id": {
+      "table": "org_branch",
+      "key": "branch_id",
+      "lookup": {
+        "endpoint": "/org_branch"
+      }
+    },
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "opportunity_id",
+      "label": "Opportunity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "opportunity_number",
+      "label": "Opportunity Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "lead_id",
+      "label": "Lead Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_lead",
+        "column": "lead_id",
+        "lookup": {
+          "endpoint": "/crm_lead",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "deal_type",
+      "label": "Deal Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "stage",
+      "label": "Stage",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 15
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "probability",
+      "label": "Probability",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "expected_close_date",
+      "label": "Expected Close Date",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "owner_user_id",
+      "label": "Owner User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "branch_id",
+      "label": "Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_branch",
+        "column": "branch_id",
+        "lookup": {
+          "endpoint": "/org_branch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "lost_reason",
+      "label": "Lost Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "closed_at",
+      "label": "Closed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

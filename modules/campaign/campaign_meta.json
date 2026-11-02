@@ -1,0 +1,382 @@
+{
+  "entity": "Campaign",
+  "table": "crm_campaign",
+  "primaryKey": "campaign_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/campaign"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/campaign"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/campaign/{campaign_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/campaign/{campaign_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/campaign/{campaign_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "campaign_id",
+        "label": "Campaign Id"
+      },
+      {
+        "field": "campaign_code",
+        "label": "Campaign Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "start_date",
+        "label": "Start Date"
+      },
+      {
+        "field": "end_date",
+        "label": "End Date"
+      },
+      {
+        "field": "budget_amount",
+        "label": "Budget Amount"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "owner_user_id",
+        "label": "Owner User Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "campaign_id",
+      "campaign_code",
+      "name",
+      "channel",
+      "application_id",
+      "start_date",
+      "end_date",
+      "budget_amount",
+      "currency_code",
+      "owner_user_id",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "campaign_code",
+      "name",
+      "channel",
+      "application_id",
+      "start_date",
+      "end_date",
+      "budget_amount",
+      "currency_code",
+      "owner_user_id"
+    ],
+    "update": [
+      "campaign_code",
+      "name",
+      "channel",
+      "application_id",
+      "start_date",
+      "end_date",
+      "budget_amount",
+      "currency_code",
+      "owner_user_id"
+    ]
+  },
+  "references": {
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "owner_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "campaign_id",
+      "label": "Campaign Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "campaign_code",
+      "label": "Campaign Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "start_date",
+      "label": "Start Date",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "end_date",
+      "label": "End Date",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "budget_amount",
+      "label": "Budget Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "owner_user_id",
+      "label": "Owner User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

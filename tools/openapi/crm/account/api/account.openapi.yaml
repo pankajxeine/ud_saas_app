@@ -1,0 +1,411 @@
+openapi: 3.0.0
+x-sql-table: crm_account
+x-sql-references:
+  - column: "industry_code"
+    table: "platform_industry"
+    key: "industry_code"
+  - column: "country_code"
+    table: "platform_country"
+    key: "country_code"
+  - column: "owner_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "territory_id"
+    table: "org_territory"
+    key: "territory_id"
+  - column: "parent_account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+info:
+  title: AccountResponse API
+  version: 1.0.0
+paths:
+  /account:
+    get:
+      operationId: listAccount
+      summary: Get all account
+      responses:
+        '200':
+          description: List of account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse'
+    post:
+      operationId: createAccount
+      summary: Create a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /account/{account_id}:
+    get:
+      operationId: getAccountById
+      summary: Get account by account_id
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '404':
+          description: account not found
+    put:
+      operationId: updateAccount
+      summary: Update account by account_id
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: account not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAccount
+      summary: Delete account by account_id
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: account not found
+components:
+  schemas:
+
+    AccountRequest:
+      type: object
+      required:
+        - legal_name
+        - display_name
+        - country_code
+      additionalProperties: false
+      properties:
+        account_number:
+          type: string
+          maxLength: 20
+        account_type:
+          type: string
+          maxLength: 20
+          default: "prospect"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        website:
+          type: string
+          nullable: true
+        employee_band:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        parent_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+
+    AccountUpdateRequest:
+      type: object
+      required:
+        - account_number
+        - account_type
+        - legal_name
+        - display_name
+        - industry_code
+        - country_code
+        - tax_id
+        - website
+        - employee_band
+        - billing_address
+        - owner_user_id
+        - branch_id
+        - territory_id
+        - sales_agent_id
+        - parent_account_id
+      additionalProperties: false
+      properties:
+        account_number:
+          type: string
+          maxLength: 20
+        account_type:
+          type: string
+          maxLength: 20
+          default: "prospect"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        website:
+          type: string
+          nullable: true
+        employee_band:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        parent_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+
+    AccountResponse:
+      type: object
+      required:
+        - record_code
+        - account_id
+        - account_number
+        - account_type
+        - legal_name
+        - display_name
+        - country_code
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        account_id:
+          type: string
+          format: uuid
+          readOnly: true
+        account_number:
+          type: string
+          maxLength: 20
+        account_type:
+          type: string
+          maxLength: 20
+          default: "prospect"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_id:
+          type: string
+          nullable: true
+          maxLength: 40
+        website:
+          type: string
+          nullable: true
+        employee_band:
+          type: string
+          nullable: true
+        billing_address:
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        parent_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+  

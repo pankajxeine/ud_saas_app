@@ -1,0 +1,261 @@
+openapi: 3.0.0
+x-sql-table: metering_quota_alert
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "meter_id"
+    table: "metering_meter"
+    key: "meter_id"
+info:
+  title: QuotaAlertResponse API
+  version: 1.0.0
+paths:
+  /quota_alert:
+    get:
+      operationId: listQuotaAlert
+      summary: Get all quota_alert
+      responses:
+        '200':
+          description: List of quota_alert
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaAlertResponse'
+    post:
+      operationId: createQuotaAlert
+      summary: Create a new quota_alert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotaAlertRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaAlertResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /quota_alert/{quota_alert_id}:
+    get:
+      operationId: getQuotaAlertById
+      summary: Get quota_alert by quota_alert_id
+      parameters:
+        - in: path
+          name: quota_alert_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: quota_alert object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaAlertResponse'
+        '404':
+          description: quota_alert not found
+    put:
+      operationId: updateQuotaAlert
+      summary: Update quota_alert by quota_alert_id
+      parameters:
+        - in: path
+          name: quota_alert_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotaAlertUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaAlertResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: quota_alert not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteQuotaAlert
+      summary: Delete quota_alert by quota_alert_id
+      parameters:
+        - in: path
+          name: quota_alert_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: quota_alert not found
+components:
+  schemas:
+
+    QuotaAlertRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - meter_id
+        - period_start
+        - threshold_percent
+        - used_quantity
+        - limit_quantity
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        period_start:
+          type: string
+          format: date-time
+        threshold_percent:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 1000
+        used_quantity:
+          type: number
+          format: double
+        limit_quantity:
+          type: number
+          format: double
+        triggered_at:
+          type: string
+          format: date-time
+        acknowledged_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    QuotaAlertUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - meter_id
+        - period_start
+        - threshold_percent
+        - used_quantity
+        - limit_quantity
+        - triggered_at
+        - acknowledged_at
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        period_start:
+          type: string
+          format: date-time
+        threshold_percent:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 1000
+        used_quantity:
+          type: number
+          format: double
+        limit_quantity:
+          type: number
+          format: double
+        triggered_at:
+          type: string
+          format: date-time
+        acknowledged_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    QuotaAlertResponse:
+      type: object
+      required:
+        - record_code
+        - quota_alert_id
+        - tenant_application_id
+        - meter_id
+        - period_start
+        - threshold_percent
+        - used_quantity
+        - limit_quantity
+        - triggered_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        quota_alert_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        meter_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "metering_meter"
+            column: "meter_id"
+        period_start:
+          type: string
+          format: date-time
+        threshold_percent:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 1000
+        used_quantity:
+          type: number
+          format: double
+        limit_quantity:
+          type: number
+          format: double
+        triggered_at:
+          type: string
+          format: date-time
+        acknowledged_at:
+          type: string
+          format: date-time
+          nullable: true
+  

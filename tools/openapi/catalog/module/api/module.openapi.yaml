@@ -1,0 +1,256 @@
+openapi: 3.0.0
+x-sql-table: catalog_module
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: ModuleResponse API
+  version: 1.0.0
+paths:
+  /module:
+    get:
+      operationId: listModule
+      summary: Get all module
+      responses:
+        '200':
+          description: List of module
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModuleResponse'
+    post:
+      operationId: createModule
+      summary: Create a new module
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /module/{module_id}:
+    get:
+      operationId: getModuleById
+      summary: Get module by module_id
+      parameters:
+        - in: path
+          name: module_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: module object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleResponse'
+        '404':
+          description: module not found
+    put:
+      operationId: updateModule
+      summary: Update module by module_id
+      parameters:
+        - in: path
+          name: module_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: module not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteModule
+      summary: Delete module by module_id
+      parameters:
+        - in: path
+          name: module_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: module not found
+components:
+  schemas:
+
+    ModuleRequest:
+      type: object
+      required:
+        - application_id
+        - module_code
+        - name
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+          maxLength: 30
+        is_core:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    ModuleUpdateRequest:
+      type: object
+      required:
+        - application_id
+        - module_code
+        - name
+        - description
+        - category
+        - is_core
+        - is_active
+        - sort_order
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+          maxLength: 30
+        is_core:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    ModuleResponse:
+      type: object
+      required:
+        - record_code
+        - module_id
+        - application_id
+        - module_code
+        - name
+        - is_core
+        - is_active
+        - sort_order
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        module_id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+          maxLength: 30
+        is_core:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

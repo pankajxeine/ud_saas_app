@@ -1,0 +1,321 @@
+{
+  "entity": "QuoteLine",
+  "table": "crm_quote_line",
+  "primaryKey": "quote_line_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/quote_line"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/quote_line"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/quote_line/{quote_line_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/quote_line/{quote_line_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/quote_line/{quote_line_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "quote_line_id",
+        "label": "Quote Line Id"
+      },
+      {
+        "field": "quote_id",
+        "label": "Quote Id"
+      },
+      {
+        "field": "line_no",
+        "label": "Line No"
+      },
+      {
+        "field": "plan_price_id",
+        "label": "Plan Price Id"
+      },
+      {
+        "field": "addon_price_id",
+        "label": "Addon Price Id"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "list_amount",
+        "label": "List Amount"
+      },
+      {
+        "field": "discount_percent",
+        "label": "Discount Percent"
+      },
+      {
+        "field": "net_amount",
+        "label": "Net Amount"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "quote_line_id",
+      "quote_id",
+      "line_no",
+      "plan_price_id",
+      "addon_price_id",
+      "description",
+      "quantity",
+      "list_amount",
+      "discount_percent",
+      "net_amount"
+    ]
+  },
+  "form": {
+    "create": [
+      "quote_id",
+      "line_no",
+      "plan_price_id",
+      "addon_price_id",
+      "description",
+      "quantity",
+      "list_amount",
+      "discount_percent",
+      "net_amount"
+    ],
+    "update": [
+      "quote_id",
+      "line_no",
+      "plan_price_id",
+      "addon_price_id",
+      "description",
+      "quantity",
+      "list_amount",
+      "discount_percent",
+      "net_amount"
+    ]
+  },
+  "references": {
+    "quote_id": {
+      "table": "crm_quote",
+      "key": "quote_id",
+      "lookup": {
+        "endpoint": "/crm_quote"
+      }
+    },
+    "plan_price_id": {
+      "table": "commerce_plan_price",
+      "key": "plan_price_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_price"
+      }
+    },
+    "addon_price_id": {
+      "table": "commerce_addon_price",
+      "key": "addon_price_id",
+      "lookup": {
+        "endpoint": "/commerce_addon_price"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quote_line_id",
+      "label": "Quote Line Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quote_id",
+      "label": "Quote Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_quote",
+        "column": "quote_id",
+        "lookup": {
+          "endpoint": "/crm_quote",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "line_no",
+      "label": "Line No",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "plan_price_id",
+      "label": "Plan Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_price",
+        "column": "plan_price_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_price",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "addon_price_id",
+      "label": "Addon Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_addon_price",
+        "column": "addon_price_id",
+        "lookup": {
+          "endpoint": "/commerce_addon_price",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "number",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "list_amount",
+      "label": "List Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "discount_percent",
+      "label": "Discount Percent",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "net_amount",
+      "label": "Net Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

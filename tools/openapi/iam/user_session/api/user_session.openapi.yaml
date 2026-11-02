@@ -1,0 +1,360 @@
+openapi: 3.0.0
+x-sql-table: iam_user_session
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "impersonating_tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+info:
+  title: UserSessionResponse API
+  version: 1.0.0
+paths:
+  /user_session:
+    get:
+      operationId: listUserSession
+      summary: Get all user_session
+      responses:
+        '200':
+          description: List of user_session
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSessionResponse'
+    post:
+      operationId: createUserSession
+      summary: Create a new user_session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSessionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSessionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /user_session/{user_session_id}:
+    get:
+      operationId: getUserSessionById
+      summary: Get user_session by user_session_id
+      parameters:
+        - in: path
+          name: user_session_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: user_session object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSessionResponse'
+        '404':
+          description: user_session not found
+    put:
+      operationId: updateUserSession
+      summary: Update user_session by user_session_id
+      parameters:
+        - in: path
+          name: user_session_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSessionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSessionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: user_session not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteUserSession
+      summary: Delete user_session by user_session_id
+      parameters:
+        - in: path
+          name: user_session_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: user_session not found
+components:
+  schemas:
+
+    UserSessionRequest:
+      type: object
+      required:
+        - app_user_id
+        - token_hash
+        - idle_expires_at
+        - expires_at
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        token_hash:
+          type: string
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        mfa_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        impersonation_reason:
+          type: string
+          nullable: true
+        client_type:
+          type: string
+          maxLength: 10
+          default: "web"
+        ip_address:
+          type: string
+          nullable: true
+        user_agent:
+          type: string
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+        last_seen_at:
+          type: string
+          format: date-time
+        idle_expires_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+
+    UserSessionUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - token_hash
+        - scope_type
+        - scope_id
+        - auth_method
+        - mfa_verified_at
+        - impersonating_tenant_id
+        - impersonation_reason
+        - client_type
+        - ip_address
+        - user_agent
+        - started_at
+        - last_seen_at
+        - idle_expires_at
+        - expires_at
+        - ended_at
+        - end_reason
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        token_hash:
+          type: string
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        mfa_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        impersonation_reason:
+          type: string
+          nullable: true
+        client_type:
+          type: string
+          maxLength: 10
+          default: "web"
+        ip_address:
+          type: string
+          nullable: true
+        user_agent:
+          type: string
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+        last_seen_at:
+          type: string
+          format: date-time
+        idle_expires_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+
+    UserSessionResponse:
+      type: object
+      required:
+        - record_code
+        - user_session_id
+        - app_user_id
+        - token_hash
+        - scope_type
+        - auth_method
+        - client_type
+        - started_at
+        - last_seen_at
+        - idle_expires_at
+        - expires_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        user_session_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        token_hash:
+          type: string
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        mfa_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        impersonating_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        impersonation_reason:
+          type: string
+          nullable: true
+        client_type:
+          type: string
+          maxLength: 10
+          default: "web"
+        ip_address:
+          type: string
+          nullable: true
+        user_agent:
+          type: string
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+        last_seen_at:
+          type: string
+          format: date-time
+        idle_expires_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+  

@@ -1,0 +1,320 @@
+openapi: 3.0.0
+x-sql-table: org_branch
+x-sql-references:
+  - column: "legal_entity_id"
+    table: "org_legal_entity"
+    key: "legal_entity_id"
+  - column: "territory_id"
+    table: "org_territory"
+    key: "territory_id"
+  - column: "country_code"
+    table: "platform_country"
+    key: "country_code"
+  - column: "calendar_id"
+    table: "platform_calendar"
+    key: "calendar_id"
+  - column: "manager_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: BranchResponse API
+  version: 1.0.0
+paths:
+  /branch:
+    get:
+      operationId: listBranch
+      summary: Get all branch
+      responses:
+        '200':
+          description: List of branch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BranchResponse'
+    post:
+      operationId: createBranch
+      summary: Create a new branch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BranchResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /branch/{branch_id}:
+    get:
+      operationId: getBranchById
+      summary: Get branch by branch_id
+      parameters:
+        - in: path
+          name: branch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: branch object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BranchResponse'
+        '404':
+          description: branch not found
+    put:
+      operationId: updateBranch
+      summary: Update branch by branch_id
+      parameters:
+        - in: path
+          name: branch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BranchUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BranchResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: branch not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteBranch
+      summary: Delete branch by branch_id
+      parameters:
+        - in: path
+          name: branch_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: branch not found
+components:
+  schemas:
+
+    BranchRequest:
+      type: object
+      required:
+        - branch_code
+        - name
+        - legal_entity_id
+        - country_code
+        - timezone
+      additionalProperties: false
+      properties:
+        branch_code:
+          type: string
+        name:
+          type: string
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+        address:
+          nullable: true
+        calendar_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+
+    BranchUpdateRequest:
+      type: object
+      required:
+        - branch_code
+        - name
+        - legal_entity_id
+        - territory_id
+        - country_code
+        - timezone
+        - address
+        - calendar_id
+        - manager_user_id
+        - is_active
+      additionalProperties: false
+      properties:
+        branch_code:
+          type: string
+        name:
+          type: string
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+        address:
+          nullable: true
+        calendar_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+
+    BranchResponse:
+      type: object
+      required:
+        - record_code
+        - branch_id
+        - branch_code
+        - name
+        - legal_entity_id
+        - country_code
+        - timezone
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        branch_id:
+          type: string
+          format: uuid
+          readOnly: true
+        branch_code:
+          type: string
+        name:
+          type: string
+        legal_entity_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "org_legal_entity"
+            column: "legal_entity_id"
+        territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+        address:
+          nullable: true
+        calendar_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

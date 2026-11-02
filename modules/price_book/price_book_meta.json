@@ -1,0 +1,345 @@
+{
+  "entity": "PriceBook",
+  "table": "commerce_price_book",
+  "primaryKey": "price_book_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/price_book"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/price_book"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/price_book/{price_book_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/price_book/{price_book_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/price_book/{price_book_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "price_book_id",
+        "label": "Price Book Id"
+      },
+      {
+        "field": "price_book_code",
+        "label": "Price Book Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "is_default",
+        "label": "Is Default"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "price_book_id",
+      "price_book_code",
+      "name",
+      "currency_code",
+      "legal_entity_id",
+      "is_default",
+      "valid_from",
+      "valid_to",
+      "is_active",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "price_book_code",
+      "name",
+      "currency_code",
+      "legal_entity_id",
+      "is_default",
+      "valid_from",
+      "valid_to",
+      "is_active"
+    ],
+    "update": [
+      "price_book_code",
+      "name",
+      "currency_code",
+      "legal_entity_id",
+      "is_default",
+      "valid_from",
+      "valid_to",
+      "is_active"
+    ]
+  },
+  "references": {
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "legal_entity_id": {
+      "table": "org_legal_entity",
+      "key": "legal_entity_id",
+      "lookup": {
+        "endpoint": "/org_legal_entity"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "price_book_id",
+      "label": "Price Book Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "price_book_code",
+      "label": "Price Book Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "endpoint": "/org_legal_entity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "is_default",
+      "label": "Is Default",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

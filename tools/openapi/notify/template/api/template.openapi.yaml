@@ -1,0 +1,253 @@
+openapi: 3.0.0
+x-sql-table: notify_template
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: TemplateResponse API
+  version: 1.0.0
+paths:
+  /template:
+    get:
+      operationId: listTemplate
+      summary: Get all template
+      responses:
+        '200':
+          description: List of template
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateResponse'
+    post:
+      operationId: createTemplate
+      summary: Create a new template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /template/{template_id}:
+    get:
+      operationId: getTemplateById
+      summary: Get template by template_id
+      parameters:
+        - in: path
+          name: template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: template object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '404':
+          description: template not found
+    put:
+      operationId: updateTemplate
+      summary: Update template by template_id
+      parameters:
+        - in: path
+          name: template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: template not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTemplate
+      summary: Delete template by template_id
+      parameters:
+        - in: path
+          name: template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: template not found
+components:
+  schemas:
+
+    TemplateRequest:
+      type: object
+      required:
+        - template_code
+        - category
+        - channel
+      additionalProperties: false
+      properties:
+        template_code:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        category:
+          type: string
+          maxLength: 14
+        channel:
+          type: string
+          maxLength: 8
+        description:
+          type: string
+          nullable: true
+        variables_schema:
+          default: "{\"required\": []}"
+        is_system:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+
+    TemplateUpdateRequest:
+      type: object
+      required:
+        - template_code
+        - application_id
+        - category
+        - channel
+        - description
+        - variables_schema
+        - is_system
+        - is_active
+      additionalProperties: false
+      properties:
+        template_code:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        category:
+          type: string
+          maxLength: 14
+        channel:
+          type: string
+          maxLength: 8
+        description:
+          type: string
+          nullable: true
+        variables_schema:
+          default: "{\"required\": []}"
+        is_system:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+
+    TemplateResponse:
+      type: object
+      required:
+        - record_code
+        - template_id
+        - template_code
+        - category
+        - channel
+        - variables_schema
+        - is_system
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        template_id:
+          type: string
+          format: uuid
+          readOnly: true
+        template_code:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        category:
+          type: string
+          maxLength: 14
+        channel:
+          type: string
+          maxLength: 8
+        description:
+          type: string
+          nullable: true
+        variables_schema:
+          default: "{\"required\": []}"
+        is_system:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

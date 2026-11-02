@@ -1,0 +1,574 @@
+openapi: 3.0.0
+x-sql-table: support_ticket
+x-sql-references:
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+  - column: "queue_id"
+    table: "support_queue"
+    key: "queue_id"
+  - column: "assignee_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "sla_policy_id"
+    table: "support_sla_policy"
+    key: "sla_policy_id"
+  - column: "parent_ticket_id"
+    table: "support_ticket"
+    key: "ticket_id"
+info:
+  title: TicketResponse API
+  version: 1.0.0
+paths:
+  /ticket:
+    get:
+      operationId: listTicket
+      summary: Get all ticket
+      responses:
+        '200':
+          description: List of ticket
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketResponse'
+    post:
+      operationId: createTicket
+      summary: Create a new ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /ticket/{ticket_id}:
+    get:
+      operationId: getTicketById
+      summary: Get ticket by ticket_id
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ticket object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          description: ticket not found
+    put:
+      operationId: updateTicket
+      summary: Update ticket by ticket_id
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: ticket not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTicket
+      summary: Delete ticket by ticket_id
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: ticket not found
+components:
+  schemas:
+
+    TicketRequest:
+      type: object
+      required:
+        - account_id
+        - queue_id
+        - category
+        - subject
+        - description
+        - channel
+        - sla_policy_id
+        - first_response_due_at
+        - resolution_due_at
+      additionalProperties: false
+      properties:
+        ticket_number:
+          type: string
+          maxLength: 20
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        queue_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        category:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        priority:
+          type: string
+          default: "p3"
+        status:
+          type: string
+          default: "new"
+        assignee_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sla_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        first_response_due_at:
+          type: string
+          format: date-time
+        resolution_due_at:
+          type: string
+          format: date-time
+        first_responded_at:
+          type: string
+          format: date-time
+          nullable: true
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        sla_paused_at:
+          type: string
+          format: date-time
+          nullable: true
+        first_response_breached:
+          type: boolean
+          default: false
+        resolution_breached:
+          type: boolean
+          default: false
+        reopened_count:
+          type: integer
+          format: int32
+          default: 0
+        parent_ticket_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        external_ref:
+          type: string
+          nullable: true
+          maxLength: 60
+
+    TicketUpdateRequest:
+      type: object
+      required:
+        - ticket_number
+        - tenant_id
+        - account_id
+        - contact_id
+        - application_id
+        - module_id
+        - queue_id
+        - category
+        - subject
+        - description
+        - channel
+        - priority
+        - status
+        - assignee_user_id
+        - sla_policy_id
+        - first_response_due_at
+        - resolution_due_at
+        - first_responded_at
+        - resolved_at
+        - closed_at
+        - sla_paused_at
+        - first_response_breached
+        - resolution_breached
+        - reopened_count
+        - parent_ticket_id
+        - external_ref
+      additionalProperties: false
+      properties:
+        ticket_number:
+          type: string
+          maxLength: 20
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        queue_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        category:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        priority:
+          type: string
+          default: "p3"
+        status:
+          type: string
+          default: "new"
+        assignee_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sla_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        first_response_due_at:
+          type: string
+          format: date-time
+        resolution_due_at:
+          type: string
+          format: date-time
+        first_responded_at:
+          type: string
+          format: date-time
+          nullable: true
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        sla_paused_at:
+          type: string
+          format: date-time
+          nullable: true
+        first_response_breached:
+          type: boolean
+          default: false
+        resolution_breached:
+          type: boolean
+          default: false
+        reopened_count:
+          type: integer
+          format: int32
+          default: 0
+        parent_ticket_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        external_ref:
+          type: string
+          nullable: true
+          maxLength: 60
+
+    TicketResponse:
+      type: object
+      required:
+        - record_code
+        - ticket_id
+        - ticket_number
+        - account_id
+        - queue_id
+        - category
+        - subject
+        - description
+        - channel
+        - priority
+        - status
+        - sla_policy_id
+        - first_response_due_at
+        - resolution_due_at
+        - first_response_breached
+        - resolution_breached
+        - reopened_count
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        ticket_id:
+          type: string
+          format: uuid
+          readOnly: true
+        ticket_number:
+          type: string
+          maxLength: 20
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        queue_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        category:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        priority:
+          type: string
+          default: "p3"
+        status:
+          type: string
+          default: "new"
+        assignee_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sla_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_sla_policy"
+            column: "sla_policy_id"
+        first_response_due_at:
+          type: string
+          format: date-time
+        resolution_due_at:
+          type: string
+          format: date-time
+        first_responded_at:
+          type: string
+          format: date-time
+          nullable: true
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        sla_paused_at:
+          type: string
+          format: date-time
+          nullable: true
+        first_response_breached:
+          type: boolean
+          default: false
+        resolution_breached:
+          type: boolean
+          default: false
+        reopened_count:
+          type: integer
+          format: int32
+          default: 0
+        parent_ticket_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        external_ref:
+          type: string
+          nullable: true
+          maxLength: 60
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

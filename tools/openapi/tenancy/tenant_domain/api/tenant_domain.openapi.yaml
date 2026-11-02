@@ -1,0 +1,361 @@
+openapi: 3.0.0
+x-sql-table: tenancy_tenant_domain
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+info:
+  title: TenantDomainResponse API
+  version: 1.0.0
+paths:
+  /tenant_domain:
+    get:
+      operationId: listTenantDomain
+      summary: Get all tenant_domain
+      responses:
+        '200':
+          description: List of tenant_domain
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantDomainResponse'
+    post:
+      operationId: createTenantDomain
+      summary: Create a new tenant_domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantDomainRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDomainResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_domain/{tenant_domain_id}:
+    get:
+      operationId: getTenantDomainById
+      summary: Get tenant_domain by tenant_domain_id
+      parameters:
+        - in: path
+          name: tenant_domain_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_domain object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDomainResponse'
+        '404':
+          description: tenant_domain not found
+    put:
+      operationId: updateTenantDomain
+      summary: Update tenant_domain by tenant_domain_id
+      parameters:
+        - in: path
+          name: tenant_domain_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantDomainUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDomainResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_domain not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantDomain
+      summary: Delete tenant_domain by tenant_domain_id
+      parameters:
+        - in: path
+          name: tenant_domain_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_domain not found
+components:
+  schemas:
+
+    TenantDomainRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - hostname
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        hostname:
+          type: string
+        application_type:
+          type: string
+          maxLength: 12
+          default: "tenant"
+        kind:
+          type: string
+          maxLength: 10
+          default: "subdomain"
+        is_primary:
+          type: boolean
+          default: false
+        verification_token:
+          type: string
+          nullable: true
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        tls_status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        is_active:
+          type: boolean
+          default: true
+
+    TenantDomainUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - hostname
+        - application_type
+        - kind
+        - is_primary
+        - verification_token
+        - verified_at
+        - tls_status
+        - name
+        - title
+        - description
+        - api_endpoint
+        - web_endpoint
+        - logo_url
+        - favicon_url
+        - images
+        - config
+        - is_active
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        hostname:
+          type: string
+        application_type:
+          type: string
+          maxLength: 12
+          default: "tenant"
+        kind:
+          type: string
+          maxLength: 10
+          default: "subdomain"
+        is_primary:
+          type: boolean
+          default: false
+        verification_token:
+          type: string
+          nullable: true
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        tls_status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        is_active:
+          type: boolean
+          default: true
+
+    TenantDomainResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_domain_id
+        - tenant_application_id
+        - hostname
+        - application_type
+        - kind
+        - is_primary
+        - tls_status
+        - images
+        - config
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_domain_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        hostname:
+          type: string
+        application_type:
+          type: string
+          maxLength: 12
+          default: "tenant"
+        kind:
+          type: string
+          maxLength: 10
+          default: "subdomain"
+        is_primary:
+          type: boolean
+          default: false
+        verification_token:
+          type: string
+          nullable: true
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        tls_status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

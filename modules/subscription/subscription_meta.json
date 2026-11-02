@@ -1,0 +1,659 @@
+{
+  "entity": "Subscription",
+  "table": "subscription_subscription",
+  "primaryKey": "subscription_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/subscription"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/subscription"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/subscription/{subscription_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/subscription/{subscription_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/subscription/{subscription_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "subscription_number",
+        "label": "Subscription Number"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "billing_account_id",
+        "label": "Billing Account Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "plan_price_id",
+        "label": "Plan Price Id"
+      },
+      {
+        "field": "quote_id",
+        "label": "Quote Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "discount_percent",
+        "label": "Discount Percent"
+      },
+      {
+        "field": "trial_ends_at",
+        "label": "Trial Ends At"
+      },
+      {
+        "field": "started_at",
+        "label": "Started At"
+      },
+      {
+        "field": "current_period_start",
+        "label": "Current Period Start"
+      },
+      {
+        "field": "current_period_end",
+        "label": "Current Period End"
+      },
+      {
+        "field": "grace_until",
+        "label": "Grace Until"
+      },
+      {
+        "field": "cancel_at",
+        "label": "Cancel At"
+      },
+      {
+        "field": "cancelled_at",
+        "label": "Cancelled At"
+      },
+      {
+        "field": "cancel_reason",
+        "label": "Cancel Reason"
+      },
+      {
+        "field": "auto_renew",
+        "label": "Auto Renew"
+      },
+      {
+        "field": "contract_ref",
+        "label": "Contract Ref"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "subscription_id",
+      "subscription_number",
+      "tenant_application_id",
+      "billing_account_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quote_id",
+      "status",
+      "quantity",
+      "discount_percent",
+      "trial_ends_at",
+      "started_at",
+      "current_period_start",
+      "current_period_end",
+      "grace_until",
+      "cancel_at",
+      "cancelled_at",
+      "cancel_reason",
+      "auto_renew",
+      "contract_ref",
+      "sales_agent_id",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "subscription_number",
+      "tenant_application_id",
+      "billing_account_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quote_id",
+      "status",
+      "quantity",
+      "discount_percent",
+      "trial_ends_at",
+      "started_at",
+      "current_period_start",
+      "current_period_end",
+      "grace_until",
+      "cancel_at",
+      "cancelled_at",
+      "cancel_reason",
+      "auto_renew",
+      "contract_ref",
+      "sales_agent_id"
+    ],
+    "update": [
+      "subscription_number",
+      "tenant_application_id",
+      "billing_account_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quote_id",
+      "status",
+      "quantity",
+      "discount_percent",
+      "trial_ends_at",
+      "started_at",
+      "current_period_start",
+      "current_period_end",
+      "grace_until",
+      "cancel_at",
+      "cancelled_at",
+      "cancel_reason",
+      "auto_renew",
+      "contract_ref",
+      "sales_agent_id"
+    ]
+  },
+  "references": {
+    "tenant_application_id": {
+      "table": "tenancy_tenant_application",
+      "key": "tenant_application_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant_application"
+      }
+    },
+    "plan_version_id": {
+      "table": "commerce_plan_version",
+      "key": "plan_version_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_version"
+      }
+    },
+    "plan_price_id": {
+      "table": "commerce_plan_price",
+      "key": "plan_price_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_price"
+      }
+    },
+    "quote_id": {
+      "table": "crm_quote",
+      "key": "quote_id",
+      "lookup": {
+        "endpoint": "/crm_quote"
+      }
+    },
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "billing_account_id": {
+      "table": "billing_billing_account",
+      "key": "billing_account_id",
+      "lookup": {
+        "endpoint": "/billing_billing_account"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subscription_number",
+      "label": "Subscription Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "billing_account_id",
+      "label": "Billing Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_billing_account",
+        "column": "billing_account_id",
+        "lookup": {
+          "endpoint": "/billing_billing_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_version",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "plan_price_id",
+      "label": "Plan Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_price",
+        "column": "plan_price_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_price",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "quote_id",
+      "label": "Quote Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_quote",
+        "column": "quote_id",
+        "lookup": {
+          "endpoint": "/crm_quote",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "discount_percent",
+      "label": "Discount Percent",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "trial_ends_at",
+      "label": "Trial Ends At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "started_at",
+      "label": "Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "current_period_start",
+      "label": "Current Period Start",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "current_period_end",
+      "label": "Current Period End",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "grace_until",
+      "label": "Grace Until",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "cancel_at",
+      "label": "Cancel At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "cancelled_at",
+      "label": "Cancelled At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "cancel_reason",
+      "label": "Cancel Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "auto_renew",
+      "label": "Auto Renew",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "contract_ref",
+      "label": "Contract Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

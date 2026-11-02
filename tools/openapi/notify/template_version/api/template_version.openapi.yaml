@@ -1,0 +1,238 @@
+openapi: 3.0.0
+x-sql-table: notify_template_version
+x-sql-references:
+  - column: "template_id"
+    table: "notify_template"
+    key: "template_id"
+  - column: "published_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: TemplateVersionResponse API
+  version: 1.0.0
+paths:
+  /template_version:
+    get:
+      operationId: listTemplateVersion
+      summary: Get all template_version
+      responses:
+        '200':
+          description: List of template_version
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateVersionResponse'
+    post:
+      operationId: createTemplateVersion
+      summary: Create a new template_version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateVersionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateVersionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /template_version/{template_version_id}:
+    get:
+      operationId: getTemplateVersionById
+      summary: Get template_version by template_version_id
+      parameters:
+        - in: path
+          name: template_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: template_version object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateVersionResponse'
+        '404':
+          description: template_version not found
+    put:
+      operationId: updateTemplateVersion
+      summary: Update template_version by template_version_id
+      parameters:
+        - in: path
+          name: template_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateVersionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateVersionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: template_version not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTemplateVersion
+      summary: Delete template_version by template_version_id
+      parameters:
+        - in: path
+          name: template_version_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: template_version not found
+components:
+  schemas:
+
+    TemplateVersionRequest:
+      type: object
+      required:
+        - template_id
+        - version_no
+      additionalProperties: false
+      properties:
+        template_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template"
+            column: "template_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    TemplateVersionUpdateRequest:
+      type: object
+      required:
+        - template_id
+        - version_no
+        - status
+        - published_at
+        - published_by_user_id
+      additionalProperties: false
+      properties:
+        template_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template"
+            column: "template_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    TemplateVersionResponse:
+      type: object
+      required:
+        - record_code
+        - template_version_id
+        - template_id
+        - version_no
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        template_version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        template_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template"
+            column: "template_id"
+        version_no:
+          type: integer
+          format: int32
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        published_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

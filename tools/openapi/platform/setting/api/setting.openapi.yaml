@@ -1,0 +1,185 @@
+openapi: 3.0.0
+x-sql-table: platform_setting
+info:
+  title: SettingResponse API
+  version: 1.0.0
+paths:
+  /setting:
+    get:
+      operationId: listSetting
+      summary: Get all setting
+      responses:
+        '200':
+          description: List of setting
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SettingResponse'
+    post:
+      operationId: createSetting
+      summary: Create a new setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /setting/{setting_id}:
+    get:
+      operationId: getSettingById
+      summary: Get setting by setting_id
+      parameters:
+        - in: path
+          name: setting_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: setting object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingResponse'
+        '404':
+          description: setting not found
+    put:
+      operationId: updateSetting
+      summary: Update setting by setting_id
+      parameters:
+        - in: path
+          name: setting_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: setting not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSetting
+      summary: Delete setting by setting_id
+      parameters:
+        - in: path
+          name: setting_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: setting not found
+components:
+  schemas:
+
+    SettingRequest:
+      type: object
+      required:
+        - setting_key
+        - value
+      additionalProperties: false
+      properties:
+        setting_key:
+          type: string
+        value:
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+
+    SettingUpdateRequest:
+      type: object
+      required:
+        - setting_key
+        - value
+        - description
+        - is_sensitive
+      additionalProperties: false
+      properties:
+        setting_key:
+          type: string
+        value:
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+
+    SettingResponse:
+      type: object
+      required:
+        - record_code
+        - setting_id
+        - setting_key
+        - value
+        - is_sensitive
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        setting_id:
+          type: string
+          format: uuid
+          readOnly: true
+        setting_key:
+          type: string
+        value:
+        description:
+          type: string
+          nullable: true
+        is_sensitive:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

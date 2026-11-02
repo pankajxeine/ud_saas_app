@@ -1,0 +1,514 @@
+{
+  "entity": "BillingAccount",
+  "table": "billing_billing_account",
+  "primaryKey": "billing_account_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/billing_account"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/billing_account"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/billing_account/{billing_account_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/billing_account/{billing_account_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/billing_account/{billing_account_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "billing_account_id",
+        "label": "Billing Account Id"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "tax_jurisdiction_code",
+        "label": "Tax Jurisdiction Code"
+      },
+      {
+        "field": "tax_id",
+        "label": "Tax Id"
+      },
+      {
+        "field": "is_tax_exempt",
+        "label": "Is Tax Exempt"
+      },
+      {
+        "field": "bill_to_contact_id",
+        "label": "Bill To Contact Id"
+      },
+      {
+        "field": "invoice_email",
+        "label": "Invoice Email"
+      },
+      {
+        "field": "billing_address",
+        "label": "Billing Address"
+      },
+      {
+        "field": "payment_terms_days",
+        "label": "Payment Terms Days"
+      },
+      {
+        "field": "auto_collect",
+        "label": "Auto Collect"
+      },
+      {
+        "field": "dunning_policy_id",
+        "label": "Dunning Policy Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "billing_account_id",
+      "account_id",
+      "legal_entity_id",
+      "currency_code",
+      "tax_jurisdiction_code",
+      "tax_id",
+      "is_tax_exempt",
+      "bill_to_contact_id",
+      "invoice_email",
+      "billing_address",
+      "payment_terms_days",
+      "auto_collect",
+      "dunning_policy_id",
+      "status",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "account_id",
+      "legal_entity_id",
+      "currency_code",
+      "tax_jurisdiction_code",
+      "tax_id",
+      "is_tax_exempt",
+      "bill_to_contact_id",
+      "invoice_email",
+      "billing_address",
+      "payment_terms_days",
+      "auto_collect",
+      "dunning_policy_id",
+      "status"
+    ],
+    "update": [
+      "account_id",
+      "legal_entity_id",
+      "currency_code",
+      "tax_jurisdiction_code",
+      "tax_id",
+      "is_tax_exempt",
+      "bill_to_contact_id",
+      "invoice_email",
+      "billing_address",
+      "payment_terms_days",
+      "auto_collect",
+      "dunning_policy_id",
+      "status"
+    ]
+  },
+  "references": {
+    "account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "legal_entity_id": {
+      "table": "org_legal_entity",
+      "key": "legal_entity_id",
+      "lookup": {
+        "endpoint": "/org_legal_entity"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "tax_jurisdiction_code": {
+      "table": "platform_tax_jurisdiction",
+      "key": "jurisdiction_code",
+      "lookup": {
+        "endpoint": "/platform_tax_jurisdiction"
+      }
+    },
+    "bill_to_contact_id": {
+      "table": "crm_contact",
+      "key": "contact_id",
+      "lookup": {
+        "endpoint": "/crm_contact"
+      }
+    },
+    "dunning_policy_id": {
+      "table": "billing_dunning_policy",
+      "key": "dunning_policy_id",
+      "lookup": {
+        "endpoint": "/billing_dunning_policy"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "billing_account_id",
+      "label": "Billing Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "endpoint": "/org_legal_entity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tax_jurisdiction_code",
+      "label": "Tax Jurisdiction Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_tax_jurisdiction",
+        "column": "jurisdiction_code",
+        "lookup": {
+          "endpoint": "/platform_tax_jurisdiction",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tax_id",
+      "label": "Tax Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "is_tax_exempt",
+      "label": "Is Tax Exempt",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "bill_to_contact_id",
+      "label": "Bill To Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "endpoint": "/crm_contact",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "invoice_email",
+      "label": "Invoice Email",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "billing_address",
+      "label": "Billing Address",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "payment_terms_days",
+      "label": "Payment Terms Days",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "minimum": 0,
+      "maximum": 120
+    },
+    {
+      "name": "auto_collect",
+      "label": "Auto Collect",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "dunning_policy_id",
+      "label": "Dunning Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_dunning_policy",
+        "column": "dunning_policy_id",
+        "lookup": {
+          "endpoint": "/billing_dunning_policy",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 8
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

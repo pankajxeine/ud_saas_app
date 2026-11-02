@@ -1,0 +1,282 @@
+{
+  "entity": "SubscriptionItem",
+  "table": "subscription_subscription_item",
+  "primaryKey": "subscription_item_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/subscription_item"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/subscription_item"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/subscription_item/{subscription_item_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/subscription_item/{subscription_item_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/subscription_item/{subscription_item_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "subscription_item_id",
+        "label": "Subscription Item Id"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "addon_price_id",
+        "label": "Addon Price Id"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "subscription_item_id",
+      "subscription_id",
+      "addon_price_id",
+      "quantity",
+      "valid_from",
+      "valid_to",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "subscription_id",
+      "addon_price_id",
+      "quantity",
+      "valid_from",
+      "valid_to"
+    ],
+    "update": [
+      "subscription_id",
+      "addon_price_id",
+      "quantity",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "references": {
+    "subscription_id": {
+      "table": "subscription_subscription",
+      "key": "subscription_id",
+      "lookup": {
+        "endpoint": "/subscription_subscription"
+      }
+    },
+    "addon_price_id": {
+      "table": "commerce_addon_price",
+      "key": "addon_price_id",
+      "lookup": {
+        "endpoint": "/commerce_addon_price"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subscription_item_id",
+      "label": "Subscription Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "subscription_subscription",
+        "column": "subscription_id",
+        "lookup": {
+          "endpoint": "/subscription_subscription",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "addon_price_id",
+      "label": "Addon Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_addon_price",
+        "column": "addon_price_id",
+        "lookup": {
+          "endpoint": "/commerce_addon_price",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

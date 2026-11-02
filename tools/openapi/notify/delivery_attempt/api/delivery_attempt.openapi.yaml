@@ -1,0 +1,238 @@
+openapi: 3.0.0
+x-sql-table: notify_delivery_attempt
+x-sql-references:
+  - column: "notification_id"
+    table: "notify_notification"
+    key: "notification_id"
+  - column: "provider_code"
+    table: "notify_channel_provider"
+    key: "provider_code"
+info:
+  title: DeliveryAttemptResponse API
+  version: 1.0.0
+paths:
+  /delivery_attempt:
+    get:
+      operationId: listDeliveryAttempt
+      summary: Get all delivery_attempt
+      responses:
+        '200':
+          description: List of delivery_attempt
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliveryAttemptResponse'
+    post:
+      operationId: createDeliveryAttempt
+      summary: Create a new delivery_attempt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryAttemptRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAttemptResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /delivery_attempt/{delivery_attempt_id}:
+    get:
+      operationId: getDeliveryAttemptById
+      summary: Get delivery_attempt by delivery_attempt_id
+      parameters:
+        - in: path
+          name: delivery_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: delivery_attempt object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAttemptResponse'
+        '404':
+          description: delivery_attempt not found
+    put:
+      operationId: updateDeliveryAttempt
+      summary: Update delivery_attempt by delivery_attempt_id
+      parameters:
+        - in: path
+          name: delivery_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryAttemptUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAttemptResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: delivery_attempt not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteDeliveryAttempt
+      summary: Delete delivery_attempt by delivery_attempt_id
+      parameters:
+        - in: path
+          name: delivery_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: delivery_attempt not found
+components:
+  schemas:
+
+    DeliveryAttemptRequest:
+      type: object
+      required:
+        - notification_id
+        - attempt_no
+        - provider_code
+        - status
+      additionalProperties: false
+      properties:
+        notification_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_notification"
+            column: "notification_id"
+        attempt_no:
+          type: integer
+          format: int32
+        provider_code:
+          type: string
+          x-reference:
+            table: "notify_channel_provider"
+            column: "provider_code"
+        provider_message_id:
+          type: string
+          nullable: true
+          maxLength: 120
+        status:
+          type: string
+          maxLength: 10
+        error:
+          type: string
+          nullable: true
+        attempted_at:
+          type: string
+          format: date-time
+
+    DeliveryAttemptUpdateRequest:
+      type: object
+      required:
+        - notification_id
+        - attempt_no
+        - provider_code
+        - provider_message_id
+        - status
+        - error
+        - attempted_at
+      additionalProperties: false
+      properties:
+        notification_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_notification"
+            column: "notification_id"
+        attempt_no:
+          type: integer
+          format: int32
+        provider_code:
+          type: string
+          x-reference:
+            table: "notify_channel_provider"
+            column: "provider_code"
+        provider_message_id:
+          type: string
+          nullable: true
+          maxLength: 120
+        status:
+          type: string
+          maxLength: 10
+        error:
+          type: string
+          nullable: true
+        attempted_at:
+          type: string
+          format: date-time
+
+    DeliveryAttemptResponse:
+      type: object
+      required:
+        - record_code
+        - delivery_attempt_id
+        - notification_id
+        - attempt_no
+        - provider_code
+        - status
+        - attempted_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        delivery_attempt_id:
+          type: string
+          format: uuid
+          readOnly: true
+        notification_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_notification"
+            column: "notification_id"
+        attempt_no:
+          type: integer
+          format: int32
+        provider_code:
+          type: string
+          x-reference:
+            table: "notify_channel_provider"
+            column: "provider_code"
+        provider_message_id:
+          type: string
+          nullable: true
+          maxLength: 120
+        status:
+          type: string
+          maxLength: 10
+        error:
+          type: string
+          nullable: true
+        attempted_at:
+          type: string
+          format: date-time
+  

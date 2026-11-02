@@ -1,0 +1,314 @@
+{
+  "entity": "MigrationsDetails",
+  "table": "migrations_details",
+  "primaryKey": "migration_id",
+  "displayField": "migration_id",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/migrations_details"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/migrations_details"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/migrations_details/{migration_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/migrations_details/{migration_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/migrations_details/{migration_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "migration_id",
+        "label": "Migration Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "folder",
+        "label": "Folder"
+      },
+      {
+        "field": "year_folder",
+        "label": "Year Folder"
+      },
+      {
+        "field": "file_name",
+        "label": "File Name"
+      },
+      {
+        "field": "checksum",
+        "label": "Checksum"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "execution_started_at",
+        "label": "Execution Started At"
+      },
+      {
+        "field": "execution_finished_at",
+        "label": "Execution Finished At"
+      },
+      {
+        "field": "error_message",
+        "label": "Error Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "migration_id",
+      "tenant_id",
+      "schema_name",
+      "folder",
+      "year_folder",
+      "file_name",
+      "checksum",
+      "status",
+      "execution_started_at",
+      "execution_finished_at",
+      "error_message",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_id",
+      "schema_name",
+      "folder",
+      "year_folder",
+      "file_name",
+      "checksum",
+      "status",
+      "execution_started_at",
+      "execution_finished_at",
+      "error_message"
+    ],
+    "update": [
+      "tenant_id",
+      "schema_name",
+      "folder",
+      "year_folder",
+      "file_name",
+      "checksum",
+      "status",
+      "execution_started_at",
+      "execution_finished_at",
+      "error_message"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "migration_id",
+      "label": "Migration Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "folder",
+      "label": "Folder",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "year_folder",
+      "label": "Year Folder",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "file_name",
+      "label": "File Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "checksum",
+      "label": "Checksum",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "rolled_back"
+      ]
+    },
+    {
+      "name": "execution_started_at",
+      "label": "Execution Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "execution_finished_at",
+      "label": "Execution Finished At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "error_message",
+      "label": "Error Message",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "entity": "WebhookDelivery",
+  "table": "integration_webhook_delivery",
+  "primaryKey": "webhook_delivery_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/webhook_delivery"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/webhook_delivery"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/webhook_delivery/{webhook_delivery_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/webhook_delivery/{webhook_delivery_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/webhook_delivery/{webhook_delivery_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "webhook_delivery_id",
+        "label": "Webhook Delivery Id"
+      },
+      {
+        "field": "webhook_subscription_id",
+        "label": "Webhook Subscription Id"
+      },
+      {
+        "field": "event_id",
+        "label": "Event Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "attempts",
+        "label": "Attempts"
+      },
+      {
+        "field": "next_attempt_at",
+        "label": "Next Attempt At"
+      },
+      {
+        "field": "response_code",
+        "label": "Response Code"
+      },
+      {
+        "field": "response_ms",
+        "label": "Response Ms"
+      },
+      {
+        "field": "delivered_at",
+        "label": "Delivered At"
+      },
+      {
+        "field": "last_error",
+        "label": "Last Error"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "webhook_delivery_id",
+      "webhook_subscription_id",
+      "event_id",
+      "status",
+      "attempts",
+      "next_attempt_at",
+      "response_code",
+      "response_ms",
+      "delivered_at",
+      "last_error"
+    ]
+  },
+  "form": {
+    "create": [
+      "webhook_subscription_id",
+      "event_id",
+      "status",
+      "attempts",
+      "next_attempt_at",
+      "response_code",
+      "response_ms",
+      "delivered_at",
+      "last_error"
+    ],
+    "update": [
+      "webhook_subscription_id",
+      "event_id",
+      "status",
+      "attempts",
+      "next_attempt_at",
+      "response_code",
+      "response_ms",
+      "delivered_at",
+      "last_error"
+    ]
+  },
+  "references": {
+    "webhook_subscription_id": {
+      "table": "integration_webhook_subscription",
+      "key": "webhook_subscription_id",
+      "lookup": {
+        "endpoint": "/integration_webhook_subscription"
+      }
+    },
+    "event_id": {
+      "table": "integration_outbox_event",
+      "key": "event_id",
+      "lookup": {
+        "endpoint": "/integration_outbox_event"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "webhook_delivery_id",
+      "label": "Webhook Delivery Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "webhook_subscription_id",
+      "label": "Webhook Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "integration_webhook_subscription",
+        "column": "webhook_subscription_id",
+        "lookup": {
+          "endpoint": "/integration_webhook_subscription",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "event_id",
+      "label": "Event Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "integration_outbox_event",
+        "column": "event_id",
+        "lookup": {
+          "endpoint": "/integration_outbox_event",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "attempts",
+      "label": "Attempts",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "next_attempt_at",
+      "label": "Next Attempt At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "response_code",
+      "label": "Response Code",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "response_ms",
+      "label": "Response Ms",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "delivered_at",
+      "label": "Delivered At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_error",
+      "label": "Last Error",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

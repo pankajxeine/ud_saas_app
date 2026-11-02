@@ -1,0 +1,259 @@
+openapi: 3.0.0
+x-sql-table: integration_outbox_event
+info:
+  title: OutboxEventResponse API
+  version: 1.0.0
+paths:
+  /outbox_event:
+    get:
+      operationId: listOutboxEvent
+      summary: Get all outbox_event
+      responses:
+        '200':
+          description: List of outbox_event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutboxEventResponse'
+    post:
+      operationId: createOutboxEvent
+      summary: Create a new outbox_event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxEventRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxEventResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /outbox_event/{event_id}:
+    get:
+      operationId: getOutboxEventById
+      summary: Get outbox_event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: outbox_event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxEventResponse'
+        '404':
+          description: outbox_event not found
+    put:
+      operationId: updateOutboxEvent
+      summary: Update outbox_event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxEventUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxEventResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: outbox_event not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteOutboxEvent
+      summary: Delete outbox_event by event_id
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: outbox_event not found
+components:
+  schemas:
+
+    OutboxEventRequest:
+      type: object
+      required:
+        - aggregate_type
+        - aggregate_id
+        - event_type
+        - payload
+      additionalProperties: false
+      properties:
+        aggregate_type:
+          type: string
+          maxLength: 30
+        aggregate_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          maxLength: 80
+        event_version:
+          type: integer
+          format: int32
+          default: 1
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        headers:
+          default: "{}"
+        occurred_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        last_error:
+          type: string
+          nullable: true
+
+    OutboxEventUpdateRequest:
+      type: object
+      required:
+        - aggregate_type
+        - aggregate_id
+        - event_type
+        - event_version
+        - tenant_id
+        - payload
+        - headers
+        - occurred_at
+        - published_at
+        - attempts
+        - last_error
+      additionalProperties: false
+      properties:
+        aggregate_type:
+          type: string
+          maxLength: 30
+        aggregate_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          maxLength: 80
+        event_version:
+          type: integer
+          format: int32
+          default: 1
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        headers:
+          default: "{}"
+        occurred_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        last_error:
+          type: string
+          nullable: true
+
+    OutboxEventResponse:
+      type: object
+      required:
+        - record_code
+        - event_id
+        - aggregate_type
+        - aggregate_id
+        - event_type
+        - event_version
+        - payload
+        - headers
+        - occurred_at
+        - attempts
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        event_id:
+          type: string
+          format: uuid
+          readOnly: true
+        aggregate_type:
+          type: string
+          maxLength: 30
+        aggregate_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          maxLength: 80
+        event_version:
+          type: integer
+          format: int32
+          default: 1
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        headers:
+          default: "{}"
+        occurred_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        last_error:
+          type: string
+          nullable: true
+  

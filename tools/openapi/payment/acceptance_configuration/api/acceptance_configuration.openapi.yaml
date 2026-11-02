@@ -1,0 +1,457 @@
+openapi: 3.0.0
+x-sql-table: payment_acceptance_configuration
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "payment_outlet"
+    key: "tenant_application_id"
+  - column: "outlet_id"
+    table: "payment_outlet"
+    key: "outlet_id"
+  - column: "tenant_application_id"
+    table: "payment_merchant_account"
+    key: "tenant_application_id"
+  - column: "merchant_account_id"
+    table: "payment_merchant_account"
+    key: "merchant_account_id"
+  - column: "tenant_application_id"
+    table: "payment_pos_terminal"
+    key: "tenant_application_id"
+  - column: "outlet_id"
+    table: "payment_pos_terminal"
+    key: "outlet_id"
+  - column: "merchant_account_id"
+    table: "payment_pos_terminal"
+    key: "merchant_account_id"
+  - column: "pos_terminal_id"
+    table: "payment_pos_terminal"
+    key: "pos_terminal_id"
+  - column: "mode_code"
+    table: "payment_acceptance_mode"
+    key: "mode_code"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: AcceptanceConfigurationResponse API
+  version: 1.0.0
+paths:
+  /acceptance_configuration:
+    get:
+      operationId: listAcceptanceConfiguration
+      summary: Get all acceptance_configuration
+      responses:
+        '200':
+          description: List of acceptance_configuration
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcceptanceConfigurationResponse'
+    post:
+      operationId: createAcceptanceConfiguration
+      summary: Create a new acceptance_configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptanceConfigurationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceConfigurationResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /acceptance_configuration/{acceptance_configuration_id}:
+    get:
+      operationId: getAcceptanceConfigurationById
+      summary: Get acceptance_configuration by acceptance_configuration_id
+      parameters:
+        - in: path
+          name: acceptance_configuration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: acceptance_configuration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceConfigurationResponse'
+        '404':
+          description: acceptance_configuration not found
+    put:
+      operationId: updateAcceptanceConfiguration
+      summary: Update acceptance_configuration by acceptance_configuration_id
+      parameters:
+        - in: path
+          name: acceptance_configuration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptanceConfigurationUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceConfigurationResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: acceptance_configuration not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAcceptanceConfiguration
+      summary: Delete acceptance_configuration by acceptance_configuration_id
+      parameters:
+        - in: path
+          name: acceptance_configuration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: acceptance_configuration not found
+components:
+  schemas:
+
+    AcceptanceConfigurationRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_id
+        - mode_code
+        - channel
+        - currency_code
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "outlet_id"
+        mode_code:
+          type: string
+          x-reference:
+            table: "payment_acceptance_mode"
+            column: "mode_code"
+        merchant_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "merchant_account_id"
+        pos_terminal_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "pos_terminal_id"
+        channel:
+          type: string
+          maxLength: 10
+          enum:
+            - "pos"
+            - "web"
+            - "mobile"
+            - "backoffice"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        upi_flow:
+          type: string
+          nullable: true
+          maxLength: 10
+          enum:
+            - "intent"
+            - "dynamic_qr"
+            - "static_qr"
+        upi_vpa:
+          type: string
+          nullable: true
+        upi_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        minimum_amount:
+          type: number
+          format: double
+          default: 0
+        maximum_amount:
+          type: number
+          format: double
+          nullable: true
+        capture_mode:
+          type: string
+          maxLength: 9
+          default: "automatic"
+          enum:
+            - "automatic"
+            - "manual"
+        is_enabled:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+
+    AcceptanceConfigurationUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_id
+        - mode_code
+        - merchant_account_id
+        - pos_terminal_id
+        - channel
+        - currency_code
+        - upi_flow
+        - upi_vpa
+        - upi_verified_at
+        - minimum_amount
+        - maximum_amount
+        - capture_mode
+        - is_enabled
+        - valid_from
+        - valid_to
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "outlet_id"
+        mode_code:
+          type: string
+          x-reference:
+            table: "payment_acceptance_mode"
+            column: "mode_code"
+        merchant_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "merchant_account_id"
+        pos_terminal_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "pos_terminal_id"
+        channel:
+          type: string
+          maxLength: 10
+          enum:
+            - "pos"
+            - "web"
+            - "mobile"
+            - "backoffice"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        upi_flow:
+          type: string
+          nullable: true
+          maxLength: 10
+          enum:
+            - "intent"
+            - "dynamic_qr"
+            - "static_qr"
+        upi_vpa:
+          type: string
+          nullable: true
+        upi_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        minimum_amount:
+          type: number
+          format: double
+          default: 0
+        maximum_amount:
+          type: number
+          format: double
+          nullable: true
+        capture_mode:
+          type: string
+          maxLength: 9
+          default: "automatic"
+          enum:
+            - "automatic"
+            - "manual"
+        is_enabled:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+
+    AcceptanceConfigurationResponse:
+      type: object
+      required:
+        - record_code
+        - acceptance_configuration_id
+        - tenant_application_id
+        - outlet_id
+        - mode_code
+        - channel
+        - currency_code
+        - minimum_amount
+        - capture_mode
+        - is_enabled
+        - valid_from
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        acceptance_configuration_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "outlet_id"
+        mode_code:
+          type: string
+          x-reference:
+            table: "payment_acceptance_mode"
+            column: "mode_code"
+        merchant_account_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "merchant_account_id"
+        pos_terminal_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_pos_terminal"
+            column: "pos_terminal_id"
+        channel:
+          type: string
+          maxLength: 10
+          enum:
+            - "pos"
+            - "web"
+            - "mobile"
+            - "backoffice"
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        upi_flow:
+          type: string
+          nullable: true
+          maxLength: 10
+          enum:
+            - "intent"
+            - "dynamic_qr"
+            - "static_qr"
+        upi_vpa:
+          type: string
+          nullable: true
+        upi_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        minimum_amount:
+          type: number
+          format: double
+          default: 0
+        maximum_amount:
+          type: number
+          format: double
+          nullable: true
+        capture_mode:
+          type: string
+          maxLength: 9
+          default: "automatic"
+          enum:
+            - "automatic"
+            - "manual"
+        is_enabled:
+          type: boolean
+          default: false
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

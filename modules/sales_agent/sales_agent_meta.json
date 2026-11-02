@@ -1,0 +1,641 @@
+{
+  "entity": "SalesAgent",
+  "table": "partner_sales_agent",
+  "primaryKey": "sales_agent_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/sales_agent"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/sales_agent"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/sales_agent/{sales_agent_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/sales_agent/{sales_agent_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/sales_agent/{sales_agent_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "agent_code",
+        "label": "Agent Code"
+      },
+      {
+        "field": "agent_type",
+        "label": "Agent Type"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "legal_name",
+        "label": "Legal Name"
+      },
+      {
+        "field": "display_name",
+        "label": "Display Name"
+      },
+      {
+        "field": "email",
+        "label": "Email"
+      },
+      {
+        "field": "phone",
+        "label": "Phone"
+      },
+      {
+        "field": "country_code",
+        "label": "Country Code"
+      },
+      {
+        "field": "territory_id",
+        "label": "Territory Id"
+      },
+      {
+        "field": "branch_id",
+        "label": "Branch Id"
+      },
+      {
+        "field": "parent_agent_id",
+        "label": "Parent Agent Id"
+      },
+      {
+        "field": "tier",
+        "label": "Tier"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "tax_id",
+        "label": "Tax Id"
+      },
+      {
+        "field": "payout_currency_code",
+        "label": "Payout Currency Code"
+      },
+      {
+        "field": "payout_account_ref",
+        "label": "Payout Account Ref"
+      },
+      {
+        "field": "kyc_verified_at",
+        "label": "Kyc Verified At"
+      },
+      {
+        "field": "contract_start",
+        "label": "Contract Start"
+      },
+      {
+        "field": "contract_end",
+        "label": "Contract End"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "sales_agent_id",
+      "agent_code",
+      "agent_type",
+      "app_user_id",
+      "legal_name",
+      "display_name",
+      "email",
+      "phone",
+      "country_code",
+      "territory_id",
+      "branch_id",
+      "parent_agent_id",
+      "tier",
+      "status",
+      "tax_id",
+      "payout_currency_code",
+      "payout_account_ref",
+      "kyc_verified_at",
+      "contract_start",
+      "contract_end",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "agent_code",
+      "agent_type",
+      "app_user_id",
+      "legal_name",
+      "display_name",
+      "email",
+      "phone",
+      "country_code",
+      "territory_id",
+      "branch_id",
+      "parent_agent_id",
+      "tier",
+      "status",
+      "tax_id",
+      "payout_currency_code",
+      "payout_account_ref",
+      "kyc_verified_at",
+      "contract_start",
+      "contract_end"
+    ],
+    "update": [
+      "agent_code",
+      "agent_type",
+      "app_user_id",
+      "legal_name",
+      "display_name",
+      "email",
+      "phone",
+      "country_code",
+      "territory_id",
+      "branch_id",
+      "parent_agent_id",
+      "tier",
+      "status",
+      "tax_id",
+      "payout_currency_code",
+      "payout_account_ref",
+      "kyc_verified_at",
+      "contract_start",
+      "contract_end"
+    ]
+  },
+  "references": {
+    "app_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "country_code": {
+      "table": "platform_country",
+      "key": "country_code",
+      "lookup": {
+        "endpoint": "/platform_country"
+      }
+    },
+    "territory_id": {
+      "table": "org_territory",
+      "key": "territory_id",
+      "lookup": {
+        "endpoint": "/org_territory"
+      }
+    },
+    "branch_id": {
+      "table": "org_branch",
+      "key": "branch_id",
+      "lookup": {
+        "endpoint": "/org_branch"
+      }
+    },
+    "parent_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "payout_currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "agent_code",
+      "label": "Agent Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "agent_type",
+      "label": "Agent Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_name",
+      "label": "Legal Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "display_name",
+      "label": "Display Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "email",
+      "label": "Email",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "phone",
+      "label": "Phone",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "country_code",
+      "label": "Country Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "endpoint": "/platform_country",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "territory_id",
+      "label": "Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_territory",
+        "column": "territory_id",
+        "lookup": {
+          "endpoint": "/org_territory",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "branch_id",
+      "label": "Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_branch",
+        "column": "branch_id",
+        "lookup": {
+          "endpoint": "/org_branch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "parent_agent_id",
+      "label": "Parent Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tier",
+      "label": "Tier",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "tax_id",
+      "label": "Tax Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "payout_currency_code",
+      "label": "Payout Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "payout_account_ref",
+      "label": "Payout Account Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "kyc_verified_at",
+      "label": "Kyc Verified At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "contract_start",
+      "label": "Contract Start",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "contract_end",
+      "label": "Contract End",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

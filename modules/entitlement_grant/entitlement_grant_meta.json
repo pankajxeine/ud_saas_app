@@ -1,0 +1,300 @@
+{
+  "entity": "EntitlementGrant",
+  "table": "entitlement_entitlement_grant",
+  "primaryKey": "entitlement_grant_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/entitlement_grant"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/entitlement_grant"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/entitlement_grant/{entitlement_grant_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/entitlement_grant/{entitlement_grant_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/entitlement_grant/{entitlement_grant_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "entitlement_grant_id",
+        "label": "Entitlement Grant Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "module_id",
+        "label": "Module Id"
+      },
+      {
+        "field": "feature_id",
+        "label": "Feature Id"
+      },
+      {
+        "field": "source",
+        "label": "Source"
+      },
+      {
+        "field": "source_ref_id",
+        "label": "Source Ref Id"
+      },
+      {
+        "field": "value",
+        "label": "Value"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "entitlement_grant_id",
+      "tenant_application_id",
+      "module_id",
+      "feature_id",
+      "source",
+      "source_ref_id",
+      "value",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_application_id",
+      "module_id",
+      "feature_id",
+      "source",
+      "source_ref_id",
+      "value",
+      "valid_from",
+      "valid_to"
+    ],
+    "update": [
+      "tenant_application_id",
+      "module_id",
+      "feature_id",
+      "source",
+      "source_ref_id",
+      "value",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "references": {
+    "tenant_application_id": {
+      "table": "tenancy_tenant_application",
+      "key": "tenant_application_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant_application"
+      }
+    },
+    "module_id": {
+      "table": "catalog_module",
+      "key": "module_id",
+      "lookup": {
+        "endpoint": "/catalog_module"
+      }
+    },
+    "feature_id": {
+      "table": "catalog_feature",
+      "key": "feature_id",
+      "lookup": {
+        "endpoint": "/catalog_feature"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "entitlement_grant_id",
+      "label": "Entitlement Grant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "module_id",
+      "label": "Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "endpoint": "/catalog_module",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "feature_id",
+      "label": "Feature Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_feature",
+        "column": "feature_id",
+        "lookup": {
+          "endpoint": "/catalog_feature",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "source",
+      "label": "Source",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "source_ref_id",
+      "label": "Source Ref Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

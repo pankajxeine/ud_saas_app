@@ -1,0 +1,183 @@
+openapi: 3.0.0
+x-sql-table: billing_dunning_policy
+info:
+  title: DunningPolicyResponse API
+  version: 1.0.0
+paths:
+  /dunning_policy:
+    get:
+      operationId: listDunningPolicy
+      summary: Get all dunning_policy
+      responses:
+        '200':
+          description: List of dunning_policy
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DunningPolicyResponse'
+    post:
+      operationId: createDunningPolicy
+      summary: Create a new dunning_policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DunningPolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningPolicyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /dunning_policy/{dunning_policy_id}:
+    get:
+      operationId: getDunningPolicyById
+      summary: Get dunning_policy by dunning_policy_id
+      parameters:
+        - in: path
+          name: dunning_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: dunning_policy object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningPolicyResponse'
+        '404':
+          description: dunning_policy not found
+    put:
+      operationId: updateDunningPolicy
+      summary: Update dunning_policy by dunning_policy_id
+      parameters:
+        - in: path
+          name: dunning_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DunningPolicyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningPolicyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: dunning_policy not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteDunningPolicy
+      summary: Delete dunning_policy by dunning_policy_id
+      parameters:
+        - in: path
+          name: dunning_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: dunning_policy not found
+components:
+  schemas:
+
+    DunningPolicyRequest:
+      type: object
+      required:
+        - policy_code
+        - name
+      additionalProperties: false
+      properties:
+        policy_code:
+          type: string
+        name:
+          type: string
+        is_default:
+          type: boolean
+          default: false
+
+    DunningPolicyUpdateRequest:
+      type: object
+      required:
+        - policy_code
+        - name
+        - is_default
+      additionalProperties: false
+      properties:
+        policy_code:
+          type: string
+        name:
+          type: string
+        is_default:
+          type: boolean
+          default: false
+
+    DunningPolicyResponse:
+      type: object
+      required:
+        - record_code
+        - dunning_policy_id
+        - policy_code
+        - name
+        - is_default
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        dunning_policy_id:
+          type: string
+          format: uuid
+          readOnly: true
+        policy_code:
+          type: string
+        name:
+          type: string
+        is_default:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

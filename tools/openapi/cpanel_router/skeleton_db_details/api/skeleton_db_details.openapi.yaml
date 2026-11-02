@@ -1,0 +1,217 @@
+openapi: 3.0.0
+x-sql-table: skeleton_db_details
+info:
+  title: SkeletonDbDetailsResponse API
+  version: 1.0.0
+paths:
+  /skeleton_db_details:
+    get:
+      operationId: listSkeletonDbDetails
+      summary: Get all skeleton_db_details
+      responses:
+        '200':
+          description: List of skeleton_db_details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SkeletonDbDetailsResponse'
+    post:
+      operationId: createSkeletonDbDetails
+      summary: Create a new skeleton_db_details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkeletonDbDetailsRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkeletonDbDetailsResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /skeleton_db_details/{skeleton_db_id}:
+    get:
+      operationId: getSkeletonDbDetailsById
+      summary: Get skeleton_db_details by skeleton_db_id
+      parameters:
+        - in: path
+          name: skeleton_db_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: skeleton_db_details object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkeletonDbDetailsResponse'
+        '404':
+          description: skeleton_db_details not found
+    put:
+      operationId: updateSkeletonDbDetails
+      summary: Update skeleton_db_details by skeleton_db_id
+      parameters:
+        - in: path
+          name: skeleton_db_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkeletonDbDetailsUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkeletonDbDetailsResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: skeleton_db_details not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSkeletonDbDetails
+      summary: Delete skeleton_db_details by skeleton_db_id
+      parameters:
+        - in: path
+          name: skeleton_db_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: skeleton_db_details not found
+components:
+  schemas:
+
+    SkeletonDbDetailsRequest:
+      type: object
+      required:
+        - database_name
+        - industry
+      additionalProperties: false
+      properties:
+        database_name:
+          type: string
+        schema_name:
+          type: string
+          nullable: true
+        environment:
+          type: string
+          nullable: true
+        industry:
+          type: string
+        template_version:
+          type: string
+          default: "1"
+        status:
+          type: string
+          default: "active"
+          enum:
+            - "active"
+            - "inactive"
+        configuration:
+          default: "{}"
+
+    SkeletonDbDetailsUpdateRequest:
+      type: object
+      required:
+        - database_name
+        - schema_name
+        - environment
+        - industry
+        - template_version
+        - status
+        - configuration
+      additionalProperties: false
+      properties:
+        database_name:
+          type: string
+        schema_name:
+          type: string
+          nullable: true
+        environment:
+          type: string
+          nullable: true
+        industry:
+          type: string
+        template_version:
+          type: string
+          default: "1"
+        status:
+          type: string
+          default: "active"
+          enum:
+            - "active"
+            - "inactive"
+        configuration:
+          default: "{}"
+
+    SkeletonDbDetailsResponse:
+      type: object
+      required:
+        - skeleton_db_id
+        - database_name
+        - industry
+        - template_version
+        - status
+        - configuration
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        skeleton_db_id:
+          type: string
+          format: uuid
+          readOnly: true
+        database_name:
+          type: string
+        schema_name:
+          type: string
+          nullable: true
+        environment:
+          type: string
+          nullable: true
+        industry:
+          type: string
+        template_version:
+          type: string
+          default: "1"
+        status:
+          type: string
+          default: "active"
+          enum:
+            - "active"
+            - "inactive"
+        configuration:
+          default: "{}"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

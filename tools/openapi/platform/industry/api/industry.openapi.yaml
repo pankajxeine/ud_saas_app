@@ -1,0 +1,221 @@
+openapi: 3.0.0
+x-sql-table: platform_industry
+x-sql-references:
+  - column: "parent_industry_code"
+    table: "platform_industry"
+    key: "industry_code"
+info:
+  title: IndustryResponse API
+  version: 1.0.0
+paths:
+  /industry:
+    get:
+      operationId: listIndustry
+      summary: Get all industry
+      responses:
+        '200':
+          description: List of industry
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IndustryResponse'
+    post:
+      operationId: createIndustry
+      summary: Create a new industry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndustryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndustryResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /industry/{industry_id}:
+    get:
+      operationId: getIndustryById
+      summary: Get industry by industry_id
+      parameters:
+        - in: path
+          name: industry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: industry object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndustryResponse'
+        '404':
+          description: industry not found
+    put:
+      operationId: updateIndustry
+      summary: Update industry by industry_id
+      parameters:
+        - in: path
+          name: industry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndustryUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndustryResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: industry not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteIndustry
+      summary: Delete industry by industry_id
+      parameters:
+        - in: path
+          name: industry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: industry not found
+components:
+  schemas:
+
+    IndustryRequest:
+      type: object
+      required:
+        - industry_code
+        - name
+      additionalProperties: false
+      properties:
+        industry_code:
+          type: string
+        name:
+          type: string
+        parent_industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        requires_kyc:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    IndustryUpdateRequest:
+      type: object
+      required:
+        - industry_code
+        - name
+        - parent_industry_code
+        - requires_kyc
+        - is_active
+        - sort_order
+      additionalProperties: false
+      properties:
+        industry_code:
+          type: string
+        name:
+          type: string
+        parent_industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        requires_kyc:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    IndustryResponse:
+      type: object
+      required:
+        - record_code
+        - industry_id
+        - industry_code
+        - name
+        - requires_kyc
+        - is_active
+        - sort_order
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        industry_id:
+          type: string
+          format: uuid
+          readOnly: true
+        industry_code:
+          type: string
+        name:
+          type: string
+        parent_industry_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_industry"
+            column: "industry_code"
+        requires_kyc:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

@@ -1,0 +1,228 @@
+openapi: 3.0.0
+x-sql-table: audit_data_access_log
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: DataAccessLogResponse API
+  version: 1.0.0
+paths:
+  /data_access_log:
+    get:
+      operationId: listDataAccessLog
+      summary: Get all data_access_log
+      responses:
+        '200':
+          description: List of data_access_log
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataAccessLogResponse'
+    post:
+      operationId: createDataAccessLog
+      summary: Create a new data_access_log
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataAccessLogRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataAccessLogResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /data_access_log/{data_access_log_id}:
+    get:
+      operationId: getDataAccessLogById
+      summary: Get data_access_log by data_access_log_id
+      parameters:
+        - in: path
+          name: data_access_log_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: data_access_log object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataAccessLogResponse'
+        '404':
+          description: data_access_log not found
+    put:
+      operationId: updateDataAccessLog
+      summary: Update data_access_log by data_access_log_id
+      parameters:
+        - in: path
+          name: data_access_log_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataAccessLogUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataAccessLogResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: data_access_log not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteDataAccessLog
+      summary: Delete data_access_log by data_access_log_id
+      parameters:
+        - in: path
+          name: data_access_log_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: data_access_log not found
+components:
+  schemas:
+
+    DataAccessLogRequest:
+      type: object
+      required:
+        - resource
+        - purpose
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        resource:
+          type: string
+          maxLength: 60
+        record_id:
+          type: string
+          nullable: true
+        purpose:
+          type: string
+          maxLength: 30
+        fields:
+          type: string
+          nullable: true
+        accessed_at:
+          type: string
+          format: date-time
+
+    DataAccessLogUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - tenant_id
+        - resource
+        - record_id
+        - purpose
+        - fields
+        - accessed_at
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        resource:
+          type: string
+          maxLength: 60
+        record_id:
+          type: string
+          nullable: true
+        purpose:
+          type: string
+          maxLength: 30
+        fields:
+          type: string
+          nullable: true
+        accessed_at:
+          type: string
+          format: date-time
+
+    DataAccessLogResponse:
+      type: object
+      required:
+        - record_code
+        - data_access_log_id
+        - resource
+        - purpose
+        - accessed_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        data_access_log_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        resource:
+          type: string
+          maxLength: 60
+        record_id:
+          type: string
+          nullable: true
+        purpose:
+          type: string
+          maxLength: 30
+        fields:
+          type: string
+          nullable: true
+        accessed_at:
+          type: string
+          format: date-time
+  

@@ -1,0 +1,282 @@
+openapi: 3.0.0
+x-sql-table: integration_webhook_subscription
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+info:
+  title: WebhookSubscriptionResponse API
+  version: 1.0.0
+paths:
+  /webhook_subscription:
+    get:
+      operationId: listWebhookSubscription
+      summary: Get all webhook_subscription
+      responses:
+        '200':
+          description: List of webhook_subscription
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookSubscriptionResponse'
+    post:
+      operationId: createWebhookSubscription
+      summary: Create a new webhook_subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscriptionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /webhook_subscription/{webhook_subscription_id}:
+    get:
+      operationId: getWebhookSubscriptionById
+      summary: Get webhook_subscription by webhook_subscription_id
+      parameters:
+        - in: path
+          name: webhook_subscription_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: webhook_subscription object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscriptionResponse'
+        '404':
+          description: webhook_subscription not found
+    put:
+      operationId: updateWebhookSubscription
+      summary: Update webhook_subscription by webhook_subscription_id
+      parameters:
+        - in: path
+          name: webhook_subscription_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscriptionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: webhook_subscription not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteWebhookSubscription
+      summary: Delete webhook_subscription by webhook_subscription_id
+      parameters:
+        - in: path
+          name: webhook_subscription_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: webhook_subscription not found
+components:
+  schemas:
+
+    WebhookSubscriptionRequest:
+      type: object
+      required:
+        - owner_type
+        - url
+        - event_types
+        - secret_ref
+      additionalProperties: false
+      properties:
+        owner_type:
+          type: string
+          maxLength: 10
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        url:
+          type: string
+        event_types:
+          type: string
+        secret_ref:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+        consecutive_failures:
+          type: integer
+          format: int32
+          default: 0
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    WebhookSubscriptionUpdateRequest:
+      type: object
+      required:
+        - owner_type
+        - tenant_id
+        - application_id
+        - url
+        - event_types
+        - secret_ref
+        - is_active
+        - consecutive_failures
+        - disabled_at
+      additionalProperties: false
+      properties:
+        owner_type:
+          type: string
+          maxLength: 10
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        url:
+          type: string
+        event_types:
+          type: string
+        secret_ref:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+        consecutive_failures:
+          type: integer
+          format: int32
+          default: 0
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    WebhookSubscriptionResponse:
+      type: object
+      required:
+        - record_code
+        - webhook_subscription_id
+        - owner_type
+        - url
+        - event_types
+        - secret_ref
+        - is_active
+        - consecutive_failures
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        webhook_subscription_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_type:
+          type: string
+          maxLength: 10
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        url:
+          type: string
+        event_types:
+          type: string
+        secret_ref:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+        consecutive_failures:
+          type: integer
+          format: int32
+          default: 0
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

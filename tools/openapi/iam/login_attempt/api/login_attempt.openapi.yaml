@@ -1,0 +1,265 @@
+openapi: 3.0.0
+x-sql-table: iam_login_attempt
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: LoginAttemptResponse API
+  version: 1.0.0
+paths:
+  /login_attempt:
+    get:
+      operationId: listLoginAttempt
+      summary: Get all login_attempt
+      responses:
+        '200':
+          description: List of login_attempt
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoginAttemptResponse'
+    post:
+      operationId: createLoginAttempt
+      summary: Create a new login_attempt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAttemptRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginAttemptResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /login_attempt/{login_attempt_id}:
+    get:
+      operationId: getLoginAttemptById
+      summary: Get login_attempt by login_attempt_id
+      parameters:
+        - in: path
+          name: login_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: login_attempt object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginAttemptResponse'
+        '404':
+          description: login_attempt not found
+    put:
+      operationId: updateLoginAttempt
+      summary: Update login_attempt by login_attempt_id
+      parameters:
+        - in: path
+          name: login_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAttemptUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginAttemptResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: login_attempt not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLoginAttempt
+      summary: Delete login_attempt by login_attempt_id
+      parameters:
+        - in: path
+          name: login_attempt_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: login_attempt not found
+components:
+  schemas:
+
+    LoginAttemptRequest:
+      type: object
+      required:
+        - username_entered
+        - is_success
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        username_entered:
+          type: string
+          maxLength: 254
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        attempted_at:
+          type: string
+          format: date-time
+        is_success:
+          type: boolean
+        failure_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        ip_address:
+          type: string
+          nullable: true
+        geo_country:
+          type: string
+          nullable: true
+          maxLength: 2
+        user_agent:
+          type: string
+          nullable: true
+        risk_score:
+          type: integer
+          format: int32
+          nullable: true
+
+    LoginAttemptUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - username_entered
+        - auth_method
+        - attempted_at
+        - is_success
+        - failure_reason
+        - ip_address
+        - geo_country
+        - user_agent
+        - risk_score
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        username_entered:
+          type: string
+          maxLength: 254
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        attempted_at:
+          type: string
+          format: date-time
+        is_success:
+          type: boolean
+        failure_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        ip_address:
+          type: string
+          nullable: true
+        geo_country:
+          type: string
+          nullable: true
+          maxLength: 2
+        user_agent:
+          type: string
+          nullable: true
+        risk_score:
+          type: integer
+          format: int32
+          nullable: true
+
+    LoginAttemptResponse:
+      type: object
+      required:
+        - record_code
+        - login_attempt_id
+        - username_entered
+        - auth_method
+        - attempted_at
+        - is_success
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        login_attempt_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        username_entered:
+          type: string
+          maxLength: 254
+        auth_method:
+          type: string
+          maxLength: 10
+          default: "password"
+        attempted_at:
+          type: string
+          format: date-time
+        is_success:
+          type: boolean
+        failure_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        ip_address:
+          type: string
+          nullable: true
+        geo_country:
+          type: string
+          nullable: true
+          maxLength: 2
+        user_agent:
+          type: string
+          nullable: true
+        risk_score:
+          type: integer
+          format: int32
+          nullable: true
+  

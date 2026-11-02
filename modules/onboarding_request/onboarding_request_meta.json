@@ -1,0 +1,1071 @@
+{
+  "entity": "OnboardingRequest",
+  "table": "onboarding_onboarding_request",
+  "primaryKey": "request_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/onboarding_request"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/onboarding_request"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/onboarding_request/{request_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/onboarding_request/{request_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/onboarding_request/{request_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "request_id",
+        "label": "Request Id"
+      },
+      {
+        "field": "request_number",
+        "label": "Request Number"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "opportunity_id",
+        "label": "Opportunity Id"
+      },
+      {
+        "field": "quote_id",
+        "label": "Quote Id"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "plan_price_id",
+        "label": "Plan Price Id"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "coupon_id",
+        "label": "Coupon Id"
+      },
+      {
+        "field": "requested_tenant_code",
+        "label": "Requested Tenant Code"
+      },
+      {
+        "field": "display_name",
+        "label": "Display Name"
+      },
+      {
+        "field": "region_code",
+        "label": "Region Code"
+      },
+      {
+        "field": "data_residency",
+        "label": "Data Residency"
+      },
+      {
+        "field": "timezone",
+        "label": "Timezone"
+      },
+      {
+        "field": "default_locale",
+        "label": "Default Locale"
+      },
+      {
+        "field": "is_sandbox",
+        "label": "Is Sandbox"
+      },
+      {
+        "field": "parent_tenant_id",
+        "label": "Parent Tenant Id"
+      },
+      {
+        "field": "owner_contact_id",
+        "label": "Owner Contact Id"
+      },
+      {
+        "field": "billing_contact_id",
+        "label": "Billing Contact Id"
+      },
+      {
+        "field": "owning_branch_id",
+        "label": "Owning Branch Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "requires_kyc",
+        "label": "Requires Kyc"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "submitted_at",
+        "label": "Submitted At"
+      },
+      {
+        "field": "submitted_by_user_id",
+        "label": "Submitted By User Id"
+      },
+      {
+        "field": "approved_at",
+        "label": "Approved At"
+      },
+      {
+        "field": "rejected_reason",
+        "label": "Rejected Reason"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "completed_at",
+        "label": "Completed At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "request_id",
+      "request_number",
+      "account_id",
+      "opportunity_id",
+      "quote_id",
+      "application_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quantity",
+      "coupon_id",
+      "requested_tenant_code",
+      "display_name",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "is_sandbox",
+      "parent_tenant_id",
+      "owner_contact_id",
+      "billing_contact_id",
+      "owning_branch_id",
+      "sales_agent_id",
+      "requires_kyc",
+      "status",
+      "submitted_at",
+      "submitted_by_user_id",
+      "approved_at",
+      "rejected_reason",
+      "tenant_id",
+      "tenant_application_id",
+      "subscription_id",
+      "completed_at",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "request_number",
+      "account_id",
+      "opportunity_id",
+      "quote_id",
+      "application_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quantity",
+      "coupon_id",
+      "requested_tenant_code",
+      "display_name",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "is_sandbox",
+      "parent_tenant_id",
+      "owner_contact_id",
+      "billing_contact_id",
+      "owning_branch_id",
+      "sales_agent_id",
+      "requires_kyc",
+      "status",
+      "submitted_at",
+      "submitted_by_user_id",
+      "approved_at",
+      "rejected_reason",
+      "tenant_id",
+      "tenant_application_id",
+      "subscription_id",
+      "completed_at"
+    ],
+    "update": [
+      "request_number",
+      "account_id",
+      "opportunity_id",
+      "quote_id",
+      "application_id",
+      "plan_version_id",
+      "plan_price_id",
+      "quantity",
+      "coupon_id",
+      "requested_tenant_code",
+      "display_name",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "is_sandbox",
+      "parent_tenant_id",
+      "owner_contact_id",
+      "billing_contact_id",
+      "owning_branch_id",
+      "sales_agent_id",
+      "requires_kyc",
+      "status",
+      "submitted_at",
+      "submitted_by_user_id",
+      "approved_at",
+      "rejected_reason",
+      "tenant_id",
+      "tenant_application_id",
+      "subscription_id",
+      "completed_at"
+    ]
+  },
+  "references": {
+    "account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "opportunity_id": {
+      "table": "crm_opportunity",
+      "key": "opportunity_id",
+      "lookup": {
+        "endpoint": "/crm_opportunity"
+      }
+    },
+    "quote_id": {
+      "table": "crm_quote",
+      "key": "quote_id",
+      "lookup": {
+        "endpoint": "/crm_quote"
+      }
+    },
+    "application_id": {
+      "table": "catalog_application",
+      "key": "application_id",
+      "lookup": {
+        "endpoint": "/catalog_application"
+      }
+    },
+    "plan_version_id": {
+      "table": "commerce_plan_version",
+      "key": "plan_version_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_version"
+      }
+    },
+    "plan_price_id": {
+      "table": "commerce_plan_price",
+      "key": "plan_price_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_price"
+      }
+    },
+    "coupon_id": {
+      "table": "commerce_coupon",
+      "key": "coupon_id",
+      "lookup": {
+        "endpoint": "/commerce_coupon"
+      }
+    },
+    "region_code": {
+      "table": "platform_region",
+      "key": "region_code",
+      "lookup": {
+        "endpoint": "/platform_region"
+      }
+    },
+    "data_residency": {
+      "table": "platform_country",
+      "key": "country_code",
+      "lookup": {
+        "endpoint": "/platform_country"
+      }
+    },
+    "parent_tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    },
+    "owner_contact_id": {
+      "table": "crm_contact",
+      "key": "contact_id",
+      "lookup": {
+        "endpoint": "/crm_contact"
+      }
+    },
+    "billing_contact_id": {
+      "table": "crm_contact",
+      "key": "contact_id",
+      "lookup": {
+        "endpoint": "/crm_contact"
+      }
+    },
+    "owning_branch_id": {
+      "table": "org_branch",
+      "key": "branch_id",
+      "lookup": {
+        "endpoint": "/org_branch"
+      }
+    },
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "submitted_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    },
+    "tenant_application_id": {
+      "table": "tenancy_tenant_application",
+      "key": "tenant_application_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant_application"
+      }
+    },
+    "subscription_id": {
+      "table": "subscription_subscription",
+      "key": "subscription_id",
+      "lookup": {
+        "endpoint": "/subscription_subscription"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "request_id",
+      "label": "Request Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "request_number",
+      "label": "Request Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "opportunity_id",
+      "label": "Opportunity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_opportunity",
+        "column": "opportunity_id",
+        "lookup": {
+          "endpoint": "/crm_opportunity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "quote_id",
+      "label": "Quote Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_quote",
+        "column": "quote_id",
+        "lookup": {
+          "endpoint": "/crm_quote",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_version",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "plan_price_id",
+      "label": "Plan Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_price",
+        "column": "plan_price_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_price",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "coupon_id",
+      "label": "Coupon Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_coupon",
+        "column": "coupon_id",
+        "lookup": {
+          "endpoint": "/commerce_coupon",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "requested_tenant_code",
+      "label": "Requested Tenant Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "display_name",
+      "label": "Display Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "region_code",
+      "label": "Region Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_region",
+        "column": "region_code",
+        "lookup": {
+          "endpoint": "/platform_region",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "data_residency",
+      "label": "Data Residency",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "endpoint": "/platform_country",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "timezone",
+      "label": "Timezone",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "default_locale",
+      "label": "Default Locale",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_sandbox",
+      "label": "Is Sandbox",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "parent_tenant_id",
+      "label": "Parent Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "owner_contact_id",
+      "label": "Owner Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "endpoint": "/crm_contact",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "billing_contact_id",
+      "label": "Billing Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "endpoint": "/crm_contact",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "owning_branch_id",
+      "label": "Owning Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_branch",
+        "column": "branch_id",
+        "lookup": {
+          "endpoint": "/org_branch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "requires_kyc",
+      "label": "Requires Kyc",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 16
+    },
+    {
+      "name": "submitted_at",
+      "label": "Submitted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "submitted_by_user_id",
+      "label": "Submitted By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_at",
+      "label": "Approved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "rejected_reason",
+      "label": "Rejected Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant_application",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "subscription_subscription",
+        "column": "subscription_id",
+        "lookup": {
+          "endpoint": "/subscription_subscription",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "completed_at",
+      "label": "Completed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

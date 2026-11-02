@@ -1,0 +1,279 @@
+openapi: 3.0.0
+x-sql-table: support_escalation_rule
+x-sql-references:
+  - column: "queue_id"
+    table: "support_queue"
+    key: "queue_id"
+  - column: "target_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "target_queue_id"
+    table: "support_queue"
+    key: "queue_id"
+info:
+  title: EscalationRuleResponse API
+  version: 1.0.0
+paths:
+  /escalation_rule:
+    get:
+      operationId: listEscalationRule
+      summary: Get all escalation_rule
+      responses:
+        '200':
+          description: List of escalation_rule
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EscalationRuleResponse'
+    post:
+      operationId: createEscalationRule
+      summary: Create a new escalation_rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EscalationRuleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EscalationRuleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /escalation_rule/{escalation_rule_id}:
+    get:
+      operationId: getEscalationRuleById
+      summary: Get escalation_rule by escalation_rule_id
+      parameters:
+        - in: path
+          name: escalation_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: escalation_rule object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EscalationRuleResponse'
+        '404':
+          description: escalation_rule not found
+    put:
+      operationId: updateEscalationRule
+      summary: Update escalation_rule by escalation_rule_id
+      parameters:
+        - in: path
+          name: escalation_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EscalationRuleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EscalationRuleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: escalation_rule not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEscalationRule
+      summary: Delete escalation_rule by escalation_rule_id
+      parameters:
+        - in: path
+          name: escalation_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: escalation_rule not found
+components:
+  schemas:
+
+    EscalationRuleRequest:
+      type: object
+      required:
+        - metric
+        - action
+      additionalProperties: false
+      properties:
+        queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        priority:
+          type: string
+          nullable: true
+        metric:
+          type: string
+          maxLength: 14
+        minutes_before_breach:
+          type: integer
+          format: int32
+          default: 0
+        action:
+          type: string
+          maxLength: 14
+        target_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        target_queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        is_active:
+          type: boolean
+          default: true
+
+    EscalationRuleUpdateRequest:
+      type: object
+      required:
+        - queue_id
+        - priority
+        - metric
+        - minutes_before_breach
+        - action
+        - target_user_id
+        - target_queue_id
+        - is_active
+      additionalProperties: false
+      properties:
+        queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        priority:
+          type: string
+          nullable: true
+        metric:
+          type: string
+          maxLength: 14
+        minutes_before_breach:
+          type: integer
+          format: int32
+          default: 0
+        action:
+          type: string
+          maxLength: 14
+        target_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        target_queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        is_active:
+          type: boolean
+          default: true
+
+    EscalationRuleResponse:
+      type: object
+      required:
+        - record_code
+        - escalation_rule_id
+        - metric
+        - minutes_before_breach
+        - action
+        - is_active
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        escalation_rule_id:
+          type: string
+          format: uuid
+          readOnly: true
+        queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        priority:
+          type: string
+          nullable: true
+        metric:
+          type: string
+          maxLength: 14
+        minutes_before_breach:
+          type: integer
+          format: int32
+          default: 0
+        action:
+          type: string
+          maxLength: 14
+        target_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        target_queue_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "support_queue"
+            column: "queue_id"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

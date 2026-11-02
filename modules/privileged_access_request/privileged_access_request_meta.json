@@ -1,0 +1,388 @@
+{
+  "entity": "PrivilegedAccessRequest",
+  "table": "iam_privileged_access_request",
+  "primaryKey": "request_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/privileged_access_request"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/privileged_access_request"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/privileged_access_request/{request_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/privileged_access_request/{request_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/privileged_access_request/{request_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "request_id",
+        "label": "Request Id"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "role_code",
+        "label": "Role Code"
+      },
+      {
+        "field": "scope_type",
+        "label": "Scope Type"
+      },
+      {
+        "field": "scope_id",
+        "label": "Scope Id"
+      },
+      {
+        "field": "justification",
+        "label": "Justification"
+      },
+      {
+        "field": "ticket_ref",
+        "label": "Ticket Ref"
+      },
+      {
+        "field": "requested_minutes",
+        "label": "Requested Minutes"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "decided_by_user_id",
+        "label": "Decided By User Id"
+      },
+      {
+        "field": "decided_at",
+        "label": "Decided At"
+      },
+      {
+        "field": "decision_note",
+        "label": "Decision Note"
+      },
+      {
+        "field": "requested_at",
+        "label": "Requested At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "request_id",
+      "app_user_id",
+      "role_code",
+      "scope_type",
+      "scope_id",
+      "justification",
+      "ticket_ref",
+      "requested_minutes",
+      "status",
+      "decided_by_user_id",
+      "decided_at",
+      "decision_note",
+      "requested_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "app_user_id",
+      "role_code",
+      "scope_type",
+      "scope_id",
+      "justification",
+      "ticket_ref",
+      "requested_minutes",
+      "status",
+      "decided_by_user_id",
+      "decided_at",
+      "decision_note",
+      "requested_at"
+    ],
+    "update": [
+      "app_user_id",
+      "role_code",
+      "scope_type",
+      "scope_id",
+      "justification",
+      "ticket_ref",
+      "requested_minutes",
+      "status",
+      "decided_by_user_id",
+      "decided_at",
+      "decision_note",
+      "requested_at"
+    ]
+  },
+  "references": {
+    "app_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "role_code": {
+      "table": "iam_role",
+      "key": "role_code",
+      "lookup": {
+        "endpoint": "/iam_role"
+      }
+    },
+    "decided_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "request_id",
+      "label": "Request Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "role_code",
+      "label": "Role Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "endpoint": "/iam_role",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "scope_type",
+      "label": "Scope Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "scope_id",
+      "label": "Scope Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "justification",
+      "label": "Justification",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "ticket_ref",
+      "label": "Ticket Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "requested_minutes",
+      "label": "Requested Minutes",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "minimum": 15,
+      "maximum": 1440
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "decided_by_user_id",
+      "label": "Decided By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "decided_at",
+      "label": "Decided At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "decision_note",
+      "label": "Decision Note",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "requested_at",
+      "label": "Requested At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

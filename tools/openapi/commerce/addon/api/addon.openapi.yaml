@@ -1,0 +1,245 @@
+openapi: 3.0.0
+x-sql-table: commerce_addon
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: AddonResponse API
+  version: 1.0.0
+paths:
+  /addon:
+    get:
+      operationId: listAddon
+      summary: Get all addon
+      responses:
+        '200':
+          description: List of addon
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddonResponse'
+    post:
+      operationId: createAddon
+      summary: Create a new addon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /addon/{addon_id}:
+    get:
+      operationId: getAddonById
+      summary: Get addon by addon_id
+      parameters:
+        - in: path
+          name: addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: addon object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonResponse'
+        '404':
+          description: addon not found
+    put:
+      operationId: updateAddon
+      summary: Update addon by addon_id
+      parameters:
+        - in: path
+          name: addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: addon not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAddon
+      summary: Delete addon by addon_id
+      parameters:
+        - in: path
+          name: addon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: addon not found
+components:
+  schemas:
+
+    AddonRequest:
+      type: object
+      required:
+        - application_id
+        - addon_code
+        - name
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        addon_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        max_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        purchase_mode:
+          type: string
+          maxLength: 16
+          default: "plan_restricted"
+        is_active:
+          type: boolean
+          default: true
+
+    AddonUpdateRequest:
+      type: object
+      required:
+        - application_id
+        - addon_code
+        - name
+        - description
+        - max_quantity
+        - purchase_mode
+        - is_active
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        addon_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        max_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        purchase_mode:
+          type: string
+          maxLength: 16
+          default: "plan_restricted"
+        is_active:
+          type: boolean
+          default: true
+
+    AddonResponse:
+      type: object
+      required:
+        - record_code
+        - addon_id
+        - application_id
+        - addon_code
+        - name
+        - purchase_mode
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        addon_id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        addon_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        max_quantity:
+          type: integer
+          format: int32
+          nullable: true
+        purchase_mode:
+          type: string
+          maxLength: 16
+          default: "plan_restricted"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

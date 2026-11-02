@@ -1,0 +1,170 @@
+{
+  "entity": "AcceptanceMode",
+  "table": "payment_acceptance_mode",
+  "primaryKey": "acceptance_mode_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/acceptance_mode"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/acceptance_mode"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/acceptance_mode/{acceptance_mode_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/acceptance_mode/{acceptance_mode_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/acceptance_mode/{acceptance_mode_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "acceptance_mode_id",
+        "label": "Acceptance Mode Id"
+      },
+      {
+        "field": "mode_code",
+        "label": "Mode Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "requires_gateway",
+        "label": "Requires Gateway"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "acceptance_mode_id",
+      "mode_code",
+      "name",
+      "requires_gateway",
+      "is_active"
+    ]
+  },
+  "form": {
+    "create": [
+      "mode_code",
+      "name",
+      "requires_gateway",
+      "is_active"
+    ],
+    "update": [
+      "mode_code",
+      "name",
+      "requires_gateway",
+      "is_active"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "acceptance_mode_id",
+      "label": "Acceptance Mode Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "mode_code",
+      "label": "Mode Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "requires_gateway",
+      "label": "Requires Gateway",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

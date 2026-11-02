@@ -1,0 +1,266 @@
+{
+  "entity": "ReconciliationItem",
+  "table": "payment_reconciliation_item",
+  "primaryKey": "reconciliation_item_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/reconciliation_item"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/reconciliation_item"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/reconciliation_item/{reconciliation_item_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/reconciliation_item/{reconciliation_item_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/reconciliation_item/{reconciliation_item_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "reconciliation_item_id",
+        "label": "Reconciliation Item Id"
+      },
+      {
+        "field": "reconciliation_batch_id",
+        "label": "Reconciliation Batch Id"
+      },
+      {
+        "field": "gateway_payment_ref",
+        "label": "Gateway Payment Ref"
+      },
+      {
+        "field": "payment_id",
+        "label": "Payment Id"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "fee_amount",
+        "label": "Fee Amount"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "note",
+        "label": "Note"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "reconciliation_item_id",
+      "reconciliation_batch_id",
+      "gateway_payment_ref",
+      "payment_id",
+      "amount",
+      "fee_amount",
+      "status",
+      "note"
+    ]
+  },
+  "form": {
+    "create": [
+      "reconciliation_batch_id",
+      "gateway_payment_ref",
+      "payment_id",
+      "amount",
+      "fee_amount",
+      "status",
+      "note"
+    ],
+    "update": [
+      "reconciliation_batch_id",
+      "gateway_payment_ref",
+      "payment_id",
+      "amount",
+      "fee_amount",
+      "status",
+      "note"
+    ]
+  },
+  "references": {
+    "reconciliation_batch_id": {
+      "table": "payment_reconciliation_batch",
+      "key": "reconciliation_batch_id",
+      "lookup": {
+        "endpoint": "/payment_reconciliation_batch"
+      }
+    },
+    "payment_id": {
+      "table": "payment_payment",
+      "key": "payment_id",
+      "lookup": {
+        "endpoint": "/payment_payment"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "reconciliation_item_id",
+      "label": "Reconciliation Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "reconciliation_batch_id",
+      "label": "Reconciliation Batch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_reconciliation_batch",
+        "column": "reconciliation_batch_id",
+        "lookup": {
+          "endpoint": "/payment_reconciliation_batch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "gateway_payment_ref",
+      "label": "Gateway Payment Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 100
+    },
+    {
+      "name": "payment_id",
+      "label": "Payment Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_payment",
+        "column": "payment_id",
+        "lookup": {
+          "endpoint": "/payment_payment",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "fee_amount",
+      "label": "Fee Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 22
+    },
+    {
+      "name": "note",
+      "label": "Note",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

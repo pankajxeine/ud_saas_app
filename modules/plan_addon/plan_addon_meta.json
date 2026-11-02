@@ -1,0 +1,159 @@
+{
+  "entity": "PlanAddon",
+  "table": "commerce_plan_addon",
+  "primaryKey": "plan_addon_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/plan_addon"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/plan_addon"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/plan_addon/{plan_addon_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/plan_addon/{plan_addon_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/plan_addon/{plan_addon_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "plan_addon_id",
+        "label": "Plan Addon Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "addon_id",
+        "label": "Addon Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "plan_addon_id",
+      "plan_version_id",
+      "addon_id"
+    ]
+  },
+  "form": {
+    "create": [
+      "plan_version_id",
+      "addon_id"
+    ],
+    "update": [
+      "plan_version_id",
+      "addon_id"
+    ]
+  },
+  "references": {
+    "plan_version_id": {
+      "table": "commerce_plan_version",
+      "key": "plan_version_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_version"
+      }
+    },
+    "addon_id": {
+      "table": "commerce_addon",
+      "key": "addon_id",
+      "lookup": {
+        "endpoint": "/commerce_addon"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "plan_addon_id",
+      "label": "Plan Addon Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_version",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "addon_id",
+      "label": "Addon Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_addon",
+        "column": "addon_id",
+        "lookup": {
+          "endpoint": "/commerce_addon",
+          "strategy": "remote"
+        }
+      }
+    }
+  ]
+}

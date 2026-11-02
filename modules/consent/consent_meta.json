@@ -1,0 +1,279 @@
+{
+  "entity": "Consent",
+  "table": "audit_consent",
+  "primaryKey": "consent_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/consent"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/consent"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/consent/{consent_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/consent/{consent_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/consent/{consent_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "consent_id",
+        "label": "Consent Id"
+      },
+      {
+        "field": "subject_type",
+        "label": "Subject Type"
+      },
+      {
+        "field": "subject_id",
+        "label": "Subject Id"
+      },
+      {
+        "field": "purpose",
+        "label": "Purpose"
+      },
+      {
+        "field": "granted",
+        "label": "Granted"
+      },
+      {
+        "field": "source",
+        "label": "Source"
+      },
+      {
+        "field": "policy_version",
+        "label": "Policy Version"
+      },
+      {
+        "field": "evidence_ref",
+        "label": "Evidence Ref"
+      },
+      {
+        "field": "captured_at",
+        "label": "Captured At"
+      },
+      {
+        "field": "withdrawn_at",
+        "label": "Withdrawn At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "consent_id",
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ],
+    "update": [
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "consent_id",
+      "label": "Consent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subject_type",
+      "label": "Subject Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "subject_id",
+      "label": "Subject Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "purpose",
+      "label": "Purpose",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 30
+    },
+    {
+      "name": "granted",
+      "label": "Granted",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "source",
+      "label": "Source",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "policy_version",
+      "label": "Policy Version",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "evidence_ref",
+      "label": "Evidence Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "captured_at",
+      "label": "Captured At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "withdrawn_at",
+      "label": "Withdrawn At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

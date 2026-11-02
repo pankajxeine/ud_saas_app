@@ -1,0 +1,260 @@
+openapi: 3.0.0
+x-sql-table: crm_activity
+x-sql-references:
+  - column: "owner_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ActivityResponse API
+  version: 1.0.0
+paths:
+  /activity:
+    get:
+      operationId: listActivity
+      summary: Get all activity
+      responses:
+        '200':
+          description: List of activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityResponse'
+    post:
+      operationId: createActivity
+      summary: Create a new activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /activity/{activity_id}:
+    get:
+      operationId: getActivityById
+      summary: Get activity by activity_id
+      parameters:
+        - in: path
+          name: activity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: activity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityResponse'
+        '404':
+          description: activity not found
+    put:
+      operationId: updateActivity
+      summary: Update activity by activity_id
+      parameters:
+        - in: path
+          name: activity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: activity not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteActivity
+      summary: Delete activity by activity_id
+      parameters:
+        - in: path
+          name: activity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: activity not found
+components:
+  schemas:
+
+    ActivityRequest:
+      type: object
+      required:
+        - activity_type
+        - subject
+        - related_type
+        - related_id
+        - owner_user_id
+      additionalProperties: false
+      properties:
+        activity_type:
+          type: string
+          maxLength: 10
+        subject:
+          type: string
+        body:
+          type: string
+          nullable: true
+        related_type:
+          type: string
+          maxLength: 15
+        related_id:
+          type: string
+          format: uuid
+        owner_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ActivityUpdateRequest:
+      type: object
+      required:
+        - activity_type
+        - subject
+        - body
+        - related_type
+        - related_id
+        - owner_user_id
+        - due_at
+        - completed_at
+      additionalProperties: false
+      properties:
+        activity_type:
+          type: string
+          maxLength: 10
+        subject:
+          type: string
+        body:
+          type: string
+          nullable: true
+        related_type:
+          type: string
+          maxLength: 15
+        related_id:
+          type: string
+          format: uuid
+        owner_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ActivityResponse:
+      type: object
+      required:
+        - record_code
+        - activity_id
+        - activity_type
+        - subject
+        - related_type
+        - related_id
+        - owner_user_id
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        activity_id:
+          type: string
+          format: uuid
+          readOnly: true
+        activity_type:
+          type: string
+          maxLength: 10
+        subject:
+          type: string
+        body:
+          type: string
+          nullable: true
+        related_type:
+          type: string
+          maxLength: 15
+        related_id:
+          type: string
+          format: uuid
+        owner_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

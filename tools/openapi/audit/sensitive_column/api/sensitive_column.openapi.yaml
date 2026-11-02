@@ -1,0 +1,173 @@
+openapi: 3.0.0
+x-sql-table: audit_sensitive_column
+info:
+  title: SensitiveColumnResponse API
+  version: 1.0.0
+paths:
+  /sensitive_column:
+    get:
+      operationId: listSensitiveColumn
+      summary: Get all sensitive_column
+      responses:
+        '200':
+          description: List of sensitive_column
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SensitiveColumnResponse'
+    post:
+      operationId: createSensitiveColumn
+      summary: Create a new sensitive_column
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensitiveColumnRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensitiveColumnResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /sensitive_column/{sensitive_column_id}:
+    get:
+      operationId: getSensitiveColumnById
+      summary: Get sensitive_column by sensitive_column_id
+      parameters:
+        - in: path
+          name: sensitive_column_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: sensitive_column object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensitiveColumnResponse'
+        '404':
+          description: sensitive_column not found
+    put:
+      operationId: updateSensitiveColumn
+      summary: Update sensitive_column by sensitive_column_id
+      parameters:
+        - in: path
+          name: sensitive_column_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensitiveColumnUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensitiveColumnResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: sensitive_column not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSensitiveColumn
+      summary: Delete sensitive_column by sensitive_column_id
+      parameters:
+        - in: path
+          name: sensitive_column_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: sensitive_column not found
+components:
+  schemas:
+
+    SensitiveColumnRequest:
+      type: object
+      required:
+        - schema_name
+        - table_name
+        - column_name
+        - category
+      additionalProperties: false
+      properties:
+        schema_name:
+          type: string
+        table_name:
+          type: string
+        column_name:
+          type: string
+        category:
+          type: string
+          maxLength: 12
+
+    SensitiveColumnUpdateRequest:
+      type: object
+      required:
+        - schema_name
+        - table_name
+        - column_name
+        - category
+      additionalProperties: false
+      properties:
+        schema_name:
+          type: string
+        table_name:
+          type: string
+        column_name:
+          type: string
+        category:
+          type: string
+          maxLength: 12
+
+    SensitiveColumnResponse:
+      type: object
+      required:
+        - record_code
+        - sensitive_column_id
+        - schema_name
+        - table_name
+        - column_name
+        - category
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        sensitive_column_id:
+          type: string
+          format: uuid
+          readOnly: true
+        schema_name:
+          type: string
+        table_name:
+          type: string
+        column_name:
+          type: string
+        category:
+          type: string
+          maxLength: 12
+  

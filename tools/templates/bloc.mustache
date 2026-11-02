@@ -2,9 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../service/{{endpoint.moduleName}}_service.dart';
 import '{{{coreImport}}}/config/app_logger.dart';
 import '{{{coreImport}}}/models/api_operation_response.dart';
-{{#models}}
-import '../model/{{file}}';
-{{/models}}
+{{#endpoint.hasRequestBody}}
+{{#endpoint.hasTypedRequest}}
+import '../model/{{endpoint.RequestModelFile}}.dart';
+{{/endpoint.hasTypedRequest}}
+{{/endpoint.hasRequestBody}}
 
 // Events
 abstract class {{endpoint.OperationId}}Event {}

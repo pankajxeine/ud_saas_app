@@ -1,0 +1,265 @@
+openapi: 3.0.0
+x-sql-table: migrations_details
+info:
+  title: MigrationsDetailsResponse API
+  version: 1.0.0
+paths:
+  /migrations_details:
+    get:
+      operationId: listMigrationsDetails
+      summary: Get all migrations_details
+      responses:
+        '200':
+          description: List of migrations_details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MigrationsDetailsResponse'
+    post:
+      operationId: createMigrationsDetails
+      summary: Create a new migrations_details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MigrationsDetailsRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MigrationsDetailsResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /migrations_details/{migration_id}:
+    get:
+      operationId: getMigrationsDetailsById
+      summary: Get migrations_details by migration_id
+      parameters:
+        - in: path
+          name: migration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: migrations_details object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MigrationsDetailsResponse'
+        '404':
+          description: migrations_details not found
+    put:
+      operationId: updateMigrationsDetails
+      summary: Update migrations_details by migration_id
+      parameters:
+        - in: path
+          name: migration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MigrationsDetailsUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MigrationsDetailsResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: migrations_details not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteMigrationsDetails
+      summary: Delete migrations_details by migration_id
+      parameters:
+        - in: path
+          name: migration_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: migrations_details not found
+components:
+  schemas:
+
+    MigrationsDetailsRequest:
+      type: object
+      required:
+        - tenant_id
+        - schema_name
+        - file_name
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        schema_name:
+          type: string
+        folder:
+          type: string
+          nullable: true
+        year_folder:
+          type: string
+          nullable: true
+        file_name:
+          type: string
+        checksum:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "pending"
+          enum:
+            - "pending"
+            - "running"
+            - "succeeded"
+            - "failed"
+            - "rolled_back"
+        execution_started_at:
+          type: string
+          format: date-time
+          nullable: true
+        execution_finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+
+    MigrationsDetailsUpdateRequest:
+      type: object
+      required:
+        - tenant_id
+        - schema_name
+        - folder
+        - year_folder
+        - file_name
+        - checksum
+        - status
+        - execution_started_at
+        - execution_finished_at
+        - error_message
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        schema_name:
+          type: string
+        folder:
+          type: string
+          nullable: true
+        year_folder:
+          type: string
+          nullable: true
+        file_name:
+          type: string
+        checksum:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "pending"
+          enum:
+            - "pending"
+            - "running"
+            - "succeeded"
+            - "failed"
+            - "rolled_back"
+        execution_started_at:
+          type: string
+          format: date-time
+          nullable: true
+        execution_finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+
+    MigrationsDetailsResponse:
+      type: object
+      required:
+        - migration_id
+        - tenant_id
+        - schema_name
+        - file_name
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        migration_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+        schema_name:
+          type: string
+        folder:
+          type: string
+          nullable: true
+        year_folder:
+          type: string
+          nullable: true
+        file_name:
+          type: string
+        checksum:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "pending"
+          enum:
+            - "pending"
+            - "running"
+            - "succeeded"
+            - "failed"
+            - "rolled_back"
+        execution_started_at:
+          type: string
+          format: date-time
+          nullable: true
+        execution_finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

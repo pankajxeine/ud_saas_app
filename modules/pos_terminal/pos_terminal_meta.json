@@ -1,0 +1,449 @@
+{
+  "entity": "PosTerminal",
+  "table": "payment_pos_terminal",
+  "primaryKey": "pos_terminal_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/pos_terminal"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/pos_terminal"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/pos_terminal/{pos_terminal_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/pos_terminal/{pos_terminal_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/pos_terminal/{pos_terminal_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "pos_terminal_id",
+        "label": "Pos Terminal Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "outlet_id",
+        "label": "Outlet Id"
+      },
+      {
+        "field": "merchant_account_id",
+        "label": "Merchant Account Id"
+      },
+      {
+        "field": "terminal_code",
+        "label": "Terminal Code"
+      },
+      {
+        "field": "provider_terminal_ref",
+        "label": "Provider Terminal Ref"
+      },
+      {
+        "field": "device_serial",
+        "label": "Device Serial"
+      },
+      {
+        "field": "manufacturer",
+        "label": "Manufacturer"
+      },
+      {
+        "field": "model",
+        "label": "Model"
+      },
+      {
+        "field": "connection_type",
+        "label": "Connection Type"
+      },
+      {
+        "field": "pairing_secret_ref",
+        "label": "Pairing Secret Ref"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "paired_at",
+        "label": "Paired At"
+      },
+      {
+        "field": "last_seen_at",
+        "label": "Last Seen At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "pos_terminal_id",
+      "tenant_application_id",
+      "outlet_id",
+      "merchant_account_id",
+      "terminal_code",
+      "provider_terminal_ref",
+      "device_serial",
+      "manufacturer",
+      "model",
+      "connection_type",
+      "pairing_secret_ref",
+      "status",
+      "paired_at",
+      "last_seen_at",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_application_id",
+      "outlet_id",
+      "merchant_account_id",
+      "terminal_code",
+      "provider_terminal_ref",
+      "device_serial",
+      "manufacturer",
+      "model",
+      "connection_type",
+      "pairing_secret_ref",
+      "status",
+      "paired_at",
+      "last_seen_at"
+    ],
+    "update": [
+      "tenant_application_id",
+      "outlet_id",
+      "merchant_account_id",
+      "terminal_code",
+      "provider_terminal_ref",
+      "device_serial",
+      "manufacturer",
+      "model",
+      "connection_type",
+      "pairing_secret_ref",
+      "status",
+      "paired_at",
+      "last_seen_at"
+    ]
+  },
+  "references": {
+    "tenant_application_id": {
+      "table": "payment_merchant_account",
+      "key": "tenant_application_id",
+      "lookup": {
+        "endpoint": "/payment_merchant_account"
+      }
+    },
+    "outlet_id": {
+      "table": "payment_outlet",
+      "key": "outlet_id",
+      "lookup": {
+        "endpoint": "/payment_outlet"
+      }
+    },
+    "merchant_account_id": {
+      "table": "payment_merchant_account",
+      "key": "merchant_account_id",
+      "lookup": {
+        "endpoint": "/payment_merchant_account"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "pos_terminal_id",
+      "label": "Pos Terminal Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_merchant_account",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/payment_merchant_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "outlet_id",
+      "label": "Outlet Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_outlet",
+        "column": "outlet_id",
+        "lookup": {
+          "endpoint": "/payment_outlet",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "merchant_account_id",
+      "label": "Merchant Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_merchant_account",
+        "column": "merchant_account_id",
+        "lookup": {
+          "endpoint": "/payment_merchant_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "terminal_code",
+      "label": "Terminal Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "provider_terminal_ref",
+      "label": "Provider Terminal Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "device_serial",
+      "label": "Device Serial",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "manufacturer",
+      "label": "Manufacturer",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "model",
+      "label": "Model",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "connection_type",
+      "label": "Connection Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "cloud",
+        "lan",
+        "usb",
+        "bluetooth"
+      ],
+      "maxLength": 10
+    },
+    {
+      "name": "pairing_secret_ref",
+      "label": "Pairing Secret Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "pending",
+        "active",
+        "disabled",
+        "retired"
+      ],
+      "maxLength": 10
+    },
+    {
+      "name": "paired_at",
+      "label": "Paired At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "last_seen_at",
+      "label": "Last Seen At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

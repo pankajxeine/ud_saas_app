@@ -1,0 +1,334 @@
+openapi: 3.0.0
+x-sql-table: commission_payout
+x-sql-references:
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "approved_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: PayoutResponse API
+  version: 1.0.0
+paths:
+  /payout:
+    get:
+      operationId: listPayout
+      summary: Get all payout
+      responses:
+        '200':
+          description: List of payout
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PayoutResponse'
+    post:
+      operationId: createPayout
+      summary: Create a new payout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /payout/{payout_id}:
+    get:
+      operationId: getPayoutById
+      summary: Get payout by payout_id
+      parameters:
+        - in: path
+          name: payout_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: payout object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+        '404':
+          description: payout not found
+    put:
+      operationId: updatePayout
+      summary: Update payout by payout_id
+      parameters:
+        - in: path
+          name: payout_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: payout not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePayout
+      summary: Delete payout by payout_id
+      parameters:
+        - in: path
+          name: payout_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: payout not found
+components:
+  schemas:
+
+    PayoutRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - period_start
+        - period_end
+        - currency_code
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+          default: 0
+        tax_withheld:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+
+    PayoutUpdateRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - period_start
+        - period_end
+        - currency_code
+        - gross_amount
+        - tax_withheld
+        - net_amount
+        - status
+        - approved_by_user_id
+        - approved_at
+        - paid_at
+        - payment_ref
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+          default: 0
+        tax_withheld:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+
+    PayoutResponse:
+      type: object
+      required:
+        - record_code
+        - payout_id
+        - sales_agent_id
+        - period_start
+        - period_end
+        - currency_code
+        - gross_amount
+        - tax_withheld
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        payout_id:
+          type: string
+          format: uuid
+          readOnly: true
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        gross_amount:
+          type: string
+          default: 0
+        tax_withheld:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

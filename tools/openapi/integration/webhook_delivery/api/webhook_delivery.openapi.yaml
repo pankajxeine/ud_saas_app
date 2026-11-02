@@ -1,0 +1,271 @@
+openapi: 3.0.0
+x-sql-table: integration_webhook_delivery
+x-sql-references:
+  - column: "webhook_subscription_id"
+    table: "integration_webhook_subscription"
+    key: "webhook_subscription_id"
+  - column: "event_id"
+    table: "integration_outbox_event"
+    key: "event_id"
+info:
+  title: WebhookDeliveryResponse API
+  version: 1.0.0
+paths:
+  /webhook_delivery:
+    get:
+      operationId: listWebhookDelivery
+      summary: Get all webhook_delivery
+      responses:
+        '200':
+          description: List of webhook_delivery
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookDeliveryResponse'
+    post:
+      operationId: createWebhookDelivery
+      summary: Create a new webhook_delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeliveryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDeliveryResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /webhook_delivery/{webhook_delivery_id}:
+    get:
+      operationId: getWebhookDeliveryById
+      summary: Get webhook_delivery by webhook_delivery_id
+      parameters:
+        - in: path
+          name: webhook_delivery_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: webhook_delivery object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDeliveryResponse'
+        '404':
+          description: webhook_delivery not found
+    put:
+      operationId: updateWebhookDelivery
+      summary: Update webhook_delivery by webhook_delivery_id
+      parameters:
+        - in: path
+          name: webhook_delivery_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeliveryUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDeliveryResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: webhook_delivery not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteWebhookDelivery
+      summary: Delete webhook_delivery by webhook_delivery_id
+      parameters:
+        - in: path
+          name: webhook_delivery_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: webhook_delivery not found
+components:
+  schemas:
+
+    WebhookDeliveryRequest:
+      type: object
+      required:
+        - webhook_subscription_id
+        - event_id
+      additionalProperties: false
+      properties:
+        webhook_subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_webhook_subscription"
+            column: "webhook_subscription_id"
+        event_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_outbox_event"
+            column: "event_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        next_attempt_at:
+          type: string
+          format: date-time
+        response_code:
+          type: integer
+          format: int32
+          nullable: true
+        response_ms:
+          type: integer
+          format: int32
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+
+    WebhookDeliveryUpdateRequest:
+      type: object
+      required:
+        - webhook_subscription_id
+        - event_id
+        - status
+        - attempts
+        - next_attempt_at
+        - response_code
+        - response_ms
+        - delivered_at
+        - last_error
+      additionalProperties: false
+      properties:
+        webhook_subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_webhook_subscription"
+            column: "webhook_subscription_id"
+        event_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_outbox_event"
+            column: "event_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        next_attempt_at:
+          type: string
+          format: date-time
+        response_code:
+          type: integer
+          format: int32
+          nullable: true
+        response_ms:
+          type: integer
+          format: int32
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+
+    WebhookDeliveryResponse:
+      type: object
+      required:
+        - record_code
+        - webhook_delivery_id
+        - webhook_subscription_id
+        - event_id
+        - status
+        - attempts
+        - next_attempt_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        webhook_delivery_id:
+          type: string
+          format: uuid
+          readOnly: true
+        webhook_subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_webhook_subscription"
+            column: "webhook_subscription_id"
+        event_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "integration_outbox_event"
+            column: "event_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        next_attempt_at:
+          type: string
+          format: date-time
+        response_code:
+          type: integer
+          format: int32
+          nullable: true
+        response_ms:
+          type: integer
+          format: int32
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_error:
+          type: string
+          nullable: true
+  

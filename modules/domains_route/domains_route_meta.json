@@ -1,0 +1,517 @@
+{
+  "entity": "DomainsRoute",
+  "table": "domains_route",
+  "primaryKey": "route_id",
+  "displayField": "name",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/domains_route"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/domains_route"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/domains_route/{route_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/domains_route/{route_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/domains_route/{route_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "route_id",
+        "label": "Route Id"
+      },
+      {
+        "field": "domain",
+        "label": "Domain"
+      },
+      {
+        "field": "domain_type",
+        "label": "Domain Type"
+      },
+      {
+        "field": "parent_route_id",
+        "label": "Parent Route Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "db_name",
+        "label": "Db Name"
+      },
+      {
+        "field": "application_code",
+        "label": "Application Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "title",
+        "label": "Title"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "api_endpoint",
+        "label": "Api Endpoint"
+      },
+      {
+        "field": "web_endpoint",
+        "label": "Web Endpoint"
+      },
+      {
+        "field": "logo_url",
+        "label": "Logo Url"
+      },
+      {
+        "field": "favicon_url",
+        "label": "Favicon Url"
+      },
+      {
+        "field": "images",
+        "label": "Images"
+      },
+      {
+        "field": "config",
+        "label": "Config"
+      },
+      {
+        "field": "metadata",
+        "label": "Metadata"
+      },
+      {
+        "field": "is_primary",
+        "label": "Is Primary"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "route_id",
+      "domain",
+      "domain_type",
+      "parent_route_id",
+      "tenant_id",
+      "schema_name",
+      "db_name",
+      "application_code",
+      "name",
+      "title",
+      "description",
+      "api_endpoint",
+      "web_endpoint",
+      "logo_url",
+      "favicon_url",
+      "images",
+      "config",
+      "metadata",
+      "is_primary",
+      "is_active",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "domain",
+      "domain_type",
+      "parent_route_id",
+      "tenant_id",
+      "schema_name",
+      "db_name",
+      "application_code",
+      "name",
+      "title",
+      "description",
+      "api_endpoint",
+      "web_endpoint",
+      "logo_url",
+      "favicon_url",
+      "images",
+      "config",
+      "metadata",
+      "is_primary",
+      "is_active"
+    ],
+    "update": [
+      "domain",
+      "domain_type",
+      "parent_route_id",
+      "tenant_id",
+      "schema_name",
+      "db_name",
+      "application_code",
+      "name",
+      "title",
+      "description",
+      "api_endpoint",
+      "web_endpoint",
+      "logo_url",
+      "favicon_url",
+      "images",
+      "config",
+      "metadata",
+      "is_primary",
+      "is_active"
+    ]
+  },
+  "references": {
+    "parent_route_id": {
+      "table": "domains_route",
+      "key": "route_id",
+      "lookup": {
+        "endpoint": "/domains_route"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "route_id",
+      "label": "Route Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "domain",
+      "label": "Domain",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "domain_type",
+      "label": "Domain Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "cpanel",
+        "crm",
+        "tenant"
+      ]
+    },
+    {
+      "name": "parent_route_id",
+      "label": "Parent Route Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "domains_route",
+        "column": "route_id",
+        "lookup": {
+          "endpoint": "/domains_route",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "db_name",
+      "label": "Db Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "application_code",
+      "label": "Application Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "api_endpoint",
+      "label": "Api Endpoint",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "web_endpoint",
+      "label": "Web Endpoint",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "logo_url",
+      "label": "Logo Url",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "favicon_url",
+      "label": "Favicon Url",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "images",
+      "label": "Images",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "config",
+      "label": "Config",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "metadata",
+      "label": "Metadata",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_primary",
+      "label": "Is Primary",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

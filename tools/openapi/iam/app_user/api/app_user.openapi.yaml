@@ -1,0 +1,459 @@
+openapi: 3.0.0
+x-sql-table: iam_app_user
+x-sql-references:
+  - column: "manager_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: AppUserResponse API
+  version: 1.0.0
+paths:
+  /app_user:
+    get:
+      operationId: listAppUser
+      summary: Get all app_user
+      responses:
+        '200':
+          description: List of app_user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppUserResponse'
+    post:
+      operationId: createAppUser
+      summary: Create a new app_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppUserRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUserResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /app_user/{app_user_id}:
+    get:
+      operationId: getAppUserById
+      summary: Get app_user by app_user_id
+      parameters:
+        - in: path
+          name: app_user_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: app_user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUserResponse'
+        '404':
+          description: app_user not found
+    put:
+      operationId: updateAppUser
+      summary: Update app_user by app_user_id
+      parameters:
+        - in: path
+          name: app_user_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppUserUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUserResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: app_user not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAppUser
+      summary: Delete app_user by app_user_id
+      parameters:
+        - in: path
+          name: app_user_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: app_user not found
+components:
+  schemas:
+
+    AppUserRequest:
+      type: object
+      required:
+        - username
+        - email
+        - full_name
+      additionalProperties: false
+      properties:
+        user_type:
+          type: string
+          default: "staff"
+        username:
+          type: string
+          maxLength: 60
+        email:
+          type: string
+        full_name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        employee_code:
+          type: string
+          nullable: true
+          maxLength: 30
+        password_hash:
+          type: string
+          nullable: true
+        sso_provider:
+          type: string
+          nullable: true
+          maxLength: 30
+        sso_subject:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "invited"
+        default_scope_type:
+          type: string
+          default: "global"
+        default_scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        failed_login_count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        password_changed_at:
+          type: string
+          format: date-time
+          nullable: true
+        must_change_password:
+          type: boolean
+          default: false
+        is_mfa_enabled:
+          type: boolean
+          default: false
+        locale:
+          type: string
+          default: "en-US"
+        timezone:
+          type: string
+          default: "UTC"
+        invited_at:
+          type: string
+          format: date-time
+          nullable: true
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        deactivated_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AppUserUpdateRequest:
+      type: object
+      required:
+        - user_type
+        - username
+        - email
+        - full_name
+        - phone
+        - employee_code
+        - password_hash
+        - sso_provider
+        - sso_subject
+        - status
+        - default_scope_type
+        - default_scope_id
+        - manager_user_id
+        - last_login_at
+        - failed_login_count
+        - locked_until
+        - password_changed_at
+        - must_change_password
+        - is_mfa_enabled
+        - locale
+        - timezone
+        - invited_at
+        - activated_at
+        - deactivated_at
+      additionalProperties: false
+      properties:
+        user_type:
+          type: string
+          default: "staff"
+        username:
+          type: string
+          maxLength: 60
+        email:
+          type: string
+        full_name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        employee_code:
+          type: string
+          nullable: true
+          maxLength: 30
+        password_hash:
+          type: string
+          nullable: true
+        sso_provider:
+          type: string
+          nullable: true
+          maxLength: 30
+        sso_subject:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "invited"
+        default_scope_type:
+          type: string
+          default: "global"
+        default_scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        failed_login_count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        password_changed_at:
+          type: string
+          format: date-time
+          nullable: true
+        must_change_password:
+          type: boolean
+          default: false
+        is_mfa_enabled:
+          type: boolean
+          default: false
+        locale:
+          type: string
+          default: "en-US"
+        timezone:
+          type: string
+          default: "UTC"
+        invited_at:
+          type: string
+          format: date-time
+          nullable: true
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        deactivated_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AppUserResponse:
+      type: object
+      required:
+        - record_code
+        - app_user_id
+        - user_type
+        - username
+        - email
+        - full_name
+        - status
+        - default_scope_type
+        - failed_login_count
+        - must_change_password
+        - is_mfa_enabled
+        - locale
+        - timezone
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_type:
+          type: string
+          default: "staff"
+        username:
+          type: string
+          maxLength: 60
+        email:
+          type: string
+        full_name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        employee_code:
+          type: string
+          nullable: true
+          maxLength: 30
+        password_hash:
+          type: string
+          nullable: true
+        sso_provider:
+          type: string
+          nullable: true
+          maxLength: 30
+        sso_subject:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: "invited"
+        default_scope_type:
+          type: string
+          default: "global"
+        default_scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        manager_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        failed_login_count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        password_changed_at:
+          type: string
+          format: date-time
+          nullable: true
+        must_change_password:
+          type: boolean
+          default: false
+        is_mfa_enabled:
+          type: boolean
+          default: false
+        locale:
+          type: string
+          default: "en-US"
+        timezone:
+          type: string
+          default: "UTC"
+        invited_at:
+          type: string
+          format: date-time
+          nullable: true
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        deactivated_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+  

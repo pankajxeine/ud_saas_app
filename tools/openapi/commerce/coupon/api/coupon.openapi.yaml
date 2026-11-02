@@ -1,0 +1,322 @@
+openapi: 3.0.0
+x-sql-table: commerce_coupon
+x-sql-references:
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: CouponResponse API
+  version: 1.0.0
+paths:
+  /coupon:
+    get:
+      operationId: listCoupon
+      summary: Get all coupon
+      responses:
+        '200':
+          description: List of coupon
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CouponResponse'
+    post:
+      operationId: createCoupon
+      summary: Create a new coupon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouponRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /coupon/{coupon_id}:
+    get:
+      operationId: getCouponById
+      summary: Get coupon by coupon_id
+      parameters:
+        - in: path
+          name: coupon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: coupon object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponse'
+        '404':
+          description: coupon not found
+    put:
+      operationId: updateCoupon
+      summary: Update coupon by coupon_id
+      parameters:
+        - in: path
+          name: coupon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouponUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: coupon not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCoupon
+      summary: Delete coupon by coupon_id
+      parameters:
+        - in: path
+          name: coupon_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: coupon not found
+components:
+  schemas:
+
+    CouponRequest:
+      type: object
+      required:
+        - coupon_code
+        - name
+        - discount_type
+        - discount_value
+        - duration
+      additionalProperties: false
+      properties:
+        coupon_code:
+          type: string
+          maxLength: 40
+        name:
+          type: string
+        discount_type:
+          type: string
+          maxLength: 10
+        discount_value:
+          type: number
+          format: double
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        duration:
+          type: string
+          maxLength: 10
+        duration_months:
+          type: integer
+          format: int32
+          nullable: true
+        max_redemptions:
+          type: integer
+          format: int32
+          nullable: true
+        redeemed_count:
+          type: integer
+          format: int32
+          default: 0
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        applies_to_plan_ids:
+          type: string
+          format: uuid
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    CouponUpdateRequest:
+      type: object
+      required:
+        - coupon_code
+        - name
+        - discount_type
+        - discount_value
+        - currency_code
+        - duration
+        - duration_months
+        - max_redemptions
+        - redeemed_count
+        - valid_from
+        - valid_to
+        - applies_to_plan_ids
+        - is_active
+      additionalProperties: false
+      properties:
+        coupon_code:
+          type: string
+          maxLength: 40
+        name:
+          type: string
+        discount_type:
+          type: string
+          maxLength: 10
+        discount_value:
+          type: number
+          format: double
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        duration:
+          type: string
+          maxLength: 10
+        duration_months:
+          type: integer
+          format: int32
+          nullable: true
+        max_redemptions:
+          type: integer
+          format: int32
+          nullable: true
+        redeemed_count:
+          type: integer
+          format: int32
+          default: 0
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        applies_to_plan_ids:
+          type: string
+          format: uuid
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    CouponResponse:
+      type: object
+      required:
+        - record_code
+        - coupon_id
+        - coupon_code
+        - name
+        - discount_type
+        - discount_value
+        - duration
+        - redeemed_count
+        - valid_from
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        coupon_id:
+          type: string
+          format: uuid
+          readOnly: true
+        coupon_code:
+          type: string
+          maxLength: 40
+        name:
+          type: string
+        discount_type:
+          type: string
+          maxLength: 10
+        discount_value:
+          type: number
+          format: double
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        duration:
+          type: string
+          maxLength: 10
+        duration_months:
+          type: integer
+          format: int32
+          nullable: true
+        max_redemptions:
+          type: integer
+          format: int32
+          nullable: true
+        redeemed_count:
+          type: integer
+          format: int32
+          default: 0
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        applies_to_plan_ids:
+          type: string
+          format: uuid
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

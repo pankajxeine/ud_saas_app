@@ -1,0 +1,227 @@
+openapi: 3.0.0
+x-sql-table: entitlement_entitlement_snapshot
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+info:
+  title: EntitlementSnapshotResponse API
+  version: 1.0.0
+paths:
+  /entitlement_snapshot:
+    get:
+      operationId: listEntitlementSnapshot
+      summary: Get all entitlement_snapshot
+      responses:
+        '200':
+          description: List of entitlement_snapshot
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntitlementSnapshotResponse'
+    post:
+      operationId: createEntitlementSnapshot
+      summary: Create a new entitlement_snapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementSnapshotRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementSnapshotResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /entitlement_snapshot/{entitlement_snapshot_id}:
+    get:
+      operationId: getEntitlementSnapshotById
+      summary: Get entitlement_snapshot by entitlement_snapshot_id
+      parameters:
+        - in: path
+          name: entitlement_snapshot_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: entitlement_snapshot object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementSnapshotResponse'
+        '404':
+          description: entitlement_snapshot not found
+    put:
+      operationId: updateEntitlementSnapshot
+      summary: Update entitlement_snapshot by entitlement_snapshot_id
+      parameters:
+        - in: path
+          name: entitlement_snapshot_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementSnapshotUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementSnapshotResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: entitlement_snapshot not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEntitlementSnapshot
+      summary: Delete entitlement_snapshot by entitlement_snapshot_id
+      parameters:
+        - in: path
+          name: entitlement_snapshot_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: entitlement_snapshot not found
+components:
+  schemas:
+
+    EntitlementSnapshotRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - version
+        - access_mode
+        - reason
+        - valid_until
+        - payload
+        - payload_hash
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        version:
+          type: integer
+          format: int64
+        access_mode:
+          type: string
+        reason:
+          type: string
+        valid_until:
+          type: string
+          format: date-time
+        payload:
+        payload_hash:
+          type: string
+        computed_at:
+          type: string
+          format: date-time
+
+    EntitlementSnapshotUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - version
+        - access_mode
+        - reason
+        - valid_until
+        - payload
+        - payload_hash
+        - computed_at
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        version:
+          type: integer
+          format: int64
+        access_mode:
+          type: string
+        reason:
+          type: string
+        valid_until:
+          type: string
+          format: date-time
+        payload:
+        payload_hash:
+          type: string
+        computed_at:
+          type: string
+          format: date-time
+
+    EntitlementSnapshotResponse:
+      type: object
+      required:
+        - record_code
+        - entitlement_snapshot_id
+        - tenant_application_id
+        - version
+        - access_mode
+        - reason
+        - valid_until
+        - payload
+        - payload_hash
+        - computed_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        entitlement_snapshot_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        version:
+          type: integer
+          format: int64
+        access_mode:
+          type: string
+        reason:
+          type: string
+        valid_until:
+          type: string
+          format: date-time
+        payload:
+        payload_hash:
+          type: string
+        computed_at:
+          type: string
+          format: date-time
+  

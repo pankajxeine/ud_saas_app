@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart' hide Scaffold;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ud_sass_app/ui/shadcn/components/layout/flex/flex.dart';
-import 'package:ud_sass_app/ui/shadcn/components/layout/scaffold/scaffold.dart';
-import 'package:ud_sass_app/ui/shadcn/shared/primitives/text.dart';
+import 'package:ud_sass_app/core/navigation/app_navigation.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart';
 
 import 'package:ud_sass_app/core/config/environment.dart';
 import 'package:ud_sass_app/core/config/entity_field/entity_field_meta.dart';
@@ -11,10 +12,6 @@ import 'package:ud_sass_app/core/widgets/components/loading.dart';
 import '../service/{{endpoint.moduleName}}_service.dart';
 import '../bloc/{{endpoint.blocFieldName}}_bloc.dart';
 import '../meta/{{module}}_meta.dart';
-
-{{#models}}
-import '../model/{{file}}';
-{{/models}}
 
 class {{Module}}DetailPage extends StatelessWidget {
     const {{Module}}DetailPage({
@@ -55,27 +52,58 @@ class {{Module}}DetailPage extends StatelessWidget {
                         return Center(child: Text(message));
 
                         case {{endpoint.OperationId}}Success(:final response):
-                            final item = state.response.body;
+                            final item = response.body;
                             if(item == null) {
                                 return  const Center(child: Text('Not Found'));
                             }
 
-                            final entries = {{Module}}EntityMeta.toDetailsEntries(
+                            final entries = {{moduleCamel}}EntityMeta.toDetailsEntries(
                                 item.toJson(),
                                 mode: EntityMode.view,
                             );
 
-                            return ListView(
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                    for(final entry in entries)
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 6),
-                                        child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                            SizedBox(width: 160, child: Text(entry.key).semiBold),
-                                            Expanded(child: Text(entry.value)),
-                                        ],
+                                    {{#hasDeletePage}}
+                                    Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Button(
+                                            variant: ButtonVariant.destructive,
+                                            onPressed: () {
+                                                {{#deleteRouteGuard}}
+                                                if ({{deleteRouteGuard}}) return;
+                                                {{/deleteRouteGuard}}
+                                                context.go({{{deleteRouteExpression}}});
+                                            },
+                                            child: const Text('Delete'),
+                                        ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    {{/hasDeletePage}}
+                                    Expanded(
+                                        child: ListView(
+                                            children: [
+                                                for(final entry in entries)
+                                                Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 6),
+                                                    child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                            SizedBox(
+                                                                width: 160,
+                                                                child: Text(
+                                                                    entry.key,
+                                                                    style: const TextStyle(
+                                                                        fontWeight: FontWeight.w600,
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                            Expanded(child: Text(entry.value)),
+                                                        ],
+                                                    ),
+                                                ),
+                                            ],
                                         ),
                                     ),
                                 ],

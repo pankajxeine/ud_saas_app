@@ -1,0 +1,206 @@
+openapi: 3.0.0
+x-sql-table: tenancy_tenant_config
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "config_key"
+    table: "platform_config_definition"
+    key: "config_key"
+info:
+  title: TenantConfigResponse API
+  version: 1.0.0
+paths:
+  /tenant_config:
+    get:
+      operationId: listTenantConfig
+      summary: Get all tenant_config
+      responses:
+        '200':
+          description: List of tenant_config
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantConfigResponse'
+    post:
+      operationId: createTenantConfig
+      summary: Create a new tenant_config
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantConfigRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantConfigResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_config/{tenant_config_id}:
+    get:
+      operationId: getTenantConfigById
+      summary: Get tenant_config by tenant_config_id
+      parameters:
+        - in: path
+          name: tenant_config_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_config object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantConfigResponse'
+        '404':
+          description: tenant_config not found
+    put:
+      operationId: updateTenantConfig
+      summary: Update tenant_config by tenant_config_id
+      parameters:
+        - in: path
+          name: tenant_config_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantConfigUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantConfigResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_config not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantConfig
+      summary: Delete tenant_config by tenant_config_id
+      parameters:
+        - in: path
+          name: tenant_config_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_config not found
+components:
+  schemas:
+
+    TenantConfigRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - config_key
+        - value
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        config_key:
+          type: string
+          x-reference:
+            table: "platform_config_definition"
+            column: "config_key"
+        value:
+
+    TenantConfigUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - config_key
+        - value
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        config_key:
+          type: string
+          x-reference:
+            table: "platform_config_definition"
+            column: "config_key"
+        value:
+
+    TenantConfigResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_config_id
+        - tenant_application_id
+        - config_key
+        - value
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_config_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        config_key:
+          type: string
+          x-reference:
+            table: "platform_config_definition"
+            column: "config_key"
+        value:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

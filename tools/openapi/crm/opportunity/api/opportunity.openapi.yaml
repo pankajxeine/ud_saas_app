@@ -1,0 +1,429 @@
+openapi: 3.0.0
+x-sql-table: crm_opportunity
+x-sql-references:
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "lead_id"
+    table: "crm_lead"
+    key: "lead_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "owner_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+info:
+  title: OpportunityResponse API
+  version: 1.0.0
+paths:
+  /opportunity:
+    get:
+      operationId: listOpportunity
+      summary: Get all opportunity
+      responses:
+        '200':
+          description: List of opportunity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OpportunityResponse'
+    post:
+      operationId: createOpportunity
+      summary: Create a new opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /opportunity/{opportunity_id}:
+    get:
+      operationId: getOpportunityById
+      summary: Get opportunity by opportunity_id
+      parameters:
+        - in: path
+          name: opportunity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: opportunity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+        '404':
+          description: opportunity not found
+    put:
+      operationId: updateOpportunity
+      summary: Update opportunity by opportunity_id
+      parameters:
+        - in: path
+          name: opportunity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: opportunity not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteOpportunity
+      summary: Delete opportunity by opportunity_id
+      parameters:
+        - in: path
+          name: opportunity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: opportunity not found
+components:
+  schemas:
+
+    OpportunityRequest:
+      type: object
+      required:
+        - account_id
+        - name
+        - application_id
+        - currency_code
+      additionalProperties: false
+      properties:
+        opportunity_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        lead_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_lead"
+            column: "lead_id"
+        name:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        deal_type:
+          type: string
+          maxLength: 12
+          default: "new"
+        stage:
+          type: string
+          maxLength: 15
+          default: "prospecting"
+        amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        probability:
+          type: string
+          default: 10
+        expected_close_date:
+          type: string
+          format: date
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lost_reason:
+          type: string
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    OpportunityUpdateRequest:
+      type: object
+      required:
+        - opportunity_number
+        - account_id
+        - lead_id
+        - name
+        - application_id
+        - deal_type
+        - stage
+        - amount
+        - currency_code
+        - probability
+        - expected_close_date
+        - owner_user_id
+        - sales_agent_id
+        - branch_id
+        - lost_reason
+        - closed_at
+      additionalProperties: false
+      properties:
+        opportunity_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        lead_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_lead"
+            column: "lead_id"
+        name:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        deal_type:
+          type: string
+          maxLength: 12
+          default: "new"
+        stage:
+          type: string
+          maxLength: 15
+          default: "prospecting"
+        amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        probability:
+          type: string
+          default: 10
+        expected_close_date:
+          type: string
+          format: date
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lost_reason:
+          type: string
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    OpportunityResponse:
+      type: object
+      required:
+        - record_code
+        - opportunity_id
+        - opportunity_number
+        - account_id
+        - name
+        - application_id
+        - deal_type
+        - stage
+        - currency_code
+        - probability
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        opportunity_id:
+          type: string
+          format: uuid
+          readOnly: true
+        opportunity_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        lead_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_lead"
+            column: "lead_id"
+        name:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        deal_type:
+          type: string
+          maxLength: 12
+          default: "new"
+        stage:
+          type: string
+          maxLength: 15
+          default: "prospecting"
+        amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        probability:
+          type: string
+          default: 10
+        expected_close_date:
+          type: string
+          format: date
+          nullable: true
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        lost_reason:
+          type: string
+          nullable: true
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

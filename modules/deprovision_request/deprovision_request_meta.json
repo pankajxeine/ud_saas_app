@@ -1,0 +1,373 @@
+{
+  "entity": "DeprovisionRequest",
+  "table": "provisioning_deprovision_request",
+  "primaryKey": "deprovision_request_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/deprovision_request"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/deprovision_request"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/deprovision_request/{deprovision_request_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/deprovision_request/{deprovision_request_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/deprovision_request/{deprovision_request_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "deprovision_request_id",
+        "label": "Deprovision Request Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "export_requested",
+        "label": "Export Requested"
+      },
+      {
+        "field": "export_ref",
+        "label": "Export Ref"
+      },
+      {
+        "field": "retention_until",
+        "label": "Retention Until"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "requested_by_user_id",
+        "label": "Requested By User Id"
+      },
+      {
+        "field": "approved_by_user_id",
+        "label": "Approved By User Id"
+      },
+      {
+        "field": "approved_at",
+        "label": "Approved At"
+      },
+      {
+        "field": "completed_at",
+        "label": "Completed At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "deprovision_request_id",
+      "tenant_id",
+      "reason",
+      "export_requested",
+      "export_ref",
+      "retention_until",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "completed_at",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_id",
+      "reason",
+      "export_requested",
+      "export_ref",
+      "retention_until",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "completed_at"
+    ],
+    "update": [
+      "tenant_id",
+      "reason",
+      "export_requested",
+      "export_ref",
+      "retention_until",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "completed_at"
+    ]
+  },
+  "references": {
+    "tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    },
+    "requested_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "approved_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "deprovision_request_id",
+      "label": "Deprovision Request Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "export_requested",
+      "label": "Export Requested",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "export_ref",
+      "label": "Export Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "retention_until",
+      "label": "Retention Until",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "requested_by_user_id",
+      "label": "Requested By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_by_user_id",
+      "label": "Approved By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_at",
+      "label": "Approved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "completed_at",
+      "label": "Completed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

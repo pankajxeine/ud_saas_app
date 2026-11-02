@@ -1,0 +1,292 @@
+openapi: 3.0.0
+x-sql-table: crm_campaign
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "owner_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: CampaignResponse API
+  version: 1.0.0
+paths:
+  /campaign:
+    get:
+      operationId: listCampaign
+      summary: Get all campaign
+      responses:
+        '200':
+          description: List of campaign
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampaignResponse'
+    post:
+      operationId: createCampaign
+      summary: Create a new campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /campaign/{campaign_id}:
+    get:
+      operationId: getCampaignById
+      summary: Get campaign by campaign_id
+      parameters:
+        - in: path
+          name: campaign_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: campaign object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '404':
+          description: campaign not found
+    put:
+      operationId: updateCampaign
+      summary: Update campaign by campaign_id
+      parameters:
+        - in: path
+          name: campaign_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: campaign not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCampaign
+      summary: Delete campaign by campaign_id
+      parameters:
+        - in: path
+          name: campaign_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: campaign not found
+components:
+  schemas:
+
+    CampaignRequest:
+      type: object
+      required:
+        - campaign_code
+        - name
+        - channel
+        - start_date
+      additionalProperties: false
+      properties:
+        campaign_code:
+          type: string
+        name:
+          type: string
+        channel:
+          type: string
+          maxLength: 20
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        budget_amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    CampaignUpdateRequest:
+      type: object
+      required:
+        - campaign_code
+        - name
+        - channel
+        - application_id
+        - start_date
+        - end_date
+        - budget_amount
+        - currency_code
+        - owner_user_id
+      additionalProperties: false
+      properties:
+        campaign_code:
+          type: string
+        name:
+          type: string
+        channel:
+          type: string
+          maxLength: 20
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        budget_amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    CampaignResponse:
+      type: object
+      required:
+        - record_code
+        - campaign_id
+        - campaign_code
+        - name
+        - channel
+        - start_date
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        campaign_id:
+          type: string
+          format: uuid
+          readOnly: true
+        campaign_code:
+          type: string
+        name:
+          type: string
+        channel:
+          type: string
+          maxLength: 20
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        budget_amount:
+          type: string
+          nullable: true
+        currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owner_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

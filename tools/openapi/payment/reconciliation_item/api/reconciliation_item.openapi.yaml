@@ -1,0 +1,238 @@
+openapi: 3.0.0
+x-sql-table: payment_reconciliation_item
+x-sql-references:
+  - column: "reconciliation_batch_id"
+    table: "payment_reconciliation_batch"
+    key: "reconciliation_batch_id"
+  - column: "payment_id"
+    table: "payment_payment"
+    key: "payment_id"
+info:
+  title: ReconciliationItemResponse API
+  version: 1.0.0
+paths:
+  /reconciliation_item:
+    get:
+      operationId: listReconciliationItem
+      summary: Get all reconciliation_item
+      responses:
+        '200':
+          description: List of reconciliation_item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReconciliationItemResponse'
+    post:
+      operationId: createReconciliationItem
+      summary: Create a new reconciliation_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconciliationItemRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationItemResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /reconciliation_item/{reconciliation_item_id}:
+    get:
+      operationId: getReconciliationItemById
+      summary: Get reconciliation_item by reconciliation_item_id
+      parameters:
+        - in: path
+          name: reconciliation_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: reconciliation_item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationItemResponse'
+        '404':
+          description: reconciliation_item not found
+    put:
+      operationId: updateReconciliationItem
+      summary: Update reconciliation_item by reconciliation_item_id
+      parameters:
+        - in: path
+          name: reconciliation_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconciliationItemUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationItemResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: reconciliation_item not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteReconciliationItem
+      summary: Delete reconciliation_item by reconciliation_item_id
+      parameters:
+        - in: path
+          name: reconciliation_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: reconciliation_item not found
+components:
+  schemas:
+
+    ReconciliationItemRequest:
+      type: object
+      required:
+        - reconciliation_batch_id
+        - gateway_payment_ref
+        - amount
+        - status
+      additionalProperties: false
+      properties:
+        reconciliation_batch_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_reconciliation_batch"
+            column: "reconciliation_batch_id"
+        gateway_payment_ref:
+          type: string
+          maxLength: 100
+        payment_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        status:
+          type: string
+          maxLength: 22
+        note:
+          type: string
+          nullable: true
+
+    ReconciliationItemUpdateRequest:
+      type: object
+      required:
+        - reconciliation_batch_id
+        - gateway_payment_ref
+        - payment_id
+        - amount
+        - fee_amount
+        - status
+        - note
+      additionalProperties: false
+      properties:
+        reconciliation_batch_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_reconciliation_batch"
+            column: "reconciliation_batch_id"
+        gateway_payment_ref:
+          type: string
+          maxLength: 100
+        payment_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        status:
+          type: string
+          maxLength: 22
+        note:
+          type: string
+          nullable: true
+
+    ReconciliationItemResponse:
+      type: object
+      required:
+        - record_code
+        - reconciliation_item_id
+        - reconciliation_batch_id
+        - gateway_payment_ref
+        - amount
+        - fee_amount
+        - status
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        reconciliation_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+        reconciliation_batch_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_reconciliation_batch"
+            column: "reconciliation_batch_id"
+        gateway_payment_ref:
+          type: string
+          maxLength: 100
+        payment_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment"
+            column: "payment_id"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        status:
+          type: string
+          maxLength: 22
+        note:
+          type: string
+          nullable: true
+  

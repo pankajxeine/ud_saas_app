@@ -91,6 +91,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
                   label: 'First Page',
                   child: const Icon(BootstrapIcons.chevronBarLeft),
                 ),
+                const SizedBox(width: 8),
                 TooltipButton(
                   variant: ButtonVariant.outline,
                   size: ButtonSize.icon,
@@ -157,6 +158,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
                   label: 'Next Page',
                   child: const Icon(BootstrapIcons.chevronRight),
                 ),
+                const SizedBox(width: 8),
                 TooltipButton(
                   size: ButtonSize.icon,
                   onPressed: currentPage < totalPage

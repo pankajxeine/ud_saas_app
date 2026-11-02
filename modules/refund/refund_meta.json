@@ -1,0 +1,374 @@
+{
+  "entity": "Refund",
+  "table": "payment_refund",
+  "primaryKey": "refund_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/refund"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/refund"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/refund/{refund_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/refund/{refund_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/refund/{refund_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "refund_id",
+        "label": "Refund Id"
+      },
+      {
+        "field": "payment_id",
+        "label": "Payment Id"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "requested_by_user_id",
+        "label": "Requested By User Id"
+      },
+      {
+        "field": "approved_by_user_id",
+        "label": "Approved By User Id"
+      },
+      {
+        "field": "approved_at",
+        "label": "Approved At"
+      },
+      {
+        "field": "gateway_refund_ref",
+        "label": "Gateway Refund Ref"
+      },
+      {
+        "field": "processed_at",
+        "label": "Processed At"
+      },
+      {
+        "field": "failure_message",
+        "label": "Failure Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "refund_id",
+      "payment_id",
+      "amount",
+      "reason",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "gateway_refund_ref",
+      "processed_at",
+      "failure_message",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "payment_id",
+      "amount",
+      "reason",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "gateway_refund_ref",
+      "processed_at",
+      "failure_message"
+    ],
+    "update": [
+      "payment_id",
+      "amount",
+      "reason",
+      "status",
+      "requested_by_user_id",
+      "approved_by_user_id",
+      "approved_at",
+      "gateway_refund_ref",
+      "processed_at",
+      "failure_message"
+    ]
+  },
+  "references": {
+    "payment_id": {
+      "table": "payment_payment",
+      "key": "payment_id",
+      "lookup": {
+        "endpoint": "/payment_payment"
+      }
+    },
+    "requested_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "approved_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "refund_id",
+      "label": "Refund Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "payment_id",
+      "label": "Payment Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_payment",
+        "column": "payment_id",
+        "lookup": {
+          "endpoint": "/payment_payment",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "requested_by_user_id",
+      "label": "Requested By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_by_user_id",
+      "label": "Approved By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_at",
+      "label": "Approved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "gateway_refund_ref",
+      "label": "Gateway Refund Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 100
+    },
+    {
+      "name": "processed_at",
+      "label": "Processed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "failure_message",
+      "label": "Failure Message",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

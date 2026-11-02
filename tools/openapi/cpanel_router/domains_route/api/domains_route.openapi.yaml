@@ -1,0 +1,356 @@
+openapi: 3.0.0
+x-sql-table: domains_route
+x-sql-references:
+  - column: "parent_route_id"
+    table: "domains_route"
+    key: "route_id"
+info:
+  title: DomainsRouteResponse API
+  version: 1.0.0
+paths:
+  /domains_route:
+    get:
+      operationId: listDomainsRoute
+      summary: Get all domains_route
+      responses:
+        '200':
+          description: List of domains_route
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DomainsRouteResponse'
+    post:
+      operationId: createDomainsRoute
+      summary: Create a new domains_route
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainsRouteRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsRouteResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /domains_route/{route_id}:
+    get:
+      operationId: getDomainsRouteById
+      summary: Get domains_route by route_id
+      parameters:
+        - in: path
+          name: route_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: domains_route object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsRouteResponse'
+        '404':
+          description: domains_route not found
+    put:
+      operationId: updateDomainsRoute
+      summary: Update domains_route by route_id
+      parameters:
+        - in: path
+          name: route_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainsRouteUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsRouteResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: domains_route not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteDomainsRoute
+      summary: Delete domains_route by route_id
+      parameters:
+        - in: path
+          name: route_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: domains_route not found
+components:
+  schemas:
+
+    DomainsRouteRequest:
+      type: object
+      required:
+        - domain
+        - domain_type
+      additionalProperties: false
+      properties:
+        domain:
+          type: string
+        domain_type:
+          type: string
+          enum:
+            - "cpanel"
+            - "crm"
+            - "tenant"
+        parent_route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        schema_name:
+          type: string
+          nullable: true
+        db_name:
+          type: string
+          nullable: true
+        application_code:
+          type: string
+          default: "crm"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        metadata:
+          default: "{}"
+        is_primary:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+
+    DomainsRouteUpdateRequest:
+      type: object
+      required:
+        - domain
+        - domain_type
+        - parent_route_id
+        - tenant_id
+        - schema_name
+        - db_name
+        - application_code
+        - name
+        - title
+        - description
+        - api_endpoint
+        - web_endpoint
+        - logo_url
+        - favicon_url
+        - images
+        - config
+        - metadata
+        - is_primary
+        - is_active
+      additionalProperties: false
+      properties:
+        domain:
+          type: string
+        domain_type:
+          type: string
+          enum:
+            - "cpanel"
+            - "crm"
+            - "tenant"
+        parent_route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        schema_name:
+          type: string
+          nullable: true
+        db_name:
+          type: string
+          nullable: true
+        application_code:
+          type: string
+          default: "crm"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        metadata:
+          default: "{}"
+        is_primary:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+
+    DomainsRouteResponse:
+      type: object
+      required:
+        - route_id
+        - domain
+        - domain_type
+        - application_code
+        - images
+        - config
+        - metadata
+        - is_primary
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        route_id:
+          type: string
+          format: uuid
+          readOnly: true
+        domain:
+          type: string
+        domain_type:
+          type: string
+          enum:
+            - "cpanel"
+            - "crm"
+            - "tenant"
+        parent_route_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "domains_route"
+            column: "route_id"
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+        schema_name:
+          type: string
+          nullable: true
+        db_name:
+          type: string
+          nullable: true
+        application_code:
+          type: string
+          default: "crm"
+        name:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        api_endpoint:
+          type: string
+          nullable: true
+        web_endpoint:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          nullable: true
+        favicon_url:
+          type: string
+          nullable: true
+        images:
+          default: "[]"
+        config:
+          default: "{}"
+        metadata:
+          default: "{}"
+        is_primary:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

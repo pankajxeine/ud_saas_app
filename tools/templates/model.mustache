@@ -5,7 +5,7 @@ class {{classname}} {
 
   {{classname}}({
     {{#vars}}
-    {{#required}}required {{/required}}this.{{name}},
+    {{#modelRequired}}required {{/modelRequired}}this.{{name}},
     {{/vars}}
   });
 
@@ -17,11 +17,11 @@ class {{classname}} {
 
   Map<String, dynamic> toJson() => {
     {{#vars}}
-    {{#required}}'{{baseName}}': {{name}},
-    {{/required}}
-    {{^required}}
+    {{#modelRequired}}'{{baseName}}': {{name}},
+    {{/modelRequired}}
+    {{^modelRequired}}
     if ({{name}} != null) '{{baseName}}': {{name}},
-    {{/required}}
+    {{/modelRequired}}
     {{/vars}}
   };
 }

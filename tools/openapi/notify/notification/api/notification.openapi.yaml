@@ -1,0 +1,339 @@
+openapi: 3.0.0
+x-sql-table: notify_notification
+x-sql-references:
+  - column: "template_version_id"
+    table: "notify_template_version"
+    key: "template_version_id"
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+info:
+  title: NotificationResponse API
+  version: 1.0.0
+paths:
+  /notification:
+    get:
+      operationId: listNotification
+      summary: Get all notification
+      responses:
+        '200':
+          description: List of notification
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationResponse'
+    post:
+      operationId: createNotification
+      summary: Create a new notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /notification/{notification_id}:
+    get:
+      operationId: getNotificationById
+      summary: Get notification by notification_id
+      parameters:
+        - in: path
+          name: notification_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: notification object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponse'
+        '404':
+          description: notification not found
+    put:
+      operationId: updateNotification
+      summary: Update notification by notification_id
+      parameters:
+        - in: path
+          name: notification_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: notification not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteNotification
+      summary: Delete notification by notification_id
+      parameters:
+        - in: path
+          name: notification_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: notification not found
+components:
+  schemas:
+
+    NotificationRequest:
+      type: object
+      required:
+        - template_version_id
+        - locale
+        - channel
+        - recipient_address
+        - payload
+        - idempotency_key
+      additionalProperties: false
+      properties:
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        recipient_address:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        related_type:
+          type: string
+          nullable: true
+          maxLength: 30
+        related_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        status:
+          type: string
+          maxLength: 10
+          default: "queued"
+        priority:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 9
+          default: 5
+        idempotency_key:
+          type: string
+          maxLength: 150
+        scheduled_at:
+          type: string
+          format: date-time
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    NotificationUpdateRequest:
+      type: object
+      required:
+        - template_version_id
+        - locale
+        - channel
+        - recipient_address
+        - tenant_id
+        - related_type
+        - related_id
+        - payload
+        - status
+        - priority
+        - idempotency_key
+        - scheduled_at
+        - sent_at
+        - delivered_at
+      additionalProperties: false
+      properties:
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        recipient_address:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        related_type:
+          type: string
+          nullable: true
+          maxLength: 30
+        related_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        status:
+          type: string
+          maxLength: 10
+          default: "queued"
+        priority:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 9
+          default: 5
+        idempotency_key:
+          type: string
+          maxLength: 150
+        scheduled_at:
+          type: string
+          format: date-time
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    NotificationResponse:
+      type: object
+      required:
+        - record_code
+        - notification_id
+        - template_version_id
+        - locale
+        - channel
+        - recipient_address
+        - payload
+        - status
+        - priority
+        - idempotency_key
+        - scheduled_at
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        notification_id:
+          type: string
+          format: uuid
+          readOnly: true
+        template_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "notify_template_version"
+            column: "template_version_id"
+        locale:
+          type: string
+        channel:
+          type: string
+          maxLength: 8
+        recipient_address:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        related_type:
+          type: string
+          nullable: true
+          maxLength: 30
+        related_id:
+          type: string
+          format: uuid
+          nullable: true
+        payload:
+        status:
+          type: string
+          maxLength: 10
+          default: "queued"
+        priority:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 9
+          default: 5
+        idempotency_key:
+          type: string
+          maxLength: 150
+        scheduled_at:
+          type: string
+          format: date-time
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

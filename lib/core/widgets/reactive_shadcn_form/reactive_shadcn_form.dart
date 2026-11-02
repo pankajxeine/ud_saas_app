@@ -10,6 +10,7 @@ class ReactiveShadcnForm extends StatelessWidget {
   final int tabletColumns;
   final int desktopColumns;
   final double spacing;
+  final bool wrapWithReactiveForm;
 
   const ReactiveShadcnForm({
     super.key,
@@ -19,6 +20,7 @@ class ReactiveShadcnForm extends StatelessWidget {
     this.tabletColumns = 2,
     this.desktopColumns = 4,
     this.spacing = 16,
+    this.wrapWithReactiveForm = true,
   });
 
   int _getColumns(BuildContext context) {
@@ -32,21 +34,23 @@ class ReactiveShadcnForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final columns = _getColumns(context);
 
-    return ReactiveForm(
-      formGroup: form,
-      child: GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: columns,
-        crossAxisSpacing: spacing,
-        mainAxisSpacing: spacing,
-        childAspectRatio: 4,
-        children: meta.fields.map((field) {
-          return Padding(
-            padding: EdgeInsets.all(spacing / 3),
-            child: ReactiveShadcnInputField(field: field),
-          );
-        }).toList(),
-      ),
+    final fields = GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: columns,
+      crossAxisSpacing: spacing,
+      mainAxisSpacing: spacing,
+      childAspectRatio: 4,
+      children: meta.fields.where((field) => field.editable).map((field) {
+        return Padding(
+          padding: EdgeInsets.all(spacing / 3),
+          child: ReactiveShadcnInputField(field: field),
+        );
+      }).toList(),
     );
+
+    return wrapWithReactiveForm
+        ? ReactiveForm(formGroup: form, child: fields)
+        : fields;
   }
 }

@@ -1,0 +1,290 @@
+openapi: 3.0.0
+x-sql-table: tenancy_tenant_application
+x-sql-references:
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "environment_id"
+    table: "platform_environment"
+    key: "environment_id"
+info:
+  title: TenantApplicationResponse API
+  version: 1.0.0
+paths:
+  /tenant_application:
+    get:
+      operationId: listTenantApplication
+      summary: Get all tenant_application
+      responses:
+        '200':
+          description: List of tenant_application
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantApplicationResponse'
+    post:
+      operationId: createTenantApplication
+      summary: Create a new tenant_application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantApplicationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantApplicationResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_application/{tenant_application_id}:
+    get:
+      operationId: getTenantApplicationById
+      summary: Get tenant_application by tenant_application_id
+      parameters:
+        - in: path
+          name: tenant_application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_application object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantApplicationResponse'
+        '404':
+          description: tenant_application not found
+    put:
+      operationId: updateTenantApplication
+      summary: Update tenant_application by tenant_application_id
+      parameters:
+        - in: path
+          name: tenant_application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantApplicationUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantApplicationResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_application not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantApplication
+      summary: Delete tenant_application by tenant_application_id
+      parameters:
+        - in: path
+          name: tenant_application_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_application not found
+components:
+  schemas:
+
+    TenantApplicationRequest:
+      type: object
+      required:
+        - tenant_id
+        - application_id
+        - environment_id
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        environment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_environment"
+            column: "environment_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "provisioning"
+        db_locator:
+          type: string
+          nullable: true
+        schema_slug:
+          type: string
+          nullable: true
+          maxLength: 63
+        provisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        deprovisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    TenantApplicationUpdateRequest:
+      type: object
+      required:
+        - tenant_id
+        - application_id
+        - environment_id
+        - status
+        - db_locator
+        - schema_slug
+        - provisioned_at
+        - deprovisioned_at
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        environment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_environment"
+            column: "environment_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "provisioning"
+        db_locator:
+          type: string
+          nullable: true
+        schema_slug:
+          type: string
+          nullable: true
+          maxLength: 63
+        provisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        deprovisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    TenantApplicationResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_application_id
+        - tenant_id
+        - application_id
+        - environment_id
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        environment_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_environment"
+            column: "environment_id"
+        status:
+          type: string
+          maxLength: 16
+          default: "provisioning"
+        db_locator:
+          type: string
+          nullable: true
+        schema_slug:
+          type: string
+          nullable: true
+          maxLength: 63
+        provisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        deprovisioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

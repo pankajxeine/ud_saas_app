@@ -1,44 +1,70 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Scaffold;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
+import 'package:ud_sass_app/core/navigation/app_navigation.dart';
+import 'package:ud_sass_app/core/widgets/components/loading.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart';
+import '../bloc/{{endpoint.blocFieldName}}_bloc.dart';
 import '../service/{{module}}_service.dart';
 
-class {{Module}}DeletePage extends StatefulWidget {
-  const {{Module}}DeletePage({super.key, {{#endpoint.pathParams}}required this.{{name}},{{/endpoint.pathParams}}});
+class {{Module}}DeletePage extends StatelessWidget {
+  const {{Module}}DeletePage({
+    super.key,
+    {{#endpoint.pathParams}}
+    required this.{{name}},
+    {{/endpoint.pathParams}}
+  });
+
   {{#endpoint.pathParams}}
   final {{datatype}} {{name}};
   {{/endpoint.pathParams}}
 
   @override
-  State<{{Module}}DeletePage> createState() => _{{Module}}DeletePageState();
-}
-
-class _{{Module}}DeletePageState extends State<{{Module}}DeletePage> {
-  String? _message;
-  bool _loading = false;
-
-  Future<void> _delete() async {
-    setState(() => _loading = true);
-    try {
-      final result = await {{Module}}Service(baseUrl: ProfileConstants.api)
-          .{{endpoint.methodName}}({{deleteCallArgs}});
-      if (!result.status) throw Exception(result.message);
-      if (mounted) setState(() => _message = 'Deleted successfully');
-    } catch (error) {
-      if (mounted) setState(() => _message = error.toString());
-    } finally {
-      if (mounted) setState(() => _loading = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Text('Delete this record?'),
-            const SizedBox(height: 12),
-            FilledButton(onPressed: _loading ? null : _delete, child: Text(_loading ? 'Deleting…' : 'Delete')),
-            if (_message != null) Padding(padding: const EdgeInsets.only(top: 12), child: Text(_message!)),
-          ]),
+  Widget build(BuildContext context) => BlocProvider<{{endpoint.OperationId}}Bloc>(
+    create: (_) => {{endpoint.OperationId}}Bloc(
+      {{Module}}Service(baseUrl: ProfileConstants.api),
+    ),
+    child: BlocListener<{{endpoint.OperationId}}Bloc,
+        {{endpoint.OperationId}}State>(
+      listener: (context, state) {
+        if (state is {{endpoint.OperationId}}Success) {
+          context.go('{{{basePath}}}');
+        }
+      },
+      child: Scaffold(
+        child: Center(
+          child: BlocBuilder<{{endpoint.OperationId}}Bloc,
+              {{endpoint.OperationId}}State>(
+            builder: (context, state) {
+              if (state is {{endpoint.OperationId}}Loading) {
+                return const Loading();
+              }
+              if (state is {{endpoint.OperationId}}Error) {
+                return Text(state.message);
+              }
+              if (state is {{endpoint.OperationId}}Success) {
+                return const Text('Deleted successfully');
+              }
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Delete this record?'),
+                  const SizedBox(height: 12),
+                  Button(
+                    onPressed: () {
+                      context.read<{{endpoint.OperationId}}Bloc>().add(
+                        Load{{endpoint.OperationId}}Event({{{deleteBlocArgs}}}),
+                      );
+                    },
+                    child: const Text('Delete'),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-      );
+      ),
+    ),
+  );
 }

@@ -1,0 +1,317 @@
+openapi: 3.0.0
+x-sql-table: iam_privileged_access_request
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "role_code"
+    table: "iam_role"
+    key: "role_code"
+  - column: "decided_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: PrivilegedAccessRequestResponse API
+  version: 1.0.0
+paths:
+  /privileged_access_request:
+    get:
+      operationId: listPrivilegedAccessRequest
+      summary: Get all privileged_access_request
+      responses:
+        '200':
+          description: List of privileged_access_request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrivilegedAccessRequestResponse'
+    post:
+      operationId: createPrivilegedAccessRequest
+      summary: Create a new privileged_access_request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivilegedAccessRequestRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivilegedAccessRequestResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /privileged_access_request/{request_id}:
+    get:
+      operationId: getPrivilegedAccessRequestById
+      summary: Get privileged_access_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: privileged_access_request object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivilegedAccessRequestResponse'
+        '404':
+          description: privileged_access_request not found
+    put:
+      operationId: updatePrivilegedAccessRequest
+      summary: Update privileged_access_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivilegedAccessRequestUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivilegedAccessRequestResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: privileged_access_request not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePrivilegedAccessRequest
+      summary: Delete privileged_access_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: privileged_access_request not found
+components:
+  schemas:
+
+    PrivilegedAccessRequestRequest:
+      type: object
+      required:
+        - app_user_id
+        - role_code
+        - justification
+        - requested_minutes
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        justification:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        requested_minutes:
+          type: integer
+          format: int32
+          minimum: 15
+          maximum: 1440
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        decision_note:
+          type: string
+          nullable: true
+        requested_at:
+          type: string
+          format: date-time
+
+    PrivilegedAccessRequestUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - role_code
+        - scope_type
+        - scope_id
+        - justification
+        - ticket_ref
+        - requested_minutes
+        - status
+        - decided_by_user_id
+        - decided_at
+        - decision_note
+        - requested_at
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        justification:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        requested_minutes:
+          type: integer
+          format: int32
+          minimum: 15
+          maximum: 1440
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        decision_note:
+          type: string
+          nullable: true
+        requested_at:
+          type: string
+          format: date-time
+
+    PrivilegedAccessRequestResponse:
+      type: object
+      required:
+        - record_code
+        - request_id
+        - app_user_id
+        - role_code
+        - scope_type
+        - justification
+        - requested_minutes
+        - status
+        - requested_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        request_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        justification:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        requested_minutes:
+          type: integer
+          format: int32
+          minimum: 15
+          maximum: 1440
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        decided_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        decision_note:
+          type: string
+          nullable: true
+        requested_at:
+          type: string
+          format: date-time
+  

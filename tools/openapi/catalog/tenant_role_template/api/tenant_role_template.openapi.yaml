@@ -1,0 +1,233 @@
+openapi: 3.0.0
+x-sql-table: catalog_tenant_role_template
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: TenantRoleTemplateResponse API
+  version: 1.0.0
+paths:
+  /tenant_role_template:
+    get:
+      operationId: listTenantRoleTemplate
+      summary: Get all tenant_role_template
+      responses:
+        '200':
+          description: List of tenant_role_template
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantRoleTemplateResponse'
+    post:
+      operationId: createTenantRoleTemplate
+      summary: Create a new tenant_role_template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantRoleTemplateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRoleTemplateResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant_role_template/{tenant_role_template_id}:
+    get:
+      operationId: getTenantRoleTemplateById
+      summary: Get tenant_role_template by tenant_role_template_id
+      parameters:
+        - in: path
+          name: tenant_role_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant_role_template object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRoleTemplateResponse'
+        '404':
+          description: tenant_role_template not found
+    put:
+      operationId: updateTenantRoleTemplate
+      summary: Update tenant_role_template by tenant_role_template_id
+      parameters:
+        - in: path
+          name: tenant_role_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantRoleTemplateUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantRoleTemplateResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant_role_template not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenantRoleTemplate
+      summary: Delete tenant_role_template by tenant_role_template_id
+      parameters:
+        - in: path
+          name: tenant_role_template_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant_role_template not found
+components:
+  schemas:
+
+    TenantRoleTemplateRequest:
+      type: object
+      required:
+        - application_id
+        - role_code
+        - name
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        role_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        permission_codes:
+          type: string
+          default: "{}"
+        is_tenant_admin:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    TenantRoleTemplateUpdateRequest:
+      type: object
+      required:
+        - application_id
+        - role_code
+        - name
+        - description
+        - permission_codes
+        - is_tenant_admin
+        - sort_order
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        role_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        permission_codes:
+          type: string
+          default: "{}"
+        is_tenant_admin:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    TenantRoleTemplateResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_role_template_id
+        - application_id
+        - role_code
+        - name
+        - permission_codes
+        - is_tenant_admin
+        - sort_order
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_role_template_id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        role_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        permission_codes:
+          type: string
+          default: "{}"
+        is_tenant_admin:
+          type: boolean
+          default: false
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

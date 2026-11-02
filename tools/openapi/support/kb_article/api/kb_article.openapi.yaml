@@ -1,0 +1,315 @@
+openapi: 3.0.0
+x-sql-table: support_kb_article
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+  - column: "author_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: KbArticleResponse API
+  version: 1.0.0
+paths:
+  /kb_article:
+    get:
+      operationId: listKbArticle
+      summary: Get all kb_article
+      responses:
+        '200':
+          description: List of kb_article
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KbArticleResponse'
+    post:
+      operationId: createKbArticle
+      summary: Create a new kb_article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KbArticleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KbArticleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /kb_article/{kb_article_id}:
+    get:
+      operationId: getKbArticleById
+      summary: Get kb_article by kb_article_id
+      parameters:
+        - in: path
+          name: kb_article_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: kb_article object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KbArticleResponse'
+        '404':
+          description: kb_article not found
+    put:
+      operationId: updateKbArticle
+      summary: Update kb_article by kb_article_id
+      parameters:
+        - in: path
+          name: kb_article_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KbArticleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KbArticleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: kb_article not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteKbArticle
+      summary: Delete kb_article by kb_article_id
+      parameters:
+        - in: path
+          name: kb_article_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: kb_article not found
+components:
+  schemas:
+
+    KbArticleRequest:
+      type: object
+      required:
+        - slug
+        - title
+        - body_md
+        - author_user_id
+      additionalProperties: false
+      properties:
+        slug:
+          type: string
+          maxLength: 120
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        locale:
+          type: string
+          default: "en-US"
+        title:
+          type: string
+        body_md:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        visibility:
+          type: string
+          maxLength: 8
+          default: "public"
+        version_no:
+          type: integer
+          format: int32
+          default: 1
+        author_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    KbArticleUpdateRequest:
+      type: object
+      required:
+        - slug
+        - application_id
+        - module_id
+        - locale
+        - title
+        - body_md
+        - status
+        - visibility
+        - version_no
+        - author_user_id
+        - published_at
+      additionalProperties: false
+      properties:
+        slug:
+          type: string
+          maxLength: 120
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        locale:
+          type: string
+          default: "en-US"
+        title:
+          type: string
+        body_md:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        visibility:
+          type: string
+          maxLength: 8
+          default: "public"
+        version_no:
+          type: integer
+          format: int32
+          default: 1
+        author_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    KbArticleResponse:
+      type: object
+      required:
+        - record_code
+        - kb_article_id
+        - slug
+        - locale
+        - title
+        - body_md
+        - status
+        - visibility
+        - version_no
+        - author_user_id
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        kb_article_id:
+          type: string
+          format: uuid
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 120
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        module_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        locale:
+          type: string
+          default: "en-US"
+        title:
+          type: string
+        body_md:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "draft"
+        visibility:
+          type: string
+          maxLength: 8
+          default: "public"
+        version_no:
+          type: integer
+          format: int32
+          default: 1
+        author_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

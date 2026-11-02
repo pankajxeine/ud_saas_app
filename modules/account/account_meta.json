@@ -1,0 +1,585 @@
+{
+  "entity": "Account",
+  "table": "crm_account",
+  "primaryKey": "tax_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/account"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/account"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/account/{account_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/account/{account_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/account/{account_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "account_number",
+        "label": "Account Number"
+      },
+      {
+        "field": "account_type",
+        "label": "Account Type"
+      },
+      {
+        "field": "legal_name",
+        "label": "Legal Name"
+      },
+      {
+        "field": "display_name",
+        "label": "Display Name"
+      },
+      {
+        "field": "industry_code",
+        "label": "Industry Code"
+      },
+      {
+        "field": "country_code",
+        "label": "Country Code"
+      },
+      {
+        "field": "tax_id",
+        "label": "Tax Id"
+      },
+      {
+        "field": "website",
+        "label": "Website"
+      },
+      {
+        "field": "employee_band",
+        "label": "Employee Band"
+      },
+      {
+        "field": "billing_address",
+        "label": "Billing Address"
+      },
+      {
+        "field": "owner_user_id",
+        "label": "Owner User Id"
+      },
+      {
+        "field": "branch_id",
+        "label": "Branch Id"
+      },
+      {
+        "field": "territory_id",
+        "label": "Territory Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "parent_account_id",
+        "label": "Parent Account Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "account_id",
+      "account_number",
+      "account_type",
+      "legal_name",
+      "display_name",
+      "industry_code",
+      "country_code",
+      "tax_id",
+      "website",
+      "employee_band",
+      "billing_address",
+      "owner_user_id",
+      "branch_id",
+      "territory_id",
+      "sales_agent_id",
+      "parent_account_id",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by",
+      "deleted_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "account_number",
+      "account_type",
+      "legal_name",
+      "display_name",
+      "industry_code",
+      "country_code",
+      "tax_id",
+      "website",
+      "employee_band",
+      "billing_address",
+      "owner_user_id",
+      "branch_id",
+      "territory_id",
+      "sales_agent_id",
+      "parent_account_id"
+    ],
+    "update": [
+      "account_number",
+      "account_type",
+      "legal_name",
+      "display_name",
+      "industry_code",
+      "country_code",
+      "tax_id",
+      "website",
+      "employee_band",
+      "billing_address",
+      "owner_user_id",
+      "branch_id",
+      "territory_id",
+      "sales_agent_id",
+      "parent_account_id"
+    ]
+  },
+  "references": {
+    "industry_code": {
+      "table": "platform_industry",
+      "key": "industry_code",
+      "lookup": {
+        "endpoint": "/platform_industry"
+      }
+    },
+    "country_code": {
+      "table": "platform_country",
+      "key": "country_code",
+      "lookup": {
+        "endpoint": "/platform_country"
+      }
+    },
+    "owner_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "branch_id": {
+      "table": "org_branch",
+      "key": "branch_id",
+      "lookup": {
+        "endpoint": "/org_branch"
+      }
+    },
+    "territory_id": {
+      "table": "org_territory",
+      "key": "territory_id",
+      "lookup": {
+        "endpoint": "/org_territory"
+      }
+    },
+    "parent_account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "account_number",
+      "label": "Account Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "account_type",
+      "label": "Account Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "legal_name",
+      "label": "Legal Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "display_name",
+      "label": "Display Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "industry_code",
+      "label": "Industry Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_industry",
+        "column": "industry_code",
+        "lookup": {
+          "endpoint": "/platform_industry",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "country_code",
+      "label": "Country Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "endpoint": "/platform_country",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "tax_id",
+      "label": "Tax Id",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "website",
+      "label": "Website",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "employee_band",
+      "label": "Employee Band",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "billing_address",
+      "label": "Billing Address",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "owner_user_id",
+      "label": "Owner User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "branch_id",
+      "label": "Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_branch",
+        "column": "branch_id",
+        "lookup": {
+          "endpoint": "/org_branch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "territory_id",
+      "label": "Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_territory",
+        "column": "territory_id",
+        "lookup": {
+          "endpoint": "/org_territory",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "parent_account_id",
+      "label": "Parent Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "deleted_at",
+      "label": "Deleted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

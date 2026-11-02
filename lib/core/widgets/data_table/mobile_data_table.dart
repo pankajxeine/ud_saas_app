@@ -1,11 +1,15 @@
-import 'package:flutter/material.dart' hide Theme;
+import 'package:flutter/material.dart' hide Theme, Checkbox;
 import 'package:trina_grid/trina_grid.dart';
+import 'package:ud_sass_app/ui/dashcn/components/button.dart';
+import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
+import 'package:ud_sass_app/ui/dashcn/components/fab.dart';
 import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
 import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
 class MobileDataTableView extends StatelessWidget {
   const MobileDataTableView({
     super.key,
+    required this.header,
     required this.columns,
     required this.rows,
     required this.selectedRowKeys,
@@ -22,8 +26,9 @@ class MobileDataTableView extends StatelessWidget {
     required this.onPageSizeChanged,
     this.rowIndexOffset = 0,
     this.onRowTap,
+    this.title,
   });
-
+  final String? title;
   final List<TrinaColumn> columns;
   final List<TrinaRow<dynamic>> rows;
   final Set<String> selectedRowKeys;
@@ -40,6 +45,7 @@ class MobileDataTableView extends StatelessWidget {
   final ValueChanged<int> onPageSizeChanged;
   final int rowIndexOffset;
   final ValueChanged<int>? onRowTap;
+  final Widget header;
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +54,26 @@ class MobileDataTableView extends StatelessWidget {
     final bool allSelected =
         visibleKeys.isNotEmpty && visibleKeys.every(selectedRowKeys.contains);
     final bool someSelected = visibleKeys.any(selectedRowKeys.contains);
-
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Text(
+          title ?? '',
+          style: dashcn.Theme.of(context).typography.h2.copyWith(
+            color: colors.mutedForeground,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           child: Row(
             children: <Widget>[
               Checkbox(
                 value: allSelected
-                    ? true
+                    ? CheckboxValue.checked
                     : someSelected
-                    ? null
-                    : false,
+                    ? CheckboxValue.indeterminate
+                    : CheckboxValue.unchecked,
                 tristate: true,
                 onChanged: rows.isEmpty ? null : (_) => onSelectVisible(),
               ),
@@ -75,10 +88,7 @@ class MobileDataTableView extends StatelessWidget {
                   ).typography.small.copyWith(color: colors.mutedForeground),
                 ),
               ),
-              TextButton(
-                onPressed: rows.isEmpty ? null : onSelectVisible,
-                child: Text(allSelected ? 'Clear selection' : 'Select all'),
-              ),
+              header,
             ],
           ),
         ),
@@ -164,7 +174,12 @@ class _MobileDataTableCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Checkbox(value: selected, onChanged: (_) => onSelectionChanged()),
+              Checkbox(
+                value: selected
+                    ? CheckboxValue.checked
+                    : CheckboxValue.unchecked,
+                onChanged: (_) => onSelectionChanged(),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -250,13 +265,13 @@ class MobileDataTableFooter extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Text(
-            '$totalRows items',
-            style: dashcn.Theme.of(
-              context,
-            ).typography.small.copyWith(color: colors.mutedForeground),
-          ),
-          const SizedBox(width: 8),
+          // Text(
+          //   '$totalRows items',
+          //   style: dashcn.Theme.of(
+          //     context,
+          //   ).typography.small.copyWith(color: colors.mutedForeground),
+          // ),
+          // const SizedBox(width: 8),
           DropdownButtonHideUnderline(
             child: DropdownButton<int>(
               key: const ValueKey<String>('mobile-page-size'),
@@ -279,26 +294,29 @@ class MobileDataTableFooter extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          FloatingActionButton.small(
-            heroTag: 'data-table-previous-page',
+          Fab(
+            semanticLabel: 'Previous page',
+            size: FabSize.sm,
             tooltip: 'Previous page',
             onPressed: onPreviousPage,
-            child: const Icon(BootstrapIcons.chevronLeft, size: 18),
+            icon: const Icon(BootstrapIcons.chevronLeft, size: 18),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               '$page / $pageCount',
-              style: dashcn.Theme.of(
-                context,
-              ).typography.small.copyWith(fontWeight: FontWeight.w600),
+              style: dashcn.Theme.of(context).typography.small.copyWith(
+                color: colors.mutedForeground,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          FloatingActionButton.small(
-            heroTag: 'data-table-next-page',
+          Fab(
+            semanticLabel: 'data-table-next-page',
+            size: FabSize.sm,
             tooltip: 'Next page',
             onPressed: onNextPage,
-            child: const Icon(BootstrapIcons.chevronRight, size: 18),
+            icon: const Icon(BootstrapIcons.chevronRight, size: 18),
           ),
         ],
       ),

@@ -1,0 +1,344 @@
+{
+  "entity": "CreditNote",
+  "table": "billing_credit_note",
+  "primaryKey": "credit_note_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/credit_note"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/credit_note"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/credit_note/{credit_note_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/credit_note/{credit_note_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/credit_note/{credit_note_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "credit_note_id",
+        "label": "Credit Note Id"
+      },
+      {
+        "field": "credit_note_number",
+        "label": "Credit Note Number"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "issued_at",
+        "label": "Issued At"
+      },
+      {
+        "field": "issued_by_user_id",
+        "label": "Issued By User Id"
+      },
+      {
+        "field": "approved_by_user_id",
+        "label": "Approved By User Id"
+      },
+      {
+        "field": "voided_at",
+        "label": "Voided At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "credit_note_id",
+      "credit_note_number",
+      "invoice_id",
+      "amount",
+      "reason",
+      "description",
+      "status",
+      "issued_at",
+      "issued_by_user_id",
+      "approved_by_user_id",
+      "voided_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "credit_note_number",
+      "invoice_id",
+      "amount",
+      "reason",
+      "description",
+      "status",
+      "issued_at",
+      "issued_by_user_id",
+      "approved_by_user_id",
+      "voided_at"
+    ],
+    "update": [
+      "credit_note_number",
+      "invoice_id",
+      "amount",
+      "reason",
+      "description",
+      "status",
+      "issued_at",
+      "issued_by_user_id",
+      "approved_by_user_id",
+      "voided_at"
+    ]
+  },
+  "references": {
+    "invoice_id": {
+      "table": "billing_invoice",
+      "key": "invoice_id",
+      "lookup": {
+        "endpoint": "/billing_invoice"
+      }
+    },
+    "issued_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "approved_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "credit_note_id",
+      "label": "Credit Note Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "credit_note_number",
+      "label": "Credit Note Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "endpoint": "/billing_invoice",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 8
+    },
+    {
+      "name": "issued_at",
+      "label": "Issued At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "issued_by_user_id",
+      "label": "Issued By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_by_user_id",
+      "label": "Approved By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "voided_at",
+      "label": "Voided At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

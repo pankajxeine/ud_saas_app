@@ -1,0 +1,274 @@
+openapi: 3.0.0
+x-sql-table: crm_quote_line
+x-sql-references:
+  - column: "quote_id"
+    table: "crm_quote"
+    key: "quote_id"
+  - column: "plan_price_id"
+    table: "commerce_plan_price"
+    key: "plan_price_id"
+  - column: "addon_price_id"
+    table: "commerce_addon_price"
+    key: "addon_price_id"
+info:
+  title: QuoteLineResponse API
+  version: 1.0.0
+paths:
+  /quote_line:
+    get:
+      operationId: listQuoteLine
+      summary: Get all quote_line
+      responses:
+        '200':
+          description: List of quote_line
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteLineResponse'
+    post:
+      operationId: createQuoteLine
+      summary: Create a new quote_line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteLineRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteLineResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /quote_line/{quote_line_id}:
+    get:
+      operationId: getQuoteLineById
+      summary: Get quote_line by quote_line_id
+      parameters:
+        - in: path
+          name: quote_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: quote_line object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteLineResponse'
+        '404':
+          description: quote_line not found
+    put:
+      operationId: updateQuoteLine
+      summary: Update quote_line by quote_line_id
+      parameters:
+        - in: path
+          name: quote_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteLineUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteLineResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: quote_line not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteQuoteLine
+      summary: Delete quote_line by quote_line_id
+      parameters:
+        - in: path
+          name: quote_line_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: quote_line not found
+components:
+  schemas:
+
+    QuoteLineRequest:
+      type: object
+      required:
+        - quote_id
+        - line_no
+        - description
+        - list_amount
+      additionalProperties: false
+      properties:
+        quote_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        line_no:
+          type: integer
+          format: int32
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        description:
+          type: string
+        quantity:
+          type: number
+          format: double
+          default: 1
+        list_amount:
+          type: string
+        discount_percent:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+
+    QuoteLineUpdateRequest:
+      type: object
+      required:
+        - quote_id
+        - line_no
+        - plan_price_id
+        - addon_price_id
+        - description
+        - quantity
+        - list_amount
+        - discount_percent
+        - net_amount
+      additionalProperties: false
+      properties:
+        quote_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        line_no:
+          type: integer
+          format: int32
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        description:
+          type: string
+        quantity:
+          type: number
+          format: double
+          default: 1
+        list_amount:
+          type: string
+        discount_percent:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+
+    QuoteLineResponse:
+      type: object
+      required:
+        - record_code
+        - quote_line_id
+        - quote_id
+        - line_no
+        - description
+        - quantity
+        - list_amount
+        - discount_percent
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        quote_line_id:
+          type: string
+          format: uuid
+          readOnly: true
+        quote_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        line_no:
+          type: integer
+          format: int32
+        plan_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        addon_price_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_addon_price"
+            column: "addon_price_id"
+        description:
+          type: string
+        quantity:
+          type: number
+          format: double
+          default: 1
+        list_amount:
+          type: string
+        discount_percent:
+          type: string
+          default: 0
+        net_amount:
+          type: string
+          nullable: true
+  

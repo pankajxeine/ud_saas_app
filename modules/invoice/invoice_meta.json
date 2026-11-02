@@ -1,0 +1,755 @@
+{
+  "entity": "Invoice",
+  "table": "billing_invoice",
+  "primaryKey": "invoice_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/invoice"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/invoice"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/invoice/{invoice_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/invoice/{invoice_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/invoice/{invoice_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "invoice_number",
+        "label": "Invoice Number"
+      },
+      {
+        "field": "billing_account_id",
+        "label": "Billing Account Id"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "invoice_type",
+        "label": "Invoice Type"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "period_start",
+        "label": "Period Start"
+      },
+      {
+        "field": "period_end",
+        "label": "Period End"
+      },
+      {
+        "field": "issue_date",
+        "label": "Issue Date"
+      },
+      {
+        "field": "due_date",
+        "label": "Due Date"
+      },
+      {
+        "field": "subtotal",
+        "label": "Subtotal"
+      },
+      {
+        "field": "discount_total",
+        "label": "Discount Total"
+      },
+      {
+        "field": "tax_total",
+        "label": "Tax Total"
+      },
+      {
+        "field": "total",
+        "label": "Total"
+      },
+      {
+        "field": "amount_paid",
+        "label": "Amount Paid"
+      },
+      {
+        "field": "amount_credited",
+        "label": "Amount Credited"
+      },
+      {
+        "field": "balance_due",
+        "label": "Balance Due"
+      },
+      {
+        "field": "fx_rate_to_functional",
+        "label": "Fx Rate To Functional"
+      },
+      {
+        "field": "finalized_at",
+        "label": "Finalized At"
+      },
+      {
+        "field": "paid_at",
+        "label": "Paid At"
+      },
+      {
+        "field": "voided_at",
+        "label": "Voided At"
+      },
+      {
+        "field": "void_reason",
+        "label": "Void Reason"
+      },
+      {
+        "field": "written_off_at",
+        "label": "Written Off At"
+      },
+      {
+        "field": "pdf_ref",
+        "label": "Pdf Ref"
+      },
+      {
+        "field": "notes",
+        "label": "Notes"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "invoice_id",
+      "invoice_number",
+      "billing_account_id",
+      "legal_entity_id",
+      "subscription_id",
+      "invoice_type",
+      "currency_code",
+      "status",
+      "period_start",
+      "period_end",
+      "issue_date",
+      "due_date",
+      "subtotal",
+      "discount_total",
+      "tax_total",
+      "total",
+      "amount_paid",
+      "amount_credited",
+      "balance_due",
+      "fx_rate_to_functional",
+      "finalized_at",
+      "paid_at",
+      "voided_at",
+      "void_reason",
+      "written_off_at",
+      "pdf_ref",
+      "notes",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "invoice_number",
+      "billing_account_id",
+      "legal_entity_id",
+      "subscription_id",
+      "invoice_type",
+      "currency_code",
+      "status",
+      "period_start",
+      "period_end",
+      "issue_date",
+      "due_date",
+      "subtotal",
+      "discount_total",
+      "tax_total",
+      "total",
+      "amount_paid",
+      "amount_credited",
+      "balance_due",
+      "fx_rate_to_functional",
+      "finalized_at",
+      "paid_at",
+      "voided_at",
+      "void_reason",
+      "written_off_at",
+      "pdf_ref",
+      "notes"
+    ],
+    "update": [
+      "invoice_number",
+      "billing_account_id",
+      "legal_entity_id",
+      "subscription_id",
+      "invoice_type",
+      "currency_code",
+      "status",
+      "period_start",
+      "period_end",
+      "issue_date",
+      "due_date",
+      "subtotal",
+      "discount_total",
+      "tax_total",
+      "total",
+      "amount_paid",
+      "amount_credited",
+      "balance_due",
+      "fx_rate_to_functional",
+      "finalized_at",
+      "paid_at",
+      "voided_at",
+      "void_reason",
+      "written_off_at",
+      "pdf_ref",
+      "notes"
+    ]
+  },
+  "references": {
+    "billing_account_id": {
+      "table": "billing_billing_account",
+      "key": "billing_account_id",
+      "lookup": {
+        "endpoint": "/billing_billing_account"
+      }
+    },
+    "legal_entity_id": {
+      "table": "org_legal_entity",
+      "key": "legal_entity_id",
+      "lookup": {
+        "endpoint": "/org_legal_entity"
+      }
+    },
+    "subscription_id": {
+      "table": "subscription_subscription",
+      "key": "subscription_id",
+      "lookup": {
+        "endpoint": "/subscription_subscription"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "invoice_number",
+      "label": "Invoice Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "billing_account_id",
+      "label": "Billing Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_billing_account",
+        "column": "billing_account_id",
+        "lookup": {
+          "endpoint": "/billing_billing_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "endpoint": "/org_legal_entity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "subscription_subscription",
+        "column": "subscription_id",
+        "lookup": {
+          "endpoint": "/subscription_subscription",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "invoice_type",
+      "label": "Invoice Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "period_start",
+      "label": "Period Start",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "period_end",
+      "label": "Period End",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "issue_date",
+      "label": "Issue Date",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "due_date",
+      "label": "Due Date",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subtotal",
+      "label": "Subtotal",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "discount_total",
+      "label": "Discount Total",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tax_total",
+      "label": "Tax Total",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "total",
+      "label": "Total",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "amount_paid",
+      "label": "Amount Paid",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "amount_credited",
+      "label": "Amount Credited",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "balance_due",
+      "label": "Balance Due",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "fx_rate_to_functional",
+      "label": "Fx Rate To Functional",
+      "type": "number",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "finalized_at",
+      "label": "Finalized At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "paid_at",
+      "label": "Paid At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "voided_at",
+      "label": "Voided At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "void_reason",
+      "label": "Void Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "written_off_at",
+      "label": "Written Off At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "pdf_ref",
+      "label": "Pdf Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "notes",
+      "label": "Notes",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

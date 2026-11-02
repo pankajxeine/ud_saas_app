@@ -1,0 +1,294 @@
+openapi: 3.0.0
+x-sql-table: iam_api_token
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "revoked_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ApiTokenResponse API
+  version: 1.0.0
+paths:
+  /api_token:
+    get:
+      operationId: listApiToken
+      summary: Get all api_token
+      responses:
+        '200':
+          description: List of api_token
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiTokenResponse'
+    post:
+      operationId: createApiToken
+      summary: Create a new api_token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiTokenRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTokenResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /api_token/{api_token_id}:
+    get:
+      operationId: getApiTokenById
+      summary: Get api_token by api_token_id
+      parameters:
+        - in: path
+          name: api_token_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: api_token object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTokenResponse'
+        '404':
+          description: api_token not found
+    put:
+      operationId: updateApiToken
+      summary: Update api_token by api_token_id
+      parameters:
+        - in: path
+          name: api_token_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiTokenUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTokenResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: api_token not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteApiToken
+      summary: Delete api_token by api_token_id
+      parameters:
+        - in: path
+          name: api_token_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: api_token not found
+components:
+  schemas:
+
+    ApiTokenRequest:
+      type: object
+      required:
+        - app_user_id
+        - name
+        - token_prefix
+        - secret_hash
+        - permission_codes
+        - expires_at
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        name:
+          type: string
+          maxLength: 60
+        token_prefix:
+          type: string
+          maxLength: 12
+        secret_hash:
+          type: string
+        permission_codes:
+          type: string
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_ip:
+          type: string
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    ApiTokenUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - name
+        - token_prefix
+        - secret_hash
+        - permission_codes
+        - ip_allowlist
+        - expires_at
+        - last_used_at
+        - last_used_ip
+        - revoked_at
+        - revoked_by_user_id
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        name:
+          type: string
+          maxLength: 60
+        token_prefix:
+          type: string
+          maxLength: 12
+        secret_hash:
+          type: string
+        permission_codes:
+          type: string
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_ip:
+          type: string
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+
+    ApiTokenResponse:
+      type: object
+      required:
+        - record_code
+        - api_token_id
+        - app_user_id
+        - name
+        - token_prefix
+        - secret_hash
+        - permission_codes
+        - expires_at
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        api_token_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        name:
+          type: string
+          maxLength: 60
+        token_prefix:
+          type: string
+          maxLength: 12
+        secret_hash:
+          type: string
+        permission_codes:
+          type: string
+        ip_allowlist:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_used_ip:
+          type: string
+          nullable: true
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

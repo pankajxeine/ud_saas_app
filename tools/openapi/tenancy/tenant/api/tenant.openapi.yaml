@@ -1,0 +1,454 @@
+openapi: 3.0.0
+x-sql-table: tenancy_tenant
+x-sql-references:
+  - column: "customer_account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "region_code"
+    table: "platform_region"
+    key: "region_code"
+  - column: "data_residency"
+    table: "platform_country"
+    key: "country_code"
+  - column: "default_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "owning_branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "parent_tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+info:
+  title: TenantResponse API
+  version: 1.0.0
+paths:
+  /tenant:
+    get:
+      operationId: listTenant
+      summary: Get all tenant
+      responses:
+        '200':
+          description: List of tenant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantResponse'
+    post:
+      operationId: createTenant
+      summary: Create a new tenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /tenant/{tenant_id}:
+    get:
+      operationId: getTenantById
+      summary: Get tenant by tenant_id
+      parameters:
+        - in: path
+          name: tenant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: tenant object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '404':
+          description: tenant not found
+    put:
+      operationId: updateTenant
+      summary: Update tenant by tenant_id
+      parameters:
+        - in: path
+          name: tenant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: tenant not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTenant
+      summary: Delete tenant by tenant_id
+      parameters:
+        - in: path
+          name: tenant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: tenant not found
+components:
+  schemas:
+
+    TenantRequest:
+      type: object
+      required:
+        - tenant_code
+        - customer_account_id
+        - legal_name
+        - display_name
+        - region_code
+        - data_residency
+        - default_currency_code
+      additionalProperties: false
+      properties:
+        tenant_code:
+          type: string
+          maxLength: 40
+        customer_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+          default: "draft"
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        default_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        legal_hold:
+          type: boolean
+          default: false
+        suspended_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        purge_after:
+          type: string
+          format: date
+          nullable: true
+
+    TenantUpdateRequest:
+      type: object
+      required:
+        - tenant_code
+        - customer_account_id
+        - legal_name
+        - display_name
+        - status
+        - region_code
+        - data_residency
+        - timezone
+        - default_locale
+        - default_currency_code
+        - owning_branch_id
+        - sales_agent_id
+        - is_sandbox
+        - parent_tenant_id
+        - legal_hold
+        - suspended_reason
+        - activated_at
+        - cancelled_at
+        - purge_after
+      additionalProperties: false
+      properties:
+        tenant_code:
+          type: string
+          maxLength: 40
+        customer_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+          default: "draft"
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        default_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        legal_hold:
+          type: boolean
+          default: false
+        suspended_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        purge_after:
+          type: string
+          format: date
+          nullable: true
+
+    TenantResponse:
+      type: object
+      required:
+        - record_code
+        - tenant_id
+        - tenant_code
+        - customer_account_id
+        - legal_name
+        - display_name
+        - status
+        - region_code
+        - data_residency
+        - timezone
+        - default_locale
+        - default_currency_code
+        - is_sandbox
+        - legal_hold
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_code:
+          type: string
+          maxLength: 40
+        customer_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        legal_name:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+          default: "draft"
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        default_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        legal_hold:
+          type: boolean
+          default: false
+        suspended_reason:
+          type: string
+          nullable: true
+          maxLength: 20
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        purge_after:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,0 +1,596 @@
+{
+  "entity": "Quote",
+  "table": "crm_quote",
+  "primaryKey": "quote_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/quote"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/quote"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/quote/{quote_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/quote/{quote_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/quote/{quote_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "quote_id",
+        "label": "Quote Id"
+      },
+      {
+        "field": "quote_number",
+        "label": "Quote Number"
+      },
+      {
+        "field": "opportunity_id",
+        "label": "Opportunity Id"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "price_book_id",
+        "label": "Price Book Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "valid_until",
+        "label": "Valid Until"
+      },
+      {
+        "field": "subtotal",
+        "label": "Subtotal"
+      },
+      {
+        "field": "discount_total",
+        "label": "Discount Total"
+      },
+      {
+        "field": "total",
+        "label": "Total"
+      },
+      {
+        "field": "max_discount_percent",
+        "label": "Max Discount Percent"
+      },
+      {
+        "field": "coupon_id",
+        "label": "Coupon Id"
+      },
+      {
+        "field": "terms",
+        "label": "Terms"
+      },
+      {
+        "field": "approved_by_user_id",
+        "label": "Approved By User Id"
+      },
+      {
+        "field": "approved_at",
+        "label": "Approved At"
+      },
+      {
+        "field": "sent_at",
+        "label": "Sent At"
+      },
+      {
+        "field": "accepted_at",
+        "label": "Accepted At"
+      },
+      {
+        "field": "accepted_by_contact_id",
+        "label": "Accepted By Contact Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "quote_id",
+      "quote_number",
+      "opportunity_id",
+      "account_id",
+      "price_book_id",
+      "status",
+      "valid_until",
+      "subtotal",
+      "discount_total",
+      "total",
+      "max_discount_percent",
+      "coupon_id",
+      "terms",
+      "approved_by_user_id",
+      "approved_at",
+      "sent_at",
+      "accepted_at",
+      "accepted_by_contact_id",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "quote_number",
+      "opportunity_id",
+      "account_id",
+      "price_book_id",
+      "status",
+      "valid_until",
+      "subtotal",
+      "discount_total",
+      "total",
+      "max_discount_percent",
+      "coupon_id",
+      "terms",
+      "approved_by_user_id",
+      "approved_at",
+      "sent_at",
+      "accepted_at",
+      "accepted_by_contact_id"
+    ],
+    "update": [
+      "quote_number",
+      "opportunity_id",
+      "account_id",
+      "price_book_id",
+      "status",
+      "valid_until",
+      "subtotal",
+      "discount_total",
+      "total",
+      "max_discount_percent",
+      "coupon_id",
+      "terms",
+      "approved_by_user_id",
+      "approved_at",
+      "sent_at",
+      "accepted_at",
+      "accepted_by_contact_id"
+    ]
+  },
+  "references": {
+    "opportunity_id": {
+      "table": "crm_opportunity",
+      "key": "opportunity_id",
+      "lookup": {
+        "endpoint": "/crm_opportunity"
+      }
+    },
+    "account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "price_book_id": {
+      "table": "commerce_price_book",
+      "key": "price_book_id",
+      "lookup": {
+        "endpoint": "/commerce_price_book"
+      }
+    },
+    "coupon_id": {
+      "table": "commerce_coupon",
+      "key": "coupon_id",
+      "lookup": {
+        "endpoint": "/commerce_coupon"
+      }
+    },
+    "approved_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "accepted_by_contact_id": {
+      "table": "crm_contact",
+      "key": "contact_id",
+      "lookup": {
+        "endpoint": "/crm_contact"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quote_id",
+      "label": "Quote Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "quote_number",
+      "label": "Quote Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "opportunity_id",
+      "label": "Opportunity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_opportunity",
+        "column": "opportunity_id",
+        "lookup": {
+          "endpoint": "/crm_opportunity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "price_book_id",
+      "label": "Price Book Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_price_book",
+        "column": "price_book_id",
+        "lookup": {
+          "endpoint": "/commerce_price_book",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 16
+    },
+    {
+      "name": "valid_until",
+      "label": "Valid Until",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "subtotal",
+      "label": "Subtotal",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "discount_total",
+      "label": "Discount Total",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "total",
+      "label": "Total",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "max_discount_percent",
+      "label": "Max Discount Percent",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "coupon_id",
+      "label": "Coupon Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_coupon",
+        "column": "coupon_id",
+        "lookup": {
+          "endpoint": "/commerce_coupon",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "terms",
+      "label": "Terms",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "approved_by_user_id",
+      "label": "Approved By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_at",
+      "label": "Approved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "sent_at",
+      "label": "Sent At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "accepted_at",
+      "label": "Accepted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "accepted_by_contact_id",
+      "label": "Accepted By Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "endpoint": "/crm_contact",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

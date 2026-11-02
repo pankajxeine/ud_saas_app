@@ -1,0 +1,250 @@
+openapi: 3.0.0
+x-sql-table: onboarding_checklist_item
+x-sql-references:
+  - column: "request_id"
+    table: "onboarding_onboarding_request"
+    key: "request_id"
+  - column: "completed_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: ChecklistItemResponse API
+  version: 1.0.0
+paths:
+  /checklist_item:
+    get:
+      operationId: listChecklistItem
+      summary: Get all checklist_item
+      responses:
+        '200':
+          description: List of checklist_item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChecklistItemResponse'
+    post:
+      operationId: createChecklistItem
+      summary: Create a new checklist_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistItemRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistItemResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /checklist_item/{checklist_item_id}:
+    get:
+      operationId: getChecklistItemById
+      summary: Get checklist_item by checklist_item_id
+      parameters:
+        - in: path
+          name: checklist_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: checklist_item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistItemResponse'
+        '404':
+          description: checklist_item not found
+    put:
+      operationId: updateChecklistItem
+      summary: Update checklist_item by checklist_item_id
+      parameters:
+        - in: path
+          name: checklist_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistItemUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistItemResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: checklist_item not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteChecklistItem
+      summary: Delete checklist_item by checklist_item_id
+      parameters:
+        - in: path
+          name: checklist_item_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: checklist_item not found
+components:
+  schemas:
+
+    ChecklistItemRequest:
+      type: object
+      required:
+        - request_id
+        - item_code
+        - title
+      additionalProperties: false
+      properties:
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        item_code:
+          type: string
+        title:
+          type: string
+        is_mandatory:
+          type: boolean
+          default: true
+        status:
+          type: string
+          maxLength: 8
+          default: "pending"
+        completed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        note:
+          type: string
+          nullable: true
+
+    ChecklistItemUpdateRequest:
+      type: object
+      required:
+        - request_id
+        - item_code
+        - title
+        - is_mandatory
+        - status
+        - completed_by_user_id
+        - completed_at
+        - note
+      additionalProperties: false
+      properties:
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        item_code:
+          type: string
+        title:
+          type: string
+        is_mandatory:
+          type: boolean
+          default: true
+        status:
+          type: string
+          maxLength: 8
+          default: "pending"
+        completed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        note:
+          type: string
+          nullable: true
+
+    ChecklistItemResponse:
+      type: object
+      required:
+        - record_code
+        - checklist_item_id
+        - request_id
+        - item_code
+        - title
+        - is_mandatory
+        - status
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        checklist_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+        request_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        item_code:
+          type: string
+        title:
+          type: string
+        is_mandatory:
+          type: boolean
+          default: true
+        status:
+          type: string
+          maxLength: 8
+          default: "pending"
+        completed_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        note:
+          type: string
+          nullable: true
+  

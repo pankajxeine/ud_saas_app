@@ -1,0 +1,225 @@
+openapi: 3.0.0
+x-sql-table: commerce_addon_price
+x-sql-references:
+  - column: "addon_version_id"
+    table: "commerce_addon_version"
+    key: "addon_version_id"
+  - column: "price_book_id"
+    table: "commerce_price_book"
+    key: "price_book_id"
+info:
+  title: AddonPriceResponse API
+  version: 1.0.0
+paths:
+  /addon_price:
+    get:
+      operationId: listAddonPrice
+      summary: Get all addon_price
+      responses:
+        '200':
+          description: List of addon_price
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddonPriceResponse'
+    post:
+      operationId: createAddonPrice
+      summary: Create a new addon_price
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonPriceRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonPriceResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /addon_price/{addon_price_id}:
+    get:
+      operationId: getAddonPriceById
+      summary: Get addon_price by addon_price_id
+      parameters:
+        - in: path
+          name: addon_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: addon_price object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonPriceResponse'
+        '404':
+          description: addon_price not found
+    put:
+      operationId: updateAddonPrice
+      summary: Update addon_price by addon_price_id
+      parameters:
+        - in: path
+          name: addon_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonPriceUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddonPriceResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: addon_price not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteAddonPrice
+      summary: Delete addon_price by addon_price_id
+      parameters:
+        - in: path
+          name: addon_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: addon_price not found
+components:
+  schemas:
+
+    AddonPriceRequest:
+      type: object
+      required:
+        - addon_version_id
+        - price_book_id
+        - billing_period
+        - unit_amount
+      additionalProperties: false
+      properties:
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+
+    AddonPriceUpdateRequest:
+      type: object
+      required:
+        - addon_version_id
+        - price_book_id
+        - billing_period
+        - unit_amount
+        - is_active
+      additionalProperties: false
+      properties:
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+
+    AddonPriceResponse:
+      type: object
+      required:
+        - record_code
+        - addon_price_id
+        - addon_version_id
+        - price_book_id
+        - billing_period
+        - unit_amount
+        - is_active
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        addon_price_id:
+          type: string
+          format: uuid
+          readOnly: true
+        addon_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_addon_version"
+            column: "addon_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

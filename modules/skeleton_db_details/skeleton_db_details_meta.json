@@ -1,0 +1,248 @@
+{
+  "entity": "SkeletonDbDetails",
+  "table": "skeleton_db_details",
+  "primaryKey": "skeleton_db_id",
+  "displayField": "skeleton_db_id",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/skeleton_db_details"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/skeleton_db_details"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/skeleton_db_details/{skeleton_db_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/skeleton_db_details/{skeleton_db_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/skeleton_db_details/{skeleton_db_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "skeleton_db_id",
+        "label": "Skeleton Db Id"
+      },
+      {
+        "field": "database_name",
+        "label": "Database Name"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "environment",
+        "label": "Environment"
+      },
+      {
+        "field": "industry",
+        "label": "Industry"
+      },
+      {
+        "field": "template_version",
+        "label": "Template Version"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "configuration",
+        "label": "Configuration"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "skeleton_db_id",
+      "database_name",
+      "schema_name",
+      "environment",
+      "industry",
+      "template_version",
+      "status",
+      "configuration",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "database_name",
+      "schema_name",
+      "environment",
+      "industry",
+      "template_version",
+      "status",
+      "configuration"
+    ],
+    "update": [
+      "database_name",
+      "schema_name",
+      "environment",
+      "industry",
+      "template_version",
+      "status",
+      "configuration"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "skeleton_db_id",
+      "label": "Skeleton Db Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "database_name",
+      "label": "Database Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "industry",
+      "label": "Industry",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "template_version",
+      "label": "Template Version",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "active",
+        "inactive"
+      ]
+    },
+    {
+      "name": "configuration",
+      "label": "Configuration",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

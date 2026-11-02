@@ -1,0 +1,247 @@
+openapi: 3.0.0
+x-sql-table: commerce_plan
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: PlanResponse API
+  version: 1.0.0
+paths:
+  /plan:
+    get:
+      operationId: listPlan
+      summary: Get all plan
+      responses:
+        '200':
+          description: List of plan
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanResponse'
+    post:
+      operationId: createPlan
+      summary: Create a new plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /plan/{plan_id}:
+    get:
+      operationId: getPlanById
+      summary: Get plan by plan_id
+      parameters:
+        - in: path
+          name: plan_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: plan object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanResponse'
+        '404':
+          description: plan not found
+    put:
+      operationId: updatePlan
+      summary: Update plan by plan_id
+      parameters:
+        - in: path
+          name: plan_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: plan not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePlan
+      summary: Delete plan by plan_id
+      parameters:
+        - in: path
+          name: plan_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: plan not found
+components:
+  schemas:
+
+    PlanRequest:
+      type: object
+      required:
+        - application_id
+        - plan_code
+        - name
+        - tier
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        tier:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+        is_public:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+
+    PlanUpdateRequest:
+      type: object
+      required:
+        - application_id
+        - plan_code
+        - name
+        - description
+        - tier
+        - is_public
+        - is_active
+      additionalProperties: false
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        tier:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+        is_public:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+
+    PlanResponse:
+      type: object
+      required:
+        - record_code
+        - plan_id
+        - application_id
+        - plan_code
+        - name
+        - tier
+        - is_public
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        plan_id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        tier:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+        is_public:
+          type: boolean
+          default: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

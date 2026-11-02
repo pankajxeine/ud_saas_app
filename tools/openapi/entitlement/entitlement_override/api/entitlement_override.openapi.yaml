@@ -1,0 +1,361 @@
+openapi: 3.0.0
+x-sql-table: entitlement_entitlement_override
+x-sql-references:
+  - column: "module_id"
+    table: "catalog_feature"
+    key: "module_id"
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+  - column: "requested_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "approved_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: EntitlementOverrideResponse API
+  version: 1.0.0
+paths:
+  /entitlement_override:
+    get:
+      operationId: listEntitlementOverride
+      summary: Get all entitlement_override
+      responses:
+        '200':
+          description: List of entitlement_override
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntitlementOverrideResponse'
+    post:
+      operationId: createEntitlementOverride
+      summary: Create a new entitlement_override
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementOverrideRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementOverrideResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /entitlement_override/{override_id}:
+    get:
+      operationId: getEntitlementOverrideById
+      summary: Get entitlement_override by override_id
+      parameters:
+        - in: path
+          name: override_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: entitlement_override object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementOverrideResponse'
+        '404':
+          description: entitlement_override not found
+    put:
+      operationId: updateEntitlementOverride
+      summary: Update entitlement_override by override_id
+      parameters:
+        - in: path
+          name: override_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementOverrideUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementOverrideResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: entitlement_override not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEntitlementOverride
+      summary: Delete entitlement_override by override_id
+      parameters:
+        - in: path
+          name: override_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: entitlement_override not found
+components:
+  schemas:
+
+    EntitlementOverrideRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - module_id
+        - value
+        - reason
+        - requested_by_user_id
+        - valid_to
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+        reason:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        requested_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    EntitlementOverrideUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - module_id
+        - feature_id
+        - value
+        - reason
+        - ticket_ref
+        - status
+        - requested_by_user_id
+        - approved_by_user_id
+        - approved_at
+        - valid_from
+        - valid_to
+        - revoked_at
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+        reason:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        requested_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    EntitlementOverrideResponse:
+      type: object
+      required:
+        - record_code
+        - override_id
+        - tenant_application_id
+        - module_id
+        - value
+        - reason
+        - status
+        - requested_by_user_id
+        - valid_from
+        - valid_to
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        override_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        value:
+        reason:
+          type: string
+        ticket_ref:
+          type: string
+          nullable: true
+          maxLength: 40
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        requested_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

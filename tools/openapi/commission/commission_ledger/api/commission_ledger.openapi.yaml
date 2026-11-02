@@ -1,0 +1,437 @@
+openapi: 3.0.0
+x-sql-table: commission_commission_ledger
+x-sql-references:
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "commission_rule_id"
+    table: "commission_commission_rule"
+    key: "commission_rule_id"
+  - column: "invoice_line_id"
+    table: "billing_invoice_line"
+    key: "invoice_line_id"
+  - column: "payment_allocation_id"
+    table: "payment_payment_allocation"
+    key: "payment_allocation_id"
+  - column: "reverses_entry_id"
+    table: "commission_commission_ledger"
+    key: "entry_id"
+  - column: "approved_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "payout_id"
+    table: "commission_payout"
+    key: "payout_id"
+info:
+  title: CommissionLedgerResponse API
+  version: 1.0.0
+paths:
+  /commission_ledger:
+    get:
+      operationId: listCommissionLedger
+      summary: Get all commission_ledger
+      responses:
+        '200':
+          description: List of commission_ledger
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommissionLedgerResponse'
+    post:
+      operationId: createCommissionLedger
+      summary: Create a new commission_ledger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommissionLedgerRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionLedgerResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /commission_ledger/{entry_id}:
+    get:
+      operationId: getCommissionLedgerById
+      summary: Get commission_ledger by entry_id
+      parameters:
+        - in: path
+          name: entry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: commission_ledger object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionLedgerResponse'
+        '404':
+          description: commission_ledger not found
+    put:
+      operationId: updateCommissionLedger
+      summary: Update commission_ledger by entry_id
+      parameters:
+        - in: path
+          name: entry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommissionLedgerUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionLedgerResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: commission_ledger not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCommissionLedger
+      summary: Delete commission_ledger by entry_id
+      parameters:
+        - in: path
+          name: entry_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: commission_ledger not found
+components:
+  schemas:
+
+    CommissionLedgerRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - entry_type
+        - amount
+        - currency_code
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        entry_type:
+          type: string
+          maxLength: 10
+        amount:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        basis_amount:
+          type: string
+          nullable: true
+        rate_percent:
+          type: string
+          nullable: true
+        hierarchy_depth:
+          type: integer
+          format: int32
+          nullable: true
+        commission_rule_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_rule"
+            column: "commission_rule_id"
+        invoice_line_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_invoice_line"
+            column: "invoice_line_id"
+        payment_allocation_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        reverses_entry_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_ledger"
+            column: "entry_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        earned_at:
+          type: string
+          format: date-time
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        payout_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_payout"
+            column: "payout_id"
+        note:
+          type: string
+          nullable: true
+
+    CommissionLedgerUpdateRequest:
+      type: object
+      required:
+        - sales_agent_id
+        - entry_type
+        - amount
+        - currency_code
+        - basis_amount
+        - rate_percent
+        - hierarchy_depth
+        - commission_rule_id
+        - invoice_line_id
+        - payment_allocation_id
+        - reverses_entry_id
+        - status
+        - earned_at
+        - approved_by_user_id
+        - approved_at
+        - payout_id
+        - note
+      additionalProperties: false
+      properties:
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        entry_type:
+          type: string
+          maxLength: 10
+        amount:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        basis_amount:
+          type: string
+          nullable: true
+        rate_percent:
+          type: string
+          nullable: true
+        hierarchy_depth:
+          type: integer
+          format: int32
+          nullable: true
+        commission_rule_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_rule"
+            column: "commission_rule_id"
+        invoice_line_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_invoice_line"
+            column: "invoice_line_id"
+        payment_allocation_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        reverses_entry_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_ledger"
+            column: "entry_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        earned_at:
+          type: string
+          format: date-time
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        payout_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_payout"
+            column: "payout_id"
+        note:
+          type: string
+          nullable: true
+
+    CommissionLedgerResponse:
+      type: object
+      required:
+        - record_code
+        - entry_id
+        - sales_agent_id
+        - entry_type
+        - amount
+        - currency_code
+        - status
+        - earned_at
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        entry_id:
+          type: string
+          format: uuid
+          readOnly: true
+        sales_agent_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        entry_type:
+          type: string
+          maxLength: 10
+        amount:
+          type: string
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        basis_amount:
+          type: string
+          nullable: true
+        rate_percent:
+          type: string
+          nullable: true
+        hierarchy_depth:
+          type: integer
+          format: int32
+          nullable: true
+        commission_rule_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_rule"
+            column: "commission_rule_id"
+        invoice_line_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "billing_invoice_line"
+            column: "invoice_line_id"
+        payment_allocation_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_allocation"
+            column: "payment_allocation_id"
+        reverses_entry_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_commission_ledger"
+            column: "entry_id"
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        earned_at:
+          type: string
+          format: date-time
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        payout_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commission_payout"
+            column: "payout_id"
+        note:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

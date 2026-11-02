@@ -1,0 +1,581 @@
+{
+  "entity": "CommissionLedger",
+  "table": "commission_commission_ledger",
+  "primaryKey": "entry_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/commission_ledger"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/commission_ledger"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/commission_ledger/{entry_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/commission_ledger/{entry_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/commission_ledger/{entry_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "entry_id",
+        "label": "Entry Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "entry_type",
+        "label": "Entry Type"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "basis_amount",
+        "label": "Basis Amount"
+      },
+      {
+        "field": "rate_percent",
+        "label": "Rate Percent"
+      },
+      {
+        "field": "hierarchy_depth",
+        "label": "Hierarchy Depth"
+      },
+      {
+        "field": "commission_rule_id",
+        "label": "Commission Rule Id"
+      },
+      {
+        "field": "invoice_line_id",
+        "label": "Invoice Line Id"
+      },
+      {
+        "field": "payment_allocation_id",
+        "label": "Payment Allocation Id"
+      },
+      {
+        "field": "reverses_entry_id",
+        "label": "Reverses Entry Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "earned_at",
+        "label": "Earned At"
+      },
+      {
+        "field": "approved_by_user_id",
+        "label": "Approved By User Id"
+      },
+      {
+        "field": "approved_at",
+        "label": "Approved At"
+      },
+      {
+        "field": "payout_id",
+        "label": "Payout Id"
+      },
+      {
+        "field": "note",
+        "label": "Note"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "entry_id",
+      "sales_agent_id",
+      "entry_type",
+      "amount",
+      "currency_code",
+      "basis_amount",
+      "rate_percent",
+      "hierarchy_depth",
+      "commission_rule_id",
+      "invoice_line_id",
+      "payment_allocation_id",
+      "reverses_entry_id",
+      "status",
+      "earned_at",
+      "approved_by_user_id",
+      "approved_at",
+      "payout_id",
+      "note",
+      "created_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "sales_agent_id",
+      "entry_type",
+      "amount",
+      "currency_code",
+      "basis_amount",
+      "rate_percent",
+      "hierarchy_depth",
+      "commission_rule_id",
+      "invoice_line_id",
+      "payment_allocation_id",
+      "reverses_entry_id",
+      "status",
+      "earned_at",
+      "approved_by_user_id",
+      "approved_at",
+      "payout_id",
+      "note"
+    ],
+    "update": [
+      "sales_agent_id",
+      "entry_type",
+      "amount",
+      "currency_code",
+      "basis_amount",
+      "rate_percent",
+      "hierarchy_depth",
+      "commission_rule_id",
+      "invoice_line_id",
+      "payment_allocation_id",
+      "reverses_entry_id",
+      "status",
+      "earned_at",
+      "approved_by_user_id",
+      "approved_at",
+      "payout_id",
+      "note"
+    ]
+  },
+  "references": {
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "commission_rule_id": {
+      "table": "commission_commission_rule",
+      "key": "commission_rule_id",
+      "lookup": {
+        "endpoint": "/commission_commission_rule"
+      }
+    },
+    "invoice_line_id": {
+      "table": "billing_invoice_line",
+      "key": "invoice_line_id",
+      "lookup": {
+        "endpoint": "/billing_invoice_line"
+      }
+    },
+    "payment_allocation_id": {
+      "table": "payment_payment_allocation",
+      "key": "payment_allocation_id",
+      "lookup": {
+        "endpoint": "/payment_payment_allocation"
+      }
+    },
+    "reverses_entry_id": {
+      "table": "commission_commission_ledger",
+      "key": "entry_id",
+      "lookup": {
+        "endpoint": "/commission_commission_ledger"
+      }
+    },
+    "approved_by_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    },
+    "payout_id": {
+      "table": "commission_payout",
+      "key": "payout_id",
+      "lookup": {
+        "endpoint": "/commission_payout"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "entry_id",
+      "label": "Entry Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "entry_type",
+      "label": "Entry Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "basis_amount",
+      "label": "Basis Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "rate_percent",
+      "label": "Rate Percent",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "hierarchy_depth",
+      "label": "Hierarchy Depth",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "commission_rule_id",
+      "label": "Commission Rule Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commission_commission_rule",
+        "column": "commission_rule_id",
+        "lookup": {
+          "endpoint": "/commission_commission_rule",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "invoice_line_id",
+      "label": "Invoice Line Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_invoice_line",
+        "column": "invoice_line_id",
+        "lookup": {
+          "endpoint": "/billing_invoice_line",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "payment_allocation_id",
+      "label": "Payment Allocation Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_payment_allocation",
+        "column": "payment_allocation_id",
+        "lookup": {
+          "endpoint": "/payment_payment_allocation",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "reverses_entry_id",
+      "label": "Reverses Entry Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commission_commission_ledger",
+        "column": "entry_id",
+        "lookup": {
+          "endpoint": "/commission_commission_ledger",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "earned_at",
+      "label": "Earned At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "approved_by_user_id",
+      "label": "Approved By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "approved_at",
+      "label": "Approved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "payout_id",
+      "label": "Payout Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commission_payout",
+        "column": "payout_id",
+        "lookup": {
+          "endpoint": "/commission_payout",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "note",
+      "label": "Note",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

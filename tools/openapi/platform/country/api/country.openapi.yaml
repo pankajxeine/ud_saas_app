@@ -1,0 +1,221 @@
+openapi: 3.0.0
+x-sql-table: platform_country
+x-sql-references:
+  - column: "default_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: CountryResponse API
+  version: 1.0.0
+paths:
+  /country:
+    get:
+      operationId: listCountry
+      summary: Get all country
+      responses:
+        '200':
+          description: List of country
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryResponse'
+    post:
+      operationId: createCountry
+      summary: Create a new country
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /country/{country_id}:
+    get:
+      operationId: getCountryById
+      summary: Get country by country_id
+      parameters:
+        - in: path
+          name: country_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: country object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '404':
+          description: country not found
+    put:
+      operationId: updateCountry
+      summary: Update country by country_id
+      parameters:
+        - in: path
+          name: country_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountryUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: country not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCountry
+      summary: Delete country by country_id
+      parameters:
+        - in: path
+          name: country_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: country not found
+components:
+  schemas:
+
+    CountryRequest:
+      type: object
+      required:
+        - country_code
+        - iso3
+        - name
+      additionalProperties: false
+      properties:
+        country_code:
+          type: string
+        iso3:
+          type: string
+          maxLength: 3
+        name:
+          type: string
+        phone_prefix:
+          type: string
+          nullable: true
+          maxLength: 5
+        default_currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        is_active:
+          type: boolean
+          default: true
+
+    CountryUpdateRequest:
+      type: object
+      required:
+        - country_code
+        - iso3
+        - name
+        - phone_prefix
+        - default_currency_code
+        - is_active
+      additionalProperties: false
+      properties:
+        country_code:
+          type: string
+        iso3:
+          type: string
+          maxLength: 3
+        name:
+          type: string
+        phone_prefix:
+          type: string
+          nullable: true
+          maxLength: 5
+        default_currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        is_active:
+          type: boolean
+          default: true
+
+    CountryResponse:
+      type: object
+      required:
+        - record_code
+        - country_id
+        - country_code
+        - iso3
+        - name
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        country_id:
+          type: string
+          format: uuid
+          readOnly: true
+        country_code:
+          type: string
+        iso3:
+          type: string
+          maxLength: 3
+        name:
+          type: string
+        phone_prefix:
+          type: string
+          nullable: true
+          maxLength: 5
+        default_currency_code:
+          type: string
+          nullable: true
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

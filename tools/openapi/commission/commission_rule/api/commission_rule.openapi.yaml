@@ -1,0 +1,300 @@
+openapi: 3.0.0
+x-sql-table: commission_commission_rule
+x-sql-references:
+  - column: "commission_plan_id"
+    table: "commission_commission_plan"
+    key: "commission_plan_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "plan_id"
+    table: "commerce_plan"
+    key: "plan_id"
+info:
+  title: CommissionRuleResponse API
+  version: 1.0.0
+paths:
+  /commission_rule:
+    get:
+      operationId: listCommissionRule
+      summary: Get all commission_rule
+      responses:
+        '200':
+          description: List of commission_rule
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommissionRuleResponse'
+    post:
+      operationId: createCommissionRule
+      summary: Create a new commission_rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommissionRuleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionRuleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /commission_rule/{commission_rule_id}:
+    get:
+      operationId: getCommissionRuleById
+      summary: Get commission_rule by commission_rule_id
+      parameters:
+        - in: path
+          name: commission_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: commission_rule object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionRuleResponse'
+        '404':
+          description: commission_rule not found
+    put:
+      operationId: updateCommissionRule
+      summary: Update commission_rule by commission_rule_id
+      parameters:
+        - in: path
+          name: commission_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommissionRuleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommissionRuleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: commission_rule not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCommissionRule
+      summary: Delete commission_rule by commission_rule_id
+      parameters:
+        - in: path
+          name: commission_rule_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: commission_rule not found
+components:
+  schemas:
+
+    CommissionRuleRequest:
+      type: object
+      required:
+        - commission_plan_id
+        - rate_percent
+      additionalProperties: false
+      properties:
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        hierarchy_depth:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 5
+          default: 0
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        line_types:
+          type: string
+          default: "{subscription,addon}"
+        from_month:
+          type: integer
+          format: int32
+          default: 1
+        to_month:
+          type: integer
+          format: int32
+          nullable: true
+        rate_percent:
+          type: string
+        priority:
+          type: integer
+          format: int32
+          default: 100
+
+    CommissionRuleUpdateRequest:
+      type: object
+      required:
+        - commission_plan_id
+        - hierarchy_depth
+        - application_id
+        - plan_id
+        - line_types
+        - from_month
+        - to_month
+        - rate_percent
+        - priority
+      additionalProperties: false
+      properties:
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        hierarchy_depth:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 5
+          default: 0
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        line_types:
+          type: string
+          default: "{subscription,addon}"
+        from_month:
+          type: integer
+          format: int32
+          default: 1
+        to_month:
+          type: integer
+          format: int32
+          nullable: true
+        rate_percent:
+          type: string
+        priority:
+          type: integer
+          format: int32
+          default: 100
+
+    CommissionRuleResponse:
+      type: object
+      required:
+        - record_code
+        - commission_rule_id
+        - commission_plan_id
+        - hierarchy_depth
+        - line_types
+        - from_month
+        - rate_percent
+        - priority
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        commission_rule_id:
+          type: string
+          format: uuid
+          readOnly: true
+        commission_plan_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commission_commission_plan"
+            column: "commission_plan_id"
+        hierarchy_depth:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 5
+          default: 0
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_plan"
+            column: "plan_id"
+        line_types:
+          type: string
+          default: "{subscription,addon}"
+        from_month:
+          type: integer
+          format: int32
+          default: 1
+        to_month:
+          type: integer
+          format: int32
+          nullable: true
+        rate_percent:
+          type: string
+        priority:
+          type: integer
+          format: int32
+          default: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,0 +1,253 @@
+{
+  "entity": "TeamMember",
+  "table": "org_team_member",
+  "primaryKey": "team_member_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/team_member"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/team_member"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/team_member/{team_member_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/team_member/{team_member_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/team_member/{team_member_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "team_member_id",
+        "label": "Team Member Id"
+      },
+      {
+        "field": "team_id",
+        "label": "Team Id"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "member_role",
+        "label": "Member Role"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "team_member_id",
+      "team_id",
+      "app_user_id",
+      "member_role",
+      "valid_from",
+      "valid_to",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "team_id",
+      "app_user_id",
+      "member_role",
+      "valid_from",
+      "valid_to"
+    ],
+    "update": [
+      "team_id",
+      "app_user_id",
+      "member_role",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "references": {
+    "team_id": {
+      "table": "org_team",
+      "key": "team_id",
+      "lookup": {
+        "endpoint": "/org_team"
+      }
+    },
+    "app_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "team_member_id",
+      "label": "Team Member Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "team_id",
+      "label": "Team Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_team",
+        "column": "team_id",
+        "lookup": {
+          "endpoint": "/org_team",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "member_role",
+      "label": "Member Role",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

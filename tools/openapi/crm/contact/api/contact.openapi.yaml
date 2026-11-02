@@ -1,0 +1,286 @@
+openapi: 3.0.0
+x-sql-table: crm_contact
+x-sql-references:
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+info:
+  title: ContactResponse API
+  version: 1.0.0
+paths:
+  /contact:
+    get:
+      operationId: listContact
+      summary: Get all contact
+      responses:
+        '200':
+          description: List of contact
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactResponse'
+    post:
+      operationId: createContact
+      summary: Create a new contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /contact/{contact_id}:
+    get:
+      operationId: getContactById
+      summary: Get contact by contact_id
+      parameters:
+        - in: path
+          name: contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: contact object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '404':
+          description: contact not found
+    put:
+      operationId: updateContact
+      summary: Update contact by contact_id
+      parameters:
+        - in: path
+          name: contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: contact not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteContact
+      summary: Delete contact by contact_id
+      parameters:
+        - in: path
+          name: contact_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: contact not found
+components:
+  schemas:
+
+    ContactRequest:
+      type: object
+      required:
+        - account_id
+        - first_name
+        - last_name
+        - email
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        job_title:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        is_billing:
+          type: boolean
+          default: false
+        is_technical:
+          type: boolean
+          default: false
+        marketing_consent:
+          type: boolean
+          default: false
+        preferred_locale:
+          type: string
+          default: "en-US"
+
+    ContactUpdateRequest:
+      type: object
+      required:
+        - account_id
+        - first_name
+        - last_name
+        - email
+        - phone
+        - job_title
+        - is_primary
+        - is_billing
+        - is_technical
+        - marketing_consent
+        - preferred_locale
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        job_title:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        is_billing:
+          type: boolean
+          default: false
+        is_technical:
+          type: boolean
+          default: false
+        marketing_consent:
+          type: boolean
+          default: false
+        preferred_locale:
+          type: string
+          default: "en-US"
+
+    ContactResponse:
+      type: object
+      required:
+        - record_code
+        - contact_id
+        - account_id
+        - first_name
+        - last_name
+        - email
+        - is_primary
+        - is_billing
+        - is_technical
+        - marketing_consent
+        - preferred_locale
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        contact_id:
+          type: string
+          format: uuid
+          readOnly: true
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        job_title:
+          type: string
+          nullable: true
+        is_primary:
+          type: boolean
+          default: false
+        is_billing:
+          type: boolean
+          default: false
+        is_technical:
+          type: boolean
+          default: false
+        marketing_consent:
+          type: boolean
+          default: false
+        preferred_locale:
+          type: string
+          default: "en-US"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+  

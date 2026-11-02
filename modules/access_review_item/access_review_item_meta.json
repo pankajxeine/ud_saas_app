@@ -1,0 +1,259 @@
+{
+  "entity": "AccessReviewItem",
+  "table": "iam_access_review_item",
+  "primaryKey": "access_review_item_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/access_review_item"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/access_review_item"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/access_review_item/{access_review_item_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/access_review_item/{access_review_item_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/access_review_item/{access_review_item_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "access_review_item_id",
+        "label": "Access Review Item Id"
+      },
+      {
+        "field": "access_review_id",
+        "label": "Access Review Id"
+      },
+      {
+        "field": "user_role_id",
+        "label": "User Role Id"
+      },
+      {
+        "field": "reviewer_user_id",
+        "label": "Reviewer User Id"
+      },
+      {
+        "field": "decision",
+        "label": "Decision"
+      },
+      {
+        "field": "decided_at",
+        "label": "Decided At"
+      },
+      {
+        "field": "comment",
+        "label": "Comment"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "access_review_item_id",
+      "access_review_id",
+      "user_role_id",
+      "reviewer_user_id",
+      "decision",
+      "decided_at",
+      "comment"
+    ]
+  },
+  "form": {
+    "create": [
+      "access_review_id",
+      "user_role_id",
+      "reviewer_user_id",
+      "decision",
+      "decided_at",
+      "comment"
+    ],
+    "update": [
+      "access_review_id",
+      "user_role_id",
+      "reviewer_user_id",
+      "decision",
+      "decided_at",
+      "comment"
+    ]
+  },
+  "references": {
+    "access_review_id": {
+      "table": "iam_access_review",
+      "key": "access_review_id",
+      "lookup": {
+        "endpoint": "/iam_access_review"
+      }
+    },
+    "user_role_id": {
+      "table": "iam_user_role",
+      "key": "user_role_id",
+      "lookup": {
+        "endpoint": "/iam_user_role"
+      }
+    },
+    "reviewer_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "access_review_item_id",
+      "label": "Access Review Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "access_review_id",
+      "label": "Access Review Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_access_review",
+        "column": "access_review_id",
+        "lookup": {
+          "endpoint": "/iam_access_review",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "user_role_id",
+      "label": "User Role Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_user_role",
+        "column": "user_role_id",
+        "lookup": {
+          "endpoint": "/iam_user_role",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "reviewer_user_id",
+      "label": "Reviewer User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "decision",
+      "label": "Decision",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "decided_at",
+      "label": "Decided At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "comment",
+      "label": "Comment",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

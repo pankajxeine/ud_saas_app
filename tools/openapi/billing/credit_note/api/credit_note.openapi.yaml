@@ -1,0 +1,287 @@
+openapi: 3.0.0
+x-sql-table: billing_credit_note
+x-sql-references:
+  - column: "invoice_id"
+    table: "billing_invoice"
+    key: "invoice_id"
+  - column: "issued_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "approved_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: CreditNoteResponse API
+  version: 1.0.0
+paths:
+  /credit_note:
+    get:
+      operationId: listCreditNote
+      summary: Get all credit_note
+      responses:
+        '200':
+          description: List of credit_note
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditNoteResponse'
+    post:
+      operationId: createCreditNote
+      summary: Create a new credit_note
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditNoteRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /credit_note/{credit_note_id}:
+    get:
+      operationId: getCreditNoteById
+      summary: Get credit_note by credit_note_id
+      parameters:
+        - in: path
+          name: credit_note_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: credit_note object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+        '404':
+          description: credit_note not found
+    put:
+      operationId: updateCreditNote
+      summary: Update credit_note by credit_note_id
+      parameters:
+        - in: path
+          name: credit_note_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditNoteUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: credit_note not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCreditNote
+      summary: Delete credit_note by credit_note_id
+      parameters:
+        - in: path
+          name: credit_note_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: credit_note not found
+components:
+  schemas:
+
+    CreditNoteRequest:
+      type: object
+      required:
+        - invoice_id
+        - amount
+        - reason
+        - issued_by_user_id
+      additionalProperties: false
+      properties:
+        credit_note_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reason:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 8
+          default: "issued"
+        issued_at:
+          type: string
+          format: date-time
+        issued_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    CreditNoteUpdateRequest:
+      type: object
+      required:
+        - credit_note_number
+        - invoice_id
+        - amount
+        - reason
+        - description
+        - status
+        - issued_at
+        - issued_by_user_id
+        - approved_by_user_id
+        - voided_at
+      additionalProperties: false
+      properties:
+        credit_note_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reason:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 8
+          default: "issued"
+        issued_at:
+          type: string
+          format: date-time
+        issued_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    CreditNoteResponse:
+      type: object
+      required:
+        - record_code
+        - credit_note_id
+        - invoice_id
+        - amount
+        - reason
+        - status
+        - issued_at
+        - issued_by_user_id
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        credit_note_id:
+          type: string
+          format: uuid
+          readOnly: true
+        credit_note_number:
+          type: string
+          nullable: true
+          maxLength: 40
+        invoice_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_invoice"
+            column: "invoice_id"
+        amount:
+          type: string
+        reason:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 8
+          default: "issued"
+        issued_at:
+          type: string
+          format: date-time
+        issued_by_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+  

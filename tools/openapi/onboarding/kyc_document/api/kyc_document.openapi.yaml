@@ -1,0 +1,297 @@
+openapi: 3.0.0
+x-sql-table: onboarding_kyc_document
+x-sql-references:
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "request_id"
+    table: "onboarding_onboarding_request"
+    key: "request_id"
+  - column: "verified_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: KycDocumentResponse API
+  version: 1.0.0
+paths:
+  /kyc_document:
+    get:
+      operationId: listKycDocument
+      summary: Get all kyc_document
+      responses:
+        '200':
+          description: List of kyc_document
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KycDocumentResponse'
+    post:
+      operationId: createKycDocument
+      summary: Create a new kyc_document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KycDocumentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KycDocumentResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /kyc_document/{kyc_document_id}:
+    get:
+      operationId: getKycDocumentById
+      summary: Get kyc_document by kyc_document_id
+      parameters:
+        - in: path
+          name: kyc_document_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: kyc_document object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KycDocumentResponse'
+        '404':
+          description: kyc_document not found
+    put:
+      operationId: updateKycDocument
+      summary: Update kyc_document by kyc_document_id
+      parameters:
+        - in: path
+          name: kyc_document_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KycDocumentUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KycDocumentResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: kyc_document not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteKycDocument
+      summary: Delete kyc_document by kyc_document_id
+      parameters:
+        - in: path
+          name: kyc_document_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: kyc_document not found
+components:
+  schemas:
+
+    KycDocumentRequest:
+      type: object
+      required:
+        - account_id
+        - doc_type
+        - storage_ref
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        request_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        doc_type:
+          type: string
+        storage_ref:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        verified_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejection_reason:
+          type: string
+          nullable: true
+        expires_on:
+          type: string
+          format: date
+          nullable: true
+
+    KycDocumentUpdateRequest:
+      type: object
+      required:
+        - account_id
+        - request_id
+        - doc_type
+        - storage_ref
+        - status
+        - verified_by_user_id
+        - verified_at
+        - rejection_reason
+        - expires_on
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        request_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        doc_type:
+          type: string
+        storage_ref:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        verified_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejection_reason:
+          type: string
+          nullable: true
+        expires_on:
+          type: string
+          format: date
+          nullable: true
+
+    KycDocumentResponse:
+      type: object
+      required:
+        - record_code
+        - kyc_document_id
+        - account_id
+        - doc_type
+        - storage_ref
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        kyc_document_id:
+          type: string
+          format: uuid
+          readOnly: true
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        request_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "onboarding_onboarding_request"
+            column: "request_id"
+        doc_type:
+          type: string
+        storage_ref:
+          type: string
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+        verified_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejection_reason:
+          type: string
+          nullable: true
+        expires_on:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

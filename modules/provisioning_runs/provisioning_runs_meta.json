@@ -1,0 +1,266 @@
+{
+  "entity": "ProvisioningRuns",
+  "table": "provisioning_runs",
+  "primaryKey": "provisioning_run_id",
+  "displayField": "provisioning_run_id",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/provisioning_runs"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/provisioning_runs"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/provisioning_runs/{provisioning_run_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/provisioning_runs/{provisioning_run_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/provisioning_runs/{provisioning_run_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "provisioning_run_id",
+        "label": "Provisioning Run Id"
+      },
+      {
+        "field": "registration_id",
+        "label": "Registration Id"
+      },
+      {
+        "field": "script_name",
+        "label": "Script Name"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "started_at",
+        "label": "Started At"
+      },
+      {
+        "field": "finished_at",
+        "label": "Finished At"
+      },
+      {
+        "field": "output",
+        "label": "Output"
+      },
+      {
+        "field": "error_message",
+        "label": "Error Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "provisioning_run_id",
+      "registration_id",
+      "script_name",
+      "status",
+      "started_at",
+      "finished_at",
+      "output",
+      "error_message",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "form": {
+    "create": [
+      "registration_id",
+      "script_name",
+      "status",
+      "started_at",
+      "finished_at",
+      "output",
+      "error_message"
+    ],
+    "update": [
+      "registration_id",
+      "script_name",
+      "status",
+      "started_at",
+      "finished_at",
+      "output",
+      "error_message"
+    ]
+  },
+  "references": {
+    "registration_id": {
+      "table": "tenant_registrations",
+      "key": "registration_id",
+      "lookup": {
+        "endpoint": "/tenant_registrations"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "provisioning_run_id",
+      "label": "Provisioning Run Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "registration_id",
+      "label": "Registration Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenant_registrations",
+        "column": "registration_id",
+        "lookup": {
+          "endpoint": "/tenant_registrations",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "script_name",
+      "label": "Script Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "options": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed"
+      ]
+    },
+    {
+      "name": "started_at",
+      "label": "Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "finished_at",
+      "label": "Finished At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "output",
+      "label": "Output",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "error_message",
+      "label": "Error Message",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

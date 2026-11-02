@@ -1,0 +1,229 @@
+{
+  "entity": "DunningStep",
+  "table": "billing_dunning_step",
+  "primaryKey": "dunning_step_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/dunning_step"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/dunning_step"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/dunning_step/{dunning_step_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/dunning_step/{dunning_step_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/dunning_step/{dunning_step_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "dunning_step_id",
+        "label": "Dunning Step Id"
+      },
+      {
+        "field": "dunning_policy_id",
+        "label": "Dunning Policy Id"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "days_after_due",
+        "label": "Days After Due"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "template_code",
+        "label": "Template Code"
+      },
+      {
+        "field": "grace_days",
+        "label": "Grace Days"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "dunning_step_id",
+      "dunning_policy_id",
+      "step_no",
+      "days_after_due",
+      "action",
+      "template_code",
+      "grace_days"
+    ]
+  },
+  "form": {
+    "create": [
+      "dunning_policy_id",
+      "step_no",
+      "days_after_due",
+      "action",
+      "template_code",
+      "grace_days"
+    ],
+    "update": [
+      "dunning_policy_id",
+      "step_no",
+      "days_after_due",
+      "action",
+      "template_code",
+      "grace_days"
+    ]
+  },
+  "references": {
+    "dunning_policy_id": {
+      "table": "billing_dunning_policy",
+      "key": "dunning_policy_id",
+      "lookup": {
+        "endpoint": "/billing_dunning_policy"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "dunning_step_id",
+      "label": "Dunning Step Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "dunning_policy_id",
+      "label": "Dunning Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_dunning_policy",
+        "column": "dunning_policy_id",
+        "lookup": {
+          "endpoint": "/billing_dunning_policy",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "days_after_due",
+      "label": "Days After Due",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 14
+    },
+    {
+      "name": "template_code",
+      "label": "Template Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "grace_days",
+      "label": "Grace Days",
+      "type": "integer",
+      "widget": "number",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

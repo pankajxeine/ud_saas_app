@@ -1,0 +1,222 @@
+{
+  "entity": "RetentionPolicy",
+  "table": "audit_retention_policy",
+  "primaryKey": "retention_policy_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/retention_policy"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/retention_policy"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/retention_policy/{retention_policy_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/retention_policy/{retention_policy_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/retention_policy/{retention_policy_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "retention_policy_id",
+        "label": "Retention Policy Id"
+      },
+      {
+        "field": "entity_code",
+        "label": "Entity Code"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "retention_days",
+        "label": "Retention Days"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "legal_basis",
+        "label": "Legal Basis"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "retention_policy_id",
+      "entity_code",
+      "description",
+      "retention_days",
+      "action",
+      "legal_basis",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "entity_code",
+      "description",
+      "retention_days",
+      "action",
+      "legal_basis"
+    ],
+    "update": [
+      "entity_code",
+      "description",
+      "retention_days",
+      "action",
+      "legal_basis"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "retention_policy_id",
+      "label": "Retention Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "entity_code",
+      "label": "Entity Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "retention_days",
+      "label": "Retention Days",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "legal_basis",
+      "label": "Legal Basis",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "entity": "AddonItem",
+  "table": "commerce_addon_item",
+  "primaryKey": "addon_item_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/addon_item"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/addon_item"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/addon_item/{addon_item_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/addon_item/{addon_item_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/addon_item/{addon_item_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "addon_item_id",
+        "label": "Addon Item Id"
+      },
+      {
+        "field": "addon_version_id",
+        "label": "Addon Version Id"
+      },
+      {
+        "field": "module_id",
+        "label": "Module Id"
+      },
+      {
+        "field": "feature_id",
+        "label": "Feature Id"
+      },
+      {
+        "field": "value",
+        "label": "Value"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "addon_item_id",
+      "addon_version_id",
+      "module_id",
+      "feature_id",
+      "value"
+    ]
+  },
+  "form": {
+    "create": [
+      "addon_version_id",
+      "module_id",
+      "feature_id",
+      "value"
+    ],
+    "update": [
+      "addon_version_id",
+      "module_id",
+      "feature_id",
+      "value"
+    ]
+  },
+  "references": {
+    "module_id": {
+      "table": "catalog_module",
+      "key": "module_id",
+      "lookup": {
+        "endpoint": "/catalog_module"
+      }
+    },
+    "feature_id": {
+      "table": "catalog_feature",
+      "key": "feature_id",
+      "lookup": {
+        "endpoint": "/catalog_feature"
+      }
+    },
+    "addon_version_id": {
+      "table": "commerce_addon_version",
+      "key": "addon_version_id",
+      "lookup": {
+        "endpoint": "/commerce_addon_version"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "addon_item_id",
+      "label": "Addon Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "addon_version_id",
+      "label": "Addon Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_addon_version",
+        "column": "addon_version_id",
+        "lookup": {
+          "endpoint": "/commerce_addon_version",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "module_id",
+      "label": "Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "endpoint": "/catalog_module",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "feature_id",
+      "label": "Feature Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "catalog_feature",
+        "column": "feature_id",
+        "lookup": {
+          "endpoint": "/catalog_feature",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

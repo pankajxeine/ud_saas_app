@@ -1,0 +1,261 @@
+openapi: 3.0.0
+x-sql-table: entitlement_entitlement_grant
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+info:
+  title: EntitlementGrantResponse API
+  version: 1.0.0
+paths:
+  /entitlement_grant:
+    get:
+      operationId: listEntitlementGrant
+      summary: Get all entitlement_grant
+      responses:
+        '200':
+          description: List of entitlement_grant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntitlementGrantResponse'
+    post:
+      operationId: createEntitlementGrant
+      summary: Create a new entitlement_grant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementGrantRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementGrantResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /entitlement_grant/{entitlement_grant_id}:
+    get:
+      operationId: getEntitlementGrantById
+      summary: Get entitlement_grant by entitlement_grant_id
+      parameters:
+        - in: path
+          name: entitlement_grant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: entitlement_grant object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementGrantResponse'
+        '404':
+          description: entitlement_grant not found
+    put:
+      operationId: updateEntitlementGrant
+      summary: Update entitlement_grant by entitlement_grant_id
+      parameters:
+        - in: path
+          name: entitlement_grant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementGrantUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementGrantResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: entitlement_grant not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteEntitlementGrant
+      summary: Delete entitlement_grant by entitlement_grant_id
+      parameters:
+        - in: path
+          name: entitlement_grant_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: entitlement_grant not found
+components:
+  schemas:
+
+    EntitlementGrantRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - module_id
+        - source
+        - source_ref_id
+        - valid_from
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        source:
+          type: string
+        source_ref_id:
+          type: string
+          format: uuid
+        value:
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+
+    EntitlementGrantUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - module_id
+        - feature_id
+        - source
+        - source_ref_id
+        - value
+        - valid_from
+        - valid_to
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        source:
+          type: string
+        source_ref_id:
+          type: string
+          format: uuid
+        value:
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+
+    EntitlementGrantResponse:
+      type: object
+      required:
+        - record_code
+        - entitlement_grant_id
+        - tenant_application_id
+        - module_id
+        - source
+        - source_ref_id
+        - valid_from
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        entitlement_grant_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        source:
+          type: string
+        source_ref_id:
+          type: string
+          format: uuid
+        value:
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+  

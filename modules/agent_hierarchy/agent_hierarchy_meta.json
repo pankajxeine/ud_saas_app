@@ -1,0 +1,180 @@
+{
+  "entity": "AgentHierarchy",
+  "table": "partner_agent_hierarchy",
+  "primaryKey": "agent_hierarchy_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/agent_hierarchy"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/agent_hierarchy"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/agent_hierarchy/{agent_hierarchy_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/agent_hierarchy/{agent_hierarchy_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/agent_hierarchy/{agent_hierarchy_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "agent_hierarchy_id",
+        "label": "Agent Hierarchy Id"
+      },
+      {
+        "field": "ancestor_id",
+        "label": "Ancestor Id"
+      },
+      {
+        "field": "descendant_id",
+        "label": "Descendant Id"
+      },
+      {
+        "field": "depth",
+        "label": "Depth"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "agent_hierarchy_id",
+      "ancestor_id",
+      "descendant_id",
+      "depth"
+    ]
+  },
+  "form": {
+    "create": [
+      "ancestor_id",
+      "descendant_id",
+      "depth"
+    ],
+    "update": [
+      "ancestor_id",
+      "descendant_id",
+      "depth"
+    ]
+  },
+  "references": {
+    "ancestor_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "descendant_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "agent_hierarchy_id",
+      "label": "Agent Hierarchy Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "ancestor_id",
+      "label": "Ancestor Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "descendant_id",
+      "label": "Descendant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "depth",
+      "label": "Depth",
+      "type": "integer",
+      "widget": "number",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    }
+  ]
+}

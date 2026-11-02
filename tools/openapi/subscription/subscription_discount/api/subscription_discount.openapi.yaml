@@ -1,0 +1,212 @@
+openapi: 3.0.0
+x-sql-table: subscription_subscription_discount
+x-sql-references:
+  - column: "subscription_id"
+    table: "subscription_subscription"
+    key: "subscription_id"
+  - column: "coupon_id"
+    table: "commerce_coupon"
+    key: "coupon_id"
+info:
+  title: SubscriptionDiscountResponse API
+  version: 1.0.0
+paths:
+  /subscription_discount:
+    get:
+      operationId: listSubscriptionDiscount
+      summary: Get all subscription_discount
+      responses:
+        '200':
+          description: List of subscription_discount
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionDiscountResponse'
+    post:
+      operationId: createSubscriptionDiscount
+      summary: Create a new subscription_discount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDiscountRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDiscountResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /subscription_discount/{subscription_discount_id}:
+    get:
+      operationId: getSubscriptionDiscountById
+      summary: Get subscription_discount by subscription_discount_id
+      parameters:
+        - in: path
+          name: subscription_discount_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: subscription_discount object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDiscountResponse'
+        '404':
+          description: subscription_discount not found
+    put:
+      operationId: updateSubscriptionDiscount
+      summary: Update subscription_discount by subscription_discount_id
+      parameters:
+        - in: path
+          name: subscription_discount_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDiscountUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDiscountResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: subscription_discount not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteSubscriptionDiscount
+      summary: Delete subscription_discount by subscription_discount_id
+      parameters:
+        - in: path
+          name: subscription_discount_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: subscription_discount not found
+components:
+  schemas:
+
+    SubscriptionDiscountRequest:
+      type: object
+      required:
+        - subscription_id
+        - coupon_id
+      additionalProperties: false
+      properties:
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        coupon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        applied_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    SubscriptionDiscountUpdateRequest:
+      type: object
+      required:
+        - subscription_id
+        - coupon_id
+        - applied_at
+        - ends_at
+      additionalProperties: false
+      properties:
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        coupon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        applied_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    SubscriptionDiscountResponse:
+      type: object
+      required:
+        - record_code
+        - subscription_discount_id
+        - subscription_id
+        - coupon_id
+        - applied_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        subscription_discount_id:
+          type: string
+          format: uuid
+          readOnly: true
+        subscription_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        coupon_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        applied_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

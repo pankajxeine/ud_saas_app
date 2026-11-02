@@ -1,0 +1,294 @@
+openapi: 3.0.0
+x-sql-table: catalog_feature
+x-sql-references:
+  - column: "module_id"
+    table: "catalog_module"
+    key: "module_id"
+info:
+  title: FeatureResponse API
+  version: 1.0.0
+paths:
+  /feature:
+    get:
+      operationId: listFeature
+      summary: Get all feature
+      responses:
+        '200':
+          description: List of feature
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FeatureResponse'
+    post:
+      operationId: createFeature
+      summary: Create a new feature
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /feature/{feature_id}:
+    get:
+      operationId: getFeatureById
+      summary: Get feature by feature_id
+      parameters:
+        - in: path
+          name: feature_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: feature object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureResponse'
+        '404':
+          description: feature not found
+    put:
+      operationId: updateFeature
+      summary: Update feature by feature_id
+      parameters:
+        - in: path
+          name: feature_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: feature not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteFeature
+      summary: Delete feature by feature_id
+      parameters:
+        - in: path
+          name: feature_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: feature not found
+components:
+  schemas:
+
+    FeatureRequest:
+      type: object
+      required:
+        - module_id
+        - feature_code
+        - name
+        - kind
+      additionalProperties: false
+      properties:
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        kind:
+          type: string
+        unit:
+          type: string
+          nullable: true
+          maxLength: 20
+        default_value:
+          nullable: true
+        reset_period:
+          type: string
+          default: "never"
+        enforcement:
+          type: string
+          default: "hard"
+        overage_allowed:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    FeatureUpdateRequest:
+      type: object
+      required:
+        - module_id
+        - feature_code
+        - name
+        - description
+        - kind
+        - unit
+        - default_value
+        - reset_period
+        - enforcement
+        - overage_allowed
+        - is_active
+        - sort_order
+      additionalProperties: false
+      properties:
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        kind:
+          type: string
+        unit:
+          type: string
+          nullable: true
+          maxLength: 20
+        default_value:
+          nullable: true
+        reset_period:
+          type: string
+          default: "never"
+        enforcement:
+          type: string
+          default: "hard"
+        overage_allowed:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+
+    FeatureResponse:
+      type: object
+      required:
+        - record_code
+        - feature_id
+        - module_id
+        - feature_code
+        - name
+        - kind
+        - reset_period
+        - enforcement
+        - overage_allowed
+        - is_active
+        - sort_order
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        feature_id:
+          type: string
+          format: uuid
+          readOnly: true
+        module_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_module"
+            column: "module_id"
+        feature_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        kind:
+          type: string
+        unit:
+          type: string
+          nullable: true
+          maxLength: 20
+        default_value:
+          nullable: true
+        reset_period:
+          type: string
+          default: "never"
+        enforcement:
+          type: string
+          default: "hard"
+        overage_allowed:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+        sort_order:
+          type: integer
+          format: int32
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,0 +1,243 @@
+openapi: 3.0.0
+x-sql-table: tenancy_lifecycle_event
+x-sql-references:
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+info:
+  title: LifecycleEventResponse API
+  version: 1.0.0
+paths:
+  /lifecycle_event:
+    get:
+      operationId: listLifecycleEvent
+      summary: Get all lifecycle_event
+      responses:
+        '200':
+          description: List of lifecycle_event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LifecycleEventResponse'
+    post:
+      operationId: createLifecycleEvent
+      summary: Create a new lifecycle_event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleEventRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifecycleEventResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /lifecycle_event/{lifecycle_event_id}:
+    get:
+      operationId: getLifecycleEventById
+      summary: Get lifecycle_event by lifecycle_event_id
+      parameters:
+        - in: path
+          name: lifecycle_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: lifecycle_event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifecycleEventResponse'
+        '404':
+          description: lifecycle_event not found
+    put:
+      operationId: updateLifecycleEvent
+      summary: Update lifecycle_event by lifecycle_event_id
+      parameters:
+        - in: path
+          name: lifecycle_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleEventUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifecycleEventResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: lifecycle_event not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLifecycleEvent
+      summary: Delete lifecycle_event by lifecycle_event_id
+      parameters:
+        - in: path
+          name: lifecycle_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: lifecycle_event not found
+components:
+  schemas:
+
+    LifecycleEventRequest:
+      type: object
+      required:
+        - tenant_id
+        - to_status
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          maxLength: 20
+        reason:
+          type: string
+          nullable: true
+        actor_user_id:
+          type: string
+          format: uuid
+          nullable: true
+        occurred_at:
+          type: string
+          format: date-time
+
+    LifecycleEventUpdateRequest:
+      type: object
+      required:
+        - tenant_id
+        - tenant_application_id
+        - from_status
+        - to_status
+        - reason
+        - actor_user_id
+        - occurred_at
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          maxLength: 20
+        reason:
+          type: string
+          nullable: true
+        actor_user_id:
+          type: string
+          format: uuid
+          nullable: true
+        occurred_at:
+          type: string
+          format: date-time
+
+    LifecycleEventResponse:
+      type: object
+      required:
+        - record_code
+        - lifecycle_event_id
+        - tenant_id
+        - to_status
+        - occurred_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        lifecycle_event_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        to_status:
+          type: string
+          maxLength: 20
+        reason:
+          type: string
+          nullable: true
+        actor_user_id:
+          type: string
+          format: uuid
+          nullable: true
+        occurred_at:
+          type: string
+          format: date-time
+  

@@ -1,0 +1,220 @@
+openapi: 3.0.0
+x-sql-table: platform_fx_rate
+x-sql-references:
+  - column: "base_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+  - column: "quote_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: FxRateResponse API
+  version: 1.0.0
+paths:
+  /fx_rate:
+    get:
+      operationId: listFxRate
+      summary: Get all fx_rate
+      responses:
+        '200':
+          description: List of fx_rate
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FxRateResponse'
+    post:
+      operationId: createFxRate
+      summary: Create a new fx_rate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FxRateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FxRateResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /fx_rate/{fx_rate_id}:
+    get:
+      operationId: getFxRateById
+      summary: Get fx_rate by fx_rate_id
+      parameters:
+        - in: path
+          name: fx_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: fx_rate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FxRateResponse'
+        '404':
+          description: fx_rate not found
+    put:
+      operationId: updateFxRate
+      summary: Update fx_rate by fx_rate_id
+      parameters:
+        - in: path
+          name: fx_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FxRateUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FxRateResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: fx_rate not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteFxRate
+      summary: Delete fx_rate by fx_rate_id
+      parameters:
+        - in: path
+          name: fx_rate_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: fx_rate not found
+components:
+  schemas:
+
+    FxRateRequest:
+      type: object
+      required:
+        - base_currency_code
+        - quote_currency_code
+        - rate_date
+        - rate
+      additionalProperties: false
+      properties:
+        base_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        quote_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        rate_date:
+          type: string
+          format: date
+        rate:
+          type: number
+          format: double
+        source:
+          type: string
+          maxLength: 30
+          default: "manual"
+
+    FxRateUpdateRequest:
+      type: object
+      required:
+        - base_currency_code
+        - quote_currency_code
+        - rate_date
+        - rate
+        - source
+      additionalProperties: false
+      properties:
+        base_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        quote_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        rate_date:
+          type: string
+          format: date
+        rate:
+          type: number
+          format: double
+        source:
+          type: string
+          maxLength: 30
+          default: "manual"
+
+    FxRateResponse:
+      type: object
+      required:
+        - record_code
+        - fx_rate_id
+        - base_currency_code
+        - quote_currency_code
+        - rate_date
+        - rate
+        - source
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        fx_rate_id:
+          type: string
+          format: uuid
+          readOnly: true
+        base_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        quote_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        rate_date:
+          type: string
+          format: date
+        rate:
+          type: number
+          format: double
+        source:
+          type: string
+          maxLength: 30
+          default: "manual"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

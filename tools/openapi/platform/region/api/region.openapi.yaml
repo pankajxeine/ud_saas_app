@@ -1,0 +1,209 @@
+openapi: 3.0.0
+x-sql-table: platform_region
+info:
+  title: RegionResponse API
+  version: 1.0.0
+paths:
+  /region:
+    get:
+      operationId: listRegion
+      summary: Get all region
+      responses:
+        '200':
+          description: List of region
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegionResponse'
+    post:
+      operationId: createRegion
+      summary: Create a new region
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /region/{region_id}:
+    get:
+      operationId: getRegionById
+      summary: Get region by region_id
+      parameters:
+        - in: path
+          name: region_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: region object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionResponse'
+        '404':
+          description: region not found
+    put:
+      operationId: updateRegion
+      summary: Update region by region_id
+      parameters:
+        - in: path
+          name: region_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: region not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteRegion
+      summary: Delete region by region_id
+      parameters:
+        - in: path
+          name: region_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: region not found
+components:
+  schemas:
+
+    RegionRequest:
+      type: object
+      required:
+        - region_code
+        - name
+        - cloud_provider
+        - cloud_region
+        - allowed_residency
+      additionalProperties: false
+      properties:
+        region_code:
+          type: string
+        name:
+          type: string
+        cloud_provider:
+          type: string
+          maxLength: 20
+        cloud_region:
+          type: string
+          maxLength: 40
+        allowed_residency:
+          type: string
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+
+    RegionUpdateRequest:
+      type: object
+      required:
+        - region_code
+        - name
+        - cloud_provider
+        - cloud_region
+        - allowed_residency
+        - is_active
+      additionalProperties: false
+      properties:
+        region_code:
+          type: string
+        name:
+          type: string
+        cloud_provider:
+          type: string
+          maxLength: 20
+        cloud_region:
+          type: string
+          maxLength: 40
+        allowed_residency:
+          type: string
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+
+    RegionResponse:
+      type: object
+      required:
+        - record_code
+        - region_id
+        - region_code
+        - name
+        - cloud_provider
+        - cloud_region
+        - allowed_residency
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        region_id:
+          type: string
+          format: uuid
+          readOnly: true
+        region_code:
+          type: string
+        name:
+          type: string
+        cloud_provider:
+          type: string
+          maxLength: 20
+        cloud_region:
+          type: string
+          maxLength: 40
+        allowed_residency:
+          type: string
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

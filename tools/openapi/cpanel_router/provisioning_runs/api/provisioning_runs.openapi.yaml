@@ -1,0 +1,244 @@
+openapi: 3.0.0
+x-sql-table: provisioning_runs
+x-sql-references:
+  - column: "registration_id"
+    table: "tenant_registrations"
+    key: "registration_id"
+info:
+  title: ProvisioningRunsResponse API
+  version: 1.0.0
+paths:
+  /provisioning_runs:
+    get:
+      operationId: listProvisioningRuns
+      summary: Get all provisioning_runs
+      responses:
+        '200':
+          description: List of provisioning_runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvisioningRunsResponse'
+    post:
+      operationId: createProvisioningRuns
+      summary: Create a new provisioning_runs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningRunsRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningRunsResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /provisioning_runs/{provisioning_run_id}:
+    get:
+      operationId: getProvisioningRunsById
+      summary: Get provisioning_runs by provisioning_run_id
+      parameters:
+        - in: path
+          name: provisioning_run_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: provisioning_runs object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningRunsResponse'
+        '404':
+          description: provisioning_runs not found
+    put:
+      operationId: updateProvisioningRuns
+      summary: Update provisioning_runs by provisioning_run_id
+      parameters:
+        - in: path
+          name: provisioning_run_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningRunsUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningRunsResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: provisioning_runs not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteProvisioningRuns
+      summary: Delete provisioning_runs by provisioning_run_id
+      parameters:
+        - in: path
+          name: provisioning_run_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: provisioning_runs not found
+components:
+  schemas:
+
+    ProvisioningRunsRequest:
+      type: object
+      required:
+        - registration_id
+        - script_name
+      additionalProperties: false
+      properties:
+        registration_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenant_registrations"
+            column: "registration_id"
+        script_name:
+          type: string
+        status:
+          type: string
+          default: "queued"
+          enum:
+            - "queued"
+            - "running"
+            - "succeeded"
+            - "failed"
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          default: "{}"
+        error_message:
+          type: string
+          nullable: true
+
+    ProvisioningRunsUpdateRequest:
+      type: object
+      required:
+        - registration_id
+        - script_name
+        - status
+        - started_at
+        - finished_at
+        - output
+        - error_message
+      additionalProperties: false
+      properties:
+        registration_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenant_registrations"
+            column: "registration_id"
+        script_name:
+          type: string
+        status:
+          type: string
+          default: "queued"
+          enum:
+            - "queued"
+            - "running"
+            - "succeeded"
+            - "failed"
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          default: "{}"
+        error_message:
+          type: string
+          nullable: true
+
+    ProvisioningRunsResponse:
+      type: object
+      required:
+        - provisioning_run_id
+        - registration_id
+        - script_name
+        - status
+        - output
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        provisioning_run_id:
+          type: string
+          format: uuid
+          readOnly: true
+        registration_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenant_registrations"
+            column: "registration_id"
+        script_name:
+          type: string
+        status:
+          type: string
+          default: "queued"
+          enum:
+            - "queued"
+            - "running"
+            - "succeeded"
+            - "failed"
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          default: "{}"
+        error_message:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

@@ -1,0 +1,745 @@
+openapi: 3.0.0
+x-sql-table: onboarding_onboarding_request
+x-sql-references:
+  - column: "account_id"
+    table: "crm_account"
+    key: "account_id"
+  - column: "opportunity_id"
+    table: "crm_opportunity"
+    key: "opportunity_id"
+  - column: "quote_id"
+    table: "crm_quote"
+    key: "quote_id"
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+  - column: "plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "plan_price_id"
+    table: "commerce_plan_price"
+    key: "plan_price_id"
+  - column: "coupon_id"
+    table: "commerce_coupon"
+    key: "coupon_id"
+  - column: "region_code"
+    table: "platform_region"
+    key: "region_code"
+  - column: "data_residency"
+    table: "platform_country"
+    key: "country_code"
+  - column: "parent_tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "owner_contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+  - column: "billing_contact_id"
+    table: "crm_contact"
+    key: "contact_id"
+  - column: "owning_branch_id"
+    table: "org_branch"
+    key: "branch_id"
+  - column: "sales_agent_id"
+    table: "partner_sales_agent"
+    key: "sales_agent_id"
+  - column: "submitted_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "tenant_id"
+    table: "tenancy_tenant"
+    key: "tenant_id"
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+  - column: "subscription_id"
+    table: "subscription_subscription"
+    key: "subscription_id"
+info:
+  title: OnboardingRequestResponse API
+  version: 1.0.0
+paths:
+  /onboarding_request:
+    get:
+      operationId: listOnboardingRequest
+      summary: Get all onboarding_request
+      responses:
+        '200':
+          description: List of onboarding_request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OnboardingRequestResponse'
+    post:
+      operationId: createOnboardingRequest
+      summary: Create a new onboarding_request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardingRequestRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingRequestResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /onboarding_request/{request_id}:
+    get:
+      operationId: getOnboardingRequestById
+      summary: Get onboarding_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: onboarding_request object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingRequestResponse'
+        '404':
+          description: onboarding_request not found
+    put:
+      operationId: updateOnboardingRequest
+      summary: Update onboarding_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardingRequestUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingRequestResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: onboarding_request not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteOnboardingRequest
+      summary: Delete onboarding_request by request_id
+      parameters:
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: onboarding_request not found
+components:
+  schemas:
+
+    OnboardingRequestRequest:
+      type: object
+      required:
+        - account_id
+        - application_id
+        - plan_version_id
+        - plan_price_id
+        - requested_tenant_code
+        - display_name
+        - region_code
+        - data_residency
+        - owner_contact_id
+      additionalProperties: false
+      properties:
+        request_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        opportunity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        quote_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        plan_price_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        quantity:
+          type: integer
+          format: int32
+          default: 1
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        requested_tenant_code:
+          type: string
+          maxLength: 40
+        display_name:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        owner_contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        billing_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        requires_kyc:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        submitted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejected_reason:
+          type: string
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    OnboardingRequestUpdateRequest:
+      type: object
+      required:
+        - request_number
+        - account_id
+        - opportunity_id
+        - quote_id
+        - application_id
+        - plan_version_id
+        - plan_price_id
+        - quantity
+        - coupon_id
+        - requested_tenant_code
+        - display_name
+        - region_code
+        - data_residency
+        - timezone
+        - default_locale
+        - is_sandbox
+        - parent_tenant_id
+        - owner_contact_id
+        - billing_contact_id
+        - owning_branch_id
+        - sales_agent_id
+        - requires_kyc
+        - status
+        - submitted_at
+        - submitted_by_user_id
+        - approved_at
+        - rejected_reason
+        - tenant_id
+        - tenant_application_id
+        - subscription_id
+        - completed_at
+      additionalProperties: false
+      properties:
+        request_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        opportunity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        quote_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        plan_price_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        quantity:
+          type: integer
+          format: int32
+          default: 1
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        requested_tenant_code:
+          type: string
+          maxLength: 40
+        display_name:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        owner_contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        billing_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        requires_kyc:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        submitted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejected_reason:
+          type: string
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    OnboardingRequestResponse:
+      type: object
+      required:
+        - record_code
+        - request_id
+        - request_number
+        - account_id
+        - application_id
+        - plan_version_id
+        - plan_price_id
+        - quantity
+        - requested_tenant_code
+        - display_name
+        - region_code
+        - data_residency
+        - timezone
+        - default_locale
+        - is_sandbox
+        - owner_contact_id
+        - requires_kyc
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        request_id:
+          type: string
+          format: uuid
+          readOnly: true
+        request_number:
+          type: string
+          maxLength: 20
+        account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_account"
+            column: "account_id"
+        opportunity_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_opportunity"
+            column: "opportunity_id"
+        quote_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_quote"
+            column: "quote_id"
+        application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        plan_price_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_price"
+            column: "plan_price_id"
+        quantity:
+          type: integer
+          format: int32
+          default: 1
+        coupon_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "commerce_coupon"
+            column: "coupon_id"
+        requested_tenant_code:
+          type: string
+          maxLength: 40
+        display_name:
+          type: string
+        region_code:
+          type: string
+          x-reference:
+            table: "platform_region"
+            column: "region_code"
+        data_residency:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        timezone:
+          type: string
+          default: "UTC"
+        default_locale:
+          type: string
+          default: "en-US"
+        is_sandbox:
+          type: boolean
+          default: false
+        parent_tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        owner_contact_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        billing_contact_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "crm_contact"
+            column: "contact_id"
+        owning_branch_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_branch"
+            column: "branch_id"
+        sales_agent_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "partner_sales_agent"
+            column: "sales_agent_id"
+        requires_kyc:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 16
+          default: "draft"
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        submitted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejected_reason:
+          type: string
+          nullable: true
+        tenant_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant"
+            column: "tenant_id"
+        tenant_application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        subscription_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "subscription_subscription"
+            column: "subscription_id"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide Theme;
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 class DataTableHeader extends StatelessWidget {
   const DataTableHeader({
@@ -17,21 +17,23 @@ class DataTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashcn.ThemeColors colors = dashcn.Theme.of(context).colors;
+    final ThemeColors colors = Theme.of(context).colors;
+    Widget header;
     final Widget heading = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           title,
-          style: dashcn.Theme.of(
-            context,
-          ).typography.h2.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(context).typography.h2.copyWith(
+            color: colors.mutedForeground,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         if (subtitle != null) ...<Widget>[
           const SizedBox(height: 4),
           Text(
             subtitle!,
-            style: dashcn.Theme.of(
+            style: Theme.of(
               context,
             ).typography.small.copyWith(color: colors.mutedForeground),
           ),
@@ -40,23 +42,31 @@ class DataTableHeader extends StatelessWidget {
     );
 
     if (compact) {
-      return Column(
+      header = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          heading,
           if (actions != null) ...<Widget>[
             const SizedBox(height: 14),
             Align(alignment: Alignment.centerRight, child: actions),
           ],
         ],
       );
+    } else {
+      header = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[heading, if (actions != null) actions!],
+      );
     }
 
-    return Row(
-      children: <Widget>[
-        Expanded(child: heading),
-        if (actions != null) actions!,
-      ],
+    return Padding(
+      padding: EdgeInsetsGeometry.only(
+        bottom: 8,
+        top: 8,
+        left: compact ? 0 : 8,
+        right: compact ? 0 : 8,
+      ),
+      child: header,
     );
   }
 }

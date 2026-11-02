@@ -1,0 +1,206 @@
+openapi: 3.0.0
+x-sql-table: platform_currency
+info:
+  title: CurrencyResponse API
+  version: 1.0.0
+paths:
+  /currency:
+    get:
+      operationId: listCurrency
+      summary: Get all currency
+      responses:
+        '200':
+          description: List of currency
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyResponse'
+    post:
+      operationId: createCurrency
+      summary: Create a new currency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /currency/{currency_id}:
+    get:
+      operationId: getCurrencyById
+      summary: Get currency by currency_id
+      parameters:
+        - in: path
+          name: currency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: currency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyResponse'
+        '404':
+          description: currency not found
+    put:
+      operationId: updateCurrency
+      summary: Update currency by currency_id
+      parameters:
+        - in: path
+          name: currency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: currency not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCurrency
+      summary: Delete currency by currency_id
+      parameters:
+        - in: path
+          name: currency_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: currency not found
+components:
+  schemas:
+
+    CurrencyRequest:
+      type: object
+      required:
+        - currency_code
+        - name
+      additionalProperties: false
+      properties:
+        currency_code:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+          nullable: true
+          maxLength: 5
+        minor_units:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 4
+          default: 2
+        is_active:
+          type: boolean
+          default: true
+
+    CurrencyUpdateRequest:
+      type: object
+      required:
+        - currency_code
+        - name
+        - symbol
+        - minor_units
+        - is_active
+      additionalProperties: false
+      properties:
+        currency_code:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+          nullable: true
+          maxLength: 5
+        minor_units:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 4
+          default: 2
+        is_active:
+          type: boolean
+          default: true
+
+    CurrencyResponse:
+      type: object
+      required:
+        - record_code
+        - currency_id
+        - currency_code
+        - name
+        - minor_units
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        currency_id:
+          type: string
+          format: uuid
+          readOnly: true
+        currency_code:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+          nullable: true
+          maxLength: 5
+        minor_units:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 4
+          default: 2
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

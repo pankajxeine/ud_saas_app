@@ -1,0 +1,317 @@
+openapi: 3.0.0
+x-sql-table: payment_payment_method
+x-sql-references:
+  - column: "billing_account_id"
+    table: "billing_billing_account"
+    key: "billing_account_id"
+info:
+  title: PaymentMethodResponse API
+  version: 1.0.0
+paths:
+  /payment_method:
+    get:
+      operationId: listPaymentMethod
+      summary: Get all payment_method
+      responses:
+        '200':
+          description: List of payment_method
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentMethodResponse'
+    post:
+      operationId: createPaymentMethod
+      summary: Create a new payment_method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /payment_method/{payment_method_id}:
+    get:
+      operationId: getPaymentMethodById
+      summary: Get payment_method by payment_method_id
+      parameters:
+        - in: path
+          name: payment_method_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: payment_method object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+        '404':
+          description: payment_method not found
+    put:
+      operationId: updatePaymentMethod
+      summary: Update payment_method by payment_method_id
+      parameters:
+        - in: path
+          name: payment_method_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: payment_method not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePaymentMethod
+      summary: Delete payment_method by payment_method_id
+      parameters:
+        - in: path
+          name: payment_method_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: payment_method not found
+components:
+  schemas:
+
+    PaymentMethodRequest:
+      type: object
+      required:
+        - billing_account_id
+        - gateway
+        - gateway_customer_ref
+        - gateway_method_ref
+        - method_type
+      additionalProperties: false
+      properties:
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_customer_ref:
+          type: string
+          maxLength: 100
+        gateway_method_ref:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        brand:
+          type: string
+          nullable: true
+          maxLength: 20
+        last4:
+          type: string
+          nullable: true
+          maxLength: 4
+        exp_month:
+          type: integer
+          format: int32
+          nullable: true
+        exp_year:
+          type: integer
+          format: int32
+          nullable: true
+        fingerprint:
+          type: string
+          nullable: true
+          maxLength: 64
+        is_default:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+
+    PaymentMethodUpdateRequest:
+      type: object
+      required:
+        - billing_account_id
+        - gateway
+        - gateway_customer_ref
+        - gateway_method_ref
+        - method_type
+        - brand
+        - last4
+        - exp_month
+        - exp_year
+        - fingerprint
+        - is_default
+        - status
+      additionalProperties: false
+      properties:
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_customer_ref:
+          type: string
+          maxLength: 100
+        gateway_method_ref:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        brand:
+          type: string
+          nullable: true
+          maxLength: 20
+        last4:
+          type: string
+          nullable: true
+          maxLength: 4
+        exp_month:
+          type: integer
+          format: int32
+          nullable: true
+        exp_year:
+          type: integer
+          format: int32
+          nullable: true
+        fingerprint:
+          type: string
+          nullable: true
+          maxLength: 64
+        is_default:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+
+    PaymentMethodResponse:
+      type: object
+      required:
+        - record_code
+        - payment_method_id
+        - billing_account_id
+        - gateway
+        - gateway_customer_ref
+        - gateway_method_ref
+        - method_type
+        - is_default
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        payment_method_id:
+          type: string
+          format: uuid
+          readOnly: true
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_customer_ref:
+          type: string
+          maxLength: 100
+        gateway_method_ref:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        brand:
+          type: string
+          nullable: true
+          maxLength: 20
+        last4:
+          type: string
+          nullable: true
+          maxLength: 4
+        exp_month:
+          type: integer
+          format: int32
+          nullable: true
+        exp_year:
+          type: integer
+          format: int32
+          nullable: true
+        fingerprint:
+          type: string
+          nullable: true
+          maxLength: 64
+        is_default:
+          type: boolean
+          default: false
+        status:
+          type: string
+          maxLength: 8
+          default: "active"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

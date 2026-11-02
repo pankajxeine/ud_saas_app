@@ -1,0 +1,183 @@
+openapi: 3.0.0
+x-sql-table: platform_lookup_type
+info:
+  title: LookupTypeResponse API
+  version: 1.0.0
+paths:
+  /lookup_type:
+    get:
+      operationId: listLookupType
+      summary: Get all lookup_type
+      responses:
+        '200':
+          description: List of lookup_type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LookupTypeResponse'
+    post:
+      operationId: createLookupType
+      summary: Create a new lookup_type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupTypeRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupTypeResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /lookup_type/{lookup_type_id}:
+    get:
+      operationId: getLookupTypeById
+      summary: Get lookup_type by lookup_type_id
+      parameters:
+        - in: path
+          name: lookup_type_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: lookup_type object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupTypeResponse'
+        '404':
+          description: lookup_type not found
+    put:
+      operationId: updateLookupType
+      summary: Update lookup_type by lookup_type_id
+      parameters:
+        - in: path
+          name: lookup_type_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupTypeUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupTypeResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: lookup_type not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLookupType
+      summary: Delete lookup_type by lookup_type_id
+      parameters:
+        - in: path
+          name: lookup_type_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: lookup_type not found
+components:
+  schemas:
+
+    LookupTypeRequest:
+      type: object
+      required:
+        - lookup_type_code
+        - name
+      additionalProperties: false
+      properties:
+        lookup_type_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_system:
+          type: boolean
+          default: true
+
+    LookupTypeUpdateRequest:
+      type: object
+      required:
+        - lookup_type_code
+        - name
+        - description
+        - is_system
+      additionalProperties: false
+      properties:
+        lookup_type_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_system:
+          type: boolean
+          default: true
+
+    LookupTypeResponse:
+      type: object
+      required:
+        - record_code
+        - lookup_type_id
+        - lookup_type_code
+        - name
+        - is_system
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        lookup_type_id:
+          type: string
+          format: uuid
+          readOnly: true
+        lookup_type_code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        is_system:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

@@ -1,0 +1,209 @@
+openapi: 3.0.0
+x-sql-table: payment_outlet
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "tenancy_tenant_application"
+    key: "tenant_application_id"
+info:
+  title: OutletResponse API
+  version: 1.0.0
+paths:
+  /outlet:
+    get:
+      operationId: listOutlet
+      summary: Get all outlet
+      responses:
+        '200':
+          description: List of outlet
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutletResponse'
+    post:
+      operationId: createOutlet
+      summary: Create a new outlet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutletRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutletResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /outlet/{outlet_id}:
+    get:
+      operationId: getOutletById
+      summary: Get outlet by outlet_id
+      parameters:
+        - in: path
+          name: outlet_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: outlet object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutletResponse'
+        '404':
+          description: outlet not found
+    put:
+      operationId: updateOutlet
+      summary: Update outlet by outlet_id
+      parameters:
+        - in: path
+          name: outlet_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutletUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutletResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: outlet not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteOutlet
+      summary: Delete outlet by outlet_id
+      parameters:
+        - in: path
+          name: outlet_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: outlet not found
+components:
+  schemas:
+
+    OutletRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_code
+        - name
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        outlet_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+          default: "UTC"
+        is_active:
+          type: boolean
+          default: true
+
+    OutletUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_code
+        - name
+        - timezone
+        - is_active
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        outlet_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+          default: "UTC"
+        is_active:
+          type: boolean
+          default: true
+
+    OutletResponse:
+      type: object
+      required:
+        - record_code
+        - outlet_id
+        - tenant_application_id
+        - outlet_code
+        - name
+        - timezone
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        outlet_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "tenancy_tenant_application"
+            column: "tenant_application_id"
+        outlet_code:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+          default: "UTC"
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

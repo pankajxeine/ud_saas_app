@@ -1,0 +1,180 @@
+openapi: 3.0.0
+x-sql-table: platform_holiday
+x-sql-references:
+  - column: "calendar_id"
+    table: "platform_calendar"
+    key: "calendar_id"
+info:
+  title: HolidayResponse API
+  version: 1.0.0
+paths:
+  /holiday:
+    get:
+      operationId: listHoliday
+      summary: Get all holiday
+      responses:
+        '200':
+          description: List of holiday
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HolidayResponse'
+    post:
+      operationId: createHoliday
+      summary: Create a new holiday
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HolidayRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HolidayResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /holiday/{holiday_id}:
+    get:
+      operationId: getHolidayById
+      summary: Get holiday by holiday_id
+      parameters:
+        - in: path
+          name: holiday_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: holiday object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HolidayResponse'
+        '404':
+          description: holiday not found
+    put:
+      operationId: updateHoliday
+      summary: Update holiday by holiday_id
+      parameters:
+        - in: path
+          name: holiday_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HolidayUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HolidayResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: holiday not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteHoliday
+      summary: Delete holiday by holiday_id
+      parameters:
+        - in: path
+          name: holiday_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: holiday not found
+components:
+  schemas:
+
+    HolidayRequest:
+      type: object
+      required:
+        - calendar_id
+        - holiday_date
+        - name
+      additionalProperties: false
+      properties:
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        holiday_date:
+          type: string
+          format: date
+        name:
+          type: string
+
+    HolidayUpdateRequest:
+      type: object
+      required:
+        - calendar_id
+        - holiday_date
+        - name
+      additionalProperties: false
+      properties:
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        holiday_date:
+          type: string
+          format: date
+        name:
+          type: string
+
+    HolidayResponse:
+      type: object
+      required:
+        - record_code
+        - holiday_id
+        - calendar_id
+        - holiday_date
+        - name
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        holiday_id:
+          type: string
+          format: uuid
+          readOnly: true
+        calendar_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "platform_calendar"
+            column: "calendar_id"
+        holiday_date:
+          type: string
+          format: date
+        name:
+          type: string
+  

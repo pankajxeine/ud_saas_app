@@ -1,0 +1,317 @@
+{
+  "entity": "PlanPrice",
+  "table": "commerce_plan_price",
+  "primaryKey": "plan_price_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/plan_price"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/plan_price"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/plan_price/{plan_price_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/plan_price/{plan_price_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/plan_price/{plan_price_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "plan_price_id",
+        "label": "Plan Price Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "price_book_id",
+        "label": "Price Book Id"
+      },
+      {
+        "field": "billing_period",
+        "label": "Billing Period"
+      },
+      {
+        "field": "pricing_model",
+        "label": "Pricing Model"
+      },
+      {
+        "field": "unit_amount",
+        "label": "Unit Amount"
+      },
+      {
+        "field": "tiers",
+        "label": "Tiers"
+      },
+      {
+        "field": "setup_fee",
+        "label": "Setup Fee"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "plan_price_id",
+      "plan_version_id",
+      "price_book_id",
+      "billing_period",
+      "pricing_model",
+      "unit_amount",
+      "tiers",
+      "setup_fee",
+      "is_active",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "plan_version_id",
+      "price_book_id",
+      "billing_period",
+      "pricing_model",
+      "unit_amount",
+      "tiers",
+      "setup_fee",
+      "is_active"
+    ],
+    "update": [
+      "plan_version_id",
+      "price_book_id",
+      "billing_period",
+      "pricing_model",
+      "unit_amount",
+      "tiers",
+      "setup_fee",
+      "is_active"
+    ]
+  },
+  "references": {
+    "plan_version_id": {
+      "table": "commerce_plan_version",
+      "key": "plan_version_id",
+      "lookup": {
+        "endpoint": "/commerce_plan_version"
+      }
+    },
+    "price_book_id": {
+      "table": "commerce_price_book",
+      "key": "price_book_id",
+      "lookup": {
+        "endpoint": "/commerce_price_book"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "plan_price_id",
+      "label": "Plan Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_version",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "price_book_id",
+      "label": "Price Book Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commerce_price_book",
+        "column": "price_book_id",
+        "lookup": {
+          "endpoint": "/commerce_price_book",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "billing_period",
+      "label": "Billing Period",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "pricing_model",
+      "label": "Pricing Model",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 10
+    },
+    {
+      "name": "unit_amount",
+      "label": "Unit Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tiers",
+      "label": "Tiers",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "setup_fee",
+      "label": "Setup Fee",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+openapi: 3.0.0
+x-sql-table: org_legal_entity
+x-sql-references:
+  - column: "country_code"
+    table: "platform_country"
+    key: "country_code"
+  - column: "functional_currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: LegalEntityResponse API
+  version: 1.0.0
+paths:
+  /legal_entity:
+    get:
+      operationId: listLegalEntity
+      summary: Get all legal_entity
+      responses:
+        '200':
+          description: List of legal_entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalEntityResponse'
+    post:
+      operationId: createLegalEntity
+      summary: Create a new legal_entity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntityRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntityResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /legal_entity/{legal_entity_id}:
+    get:
+      operationId: getLegalEntityById
+      summary: Get legal_entity by legal_entity_id
+      parameters:
+        - in: path
+          name: legal_entity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: legal_entity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntityResponse'
+        '404':
+          description: legal_entity not found
+    put:
+      operationId: updateLegalEntity
+      summary: Update legal_entity by legal_entity_id
+      parameters:
+        - in: path
+          name: legal_entity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalEntityUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntityResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: legal_entity not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteLegalEntity
+      summary: Delete legal_entity by legal_entity_id
+      parameters:
+        - in: path
+          name: legal_entity_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: legal_entity not found
+components:
+  schemas:
+
+    LegalEntityRequest:
+      type: object
+      required:
+        - legal_entity_code
+        - legal_name
+        - country_code
+        - functional_currency_code
+        - registered_address
+        - invoice_prefix
+      additionalProperties: false
+      properties:
+        legal_entity_code:
+          type: string
+        legal_name:
+          type: string
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_registration_no:
+          type: string
+          nullable: true
+          maxLength: 40
+        functional_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        registered_address:
+        invoice_prefix:
+          type: string
+          maxLength: 10
+        is_active:
+          type: boolean
+          default: true
+
+    LegalEntityUpdateRequest:
+      type: object
+      required:
+        - legal_entity_code
+        - legal_name
+        - country_code
+        - tax_registration_no
+        - functional_currency_code
+        - registered_address
+        - invoice_prefix
+        - is_active
+      additionalProperties: false
+      properties:
+        legal_entity_code:
+          type: string
+        legal_name:
+          type: string
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_registration_no:
+          type: string
+          nullable: true
+          maxLength: 40
+        functional_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        registered_address:
+        invoice_prefix:
+          type: string
+          maxLength: 10
+        is_active:
+          type: boolean
+          default: true
+
+    LegalEntityResponse:
+      type: object
+      required:
+        - record_code
+        - legal_entity_id
+        - legal_entity_code
+        - legal_name
+        - country_code
+        - functional_currency_code
+        - registered_address
+        - invoice_prefix
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        legal_entity_id:
+          type: string
+          format: uuid
+          readOnly: true
+        legal_entity_code:
+          type: string
+        legal_name:
+          type: string
+        country_code:
+          type: string
+          x-reference:
+            table: "platform_country"
+            column: "country_code"
+        tax_registration_no:
+          type: string
+          nullable: true
+          maxLength: 40
+        functional_currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        registered_address:
+        invoice_prefix:
+          type: string
+          maxLength: 10
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

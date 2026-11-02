@@ -1,0 +1,257 @@
+openapi: 3.0.0
+x-sql-table: platform_config_definition
+x-sql-references:
+  - column: "application_id"
+    table: "catalog_application"
+    key: "application_id"
+info:
+  title: ConfigDefinitionResponse API
+  version: 1.0.0
+paths:
+  /config_definition:
+    get:
+      operationId: listConfigDefinition
+      summary: Get all config_definition
+      responses:
+        '200':
+          description: List of config_definition
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigDefinitionResponse'
+    post:
+      operationId: createConfigDefinition
+      summary: Create a new config_definition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigDefinitionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigDefinitionResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /config_definition/{config_definition_id}:
+    get:
+      operationId: getConfigDefinitionById
+      summary: Get config_definition by config_definition_id
+      parameters:
+        - in: path
+          name: config_definition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: config_definition object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigDefinitionResponse'
+        '404':
+          description: config_definition not found
+    put:
+      operationId: updateConfigDefinition
+      summary: Update config_definition by config_definition_id
+      parameters:
+        - in: path
+          name: config_definition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigDefinitionUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigDefinitionResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: config_definition not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteConfigDefinition
+      summary: Delete config_definition by config_definition_id
+      parameters:
+        - in: path
+          name: config_definition_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: config_definition not found
+components:
+  schemas:
+
+    ConfigDefinitionRequest:
+      type: object
+      required:
+        - config_key
+        - value_type
+        - description
+      additionalProperties: false
+      properties:
+        config_key:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        value_type:
+          type: string
+          maxLength: 10
+        json_schema:
+          nullable: true
+        default_value:
+          nullable: true
+        is_tenant_overridable:
+          type: boolean
+          default: true
+        is_secret:
+          type: boolean
+          default: false
+        description:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+
+    ConfigDefinitionUpdateRequest:
+      type: object
+      required:
+        - config_key
+        - application_id
+        - value_type
+        - json_schema
+        - default_value
+        - is_tenant_overridable
+        - is_secret
+        - description
+        - is_active
+      additionalProperties: false
+      properties:
+        config_key:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        value_type:
+          type: string
+          maxLength: 10
+        json_schema:
+          nullable: true
+        default_value:
+          nullable: true
+        is_tenant_overridable:
+          type: boolean
+          default: true
+        is_secret:
+          type: boolean
+          default: false
+        description:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+
+    ConfigDefinitionResponse:
+      type: object
+      required:
+        - record_code
+        - config_definition_id
+        - config_key
+        - value_type
+        - is_tenant_overridable
+        - is_secret
+        - description
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        config_definition_id:
+          type: string
+          format: uuid
+          readOnly: true
+        config_key:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "catalog_application"
+            column: "application_id"
+        value_type:
+          type: string
+          maxLength: 10
+        json_schema:
+          nullable: true
+        default_value:
+          nullable: true
+        is_tenant_overridable:
+          type: boolean
+          default: true
+        is_secret:
+          type: boolean
+          default: false
+        description:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

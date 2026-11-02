@@ -1,0 +1,534 @@
+{
+  "entity": "Payment",
+  "table": "payment_payment",
+  "primaryKey": "payment_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/payment"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/payment"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/payment/{payment_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/payment/{payment_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/payment/{payment_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "payment_id",
+        "label": "Payment Id"
+      },
+      {
+        "field": "payment_number",
+        "label": "Payment Number"
+      },
+      {
+        "field": "billing_account_id",
+        "label": "Billing Account Id"
+      },
+      {
+        "field": "payment_method_id",
+        "label": "Payment Method Id"
+      },
+      {
+        "field": "gateway",
+        "label": "Gateway"
+      },
+      {
+        "field": "gateway_payment_ref",
+        "label": "Gateway Payment Ref"
+      },
+      {
+        "field": "idempotency_key",
+        "label": "Idempotency Key"
+      },
+      {
+        "field": "method_type",
+        "label": "Method Type"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "fee_amount",
+        "label": "Fee Amount"
+      },
+      {
+        "field": "amount_refunded",
+        "label": "Amount Refunded"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "received_at",
+        "label": "Received At"
+      },
+      {
+        "field": "captured_at",
+        "label": "Captured At"
+      },
+      {
+        "field": "failure_code",
+        "label": "Failure Code"
+      },
+      {
+        "field": "failure_message",
+        "label": "Failure Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "payment_id",
+      "payment_number",
+      "billing_account_id",
+      "payment_method_id",
+      "gateway",
+      "gateway_payment_ref",
+      "idempotency_key",
+      "method_type",
+      "currency_code",
+      "amount",
+      "fee_amount",
+      "amount_refunded",
+      "status",
+      "received_at",
+      "captured_at",
+      "failure_code",
+      "failure_message",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "payment_number",
+      "billing_account_id",
+      "payment_method_id",
+      "gateway",
+      "gateway_payment_ref",
+      "idempotency_key",
+      "method_type",
+      "currency_code",
+      "amount",
+      "fee_amount",
+      "amount_refunded",
+      "status",
+      "received_at",
+      "captured_at",
+      "failure_code",
+      "failure_message"
+    ],
+    "update": [
+      "payment_number",
+      "billing_account_id",
+      "payment_method_id",
+      "gateway",
+      "gateway_payment_ref",
+      "idempotency_key",
+      "method_type",
+      "currency_code",
+      "amount",
+      "fee_amount",
+      "amount_refunded",
+      "status",
+      "received_at",
+      "captured_at",
+      "failure_code",
+      "failure_message"
+    ]
+  },
+  "references": {
+    "billing_account_id": {
+      "table": "billing_billing_account",
+      "key": "billing_account_id",
+      "lookup": {
+        "endpoint": "/billing_billing_account"
+      }
+    },
+    "payment_method_id": {
+      "table": "payment_payment_method",
+      "key": "payment_method_id",
+      "lookup": {
+        "endpoint": "/payment_payment_method"
+      }
+    },
+    "currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "payment_id",
+      "label": "Payment Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "payment_number",
+      "label": "Payment Number",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "billing_account_id",
+      "label": "Billing Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "billing_billing_account",
+        "column": "billing_account_id",
+        "lookup": {
+          "endpoint": "/billing_billing_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "payment_method_id",
+      "label": "Payment Method Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "payment_payment_method",
+        "column": "payment_method_id",
+        "lookup": {
+          "endpoint": "/payment_payment_method",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "gateway",
+      "label": "Gateway",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "gateway_payment_ref",
+      "label": "Gateway Payment Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 100
+    },
+    {
+      "name": "idempotency_key",
+      "label": "Idempotency Key",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 100
+    },
+    {
+      "name": "method_type",
+      "label": "Method Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 14
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "fee_amount",
+      "label": "Fee Amount",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "amount_refunded",
+      "label": "Amount Refunded",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "received_at",
+      "label": "Received At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "captured_at",
+      "label": "Captured At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "failure_code",
+      "label": "Failure Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "failure_message",
+      "label": "Failure Message",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

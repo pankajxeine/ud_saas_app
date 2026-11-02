@@ -1,0 +1,218 @@
+openapi: 3.0.0
+x-sql-table: billing_dunning_step
+x-sql-references:
+  - column: "dunning_policy_id"
+    table: "billing_dunning_policy"
+    key: "dunning_policy_id"
+info:
+  title: DunningStepResponse API
+  version: 1.0.0
+paths:
+  /dunning_step:
+    get:
+      operationId: listDunningStep
+      summary: Get all dunning_step
+      responses:
+        '200':
+          description: List of dunning_step
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DunningStepResponse'
+    post:
+      operationId: createDunningStep
+      summary: Create a new dunning_step
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DunningStepRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningStepResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /dunning_step/{dunning_step_id}:
+    get:
+      operationId: getDunningStepById
+      summary: Get dunning_step by dunning_step_id
+      parameters:
+        - in: path
+          name: dunning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: dunning_step object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningStepResponse'
+        '404':
+          description: dunning_step not found
+    put:
+      operationId: updateDunningStep
+      summary: Update dunning_step by dunning_step_id
+      parameters:
+        - in: path
+          name: dunning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DunningStepUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningStepResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: dunning_step not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteDunningStep
+      summary: Delete dunning_step by dunning_step_id
+      parameters:
+        - in: path
+          name: dunning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: dunning_step not found
+components:
+  schemas:
+
+    DunningStepRequest:
+      type: object
+      required:
+        - dunning_policy_id
+        - step_no
+        - days_after_due
+        - action
+      additionalProperties: false
+      properties:
+        dunning_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        step_no:
+          type: integer
+          format: int32
+        days_after_due:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 14
+        template_code:
+          type: string
+          nullable: true
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+
+    DunningStepUpdateRequest:
+      type: object
+      required:
+        - dunning_policy_id
+        - step_no
+        - days_after_due
+        - action
+        - template_code
+        - grace_days
+      additionalProperties: false
+      properties:
+        dunning_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        step_no:
+          type: integer
+          format: int32
+        days_after_due:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 14
+        template_code:
+          type: string
+          nullable: true
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+
+    DunningStepResponse:
+      type: object
+      required:
+        - record_code
+        - dunning_step_id
+        - dunning_policy_id
+        - step_no
+        - days_after_due
+        - action
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        dunning_step_id:
+          type: string
+          format: uuid
+          readOnly: true
+        dunning_policy_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_dunning_policy"
+            column: "dunning_policy_id"
+        step_no:
+          type: integer
+          format: int32
+        days_after_due:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 14
+        template_code:
+          type: string
+          nullable: true
+        grace_days:
+          type: integer
+          format: int32
+          nullable: true
+  

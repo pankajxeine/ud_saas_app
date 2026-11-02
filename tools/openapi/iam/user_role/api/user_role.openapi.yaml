@@ -1,0 +1,359 @@
+openapi: 3.0.0
+x-sql-table: iam_user_role
+x-sql-references:
+  - column: "app_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "role_code"
+    table: "iam_role"
+    key: "role_code"
+  - column: "granted_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+  - column: "revoked_by_user_id"
+    table: "iam_app_user"
+    key: "app_user_id"
+info:
+  title: UserRoleResponse API
+  version: 1.0.0
+paths:
+  /user_role:
+    get:
+      operationId: listUserRole
+      summary: Get all user_role
+      responses:
+        '200':
+          description: List of user_role
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRoleResponse'
+    post:
+      operationId: createUserRole
+      summary: Create a new user_role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /user_role/{user_role_id}:
+    get:
+      operationId: getUserRoleById
+      summary: Get user_role by user_role_id
+      parameters:
+        - in: path
+          name: user_role_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: user_role object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '404':
+          description: user_role not found
+    put:
+      operationId: updateUserRole
+      summary: Update user_role by user_role_id
+      parameters:
+        - in: path
+          name: user_role_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: user_role not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteUserRole
+      summary: Delete user_role by user_role_id
+      parameters:
+        - in: path
+          name: user_role_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: user_role not found
+components:
+  schemas:
+
+    UserRoleRequest:
+      type: object
+      required:
+        - app_user_id
+        - role_code
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        grant_source:
+          type: string
+          maxLength: 12
+          default: "manual"
+        source_ref_id:
+          type: string
+          format: uuid
+          nullable: true
+        granted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        granted_at:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        revoke_reason:
+          type: string
+          nullable: true
+
+    UserRoleUpdateRequest:
+      type: object
+      required:
+        - app_user_id
+        - role_code
+        - scope_type
+        - scope_id
+        - valid_from
+        - valid_to
+        - grant_source
+        - source_ref_id
+        - granted_by_user_id
+        - granted_at
+        - revoked_at
+        - revoked_by_user_id
+        - revoke_reason
+      additionalProperties: false
+      properties:
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        grant_source:
+          type: string
+          maxLength: 12
+          default: "manual"
+        source_ref_id:
+          type: string
+          format: uuid
+          nullable: true
+        granted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        granted_at:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        revoke_reason:
+          type: string
+          nullable: true
+
+    UserRoleResponse:
+      type: object
+      required:
+        - record_code
+        - user_role_id
+        - app_user_id
+        - role_code
+        - scope_type
+        - valid_from
+        - grant_source
+        - granted_at
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        user_role_id:
+          type: string
+          format: uuid
+          readOnly: true
+        app_user_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        role_code:
+          type: string
+          x-reference:
+            table: "iam_role"
+            column: "role_code"
+        scope_type:
+          type: string
+          default: "global"
+        scope_id:
+          type: string
+          format: uuid
+          nullable: true
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        grant_source:
+          type: string
+          maxLength: 12
+          default: "manual"
+        source_ref_id:
+          type: string
+          format: uuid
+          nullable: true
+        granted_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        granted_at:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        revoked_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "iam_app_user"
+            column: "app_user_id"
+        revoke_reason:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

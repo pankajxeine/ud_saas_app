@@ -1,0 +1,205 @@
+openapi: 3.0.0
+x-sql-table: platform_feature_flag
+info:
+  title: FeatureFlagResponse API
+  version: 1.0.0
+paths:
+  /feature_flag:
+    get:
+      operationId: listFeatureFlag
+      summary: Get all feature_flag
+      responses:
+        '200':
+          description: List of feature_flag
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FeatureFlagResponse'
+    post:
+      operationId: createFeatureFlag
+      summary: Create a new feature_flag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureFlagRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlagResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /feature_flag/{feature_flag_id}:
+    get:
+      operationId: getFeatureFlagById
+      summary: Get feature_flag by feature_flag_id
+      parameters:
+        - in: path
+          name: feature_flag_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: feature_flag object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlagResponse'
+        '404':
+          description: feature_flag not found
+    put:
+      operationId: updateFeatureFlag
+      summary: Update feature_flag by feature_flag_id
+      parameters:
+        - in: path
+          name: feature_flag_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureFlagUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlagResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: feature_flag not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteFeatureFlag
+      summary: Delete feature_flag by feature_flag_id
+      parameters:
+        - in: path
+          name: feature_flag_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: feature_flag not found
+components:
+  schemas:
+
+    FeatureFlagRequest:
+      type: object
+      required:
+        - flag_key
+        - description
+      additionalProperties: false
+      properties:
+        flag_key:
+          type: string
+        description:
+          type: string
+        is_enabled:
+          type: boolean
+          default: false
+        rollout_percent:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        rules:
+          nullable: true
+
+    FeatureFlagUpdateRequest:
+      type: object
+      required:
+        - flag_key
+        - description
+        - is_enabled
+        - rollout_percent
+        - rules
+      additionalProperties: false
+      properties:
+        flag_key:
+          type: string
+        description:
+          type: string
+        is_enabled:
+          type: boolean
+          default: false
+        rollout_percent:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        rules:
+          nullable: true
+
+    FeatureFlagResponse:
+      type: object
+      required:
+        - record_code
+        - feature_flag_id
+        - flag_key
+        - description
+        - is_enabled
+        - rollout_percent
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        feature_flag_id:
+          type: string
+          format: uuid
+          readOnly: true
+        flag_key:
+          type: string
+        description:
+          type: string
+        is_enabled:
+          type: boolean
+          default: false
+        rollout_percent:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 0
+        rules:
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

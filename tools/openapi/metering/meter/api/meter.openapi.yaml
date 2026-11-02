@@ -1,0 +1,221 @@
+openapi: 3.0.0
+x-sql-table: metering_meter
+x-sql-references:
+  - column: "feature_id"
+    table: "catalog_feature"
+    key: "feature_id"
+info:
+  title: MeterResponse API
+  version: 1.0.0
+paths:
+  /meter:
+    get:
+      operationId: listMeter
+      summary: Get all meter
+      responses:
+        '200':
+          description: List of meter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeterResponse'
+    post:
+      operationId: createMeter
+      summary: Create a new meter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeterRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeterResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /meter/{meter_id}:
+    get:
+      operationId: getMeterById
+      summary: Get meter by meter_id
+      parameters:
+        - in: path
+          name: meter_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: meter object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeterResponse'
+        '404':
+          description: meter not found
+    put:
+      operationId: updateMeter
+      summary: Update meter by meter_id
+      parameters:
+        - in: path
+          name: meter_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeterUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeterResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: meter not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteMeter
+      summary: Delete meter by meter_id
+      parameters:
+        - in: path
+          name: meter_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: meter not found
+components:
+  schemas:
+
+    MeterRequest:
+      type: object
+      required:
+        - feature_id
+        - meter_code
+        - aggregation
+      additionalProperties: false
+      properties:
+        feature_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        meter_code:
+          type: string
+        aggregation:
+          type: string
+          maxLength: 6
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    MeterUpdateRequest:
+      type: object
+      required:
+        - feature_id
+        - meter_code
+        - aggregation
+        - description
+        - is_active
+      additionalProperties: false
+      properties:
+        feature_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        meter_code:
+          type: string
+        aggregation:
+          type: string
+          maxLength: 6
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    MeterResponse:
+      type: object
+      required:
+        - record_code
+        - meter_id
+        - feature_id
+        - meter_code
+        - aggregation
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        meter_id:
+          type: string
+          format: uuid
+          readOnly: true
+        feature_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "catalog_feature"
+            column: "feature_id"
+        meter_code:
+          type: string
+        aggregation:
+          type: string
+          maxLength: 6
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

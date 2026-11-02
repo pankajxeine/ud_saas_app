@@ -1,0 +1,198 @@
+openapi: 3.0.0
+x-sql-table: support_csat_response
+x-sql-references:
+  - column: "ticket_id"
+    table: "support_ticket"
+    key: "ticket_id"
+info:
+  title: CsatResponseResponse API
+  version: 1.0.0
+paths:
+  /csat_response:
+    get:
+      operationId: listCsatResponse
+      summary: Get all csat_response
+      responses:
+        '200':
+          description: List of csat_response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CsatResponseResponse'
+    post:
+      operationId: createCsatResponse
+      summary: Create a new csat_response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CsatResponseRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsatResponseResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /csat_response/{csat_response_id}:
+    get:
+      operationId: getCsatResponseById
+      summary: Get csat_response by csat_response_id
+      parameters:
+        - in: path
+          name: csat_response_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: csat_response object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsatResponseResponse'
+        '404':
+          description: csat_response not found
+    put:
+      operationId: updateCsatResponse
+      summary: Update csat_response by csat_response_id
+      parameters:
+        - in: path
+          name: csat_response_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CsatResponseUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsatResponseResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: csat_response not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteCsatResponse
+      summary: Delete csat_response by csat_response_id
+      parameters:
+        - in: path
+          name: csat_response_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: csat_response not found
+components:
+  schemas:
+
+    CsatResponseRequest:
+      type: object
+      required:
+        - ticket_id
+        - score
+      additionalProperties: false
+      properties:
+        ticket_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        score:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+          nullable: true
+        responded_at:
+          type: string
+          format: date-time
+
+    CsatResponseUpdateRequest:
+      type: object
+      required:
+        - ticket_id
+        - score
+        - comment
+        - responded_at
+      additionalProperties: false
+      properties:
+        ticket_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        score:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+          nullable: true
+        responded_at:
+          type: string
+          format: date-time
+
+    CsatResponseResponse:
+      type: object
+      required:
+        - record_code
+        - csat_response_id
+        - ticket_id
+        - score
+        - responded_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        csat_response_id:
+          type: string
+          format: uuid
+          readOnly: true
+        ticket_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "support_ticket"
+            column: "ticket_id"
+        score:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+          nullable: true
+        responded_at:
+          type: string
+          format: date-time
+  

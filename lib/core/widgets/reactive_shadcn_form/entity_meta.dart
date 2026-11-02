@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// --------------------
@@ -122,6 +124,7 @@ class FieldMeta<T> {
     this.editable = true,
     this.initialValue,
     this.placeholder,
+    this.maxLength,
     this.options,
     this.validationRules = const {},
     this.colSpan = 1,
@@ -136,6 +139,7 @@ class FieldMeta<T> {
   final T? initialValue;
 
   final String? placeholder;
+  final int? maxLength;
   final List<String>? options;
 
   final int colSpan;
@@ -233,11 +237,15 @@ FieldMeta _fieldMetaFromJson(Map<String, dynamic> f) {
       return FieldMeta<String>(
         name: f['name'],
         label: f['label'],
+        editable: f['editable'] as bool? ?? true,
         placeholder: f['placeholder'] as String?,
+        maxLength: f['maxLength'] as int?,
         type: type,
-        initialValue: f['initialValue'] as String?,
+        initialValue: _stringInitialValue(f['initialValue']),
         options: (f['options'] as List<dynamic>?)?.cast<String>(),
         validationRules: rules,
+        colSpan: f['colSpan'] as int? ?? 1,
+        rowSpan: f['rowSpan'] as int? ?? 1,
         features: features,
       );
 
@@ -245,55 +253,65 @@ FieldMeta _fieldMetaFromJson(Map<String, dynamic> f) {
       return FieldMeta<List<String>>(
         name: f['name'],
         label: f['label'],
+        editable: f['editable'] as bool? ?? true,
         placeholder: f['placeholder'] as String?,
+        maxLength: f['maxLength'] as int?,
         type: type,
         initialValue: (f['initialValue'] as List<dynamic>?)?.cast<String>(),
         options: (f['options'] as List<dynamic>?)?.cast<String>(),
         validationRules: rules,
+        colSpan: f['colSpan'] as int? ?? 1,
+        rowSpan: f['rowSpan'] as int? ?? 1,
       );
 
     case EntityFieldType.number:
     case EntityFieldType.currency:
-      return FieldMeta<int>(
+    case EntityFieldType.date:
+    case EntityFieldType.dateRange:
+      return FieldMeta<String>(
         name: f['name'],
         label: f['label'],
+        editable: f['editable'] as bool? ?? true,
         placeholder: f['placeholder'] as String?,
+        maxLength: f['maxLength'] as int?,
         type: type,
-        initialValue: f['initialValue'] as int?,
+        initialValue: _stringInitialValue(f['initialValue']),
         validationRules: rules,
+        colSpan: f['colSpan'] as int? ?? 1,
+        rowSpan: f['rowSpan'] as int? ?? 1,
       );
 
     case EntityFieldType.slider:
       return FieldMeta<double>(
         name: f['name'],
         label: f['label'],
+        editable: f['editable'] as bool? ?? true,
         placeholder: f['placeholder'] as String?,
         type: type,
         initialValue: f['initialValue'] as double?,
         validationRules: rules,
+        colSpan: f['colSpan'] as int? ?? 1,
+        rowSpan: f['rowSpan'] as int? ?? 1,
       );
 
     case EntityFieldType.boolean:
       return FieldMeta<bool>(
         name: f['name'],
         label: f['label'],
+        editable: f['editable'] as bool? ?? true,
         placeholder: f['placeholder'] as String?,
         type: type,
         initialValue: f['initialValue'] as bool?,
         validationRules: rules,
-      );
-
-    case EntityFieldType.date:
-    case EntityFieldType.dateRange:
-      return FieldMeta<DateTime>(
-        name: f['name'],
-        label: f['label'],
-        placeholder: f['placeholder'] as String?,
-        type: type,
-        initialValue: f['initialValue'] != null
-            ? DateTime.parse(f['initialValue'])
-            : null,
-        validationRules: rules,
+        colSpan: f['colSpan'] as int? ?? 1,
+        rowSpan: f['rowSpan'] as int? ?? 1,
       );
   }
+}
+
+String? _stringInitialValue(dynamic value) {
+  if (value == null) return null;
+  if (value is String) return value;
+  if (value is num || value is bool) return value.toString();
+  return jsonEncode(value);
 }

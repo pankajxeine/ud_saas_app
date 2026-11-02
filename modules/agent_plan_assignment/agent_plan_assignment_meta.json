@@ -1,0 +1,231 @@
+{
+  "entity": "AgentPlanAssignment",
+  "table": "commission_agent_plan_assignment",
+  "primaryKey": "agent_plan_assignment_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/agent_plan_assignment"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/agent_plan_assignment"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/agent_plan_assignment/{agent_plan_assignment_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/agent_plan_assignment/{agent_plan_assignment_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/agent_plan_assignment/{agent_plan_assignment_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "agent_plan_assignment_id",
+        "label": "Agent Plan Assignment Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "commission_plan_id",
+        "label": "Commission Plan Id"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "agent_plan_assignment_id",
+      "sales_agent_id",
+      "commission_plan_id",
+      "valid_from",
+      "valid_to",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "sales_agent_id",
+      "commission_plan_id",
+      "valid_from",
+      "valid_to"
+    ],
+    "update": [
+      "sales_agent_id",
+      "commission_plan_id",
+      "valid_from",
+      "valid_to"
+    ]
+  },
+  "references": {
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "commission_plan_id": {
+      "table": "commission_commission_plan",
+      "key": "commission_plan_id",
+      "lookup": {
+        "endpoint": "/commission_commission_plan"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "agent_plan_assignment_id",
+      "label": "Agent Plan Assignment Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "commission_plan_id",
+      "label": "Commission Plan Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "commission_commission_plan",
+        "column": "commission_plan_id",
+        "lookup": {
+          "endpoint": "/commission_commission_plan",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

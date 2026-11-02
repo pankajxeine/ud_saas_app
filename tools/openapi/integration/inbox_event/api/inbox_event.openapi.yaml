@@ -1,0 +1,195 @@
+openapi: 3.0.0
+x-sql-table: integration_inbox_event
+info:
+  title: InboxEventResponse API
+  version: 1.0.0
+paths:
+  /inbox_event:
+    get:
+      operationId: listInboxEvent
+      summary: Get all inbox_event
+      responses:
+        '200':
+          description: List of inbox_event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InboxEventResponse'
+    post:
+      operationId: createInboxEvent
+      summary: Create a new inbox_event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxEventRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxEventResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /inbox_event/{inbox_event_id}:
+    get:
+      operationId: getInboxEventById
+      summary: Get inbox_event by inbox_event_id
+      parameters:
+        - in: path
+          name: inbox_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: inbox_event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxEventResponse'
+        '404':
+          description: inbox_event not found
+    put:
+      operationId: updateInboxEvent
+      summary: Update inbox_event by inbox_event_id
+      parameters:
+        - in: path
+          name: inbox_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxEventUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxEventResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: inbox_event not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteInboxEvent
+      summary: Delete inbox_event by inbox_event_id
+      parameters:
+        - in: path
+          name: inbox_event_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: inbox_event not found
+components:
+  schemas:
+
+    InboxEventRequest:
+      type: object
+      required:
+        - source
+        - message_id
+      additionalProperties: false
+      properties:
+        source:
+          type: string
+          maxLength: 40
+        message_id:
+          type: string
+          maxLength: 120
+        event_type:
+          type: string
+          nullable: true
+          maxLength: 80
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    InboxEventUpdateRequest:
+      type: object
+      required:
+        - source
+        - message_id
+        - event_type
+        - received_at
+        - processed_at
+      additionalProperties: false
+      properties:
+        source:
+          type: string
+          maxLength: 40
+        message_id:
+          type: string
+          maxLength: 120
+        event_type:
+          type: string
+          nullable: true
+          maxLength: 80
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    InboxEventResponse:
+      type: object
+      required:
+        - record_code
+        - inbox_event_id
+        - source
+        - message_id
+        - received_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        inbox_event_id:
+          type: string
+          format: uuid
+          readOnly: true
+        source:
+          type: string
+          maxLength: 40
+        message_id:
+          type: string
+          maxLength: 120
+        event_type:
+          type: string
+          nullable: true
+          maxLength: 80
+        received_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+  

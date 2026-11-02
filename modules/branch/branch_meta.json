@@ -1,0 +1,432 @@
+{
+  "entity": "Branch",
+  "table": "org_branch",
+  "primaryKey": "branch_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/branch"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/branch"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/branch/{branch_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/branch/{branch_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/branch/{branch_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "branch_id",
+        "label": "Branch Id"
+      },
+      {
+        "field": "branch_code",
+        "label": "Branch Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "territory_id",
+        "label": "Territory Id"
+      },
+      {
+        "field": "country_code",
+        "label": "Country Code"
+      },
+      {
+        "field": "timezone",
+        "label": "Timezone"
+      },
+      {
+        "field": "address",
+        "label": "Address"
+      },
+      {
+        "field": "calendar_id",
+        "label": "Calendar Id"
+      },
+      {
+        "field": "manager_user_id",
+        "label": "Manager User Id"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "branch_id",
+      "branch_code",
+      "name",
+      "legal_entity_id",
+      "territory_id",
+      "country_code",
+      "timezone",
+      "address",
+      "calendar_id",
+      "manager_user_id",
+      "is_active",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "branch_code",
+      "name",
+      "legal_entity_id",
+      "territory_id",
+      "country_code",
+      "timezone",
+      "address",
+      "calendar_id",
+      "manager_user_id",
+      "is_active"
+    ],
+    "update": [
+      "branch_code",
+      "name",
+      "legal_entity_id",
+      "territory_id",
+      "country_code",
+      "timezone",
+      "address",
+      "calendar_id",
+      "manager_user_id",
+      "is_active"
+    ]
+  },
+  "references": {
+    "legal_entity_id": {
+      "table": "org_legal_entity",
+      "key": "legal_entity_id",
+      "lookup": {
+        "endpoint": "/org_legal_entity"
+      }
+    },
+    "territory_id": {
+      "table": "org_territory",
+      "key": "territory_id",
+      "lookup": {
+        "endpoint": "/org_territory"
+      }
+    },
+    "country_code": {
+      "table": "platform_country",
+      "key": "country_code",
+      "lookup": {
+        "endpoint": "/platform_country"
+      }
+    },
+    "calendar_id": {
+      "table": "platform_calendar",
+      "key": "calendar_id",
+      "lookup": {
+        "endpoint": "/platform_calendar"
+      }
+    },
+    "manager_user_id": {
+      "table": "iam_app_user",
+      "key": "app_user_id",
+      "lookup": {
+        "endpoint": "/iam_app_user"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "branch_id",
+      "label": "Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "branch_code",
+      "label": "Branch Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "endpoint": "/org_legal_entity",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "territory_id",
+      "label": "Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_territory",
+        "column": "territory_id",
+        "lookup": {
+          "endpoint": "/org_territory",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "country_code",
+      "label": "Country Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "endpoint": "/platform_country",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "timezone",
+      "label": "Timezone",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "address",
+      "label": "Address",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "calendar_id",
+      "label": "Calendar Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_calendar",
+        "column": "calendar_id",
+        "lookup": {
+          "endpoint": "/platform_calendar",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "manager_user_id",
+      "label": "Manager User Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

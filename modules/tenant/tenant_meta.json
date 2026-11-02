@@ -1,0 +1,653 @@
+{
+  "entity": "Tenant",
+  "table": "tenancy_tenant",
+  "primaryKey": "tenant_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/tenant"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/tenant"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/tenant/{tenant_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/tenant/{tenant_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/tenant/{tenant_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "tenant_code",
+        "label": "Tenant Code"
+      },
+      {
+        "field": "customer_account_id",
+        "label": "Customer Account Id"
+      },
+      {
+        "field": "legal_name",
+        "label": "Legal Name"
+      },
+      {
+        "field": "display_name",
+        "label": "Display Name"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "region_code",
+        "label": "Region Code"
+      },
+      {
+        "field": "data_residency",
+        "label": "Data Residency"
+      },
+      {
+        "field": "timezone",
+        "label": "Timezone"
+      },
+      {
+        "field": "default_locale",
+        "label": "Default Locale"
+      },
+      {
+        "field": "default_currency_code",
+        "label": "Default Currency Code"
+      },
+      {
+        "field": "owning_branch_id",
+        "label": "Owning Branch Id"
+      },
+      {
+        "field": "sales_agent_id",
+        "label": "Sales Agent Id"
+      },
+      {
+        "field": "is_sandbox",
+        "label": "Is Sandbox"
+      },
+      {
+        "field": "parent_tenant_id",
+        "label": "Parent Tenant Id"
+      },
+      {
+        "field": "legal_hold",
+        "label": "Legal Hold"
+      },
+      {
+        "field": "suspended_reason",
+        "label": "Suspended Reason"
+      },
+      {
+        "field": "activated_at",
+        "label": "Activated At"
+      },
+      {
+        "field": "cancelled_at",
+        "label": "Cancelled At"
+      },
+      {
+        "field": "purge_after",
+        "label": "Purge After"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "tenant_id",
+      "tenant_code",
+      "customer_account_id",
+      "legal_name",
+      "display_name",
+      "status",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "default_currency_code",
+      "owning_branch_id",
+      "sales_agent_id",
+      "is_sandbox",
+      "parent_tenant_id",
+      "legal_hold",
+      "suspended_reason",
+      "activated_at",
+      "cancelled_at",
+      "purge_after",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_code",
+      "customer_account_id",
+      "legal_name",
+      "display_name",
+      "status",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "default_currency_code",
+      "owning_branch_id",
+      "sales_agent_id",
+      "is_sandbox",
+      "parent_tenant_id",
+      "legal_hold",
+      "suspended_reason",
+      "activated_at",
+      "cancelled_at",
+      "purge_after"
+    ],
+    "update": [
+      "tenant_code",
+      "customer_account_id",
+      "legal_name",
+      "display_name",
+      "status",
+      "region_code",
+      "data_residency",
+      "timezone",
+      "default_locale",
+      "default_currency_code",
+      "owning_branch_id",
+      "sales_agent_id",
+      "is_sandbox",
+      "parent_tenant_id",
+      "legal_hold",
+      "suspended_reason",
+      "activated_at",
+      "cancelled_at",
+      "purge_after"
+    ]
+  },
+  "references": {
+    "customer_account_id": {
+      "table": "crm_account",
+      "key": "account_id",
+      "lookup": {
+        "endpoint": "/crm_account"
+      }
+    },
+    "region_code": {
+      "table": "platform_region",
+      "key": "region_code",
+      "lookup": {
+        "endpoint": "/platform_region"
+      }
+    },
+    "data_residency": {
+      "table": "platform_country",
+      "key": "country_code",
+      "lookup": {
+        "endpoint": "/platform_country"
+      }
+    },
+    "default_currency_code": {
+      "table": "platform_currency",
+      "key": "currency_code",
+      "lookup": {
+        "endpoint": "/platform_currency"
+      }
+    },
+    "owning_branch_id": {
+      "table": "org_branch",
+      "key": "branch_id",
+      "lookup": {
+        "endpoint": "/org_branch"
+      }
+    },
+    "sales_agent_id": {
+      "table": "partner_sales_agent",
+      "key": "sales_agent_id",
+      "lookup": {
+        "endpoint": "/partner_sales_agent"
+      }
+    },
+    "parent_tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_code",
+      "label": "Tenant Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 40
+    },
+    {
+      "name": "customer_account_id",
+      "label": "Customer Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "endpoint": "/crm_account",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_name",
+      "label": "Legal Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "display_name",
+      "label": "Display Name",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "region_code",
+      "label": "Region Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_region",
+        "column": "region_code",
+        "lookup": {
+          "endpoint": "/platform_region",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "data_residency",
+      "label": "Data Residency",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "endpoint": "/platform_country",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "timezone",
+      "label": "Timezone",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "default_locale",
+      "label": "Default Locale",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "default_currency_code",
+      "label": "Default Currency Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "owning_branch_id",
+      "label": "Owning Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "org_branch",
+        "column": "branch_id",
+        "lookup": {
+          "endpoint": "/org_branch",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "sales_agent_id",
+      "label": "Sales Agent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "is_sandbox",
+      "label": "Is Sandbox",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "parent_tenant_id",
+      "label": "Parent Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "legal_hold",
+      "label": "Legal Hold",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "suspended_reason",
+      "label": "Suspended Reason",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 20
+    },
+    {
+      "name": "activated_at",
+      "label": "Activated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "cancelled_at",
+      "label": "Cancelled At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "purge_after",
+      "label": "Purge After",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "entity": "TenantContact",
+  "table": "tenancy_tenant_contact",
+  "primaryKey": "tenant_contact_id",
+  "displayField": "record_code",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/tenant_contact"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/tenant_contact"
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/tenant_contact/{tenant_contact_id}"
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/tenant_contact/{tenant_contact_id}"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/tenant_contact/{tenant_contact_id}"
+    }
+  },
+  "datatable": {
+    "serverPaging": true,
+    "serverSorting": true,
+    "serverFiltering": true,
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "tenant_contact_id",
+        "label": "Tenant Contact Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "contact_id",
+        "label": "Contact Id"
+      },
+      {
+        "field": "contact_role",
+        "label": "Contact Role"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "tenant_contact_id",
+      "tenant_id",
+      "contact_id",
+      "contact_role",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "form": {
+    "create": [
+      "tenant_id",
+      "contact_id",
+      "contact_role"
+    ],
+    "update": [
+      "tenant_id",
+      "contact_id",
+      "contact_role"
+    ]
+  },
+  "references": {
+    "tenant_id": {
+      "table": "tenancy_tenant",
+      "key": "tenant_id",
+      "lookup": {
+        "endpoint": "/tenancy_tenant"
+      }
+    },
+    "contact_id": {
+      "table": "crm_contact",
+      "key": "contact_id",
+      "lookup": {
+        "endpoint": "/crm_contact"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_contact_id",
+      "label": "Tenant Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": true,
+      "showInDetail": true
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "contact_id",
+      "label": "Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "endpoint": "/crm_contact",
+          "strategy": "remote"
+        }
+      }
+    },
+    {
+      "name": "contact_role",
+      "label": "Contact Role",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInTable": true,
+      "showInDetail": true,
+      "maxLength": 12
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInTable": false,
+      "showInDetail": true
+    }
+  ]
+}

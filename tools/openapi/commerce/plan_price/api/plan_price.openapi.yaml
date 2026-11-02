@@ -1,0 +1,255 @@
+openapi: 3.0.0
+x-sql-table: commerce_plan_price
+x-sql-references:
+  - column: "plan_version_id"
+    table: "commerce_plan_version"
+    key: "plan_version_id"
+  - column: "price_book_id"
+    table: "commerce_price_book"
+    key: "price_book_id"
+info:
+  title: PlanPriceResponse API
+  version: 1.0.0
+paths:
+  /plan_price:
+    get:
+      operationId: listPlanPrice
+      summary: Get all plan_price
+      responses:
+        '200':
+          description: List of plan_price
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanPriceResponse'
+    post:
+      operationId: createPlanPrice
+      summary: Create a new plan_price
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanPriceRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanPriceResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /plan_price/{plan_price_id}:
+    get:
+      operationId: getPlanPriceById
+      summary: Get plan_price by plan_price_id
+      parameters:
+        - in: path
+          name: plan_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: plan_price object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanPriceResponse'
+        '404':
+          description: plan_price not found
+    put:
+      operationId: updatePlanPrice
+      summary: Update plan_price by plan_price_id
+      parameters:
+        - in: path
+          name: plan_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanPriceUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanPriceResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: plan_price not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePlanPrice
+      summary: Delete plan_price by plan_price_id
+      parameters:
+        - in: path
+          name: plan_price_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: plan_price not found
+components:
+  schemas:
+
+    PlanPriceRequest:
+      type: object
+      required:
+        - plan_version_id
+        - price_book_id
+        - billing_period
+        - pricing_model
+        - unit_amount
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        pricing_model:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        tiers:
+          nullable: true
+        setup_fee:
+          type: string
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    PlanPriceUpdateRequest:
+      type: object
+      required:
+        - plan_version_id
+        - price_book_id
+        - billing_period
+        - pricing_model
+        - unit_amount
+        - tiers
+        - setup_fee
+        - is_active
+      additionalProperties: false
+      properties:
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        pricing_model:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        tiers:
+          nullable: true
+        setup_fee:
+          type: string
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+
+    PlanPriceResponse:
+      type: object
+      required:
+        - record_code
+        - plan_price_id
+        - plan_version_id
+        - price_book_id
+        - billing_period
+        - pricing_model
+        - unit_amount
+        - setup_fee
+        - is_active
+        - created_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        plan_price_id:
+          type: string
+          format: uuid
+          readOnly: true
+        plan_version_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_plan_version"
+            column: "plan_version_id"
+        price_book_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "commerce_price_book"
+            column: "price_book_id"
+        billing_period:
+          type: string
+          maxLength: 10
+        pricing_model:
+          type: string
+          maxLength: 10
+        unit_amount:
+          type: string
+        tiers:
+          nullable: true
+        setup_fee:
+          type: string
+          default: 0
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

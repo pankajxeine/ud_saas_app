@@ -1,0 +1,195 @@
+openapi: 3.0.0
+x-sql-table: audit_retention_policy
+info:
+  title: RetentionPolicyResponse API
+  version: 1.0.0
+paths:
+  /retention_policy:
+    get:
+      operationId: listRetentionPolicy
+      summary: Get all retention_policy
+      responses:
+        '200':
+          description: List of retention_policy
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetentionPolicyResponse'
+    post:
+      operationId: createRetentionPolicy
+      summary: Create a new retention_policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetentionPolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetentionPolicyResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /retention_policy/{retention_policy_id}:
+    get:
+      operationId: getRetentionPolicyById
+      summary: Get retention_policy by retention_policy_id
+      parameters:
+        - in: path
+          name: retention_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: retention_policy object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetentionPolicyResponse'
+        '404':
+          description: retention_policy not found
+    put:
+      operationId: updateRetentionPolicy
+      summary: Update retention_policy by retention_policy_id
+      parameters:
+        - in: path
+          name: retention_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetentionPolicyUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetentionPolicyResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: retention_policy not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteRetentionPolicy
+      summary: Delete retention_policy by retention_policy_id
+      parameters:
+        - in: path
+          name: retention_policy_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: retention_policy not found
+components:
+  schemas:
+
+    RetentionPolicyRequest:
+      type: object
+      required:
+        - entity_code
+        - description
+        - retention_days
+        - action
+        - legal_basis
+      additionalProperties: false
+      properties:
+        entity_code:
+          type: string
+        description:
+          type: string
+        retention_days:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 12
+        legal_basis:
+          type: string
+
+    RetentionPolicyUpdateRequest:
+      type: object
+      required:
+        - entity_code
+        - description
+        - retention_days
+        - action
+        - legal_basis
+      additionalProperties: false
+      properties:
+        entity_code:
+          type: string
+        description:
+          type: string
+        retention_days:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 12
+        legal_basis:
+          type: string
+
+    RetentionPolicyResponse:
+      type: object
+      required:
+        - record_code
+        - retention_policy_id
+        - entity_code
+        - description
+        - retention_days
+        - action
+        - legal_basis
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        retention_policy_id:
+          type: string
+          format: uuid
+          readOnly: true
+        entity_code:
+          type: string
+        description:
+          type: string
+        retention_days:
+          type: integer
+          format: int32
+        action:
+          type: string
+          maxLength: 12
+        legal_basis:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

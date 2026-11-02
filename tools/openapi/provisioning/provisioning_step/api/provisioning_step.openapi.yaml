@@ -1,0 +1,261 @@
+openapi: 3.0.0
+x-sql-table: provisioning_provisioning_step
+x-sql-references:
+  - column: "job_id"
+    table: "provisioning_provisioning_job"
+    key: "job_id"
+info:
+  title: ProvisioningStepResponse API
+  version: 1.0.0
+paths:
+  /provisioning_step:
+    get:
+      operationId: listProvisioningStep
+      summary: Get all provisioning_step
+      responses:
+        '200':
+          description: List of provisioning_step
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvisioningStepResponse'
+    post:
+      operationId: createProvisioningStep
+      summary: Create a new provisioning_step
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningStepRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningStepResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /provisioning_step/{provisioning_step_id}:
+    get:
+      operationId: getProvisioningStepById
+      summary: Get provisioning_step by provisioning_step_id
+      parameters:
+        - in: path
+          name: provisioning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: provisioning_step object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningStepResponse'
+        '404':
+          description: provisioning_step not found
+    put:
+      operationId: updateProvisioningStep
+      summary: Update provisioning_step by provisioning_step_id
+      parameters:
+        - in: path
+          name: provisioning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningStepUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningStepResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: provisioning_step not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteProvisioningStep
+      summary: Delete provisioning_step by provisioning_step_id
+      parameters:
+        - in: path
+          name: provisioning_step_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: provisioning_step not found
+components:
+  schemas:
+
+    ProvisioningStepRequest:
+      type: object
+      required:
+        - job_id
+        - step_no
+        - step_code
+      additionalProperties: false
+      properties:
+        job_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "provisioning_provisioning_job"
+            column: "job_id"
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 12
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          nullable: true
+        error:
+          type: string
+          nullable: true
+
+    ProvisioningStepUpdateRequest:
+      type: object
+      required:
+        - job_id
+        - step_no
+        - step_code
+        - compensation_step_code
+        - status
+        - attempts
+        - started_at
+        - finished_at
+        - output
+        - error
+      additionalProperties: false
+      properties:
+        job_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "provisioning_provisioning_job"
+            column: "job_id"
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 12
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          nullable: true
+        error:
+          type: string
+          nullable: true
+
+    ProvisioningStepResponse:
+      type: object
+      required:
+        - record_code
+        - provisioning_step_id
+        - job_id
+        - step_no
+        - step_code
+        - status
+        - attempts
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        provisioning_step_id:
+          type: string
+          format: uuid
+          readOnly: true
+        job_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "provisioning_provisioning_job"
+            column: "job_id"
+        step_no:
+          type: integer
+          format: int32
+        step_code:
+          type: string
+        compensation_step_code:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 12
+          default: "pending"
+        attempts:
+          type: integer
+          format: int32
+          default: 0
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output:
+          nullable: true
+        error:
+          type: string
+          nullable: true
+  

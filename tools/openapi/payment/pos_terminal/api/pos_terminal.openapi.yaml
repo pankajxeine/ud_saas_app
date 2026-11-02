@@ -1,0 +1,361 @@
+openapi: 3.0.0
+x-sql-table: payment_pos_terminal
+x-sql-references:
+  - column: "tenant_application_id"
+    table: "payment_outlet"
+    key: "tenant_application_id"
+  - column: "outlet_id"
+    table: "payment_outlet"
+    key: "outlet_id"
+  - column: "tenant_application_id"
+    table: "payment_merchant_account"
+    key: "tenant_application_id"
+  - column: "merchant_account_id"
+    table: "payment_merchant_account"
+    key: "merchant_account_id"
+info:
+  title: PosTerminalResponse API
+  version: 1.0.0
+paths:
+  /pos_terminal:
+    get:
+      operationId: listPosTerminal
+      summary: Get all pos_terminal
+      responses:
+        '200':
+          description: List of pos_terminal
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PosTerminalResponse'
+    post:
+      operationId: createPosTerminal
+      summary: Create a new pos_terminal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PosTerminalRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosTerminalResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /pos_terminal/{pos_terminal_id}:
+    get:
+      operationId: getPosTerminalById
+      summary: Get pos_terminal by pos_terminal_id
+      parameters:
+        - in: path
+          name: pos_terminal_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: pos_terminal object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosTerminalResponse'
+        '404':
+          description: pos_terminal not found
+    put:
+      operationId: updatePosTerminal
+      summary: Update pos_terminal by pos_terminal_id
+      parameters:
+        - in: path
+          name: pos_terminal_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PosTerminalUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosTerminalResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: pos_terminal not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePosTerminal
+      summary: Delete pos_terminal by pos_terminal_id
+      parameters:
+        - in: path
+          name: pos_terminal_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: pos_terminal not found
+components:
+  schemas:
+
+    PosTerminalRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_id
+        - merchant_account_id
+        - terminal_code
+        - provider_terminal_ref
+        - device_serial
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_outlet"
+            column: "outlet_id"
+        merchant_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "merchant_account_id"
+        terminal_code:
+          type: string
+        provider_terminal_ref:
+          type: string
+        device_serial:
+          type: string
+        manufacturer:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+        connection_type:
+          type: string
+          maxLength: 10
+          default: "cloud"
+          enum:
+            - "cloud"
+            - "lan"
+            - "usb"
+            - "bluetooth"
+        pairing_secret_ref:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+          enum:
+            - "pending"
+            - "active"
+            - "disabled"
+            - "retired"
+        paired_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_seen_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    PosTerminalUpdateRequest:
+      type: object
+      required:
+        - tenant_application_id
+        - outlet_id
+        - merchant_account_id
+        - terminal_code
+        - provider_terminal_ref
+        - device_serial
+        - manufacturer
+        - model
+        - connection_type
+        - pairing_secret_ref
+        - status
+        - paired_at
+        - last_seen_at
+      additionalProperties: false
+      properties:
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_outlet"
+            column: "outlet_id"
+        merchant_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "merchant_account_id"
+        terminal_code:
+          type: string
+        provider_terminal_ref:
+          type: string
+        device_serial:
+          type: string
+        manufacturer:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+        connection_type:
+          type: string
+          maxLength: 10
+          default: "cloud"
+          enum:
+            - "cloud"
+            - "lan"
+            - "usb"
+            - "bluetooth"
+        pairing_secret_ref:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+          enum:
+            - "pending"
+            - "active"
+            - "disabled"
+            - "retired"
+        paired_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_seen_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    PosTerminalResponse:
+      type: object
+      required:
+        - record_code
+        - pos_terminal_id
+        - tenant_application_id
+        - outlet_id
+        - merchant_account_id
+        - terminal_code
+        - provider_terminal_ref
+        - device_serial
+        - connection_type
+        - status
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        pos_terminal_id:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant_application_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "tenant_application_id"
+        outlet_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_outlet"
+            column: "outlet_id"
+        merchant_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "payment_merchant_account"
+            column: "merchant_account_id"
+        terminal_code:
+          type: string
+        provider_terminal_ref:
+          type: string
+        device_serial:
+          type: string
+        manufacturer:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+        connection_type:
+          type: string
+          maxLength: 10
+          default: "cloud"
+          enum:
+            - "cloud"
+            - "lan"
+            - "usb"
+            - "bluetooth"
+        pairing_secret_ref:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 10
+          default: "pending"
+          enum:
+            - "pending"
+            - "active"
+            - "disabled"
+            - "retired"
+        paired_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_seen_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  

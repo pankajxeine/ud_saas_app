@@ -1,0 +1,222 @@
+openapi: 3.0.0
+x-sql-table: org_territory
+x-sql-references:
+  - column: "parent_territory_id"
+    table: "org_territory"
+    key: "territory_id"
+info:
+  title: TerritoryResponse API
+  version: 1.0.0
+paths:
+  /territory:
+    get:
+      operationId: listTerritory
+      summary: Get all territory
+      responses:
+        '200':
+          description: List of territory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TerritoryResponse'
+    post:
+      operationId: createTerritory
+      summary: Create a new territory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerritoryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerritoryResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /territory/{territory_id}:
+    get:
+      operationId: getTerritoryById
+      summary: Get territory by territory_id
+      parameters:
+        - in: path
+          name: territory_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: territory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerritoryResponse'
+        '404':
+          description: territory not found
+    put:
+      operationId: updateTerritory
+      summary: Update territory by territory_id
+      parameters:
+        - in: path
+          name: territory_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerritoryUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerritoryResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: territory not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deleteTerritory
+      summary: Delete territory by territory_id
+      parameters:
+        - in: path
+          name: territory_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: territory not found
+components:
+  schemas:
+
+    TerritoryRequest:
+      type: object
+      required:
+        - territory_code
+        - name
+      additionalProperties: false
+      properties:
+        territory_code:
+          type: string
+        name:
+          type: string
+        parent_territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_codes:
+          type: string
+          nullable: true
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+
+    TerritoryUpdateRequest:
+      type: object
+      required:
+        - territory_code
+        - name
+        - parent_territory_id
+        - country_codes
+        - is_active
+      additionalProperties: false
+      properties:
+        territory_code:
+          type: string
+        name:
+          type: string
+        parent_territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_codes:
+          type: string
+          nullable: true
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+
+    TerritoryResponse:
+      type: object
+      required:
+        - record_code
+        - territory_id
+        - territory_code
+        - name
+        - is_active
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        territory_id:
+          type: string
+          format: uuid
+          readOnly: true
+        territory_code:
+          type: string
+        name:
+          type: string
+        parent_territory_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "org_territory"
+            column: "territory_id"
+        country_codes:
+          type: string
+          nullable: true
+          maxLength: 2
+        is_active:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  

@@ -1,0 +1,374 @@
+openapi: 3.0.0
+x-sql-table: payment_payment
+x-sql-references:
+  - column: "billing_account_id"
+    table: "billing_billing_account"
+    key: "billing_account_id"
+  - column: "payment_method_id"
+    table: "payment_payment_method"
+    key: "payment_method_id"
+  - column: "currency_code"
+    table: "platform_currency"
+    key: "currency_code"
+info:
+  title: PaymentResponse API
+  version: 1.0.0
+paths:
+  /payment:
+    get:
+      operationId: listPayment
+      summary: Get all payment
+      responses:
+        '200':
+          description: List of payment
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentResponse'
+    post:
+      operationId: createPayment
+      summary: Create a new payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid request
+        '409':
+          description: Unique constraint conflict
+
+  /payment/{payment_id}:
+    get:
+      operationId: getPaymentById
+      summary: Get payment by payment_id
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: payment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '404':
+          description: payment not found
+    put:
+      operationId: updatePayment
+      summary: Update payment by payment_id
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentUpdateRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: payment not found
+        '409':
+          description: Unique constraint conflict
+    delete:
+      operationId: deletePayment
+      summary: Delete payment by payment_id
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: payment not found
+components:
+  schemas:
+
+    PaymentRequest:
+      type: object
+      required:
+        - billing_account_id
+        - gateway
+        - idempotency_key
+        - method_type
+        - currency_code
+        - amount
+      additionalProperties: false
+      properties:
+        payment_number:
+          type: string
+          maxLength: 20
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        payment_method_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_method"
+            column: "payment_method_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+        idempotency_key:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        amount_refunded:
+          type: string
+          default: 0
+        status:
+          type: string
+          default: "pending"
+        received_at:
+          type: string
+          format: date-time
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        failure_code:
+          type: string
+          nullable: true
+          maxLength: 40
+        failure_message:
+          type: string
+          nullable: true
+
+    PaymentUpdateRequest:
+      type: object
+      required:
+        - payment_number
+        - billing_account_id
+        - payment_method_id
+        - gateway
+        - gateway_payment_ref
+        - idempotency_key
+        - method_type
+        - currency_code
+        - amount
+        - fee_amount
+        - amount_refunded
+        - status
+        - received_at
+        - captured_at
+        - failure_code
+        - failure_message
+      additionalProperties: false
+      properties:
+        payment_number:
+          type: string
+          maxLength: 20
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        payment_method_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_method"
+            column: "payment_method_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+        idempotency_key:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        amount_refunded:
+          type: string
+          default: 0
+        status:
+          type: string
+          default: "pending"
+        received_at:
+          type: string
+          format: date-time
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        failure_code:
+          type: string
+          nullable: true
+          maxLength: 40
+        failure_message:
+          type: string
+          nullable: true
+
+    PaymentResponse:
+      type: object
+      required:
+        - record_code
+        - payment_id
+        - payment_number
+        - billing_account_id
+        - gateway
+        - idempotency_key
+        - method_type
+        - currency_code
+        - amount
+        - fee_amount
+        - amount_refunded
+        - status
+        - received_at
+        - created_at
+        - updated_at
+      additionalProperties: false
+      properties:
+        record_code:
+          type: string
+          readOnly: true
+        payment_id:
+          type: string
+          format: uuid
+          readOnly: true
+        payment_number:
+          type: string
+          maxLength: 20
+        billing_account_id:
+          type: string
+          format: uuid
+          x-reference:
+            table: "billing_billing_account"
+            column: "billing_account_id"
+        payment_method_id:
+          type: string
+          format: uuid
+          nullable: true
+          x-reference:
+            table: "payment_payment_method"
+            column: "payment_method_id"
+        gateway:
+          type: string
+          maxLength: 20
+        gateway_payment_ref:
+          type: string
+          nullable: true
+          maxLength: 100
+        idempotency_key:
+          type: string
+          maxLength: 100
+        method_type:
+          type: string
+          maxLength: 14
+        currency_code:
+          type: string
+          x-reference:
+            table: "platform_currency"
+            column: "currency_code"
+        amount:
+          type: string
+        fee_amount:
+          type: string
+          default: 0
+        amount_refunded:
+          type: string
+          default: 0
+        status:
+          type: string
+          default: "pending"
+        received_at:
+          type: string
+          format: date-time
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        failure_code:
+          type: string
+          nullable: true
+          maxLength: 40
+        failure_message:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+  
