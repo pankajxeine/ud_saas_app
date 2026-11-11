@@ -41,7 +41,7 @@ export 'sidebar_style.dart';
 class SidebarItem {
   /// Creates a navigation row.
   const SidebarItem({
-    this.id,
+    required this.id,
     required this.label,
     required this.icon,
     this.badge,
@@ -49,7 +49,7 @@ class SidebarItem {
   });
 
   /// Selection identity; defaults to [label].
-  final String? id;
+  final String id;
 
   /// Row label.
   final String label;

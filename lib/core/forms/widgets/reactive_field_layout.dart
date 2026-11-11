@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
 
-import '../entity_meta.dart';
+import '../models/field_meta.dart';
 import '../form_error.dart';
 
 class ReactiveFieldLayout extends StatelessWidget {
@@ -32,7 +32,7 @@ class ReactiveFieldLayout extends StatelessWidget {
                 field.label,
                 style: Theme.of(context).typography.small.copyWith(
                   fontSize: 12,
-                  color: Theme.of(context).colors.accentForeground,
+                  color: Theme.of(context).colors.mutedForeground,
                 ),
               ),
             ),

@@ -4,10 +4,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/ui/dashcn/components/input.dart';
 import 'package:ud_sass_app/ui/dashcn/primitives.dart';
 import 'package:ud_sass_app/ui/dashcn/src/foundation/gap.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
-import '../entity_meta.dart';
-import '../form_error.dart';
+import '../models/field_meta.dart';
+
+import 'reactive_field_layout.dart';
 
 class InputTextField extends StatefulWidget {
   const InputTextField({super.key, required this.field});
@@ -52,41 +52,40 @@ class _AppTextFieldState extends State<InputTextField> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildLabel(context),
+            ReactiveFieldLayout(
+              field: widget.field,
+              control: fieldState.control,
+              child: Input(
+                controller: _controller,
 
-            const Gap(gapSm),
+                placeholder: widget.field.placeholder == null
+                    ? null
+                    : Text(widget.field.placeholder!),
 
-            Input(
-              controller: _controller,
+                keyboardType: _keyboardType(),
 
-              placeholder: widget.field.placeholder == null
-                  ? null
-                  : Text(widget.field.placeholder!),
+                maxLines: widget.field.type == EntityFieldType.textarea
+                    ? _textareaMaxLines()
+                    : 1,
 
-              keyboardType: _keyboardType(),
+                maxLength: widget.field.maxLength,
 
-              maxLines: widget.field.type == EntityFieldType.textarea
-                  ? _textareaMaxLines()
-                  : 1,
+                enabled: !isDisabled,
 
-              maxLength: widget.field.maxLength,
+                features: _buildFeatures(),
+                onChanged: isDisabled ? null : fieldState.didChange,
 
-              enabled: !isDisabled,
+                onSubmitted: (_) {
+                  fieldState.control.markAsTouched();
+                },
 
-              features: _buildFeatures(),
-              onChanged: isDisabled ? null : fieldState.didChange,
-
-              onSubmitted: (_) {
-                fieldState.control.markAsTouched();
-              },
-
-              onTapOutside: (_) {
-                fieldState.control.markAsTouched();
-              },
+                onTapOutside: (_) {
+                  fieldState.control.markAsTouched();
+                },
+              ),
             ),
 
-            FormError(control: fieldState.control),
-
+            //_buildLabel(context),
             if (widget.field.helpText != null) ...[
               const Gap(4),
               Text(widget.field.helpText!).muted(),
@@ -94,23 +93,6 @@ class _AppTextFieldState extends State<InputTextField> {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildLabel(BuildContext context) {
-    final required = widget.field.isRequired;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(widget.field.label).medium(),
-
-        if (required)
-          Text(
-            ' *',
-            style: TextStyle(color: Theme.of(context).colors.destructive),
-          ),
-      ],
     );
   }
 

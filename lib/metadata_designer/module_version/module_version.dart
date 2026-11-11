@@ -203,6 +203,7 @@ class MetadataVersionDesign extends StatelessWidget {
         MetadataSidebar(
           selectedSection: state.selectedSection,
           onSectionSelected: (section) {
+            print("Section selected $section $state.selectedSection");
             context.read<MetadataBloc>().add(SelectSection(section));
           },
         ),
@@ -229,6 +230,7 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildSelectedEditor(BuildContext context, MetadataState state) {
+    print("selectedSection $state.selectedSection");
     switch (state.selectedSection) {
       case 'general':
         return const GeneralEditor();

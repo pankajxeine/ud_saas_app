@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/ui/dashcn/components/select.dart';
-import '../entity_meta.dart';
+
+import '../models/field_meta.dart';
 import 'reactive_field_layout.dart';
 
 class AppSelectField extends StatelessWidget {
@@ -44,27 +45,6 @@ class AppSelectField extends StatelessWidget {
                 )
                 .toList(),
           ),
-          // child: DropdownButtonFormField<dynamic>(
-          //   value: selectedOption?.value,
-          //   isExpanded: true,
-          //   decoration: InputDecoration(
-          //     hintText: field.placeholder ?? 'Select ${field.label}',
-          //     border: const OutlineInputBorder(),
-          //   ),
-          //   items: field.options.map((option) {
-          //     return DropdownMenuItem<dynamic>(
-          //       value: option.value,
-          //       enabled: !option.disabled,
-          //       child: Text(option.label),
-          //     );
-          //   }).toList(),
-          //   onChanged: state.control.enabled
-          //       ? (value) {
-          //           state.didChange(value);
-          //           state.control.markAsTouched();
-          //         }
-          //       : null,
-          // ),
         );
       },
     );

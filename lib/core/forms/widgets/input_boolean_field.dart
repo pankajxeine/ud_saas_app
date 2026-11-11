@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
 import 'package:ud_sass_app/ui/dashcn/components/switch.dart';
 
-import '../entity_meta.dart';
+import '../models/field_meta.dart';
 import 'reactive_field_layout.dart';
 
 class AppBooleanField extends StatelessWidget {

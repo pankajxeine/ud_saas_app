@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:ud_sass_app/ui/dashcn/components/select.dart';
 // import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
 
-import 'package:ud_sass_app/core/forms/entity_meta.dart';
-import 'package:ud_sass_app/core/forms/entity_form.dart';
+import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
+import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
+import 'package:ud_sass_app/core/forms/entity_reactive_form.dart';
 
 import '../bloc/metadata_bloc.dart';
 // import '../bloc/metadata_event.dart';
@@ -22,13 +23,8 @@ class GeneralEditor extends StatelessWidget {
         'label': 'Module ID',
         'type': 'text',
         'placeholder': 'crm_contact',
-        'editable': true,
-        'validationRules': {
-          'required': true,
-          'minLength': 3,
-          'maxLength': 100,
-          'pattern': r'^[a-z][a-z0-9_]*$',
-        },
+        'editable': false,
+        'validationRules': {'required': true, 'minLength': 3, 'maxLength': 100},
         "colSpan": {"mobile": 12, "tablet": 6, "desktop": 3},
       },
       {
@@ -150,12 +146,6 @@ class GeneralEditor extends StatelessWidget {
                 initialData: moduleEditorInitialData(metaModule),
                 onSubmit: (data) async => {print("submit application $data")},
               ),
-
-              // _buildPrimaryKeyEditor(
-              //   context: context,
-              //   fieldNames: fieldNames,
-              //   primaryKey: primaryKey,
-              // ),
             ],
           ),
         );

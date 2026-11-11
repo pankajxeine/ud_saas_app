@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../entity_meta.dart';
+import '../models/field_meta.dart';
 import 'reactive_field_layout.dart';
 
 class AppNumberField extends StatefulWidget {

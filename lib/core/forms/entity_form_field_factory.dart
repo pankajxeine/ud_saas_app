@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import 'entity_meta.dart';
+import 'models/entity_meta.dart';
+import 'models/field_meta.dart';
 
 import 'widgets/input_text_field.dart';
 // import 'widgets/input_number_field.dart';

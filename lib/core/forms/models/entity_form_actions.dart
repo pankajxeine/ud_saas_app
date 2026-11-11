@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../ui/dashcn/components/button.dart';
+import '../../../../ui/dashcn/components/button.dart';
 import 'entity_meta.dart';
 
 class EntityFormActions extends StatelessWidget {
