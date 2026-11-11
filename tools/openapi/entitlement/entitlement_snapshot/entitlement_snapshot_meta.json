@@ -1,0 +1,412 @@
+{
+  "entity": "EntitlementSnapshot",
+  "title": "EntitlementSnapshot",
+  "table": "entitlement_entitlement_snapshot",
+  "primaryKey": "entitlement_snapshot_id",
+  "api": {
+    "list": {
+      "path": "/entitlement_snapshot",
+      "enabled": true,
+      "permission": "entitlement_entitlement_snapshot.operation.list"
+    },
+    "create": {
+      "path": "/entitlement_snapshot",
+      "enabled": true,
+      "permission": "entitlement_entitlement_snapshot.operation.create"
+    },
+    "detail": {
+      "path": "/entitlement_snapshot/{entitlement_snapshot_id}",
+      "enabled": true,
+      "permission": "entitlement_entitlement_snapshot.operation.detail"
+    },
+    "update": {
+      "path": "/entitlement_snapshot/{entitlement_snapshot_id}",
+      "enabled": true,
+      "permission": "entitlement_entitlement_snapshot.operation.update"
+    },
+    "delete": {
+      "path": "/entitlement_snapshot/{entitlement_snapshot_id}",
+      "enabled": true,
+      "permission": "entitlement_entitlement_snapshot.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "entitlement_snapshot_id",
+        "label": "Entitlement Snapshot Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "version",
+        "label": "Version"
+      },
+      {
+        "field": "access_mode",
+        "label": "Access Mode"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "valid_until",
+        "label": "Valid Until"
+      },
+      {
+        "field": "payload",
+        "label": "Payload"
+      },
+      {
+        "field": "payload_hash",
+        "label": "Payload Hash"
+      },
+      {
+        "field": "computed_at",
+        "label": "Computed At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "entitlement_snapshot_id",
+      "tenant_application_id",
+      "version",
+      "access_mode",
+      "reason",
+      "valid_until",
+      "payload",
+      "payload_hash",
+      "computed_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "entitlement_snapshot_id",
+      "label": "Entitlement Snapshot Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant_application",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "version",
+      "label": "Version",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Version",
+        "placeholder": "Enter Version",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int64",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "access_mode",
+      "label": "Access Mode",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Access Mode",
+        "placeholder": "Enter Access Mode",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Reason",
+        "placeholder": "Enter Reason",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "valid_until",
+      "label": "Valid Until",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Valid Until",
+        "placeholder": "Enter Valid Until",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "payload",
+      "label": "Payload",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Payload",
+        "placeholder": "Enter Payload",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "payload_hash",
+      "label": "Payload Hash",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Payload Hash",
+        "placeholder": "Enter Payload Hash",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "computed_at",
+      "label": "Computed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Computed At",
+        "placeholder": "Enter Computed At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

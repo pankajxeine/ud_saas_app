@@ -1,0 +1,366 @@
+{
+  "entity": "UsageCounter",
+  "title": "UsageCounter",
+  "table": "metering_usage_counter",
+  "primaryKey": "usage_counter_id",
+  "api": {
+    "list": {
+      "path": "/usage_counter",
+      "enabled": true,
+      "permission": "metering_usage_counter.operation.list"
+    },
+    "create": {
+      "path": "/usage_counter",
+      "enabled": true,
+      "permission": "metering_usage_counter.operation.create"
+    },
+    "detail": {
+      "path": "/usage_counter/{usage_counter_id}",
+      "enabled": true,
+      "permission": "metering_usage_counter.operation.detail"
+    },
+    "update": {
+      "path": "/usage_counter/{usage_counter_id}",
+      "enabled": true,
+      "permission": "metering_usage_counter.operation.update"
+    },
+    "delete": {
+      "path": "/usage_counter/{usage_counter_id}",
+      "enabled": true,
+      "permission": "metering_usage_counter.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "usage_counter_id",
+        "label": "Usage Counter Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "meter_id",
+        "label": "Meter Id"
+      },
+      {
+        "field": "period_start",
+        "label": "Period Start"
+      },
+      {
+        "field": "period_end",
+        "label": "Period End"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "last_event_at",
+        "label": "Last Event At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "usage_counter_id",
+      "tenant_application_id",
+      "meter_id",
+      "period_start",
+      "period_end",
+      "quantity",
+      "last_event_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "usage_counter_id",
+      "label": "Usage Counter Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant_application",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "meter_id",
+      "label": "Meter Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "metering_meter",
+        "column": "meter_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/metering_meter",
+          "displayField": "name",
+          "valueField": "meter_id"
+        }
+      }
+    },
+    {
+      "name": "period_start",
+      "label": "Period Start",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Period Start",
+        "placeholder": "Enter Period Start",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "period_end",
+      "label": "Period End",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Period End",
+        "placeholder": "Enter Period End",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Quantity",
+        "placeholder": "Enter Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "last_event_at",
+      "label": "Last Event At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Last Event At",
+        "placeholder": "Enter Last Event At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

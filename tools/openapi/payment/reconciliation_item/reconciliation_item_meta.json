@@ -1,0 +1,384 @@
+{
+  "entity": "ReconciliationItem",
+  "title": "ReconciliationItem",
+  "table": "payment_reconciliation_item",
+  "primaryKey": "reconciliation_item_id",
+  "api": {
+    "list": {
+      "path": "/reconciliation_item",
+      "enabled": true,
+      "permission": "payment_reconciliation_item.operation.list"
+    },
+    "create": {
+      "path": "/reconciliation_item",
+      "enabled": true,
+      "permission": "payment_reconciliation_item.operation.create"
+    },
+    "detail": {
+      "path": "/reconciliation_item/{reconciliation_item_id}",
+      "enabled": true,
+      "permission": "payment_reconciliation_item.operation.detail"
+    },
+    "update": {
+      "path": "/reconciliation_item/{reconciliation_item_id}",
+      "enabled": true,
+      "permission": "payment_reconciliation_item.operation.update"
+    },
+    "delete": {
+      "path": "/reconciliation_item/{reconciliation_item_id}",
+      "enabled": true,
+      "permission": "payment_reconciliation_item.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "reconciliation_item_id",
+        "label": "Reconciliation Item Id"
+      },
+      {
+        "field": "reconciliation_batch_id",
+        "label": "Reconciliation Batch Id"
+      },
+      {
+        "field": "gateway_payment_ref",
+        "label": "Gateway Payment Ref"
+      },
+      {
+        "field": "payment_id",
+        "label": "Payment Id"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "fee_amount",
+        "label": "Fee Amount"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "note",
+        "label": "Note"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "reconciliation_item_id",
+      "reconciliation_batch_id",
+      "gateway_payment_ref",
+      "payment_id",
+      "amount",
+      "fee_amount",
+      "status",
+      "note"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reconciliation_item_id",
+      "label": "Reconciliation Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reconciliation_batch_id",
+      "label": "Reconciliation Batch Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_reconciliation_batch",
+        "column": "reconciliation_batch_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_reconciliation_batch",
+          "displayField": "name",
+          "valueField": "reconciliation_batch_id"
+        }
+      }
+    },
+    {
+      "name": "gateway_payment_ref",
+      "label": "Gateway Payment Ref",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Gateway Payment Ref",
+        "placeholder": "Enter Gateway Payment Ref",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 100
+      }
+    },
+    {
+      "name": "payment_id",
+      "label": "Payment Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_payment",
+        "column": "payment_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_payment",
+          "displayField": "name",
+          "valueField": "payment_id"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Amount",
+        "placeholder": "Enter Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "fee_amount",
+      "label": "Fee Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Fee Amount",
+        "placeholder": "Enter Fee Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 22
+      }
+    },
+    {
+      "name": "note",
+      "label": "Note",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Note",
+        "placeholder": "Enter Note",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

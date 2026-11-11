@@ -1,0 +1,595 @@
+{
+  "entity": "Branch",
+  "title": "Branch",
+  "table": "org_branch",
+  "primaryKey": "branch_id",
+  "api": {
+    "list": {
+      "path": "/branch",
+      "enabled": true,
+      "permission": "org_branch.operation.list"
+    },
+    "create": {
+      "path": "/branch",
+      "enabled": true,
+      "permission": "org_branch.operation.create"
+    },
+    "detail": {
+      "path": "/branch/{branch_id}",
+      "enabled": true,
+      "permission": "org_branch.operation.detail"
+    },
+    "update": {
+      "path": "/branch/{branch_id}",
+      "enabled": true,
+      "permission": "org_branch.operation.update"
+    },
+    "delete": {
+      "path": "/branch/{branch_id}",
+      "enabled": true,
+      "permission": "org_branch.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "branch_id",
+        "label": "Branch Id"
+      },
+      {
+        "field": "branch_code",
+        "label": "Branch Code"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "territory_id",
+        "label": "Territory Id"
+      },
+      {
+        "field": "country_code",
+        "label": "Country Code"
+      },
+      {
+        "field": "timezone",
+        "label": "Timezone"
+      },
+      {
+        "field": "address",
+        "label": "Address"
+      },
+      {
+        "field": "calendar_id",
+        "label": "Calendar Id"
+      },
+      {
+        "field": "manager_user_id",
+        "label": "Manager User Id"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "branch_id",
+      "branch_code",
+      "name",
+      "legal_entity_id",
+      "territory_id",
+      "country_code",
+      "timezone",
+      "address",
+      "calendar_id",
+      "manager_user_id",
+      "is_active",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "branch_id",
+      "label": "Branch Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "branch_code",
+      "label": "Branch Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Branch Code",
+        "placeholder": "Enter Branch Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Name",
+        "placeholder": "Enter Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/org_legal_entity",
+          "displayField": "name",
+          "valueField": "legal_entity_id"
+        }
+      }
+    },
+    {
+      "name": "territory_id",
+      "label": "Territory Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "org_territory",
+        "column": "territory_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/org_territory",
+          "displayField": "name",
+          "valueField": "territory_id"
+        }
+      }
+    },
+    {
+      "name": "country_code",
+      "label": "Country Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_country",
+        "column": "country_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_country",
+          "displayField": "name",
+          "valueField": "country_code"
+        }
+      }
+    },
+    {
+      "name": "timezone",
+      "label": "Timezone",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Timezone",
+        "placeholder": "Enter Timezone",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "address",
+      "label": "Address",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Address",
+        "placeholder": "Enter Address",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "calendar_id",
+      "label": "Calendar Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_calendar",
+        "column": "calendar_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_calendar",
+          "displayField": "name",
+          "valueField": "calendar_id"
+        }
+      }
+    },
+    {
+      "name": "manager_user_id",
+      "label": "Manager User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Active",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

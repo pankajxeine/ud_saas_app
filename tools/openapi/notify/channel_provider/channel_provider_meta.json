@@ -1,0 +1,392 @@
+{
+  "entity": "ChannelProvider",
+  "title": "ChannelProvider",
+  "table": "notify_channel_provider",
+  "primaryKey": "channel_provider_id",
+  "api": {
+    "list": {
+      "path": "/channel_provider",
+      "enabled": true,
+      "permission": "notify_channel_provider.operation.list"
+    },
+    "create": {
+      "path": "/channel_provider",
+      "enabled": true,
+      "permission": "notify_channel_provider.operation.create"
+    },
+    "detail": {
+      "path": "/channel_provider/{channel_provider_id}",
+      "enabled": true,
+      "permission": "notify_channel_provider.operation.detail"
+    },
+    "update": {
+      "path": "/channel_provider/{channel_provider_id}",
+      "enabled": true,
+      "permission": "notify_channel_provider.operation.update"
+    },
+    "delete": {
+      "path": "/channel_provider/{channel_provider_id}",
+      "enabled": true,
+      "permission": "notify_channel_provider.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "channel_provider_id",
+        "label": "Channel Provider Id"
+      },
+      {
+        "field": "provider_code",
+        "label": "Provider Code"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "config",
+        "label": "Config"
+      },
+      {
+        "field": "secret_ref",
+        "label": "Secret Ref"
+      },
+      {
+        "field": "priority",
+        "label": "Priority"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "channel_provider_id",
+      "provider_code",
+      "channel",
+      "config",
+      "secret_ref",
+      "priority",
+      "is_active",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "channel_provider_id",
+      "label": "Channel Provider Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "provider_code",
+      "label": "Provider Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Provider Code",
+        "placeholder": "Enter Provider Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Channel",
+        "placeholder": "Enter Channel",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      }
+    },
+    {
+      "name": "config",
+      "label": "Config",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Config",
+        "placeholder": "Enter Config",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "{}"
+    },
+    {
+      "name": "secret_ref",
+      "label": "Secret Ref",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Secret Ref",
+        "placeholder": "Enter Secret Ref",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "priority",
+      "label": "Priority",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Priority",
+        "placeholder": "Enter Priority",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 1
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Active",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

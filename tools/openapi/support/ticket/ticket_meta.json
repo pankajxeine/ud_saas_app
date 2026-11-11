@@ -1,0 +1,1208 @@
+{
+  "entity": "Ticket",
+  "title": "Ticket",
+  "table": "support_ticket",
+  "primaryKey": "ticket_id",
+  "api": {
+    "list": {
+      "path": "/ticket",
+      "enabled": true,
+      "permission": "support_ticket.operation.list"
+    },
+    "create": {
+      "path": "/ticket",
+      "enabled": true,
+      "permission": "support_ticket.operation.create"
+    },
+    "detail": {
+      "path": "/ticket/{ticket_id}",
+      "enabled": true,
+      "permission": "support_ticket.operation.detail"
+    },
+    "update": {
+      "path": "/ticket/{ticket_id}",
+      "enabled": true,
+      "permission": "support_ticket.operation.update"
+    },
+    "delete": {
+      "path": "/ticket/{ticket_id}",
+      "enabled": true,
+      "permission": "support_ticket.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "ticket_id",
+        "label": "Ticket Id"
+      },
+      {
+        "field": "ticket_number",
+        "label": "Ticket Number"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "account_id",
+        "label": "Account Id"
+      },
+      {
+        "field": "contact_id",
+        "label": "Contact Id"
+      },
+      {
+        "field": "application_id",
+        "label": "Application Id"
+      },
+      {
+        "field": "module_id",
+        "label": "Module Id"
+      },
+      {
+        "field": "queue_id",
+        "label": "Queue Id"
+      },
+      {
+        "field": "category",
+        "label": "Category"
+      },
+      {
+        "field": "subject",
+        "label": "Subject"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "priority",
+        "label": "Priority"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "assignee_user_id",
+        "label": "Assignee User Id"
+      },
+      {
+        "field": "sla_policy_id",
+        "label": "Sla Policy Id"
+      },
+      {
+        "field": "first_response_due_at",
+        "label": "First Response Due At"
+      },
+      {
+        "field": "resolution_due_at",
+        "label": "Resolution Due At"
+      },
+      {
+        "field": "first_responded_at",
+        "label": "First Responded At"
+      },
+      {
+        "field": "resolved_at",
+        "label": "Resolved At"
+      },
+      {
+        "field": "closed_at",
+        "label": "Closed At"
+      },
+      {
+        "field": "sla_paused_at",
+        "label": "Sla Paused At"
+      },
+      {
+        "field": "first_response_breached",
+        "label": "First Response Breached"
+      },
+      {
+        "field": "resolution_breached",
+        "label": "Resolution Breached"
+      },
+      {
+        "field": "reopened_count",
+        "label": "Reopened Count"
+      },
+      {
+        "field": "parent_ticket_id",
+        "label": "Parent Ticket Id"
+      },
+      {
+        "field": "external_ref",
+        "label": "External Ref"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "ticket_id",
+      "ticket_number",
+      "tenant_id",
+      "account_id",
+      "contact_id",
+      "application_id",
+      "module_id",
+      "queue_id",
+      "category",
+      "subject",
+      "description",
+      "channel",
+      "priority",
+      "status",
+      "assignee_user_id",
+      "sla_policy_id",
+      "first_response_due_at",
+      "resolution_due_at",
+      "first_responded_at",
+      "resolved_at",
+      "closed_at",
+      "sla_paused_at",
+      "first_response_breached",
+      "resolution_breached",
+      "reopened_count",
+      "parent_ticket_id",
+      "external_ref",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_id",
+      "label": "Ticket Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_number",
+      "label": "Ticket Number",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Ticket Number",
+        "placeholder": "Enter Ticket Number",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant",
+          "displayField": "name",
+          "valueField": "tenant_id"
+        }
+      }
+    },
+    {
+      "name": "account_id",
+      "label": "Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "crm_account",
+        "column": "account_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/crm_account",
+          "displayField": "name",
+          "valueField": "account_id"
+        }
+      }
+    },
+    {
+      "name": "contact_id",
+      "label": "Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/crm_contact",
+          "displayField": "name",
+          "valueField": "contact_id"
+        }
+      }
+    },
+    {
+      "name": "application_id",
+      "label": "Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_application",
+          "displayField": "name",
+          "valueField": "application_id"
+        }
+      }
+    },
+    {
+      "name": "module_id",
+      "label": "Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_module",
+          "displayField": "name",
+          "valueField": "module_id"
+        }
+      }
+    },
+    {
+      "name": "queue_id",
+      "label": "Queue Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_queue",
+        "column": "queue_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_queue",
+          "displayField": "name",
+          "valueField": "queue_id"
+        }
+      }
+    },
+    {
+      "name": "category",
+      "label": "Category",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Category",
+        "placeholder": "Enter Category",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Subject",
+        "placeholder": "Enter Subject",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Description",
+        "placeholder": "Enter Description",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Channel",
+        "placeholder": "Enter Channel",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      }
+    },
+    {
+      "name": "priority",
+      "label": "Priority",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Priority",
+        "placeholder": "Enter Priority",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "p3"
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "new"
+    },
+    {
+      "name": "assignee_user_id",
+      "label": "Assignee User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "sla_policy_id",
+      "label": "Sla Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_sla_policy",
+        "column": "sla_policy_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_sla_policy",
+          "displayField": "name",
+          "valueField": "sla_policy_id"
+        }
+      }
+    },
+    {
+      "name": "first_response_due_at",
+      "label": "First Response Due At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "First Response Due At",
+        "placeholder": "Enter First Response Due At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "resolution_due_at",
+      "label": "Resolution Due At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Resolution Due At",
+        "placeholder": "Enter Resolution Due At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "first_responded_at",
+      "label": "First Responded At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "First Responded At",
+        "placeholder": "Enter First Responded At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "resolved_at",
+      "label": "Resolved At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Resolved At",
+        "placeholder": "Enter Resolved At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "closed_at",
+      "label": "Closed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Closed At",
+        "placeholder": "Enter Closed At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "sla_paused_at",
+      "label": "Sla Paused At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Sla Paused At",
+        "placeholder": "Enter Sla Paused At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "first_response_breached",
+      "label": "First Response Breached",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "First Response Breached",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": false
+    },
+    {
+      "name": "resolution_breached",
+      "label": "Resolution Breached",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Resolution Breached",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": false
+    },
+    {
+      "name": "reopened_count",
+      "label": "Reopened Count",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Reopened Count",
+        "placeholder": "Enter Reopened Count",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "parent_ticket_id",
+      "label": "Parent Ticket Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_ticket",
+        "column": "ticket_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_ticket",
+          "displayField": "name",
+          "valueField": "ticket_id"
+        }
+      }
+    },
+    {
+      "name": "external_ref",
+      "label": "External Ref",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "External Ref",
+        "placeholder": "Enter External Ref",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 60
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_by",
+      "label": "Updated By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

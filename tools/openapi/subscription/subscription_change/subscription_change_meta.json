@@ -1,0 +1,600 @@
+{
+  "entity": "SubscriptionChange",
+  "title": "SubscriptionChange",
+  "table": "subscription_subscription_change",
+  "primaryKey": "subscription_change_id",
+  "api": {
+    "list": {
+      "path": "/subscription_change",
+      "enabled": true,
+      "permission": "subscription_subscription_change.operation.list"
+    },
+    "create": {
+      "path": "/subscription_change",
+      "enabled": true,
+      "permission": "subscription_subscription_change.operation.create"
+    },
+    "detail": {
+      "path": "/subscription_change/{subscription_change_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_change.operation.detail"
+    },
+    "update": {
+      "path": "/subscription_change/{subscription_change_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_change.operation.update"
+    },
+    "delete": {
+      "path": "/subscription_change/{subscription_change_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_change.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "subscription_change_id",
+        "label": "Subscription Change Id"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "change_type",
+        "label": "Change Type"
+      },
+      {
+        "field": "from_plan_version_id",
+        "label": "From Plan Version Id"
+      },
+      {
+        "field": "to_plan_version_id",
+        "label": "To Plan Version Id"
+      },
+      {
+        "field": "from_quantity",
+        "label": "From Quantity"
+      },
+      {
+        "field": "to_quantity",
+        "label": "To Quantity"
+      },
+      {
+        "field": "from_status",
+        "label": "From Status"
+      },
+      {
+        "field": "to_status",
+        "label": "To Status"
+      },
+      {
+        "field": "effective_at",
+        "label": "Effective At"
+      },
+      {
+        "field": "proration_amount",
+        "label": "Proration Amount"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "requested_by_user_id",
+        "label": "Requested By User Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "subscription_change_id",
+      "subscription_id",
+      "change_type",
+      "from_plan_version_id",
+      "to_plan_version_id",
+      "from_quantity",
+      "to_quantity",
+      "from_status",
+      "to_status",
+      "effective_at",
+      "proration_amount",
+      "reason",
+      "requested_by_user_id",
+      "created_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subscription_change_id",
+      "label": "Subscription Change Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "subscription_subscription",
+        "column": "subscription_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/subscription_subscription",
+          "displayField": "name",
+          "valueField": "subscription_id"
+        }
+      }
+    },
+    {
+      "name": "change_type",
+      "label": "Change Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Change Type",
+        "placeholder": "Enter Change Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 16
+      }
+    },
+    {
+      "name": "from_plan_version_id",
+      "label": "From Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_plan_version",
+          "displayField": "name",
+          "valueField": "plan_version_id"
+        }
+      }
+    },
+    {
+      "name": "to_plan_version_id",
+      "label": "To Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_plan_version",
+          "displayField": "name",
+          "valueField": "plan_version_id"
+        }
+      }
+    },
+    {
+      "name": "from_quantity",
+      "label": "From Quantity",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "From Quantity",
+        "placeholder": "Enter From Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "to_quantity",
+      "label": "To Quantity",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "To Quantity",
+        "placeholder": "Enter To Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "from_status",
+      "label": "From Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "From Status",
+        "placeholder": "Enter From Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "to_status",
+      "label": "To Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "To Status",
+        "placeholder": "Enter To Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "effective_at",
+      "label": "Effective At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Effective At",
+        "placeholder": "Enter Effective At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "proration_amount",
+      "label": "Proration Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Proration Amount",
+        "placeholder": "Enter Proration Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Reason",
+        "placeholder": "Enter Reason",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "requested_by_user_id",
+      "label": "Requested By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

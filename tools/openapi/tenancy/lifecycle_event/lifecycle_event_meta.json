@@ -1,0 +1,375 @@
+{
+  "entity": "LifecycleEvent",
+  "title": "LifecycleEvent",
+  "table": "tenancy_lifecycle_event",
+  "primaryKey": "lifecycle_event_id",
+  "api": {
+    "list": {
+      "path": "/lifecycle_event",
+      "enabled": true,
+      "permission": "tenancy_lifecycle_event.operation.list"
+    },
+    "create": {
+      "path": "/lifecycle_event",
+      "enabled": true,
+      "permission": "tenancy_lifecycle_event.operation.create"
+    },
+    "detail": {
+      "path": "/lifecycle_event/{lifecycle_event_id}",
+      "enabled": true,
+      "permission": "tenancy_lifecycle_event.operation.detail"
+    },
+    "update": {
+      "path": "/lifecycle_event/{lifecycle_event_id}",
+      "enabled": true,
+      "permission": "tenancy_lifecycle_event.operation.update"
+    },
+    "delete": {
+      "path": "/lifecycle_event/{lifecycle_event_id}",
+      "enabled": true,
+      "permission": "tenancy_lifecycle_event.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "lifecycle_event_id",
+        "label": "Lifecycle Event Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "from_status",
+        "label": "From Status"
+      },
+      {
+        "field": "to_status",
+        "label": "To Status"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      },
+      {
+        "field": "actor_user_id",
+        "label": "Actor User Id"
+      },
+      {
+        "field": "occurred_at",
+        "label": "Occurred At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "lifecycle_event_id",
+      "tenant_id",
+      "tenant_application_id",
+      "from_status",
+      "to_status",
+      "reason",
+      "actor_user_id",
+      "occurred_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "lifecycle_event_id",
+      "label": "Lifecycle Event Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant",
+        "column": "tenant_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant",
+          "displayField": "name",
+          "valueField": "tenant_id"
+        }
+      }
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant_application",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "from_status",
+      "label": "From Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "From Status",
+        "placeholder": "Enter From Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "to_status",
+      "label": "To Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "To Status",
+        "placeholder": "Enter To Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Reason",
+        "placeholder": "Enter Reason",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "actor_user_id",
+      "label": "Actor User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "occurred_at",
+      "label": "Occurred At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Occurred At",
+        "placeholder": "Enter Occurred At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

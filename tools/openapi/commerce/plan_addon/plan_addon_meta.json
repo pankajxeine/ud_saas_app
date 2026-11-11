@@ -1,0 +1,192 @@
+{
+  "entity": "PlanAddon",
+  "title": "PlanAddon",
+  "table": "commerce_plan_addon",
+  "primaryKey": "plan_addon_id",
+  "api": {
+    "list": {
+      "path": "/plan_addon",
+      "enabled": true,
+      "permission": "commerce_plan_addon.operation.list"
+    },
+    "create": {
+      "path": "/plan_addon",
+      "enabled": true,
+      "permission": "commerce_plan_addon.operation.create"
+    },
+    "detail": {
+      "path": "/plan_addon/{plan_addon_id}",
+      "enabled": true,
+      "permission": "commerce_plan_addon.operation.detail"
+    },
+    "update": {
+      "path": "/plan_addon/{plan_addon_id}",
+      "enabled": true,
+      "permission": "commerce_plan_addon.operation.update"
+    },
+    "delete": {
+      "path": "/plan_addon/{plan_addon_id}",
+      "enabled": true,
+      "permission": "commerce_plan_addon.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "plan_addon_id",
+        "label": "Plan Addon Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "addon_id",
+        "label": "Addon Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "plan_addon_id",
+      "plan_version_id",
+      "addon_id"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "plan_addon_id",
+      "label": "Plan Addon Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_plan_version",
+          "displayField": "name",
+          "valueField": "plan_version_id"
+        }
+      }
+    },
+    {
+      "name": "addon_id",
+      "label": "Addon Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_addon",
+        "column": "addon_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_addon",
+          "displayField": "name",
+          "valueField": "addon_id"
+        }
+      }
+    }
+  ]
+}

@@ -54,18 +54,18 @@ class _AppRootState extends State<AppRoot> {
           themeMode: settings.themeMode,
           // The fixed route table stays empty because generated module routes
           // contain path parameters and are resolved by onGenerateRoute.
-          routes: AppRouteConfig.routes,
+          routes: AppRouter.routes,
           // Selects the saved startup location, including browser deep links.
           initialRoute: settings.initialPath,
           // Resolves named navigation requests and dynamic module paths.
-          onGenerateRoute: AppRouteConfig.onGenerateRoute,
+          onGenerateRoute: AppRouter.onGenerateRoute,
           // Treats an initial deep link as one route instead of splitting it into
           // intermediate Navigator routes that do not exist in this app.
-          onGenerateInitialRoutes: AppRouteConfig.onGenerateInitialRoutes,
+          onGenerateInitialRoutes: AppRouter.onGenerateInitialRoutes,
           // Shows the app's not-found page for unknown named routes.
-          onUnknownRoute: AppRouteConfig.onUnknownRoute,
+          onUnknownRoute: AppRouter.onUnknownRoute,
           // Applies the same page transition to generated and fixed routes.
-          pageRouteBuilder: AppRouteConfig.pageRouteBuilder,
+          //pageRouteBuilder: AppRouter.pageRouteBuilder,
           localizationsDelegates: const [
             S.delegate,
             DashcnLocalizations.delegate,

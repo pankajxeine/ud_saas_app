@@ -1,0 +1,411 @@
+{
+  "entity": "GatewayWebhook",
+  "title": "GatewayWebhook",
+  "table": "payment_gateway_webhook",
+  "primaryKey": "gateway_webhook_id",
+  "api": {
+    "list": {
+      "path": "/gateway_webhook",
+      "enabled": true,
+      "permission": "payment_gateway_webhook.operation.list"
+    },
+    "create": {
+      "path": "/gateway_webhook",
+      "enabled": true,
+      "permission": "payment_gateway_webhook.operation.create"
+    },
+    "detail": {
+      "path": "/gateway_webhook/{gateway_webhook_id}",
+      "enabled": true,
+      "permission": "payment_gateway_webhook.operation.detail"
+    },
+    "update": {
+      "path": "/gateway_webhook/{gateway_webhook_id}",
+      "enabled": true,
+      "permission": "payment_gateway_webhook.operation.update"
+    },
+    "delete": {
+      "path": "/gateway_webhook/{gateway_webhook_id}",
+      "enabled": true,
+      "permission": "payment_gateway_webhook.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "gateway_webhook_id",
+        "label": "Gateway Webhook Id"
+      },
+      {
+        "field": "gateway",
+        "label": "Gateway"
+      },
+      {
+        "field": "event_id",
+        "label": "Event Id"
+      },
+      {
+        "field": "event_type",
+        "label": "Event Type"
+      },
+      {
+        "field": "payload",
+        "label": "Payload"
+      },
+      {
+        "field": "signature_valid",
+        "label": "Signature Valid"
+      },
+      {
+        "field": "received_at",
+        "label": "Received At"
+      },
+      {
+        "field": "processed_at",
+        "label": "Processed At"
+      },
+      {
+        "field": "error",
+        "label": "Error"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "gateway_webhook_id",
+      "gateway",
+      "event_id",
+      "event_type",
+      "payload",
+      "signature_valid",
+      "received_at",
+      "processed_at",
+      "error"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "gateway_webhook_id",
+      "label": "Gateway Webhook Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "gateway",
+      "label": "Gateway",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Gateway",
+        "placeholder": "Enter Gateway",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "event_id",
+      "label": "Event Id",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 100
+      }
+    },
+    {
+      "name": "event_type",
+      "label": "Event Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Event Type",
+        "placeholder": "Enter Event Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 80
+      }
+    },
+    {
+      "name": "payload",
+      "label": "Payload",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Payload",
+        "placeholder": "Enter Payload",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "signature_valid",
+      "label": "Signature Valid",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Signature Valid",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "received_at",
+      "label": "Received At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Received At",
+        "placeholder": "Enter Received At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "processed_at",
+      "label": "Processed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Processed At",
+        "placeholder": "Enter Processed At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "error",
+      "label": "Error",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Error",
+        "placeholder": "Enter Error",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

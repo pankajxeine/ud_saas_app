@@ -1,0 +1,332 @@
+{
+  "entity": "FxRate",
+  "title": "FxRate",
+  "table": "platform_fx_rate",
+  "primaryKey": "fx_rate_id",
+  "api": {
+    "list": {
+      "path": "/fx_rate",
+      "enabled": true,
+      "permission": "platform_fx_rate.operation.list"
+    },
+    "create": {
+      "path": "/fx_rate",
+      "enabled": true,
+      "permission": "platform_fx_rate.operation.create"
+    },
+    "detail": {
+      "path": "/fx_rate/{fx_rate_id}",
+      "enabled": true,
+      "permission": "platform_fx_rate.operation.detail"
+    },
+    "update": {
+      "path": "/fx_rate/{fx_rate_id}",
+      "enabled": true,
+      "permission": "platform_fx_rate.operation.update"
+    },
+    "delete": {
+      "path": "/fx_rate/{fx_rate_id}",
+      "enabled": true,
+      "permission": "platform_fx_rate.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "fx_rate_id",
+        "label": "Fx Rate Id"
+      },
+      {
+        "field": "base_currency_code",
+        "label": "Base Currency Code"
+      },
+      {
+        "field": "quote_currency_code",
+        "label": "Quote Currency Code"
+      },
+      {
+        "field": "rate_date",
+        "label": "Rate Date"
+      },
+      {
+        "field": "rate",
+        "label": "Rate"
+      },
+      {
+        "field": "source",
+        "label": "Source"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "fx_rate_id",
+      "base_currency_code",
+      "quote_currency_code",
+      "rate_date",
+      "rate",
+      "source",
+      "created_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "fx_rate_id",
+      "label": "Fx Rate Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "base_currency_code",
+      "label": "Base Currency Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_currency",
+          "displayField": "name",
+          "valueField": "currency_code"
+        }
+      }
+    },
+    {
+      "name": "quote_currency_code",
+      "label": "Quote Currency Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_currency",
+          "displayField": "name",
+          "valueField": "currency_code"
+        }
+      }
+    },
+    {
+      "name": "rate_date",
+      "label": "Rate Date",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Rate Date",
+        "placeholder": "Enter Rate Date",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "rate",
+      "label": "Rate",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Rate",
+        "placeholder": "Enter Rate",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "source",
+      "label": "Source",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Source",
+        "placeholder": "Enter Source",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 30
+      },
+      "default": "manual"
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

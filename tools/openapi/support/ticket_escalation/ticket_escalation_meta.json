@@ -1,0 +1,229 @@
+{
+  "entity": "TicketEscalation",
+  "title": "TicketEscalation",
+  "table": "support_ticket_escalation",
+  "primaryKey": "ticket_escalation_id",
+  "api": {
+    "list": {
+      "path": "/ticket_escalation",
+      "enabled": true,
+      "permission": "support_ticket_escalation.operation.list"
+    },
+    "create": {
+      "path": "/ticket_escalation",
+      "enabled": true,
+      "permission": "support_ticket_escalation.operation.create"
+    },
+    "detail": {
+      "path": "/ticket_escalation/{ticket_escalation_id}",
+      "enabled": true,
+      "permission": "support_ticket_escalation.operation.detail"
+    },
+    "update": {
+      "path": "/ticket_escalation/{ticket_escalation_id}",
+      "enabled": true,
+      "permission": "support_ticket_escalation.operation.update"
+    },
+    "delete": {
+      "path": "/ticket_escalation/{ticket_escalation_id}",
+      "enabled": true,
+      "permission": "support_ticket_escalation.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "ticket_escalation_id",
+        "label": "Ticket Escalation Id"
+      },
+      {
+        "field": "ticket_id",
+        "label": "Ticket Id"
+      },
+      {
+        "field": "escalation_rule_id",
+        "label": "Escalation Rule Id"
+      },
+      {
+        "field": "escalated_at",
+        "label": "Escalated At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "ticket_escalation_id",
+      "ticket_id",
+      "escalation_rule_id",
+      "escalated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_escalation_id",
+      "label": "Ticket Escalation Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_id",
+      "label": "Ticket Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_ticket",
+        "column": "ticket_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_ticket",
+          "displayField": "name",
+          "valueField": "ticket_id"
+        }
+      }
+    },
+    {
+      "name": "escalation_rule_id",
+      "label": "Escalation Rule Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_escalation_rule",
+        "column": "escalation_rule_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_escalation_rule",
+          "displayField": "name",
+          "valueField": "escalation_rule_id"
+        }
+      }
+    },
+    {
+      "name": "escalated_at",
+      "label": "Escalated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Escalated At",
+        "placeholder": "Enter Escalated At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

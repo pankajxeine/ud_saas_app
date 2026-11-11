@@ -1,0 +1,345 @@
+{
+  "entity": "AccessReviewItem",
+  "title": "AccessReviewItem",
+  "table": "iam_access_review_item",
+  "primaryKey": "access_review_item_id",
+  "api": {
+    "list": {
+      "path": "/access_review_item",
+      "enabled": true,
+      "permission": "iam_access_review_item.operation.list"
+    },
+    "create": {
+      "path": "/access_review_item",
+      "enabled": true,
+      "permission": "iam_access_review_item.operation.create"
+    },
+    "detail": {
+      "path": "/access_review_item/{access_review_item_id}",
+      "enabled": true,
+      "permission": "iam_access_review_item.operation.detail"
+    },
+    "update": {
+      "path": "/access_review_item/{access_review_item_id}",
+      "enabled": true,
+      "permission": "iam_access_review_item.operation.update"
+    },
+    "delete": {
+      "path": "/access_review_item/{access_review_item_id}",
+      "enabled": true,
+      "permission": "iam_access_review_item.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "access_review_item_id",
+        "label": "Access Review Item Id"
+      },
+      {
+        "field": "access_review_id",
+        "label": "Access Review Id"
+      },
+      {
+        "field": "user_role_id",
+        "label": "User Role Id"
+      },
+      {
+        "field": "reviewer_user_id",
+        "label": "Reviewer User Id"
+      },
+      {
+        "field": "decision",
+        "label": "Decision"
+      },
+      {
+        "field": "decided_at",
+        "label": "Decided At"
+      },
+      {
+        "field": "comment",
+        "label": "Comment"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "access_review_item_id",
+      "access_review_id",
+      "user_role_id",
+      "reviewer_user_id",
+      "decision",
+      "decided_at",
+      "comment"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "access_review_item_id",
+      "label": "Access Review Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "access_review_id",
+      "label": "Access Review Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_access_review",
+        "column": "access_review_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_access_review",
+          "displayField": "name",
+          "valueField": "access_review_id"
+        }
+      }
+    },
+    {
+      "name": "user_role_id",
+      "label": "User Role Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_user_role",
+        "column": "user_role_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_user_role",
+          "displayField": "name",
+          "valueField": "user_role_id"
+        }
+      }
+    },
+    {
+      "name": "reviewer_user_id",
+      "label": "Reviewer User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "decision",
+      "label": "Decision",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Decision",
+        "placeholder": "Enter Decision",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      }
+    },
+    {
+      "name": "decided_at",
+      "label": "Decided At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Decided At",
+        "placeholder": "Enter Decided At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "comment",
+      "label": "Comment",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Comment",
+        "placeholder": "Enter Comment",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

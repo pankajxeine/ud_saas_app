@@ -1,0 +1,514 @@
+{
+  "entity": "OutboxEvent",
+  "title": "OutboxEvent",
+  "table": "integration_outbox_event",
+  "primaryKey": "event_id",
+  "api": {
+    "list": {
+      "path": "/outbox_event",
+      "enabled": true,
+      "permission": "integration_outbox_event.operation.list"
+    },
+    "create": {
+      "path": "/outbox_event",
+      "enabled": true,
+      "permission": "integration_outbox_event.operation.create"
+    },
+    "detail": {
+      "path": "/outbox_event/{event_id}",
+      "enabled": true,
+      "permission": "integration_outbox_event.operation.detail"
+    },
+    "update": {
+      "path": "/outbox_event/{event_id}",
+      "enabled": true,
+      "permission": "integration_outbox_event.operation.update"
+    },
+    "delete": {
+      "path": "/outbox_event/{event_id}",
+      "enabled": true,
+      "permission": "integration_outbox_event.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "event_id",
+        "label": "Event Id"
+      },
+      {
+        "field": "aggregate_type",
+        "label": "Aggregate Type"
+      },
+      {
+        "field": "aggregate_id",
+        "label": "Aggregate Id"
+      },
+      {
+        "field": "event_type",
+        "label": "Event Type"
+      },
+      {
+        "field": "event_version",
+        "label": "Event Version"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "payload",
+        "label": "Payload"
+      },
+      {
+        "field": "headers",
+        "label": "Headers"
+      },
+      {
+        "field": "occurred_at",
+        "label": "Occurred At"
+      },
+      {
+        "field": "published_at",
+        "label": "Published At"
+      },
+      {
+        "field": "attempts",
+        "label": "Attempts"
+      },
+      {
+        "field": "last_error",
+        "label": "Last Error"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "event_id",
+      "aggregate_type",
+      "aggregate_id",
+      "event_type",
+      "event_version",
+      "tenant_id",
+      "payload",
+      "headers",
+      "occurred_at",
+      "published_at",
+      "attempts",
+      "last_error"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "event_id",
+      "label": "Event Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "aggregate_type",
+      "label": "Aggregate Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Aggregate Type",
+        "placeholder": "Enter Aggregate Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 30
+      }
+    },
+    {
+      "name": "aggregate_id",
+      "label": "Aggregate Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "event_type",
+      "label": "Event Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Event Type",
+        "placeholder": "Enter Event Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 80
+      }
+    },
+    {
+      "name": "event_version",
+      "label": "Event Version",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Event Version",
+        "placeholder": "Enter Event Version",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 1
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "payload",
+      "label": "Payload",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Payload",
+        "placeholder": "Enter Payload",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "headers",
+      "label": "Headers",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Headers",
+        "placeholder": "Enter Headers",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "{}"
+    },
+    {
+      "name": "occurred_at",
+      "label": "Occurred At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Occurred At",
+        "placeholder": "Enter Occurred At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "published_at",
+      "label": "Published At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Published At",
+        "placeholder": "Enter Published At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "attempts",
+      "label": "Attempts",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Attempts",
+        "placeholder": "Enter Attempts",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "last_error",
+      "label": "Last Error",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Last Error",
+        "placeholder": "Enter Last Error",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

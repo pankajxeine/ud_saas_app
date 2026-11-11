@@ -1,0 +1,264 @@
+{
+  "entity": "SlaTarget",
+  "title": "SlaTarget",
+  "table": "support_sla_target",
+  "primaryKey": "sla_target_id",
+  "api": {
+    "list": {
+      "path": "/sla_target",
+      "enabled": true,
+      "permission": "support_sla_target.operation.list"
+    },
+    "create": {
+      "path": "/sla_target",
+      "enabled": true,
+      "permission": "support_sla_target.operation.create"
+    },
+    "detail": {
+      "path": "/sla_target/{sla_target_id}",
+      "enabled": true,
+      "permission": "support_sla_target.operation.detail"
+    },
+    "update": {
+      "path": "/sla_target/{sla_target_id}",
+      "enabled": true,
+      "permission": "support_sla_target.operation.update"
+    },
+    "delete": {
+      "path": "/sla_target/{sla_target_id}",
+      "enabled": true,
+      "permission": "support_sla_target.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "sla_target_id",
+        "label": "Sla Target Id"
+      },
+      {
+        "field": "sla_policy_id",
+        "label": "Sla Policy Id"
+      },
+      {
+        "field": "priority",
+        "label": "Priority"
+      },
+      {
+        "field": "first_response_minutes",
+        "label": "First Response Minutes"
+      },
+      {
+        "field": "resolution_minutes",
+        "label": "Resolution Minutes"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "sla_target_id",
+      "sla_policy_id",
+      "priority",
+      "first_response_minutes",
+      "resolution_minutes"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "sla_target_id",
+      "label": "Sla Target Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "sla_policy_id",
+      "label": "Sla Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_sla_policy",
+        "column": "sla_policy_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_sla_policy",
+          "displayField": "name",
+          "valueField": "sla_policy_id"
+        }
+      }
+    },
+    {
+      "name": "priority",
+      "label": "Priority",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Priority",
+        "placeholder": "Enter Priority",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "first_response_minutes",
+      "label": "First Response Minutes",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "First Response Minutes",
+        "placeholder": "Enter First Response Minutes",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "resolution_minutes",
+      "label": "Resolution Minutes",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Resolution Minutes",
+        "placeholder": "Enter Resolution Minutes",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

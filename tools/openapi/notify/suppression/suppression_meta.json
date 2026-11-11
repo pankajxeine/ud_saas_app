@@ -1,0 +1,256 @@
+{
+  "entity": "Suppression",
+  "title": "Suppression",
+  "table": "notify_suppression",
+  "primaryKey": "suppression_id",
+  "api": {
+    "list": {
+      "path": "/suppression",
+      "enabled": true,
+      "permission": "notify_suppression.operation.list"
+    },
+    "create": {
+      "path": "/suppression",
+      "enabled": true,
+      "permission": "notify_suppression.operation.create"
+    },
+    "detail": {
+      "path": "/suppression/{suppression_id}",
+      "enabled": true,
+      "permission": "notify_suppression.operation.detail"
+    },
+    "update": {
+      "path": "/suppression/{suppression_id}",
+      "enabled": true,
+      "permission": "notify_suppression.operation.update"
+    },
+    "delete": {
+      "path": "/suppression/{suppression_id}",
+      "enabled": true,
+      "permission": "notify_suppression.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "suppression_id",
+        "label": "Suppression Id"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "address",
+        "label": "Address"
+      },
+      {
+        "field": "reason",
+        "label": "Reason"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "suppression_id",
+      "channel",
+      "address",
+      "reason",
+      "created_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "suppression_id",
+      "label": "Suppression Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Channel",
+        "placeholder": "Enter Channel",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      }
+    },
+    {
+      "name": "address",
+      "label": "Address",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Address",
+        "placeholder": "Enter Address",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Reason",
+        "placeholder": "Enter Reason",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

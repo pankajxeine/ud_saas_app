@@ -1,0 +1,449 @@
+{
+  "entity": "TicketMessage",
+  "title": "TicketMessage",
+  "table": "support_ticket_message",
+  "primaryKey": "ticket_message_id",
+  "api": {
+    "list": {
+      "path": "/ticket_message",
+      "enabled": true,
+      "permission": "support_ticket_message.operation.list"
+    },
+    "create": {
+      "path": "/ticket_message",
+      "enabled": true,
+      "permission": "support_ticket_message.operation.create"
+    },
+    "detail": {
+      "path": "/ticket_message/{ticket_message_id}",
+      "enabled": true,
+      "permission": "support_ticket_message.operation.detail"
+    },
+    "update": {
+      "path": "/ticket_message/{ticket_message_id}",
+      "enabled": true,
+      "permission": "support_ticket_message.operation.update"
+    },
+    "delete": {
+      "path": "/ticket_message/{ticket_message_id}",
+      "enabled": true,
+      "permission": "support_ticket_message.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "ticket_message_id",
+        "label": "Ticket Message Id"
+      },
+      {
+        "field": "ticket_id",
+        "label": "Ticket Id"
+      },
+      {
+        "field": "author_type",
+        "label": "Author Type"
+      },
+      {
+        "field": "author_user_id",
+        "label": "Author User Id"
+      },
+      {
+        "field": "author_contact_id",
+        "label": "Author Contact Id"
+      },
+      {
+        "field": "body",
+        "label": "Body"
+      },
+      {
+        "field": "is_internal",
+        "label": "Is Internal"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "attachments",
+        "label": "Attachments"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "ticket_message_id",
+      "ticket_id",
+      "author_type",
+      "author_user_id",
+      "author_contact_id",
+      "body",
+      "is_internal",
+      "channel",
+      "attachments",
+      "created_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_message_id",
+      "label": "Ticket Message Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ticket_id",
+      "label": "Ticket Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "support_ticket",
+        "column": "ticket_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/support_ticket",
+          "displayField": "name",
+          "valueField": "ticket_id"
+        }
+      }
+    },
+    {
+      "name": "author_type",
+      "label": "Author Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Author Type",
+        "placeholder": "Enter Author Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      }
+    },
+    {
+      "name": "author_user_id",
+      "label": "Author User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "author_contact_id",
+      "label": "Author Contact Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "crm_contact",
+        "column": "contact_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/crm_contact",
+          "displayField": "name",
+          "valueField": "contact_id"
+        }
+      }
+    },
+    {
+      "name": "body",
+      "label": "Body",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Body",
+        "placeholder": "Enter Body",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "is_internal",
+      "label": "Is Internal",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Internal",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": false
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Channel",
+        "placeholder": "Enter Channel",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      },
+      "default": "portal"
+    },
+    {
+      "name": "attachments",
+      "label": "Attachments",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Attachments",
+        "placeholder": "Enter Attachments",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

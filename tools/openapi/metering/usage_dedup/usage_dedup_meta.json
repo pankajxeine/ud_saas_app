@@ -1,0 +1,230 @@
+{
+  "entity": "UsageDedup",
+  "title": "UsageDedup",
+  "table": "metering_usage_dedup",
+  "primaryKey": "usage_dedup_id",
+  "api": {
+    "list": {
+      "path": "/usage_dedup",
+      "enabled": true,
+      "permission": "metering_usage_dedup.operation.list"
+    },
+    "create": {
+      "path": "/usage_dedup",
+      "enabled": true,
+      "permission": "metering_usage_dedup.operation.create"
+    },
+    "detail": {
+      "path": "/usage_dedup/{usage_dedup_id}",
+      "enabled": true,
+      "permission": "metering_usage_dedup.operation.detail"
+    },
+    "update": {
+      "path": "/usage_dedup/{usage_dedup_id}",
+      "enabled": true,
+      "permission": "metering_usage_dedup.operation.update"
+    },
+    "delete": {
+      "path": "/usage_dedup/{usage_dedup_id}",
+      "enabled": true,
+      "permission": "metering_usage_dedup.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "usage_dedup_id",
+        "label": "Usage Dedup Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "idempotency_key",
+        "label": "Idempotency Key"
+      },
+      {
+        "field": "received_at",
+        "label": "Received At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "usage_dedup_id",
+      "tenant_application_id",
+      "idempotency_key",
+      "received_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "usage_dedup_id",
+      "label": "Usage Dedup Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant_application",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "idempotency_key",
+      "label": "Idempotency Key",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Idempotency Key",
+        "placeholder": "Enter Idempotency Key",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 100
+      }
+    },
+    {
+      "name": "received_at",
+      "label": "Received At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Received At",
+        "placeholder": "Enter Received At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

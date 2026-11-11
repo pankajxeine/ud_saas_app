@@ -1,0 +1,301 @@
+{
+  "entity": "TemplateLocale",
+  "title": "TemplateLocale",
+  "table": "notify_template_locale",
+  "primaryKey": "template_locale_id",
+  "api": {
+    "list": {
+      "path": "/template_locale",
+      "enabled": true,
+      "permission": "notify_template_locale.operation.list"
+    },
+    "create": {
+      "path": "/template_locale",
+      "enabled": true,
+      "permission": "notify_template_locale.operation.create"
+    },
+    "detail": {
+      "path": "/template_locale/{template_locale_id}",
+      "enabled": true,
+      "permission": "notify_template_locale.operation.detail"
+    },
+    "update": {
+      "path": "/template_locale/{template_locale_id}",
+      "enabled": true,
+      "permission": "notify_template_locale.operation.update"
+    },
+    "delete": {
+      "path": "/template_locale/{template_locale_id}",
+      "enabled": true,
+      "permission": "notify_template_locale.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "template_locale_id",
+        "label": "Template Locale Id"
+      },
+      {
+        "field": "template_version_id",
+        "label": "Template Version Id"
+      },
+      {
+        "field": "locale",
+        "label": "Locale"
+      },
+      {
+        "field": "subject",
+        "label": "Subject"
+      },
+      {
+        "field": "body_html",
+        "label": "Body Html"
+      },
+      {
+        "field": "body_text",
+        "label": "Body Text"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "template_locale_id",
+      "template_version_id",
+      "locale",
+      "subject",
+      "body_html",
+      "body_text"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "template_locale_id",
+      "label": "Template Locale Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "template_version_id",
+      "label": "Template Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "notify_template_version",
+        "column": "template_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/notify_template_version",
+          "displayField": "name",
+          "valueField": "template_version_id"
+        }
+      }
+    },
+    {
+      "name": "locale",
+      "label": "Locale",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Locale",
+        "placeholder": "Enter Locale",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Subject",
+        "placeholder": "Enter Subject",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "body_html",
+      "label": "Body Html",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Body Html",
+        "placeholder": "Enter Body Html",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "body_text",
+      "label": "Body Text",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Body Text",
+        "placeholder": "Enter Body Text",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

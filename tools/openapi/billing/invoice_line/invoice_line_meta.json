@@ -1,0 +1,801 @@
+{
+  "entity": "InvoiceLine",
+  "title": "InvoiceLine",
+  "table": "billing_invoice_line",
+  "primaryKey": "invoice_line_id",
+  "api": {
+    "list": {
+      "path": "/invoice_line",
+      "enabled": true,
+      "permission": "billing_invoice_line.operation.list"
+    },
+    "create": {
+      "path": "/invoice_line",
+      "enabled": true,
+      "permission": "billing_invoice_line.operation.create"
+    },
+    "detail": {
+      "path": "/invoice_line/{invoice_line_id}",
+      "enabled": true,
+      "permission": "billing_invoice_line.operation.detail"
+    },
+    "update": {
+      "path": "/invoice_line/{invoice_line_id}",
+      "enabled": true,
+      "permission": "billing_invoice_line.operation.update"
+    },
+    "delete": {
+      "path": "/invoice_line/{invoice_line_id}",
+      "enabled": true,
+      "permission": "billing_invoice_line.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "invoice_line_id",
+        "label": "Invoice Line Id"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "line_no",
+        "label": "Line No"
+      },
+      {
+        "field": "line_type",
+        "label": "Line Type"
+      },
+      {
+        "field": "description",
+        "label": "Description"
+      },
+      {
+        "field": "plan_price_id",
+        "label": "Plan Price Id"
+      },
+      {
+        "field": "addon_price_id",
+        "label": "Addon Price Id"
+      },
+      {
+        "field": "subscription_item_id",
+        "label": "Subscription Item Id"
+      },
+      {
+        "field": "feature_id",
+        "label": "Feature Id"
+      },
+      {
+        "field": "coupon_id",
+        "label": "Coupon Id"
+      },
+      {
+        "field": "period_start",
+        "label": "Period Start"
+      },
+      {
+        "field": "period_end",
+        "label": "Period End"
+      },
+      {
+        "field": "quantity",
+        "label": "Quantity"
+      },
+      {
+        "field": "unit_amount",
+        "label": "Unit Amount"
+      },
+      {
+        "field": "discount_amount",
+        "label": "Discount Amount"
+      },
+      {
+        "field": "tax_rate_id",
+        "label": "Tax Rate Id"
+      },
+      {
+        "field": "tax_rate",
+        "label": "Tax Rate"
+      },
+      {
+        "field": "tax_amount",
+        "label": "Tax Amount"
+      },
+      {
+        "field": "net_amount",
+        "label": "Net Amount"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "invoice_line_id",
+      "invoice_id",
+      "line_no",
+      "line_type",
+      "description",
+      "plan_price_id",
+      "addon_price_id",
+      "subscription_item_id",
+      "feature_id",
+      "coupon_id",
+      "period_start",
+      "period_end",
+      "quantity",
+      "unit_amount",
+      "discount_amount",
+      "tax_rate_id",
+      "tax_rate",
+      "tax_amount",
+      "net_amount"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "invoice_line_id",
+      "label": "Invoice Line Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/billing_invoice",
+          "displayField": "name",
+          "valueField": "invoice_id"
+        }
+      }
+    },
+    {
+      "name": "line_no",
+      "label": "Line No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Line No",
+        "placeholder": "Enter Line No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "line_type",
+      "label": "Line Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Line Type",
+        "placeholder": "Enter Line Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      }
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Description",
+        "placeholder": "Enter Description",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "plan_price_id",
+      "label": "Plan Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_plan_price",
+        "column": "plan_price_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_plan_price",
+          "displayField": "name",
+          "valueField": "plan_price_id"
+        }
+      }
+    },
+    {
+      "name": "addon_price_id",
+      "label": "Addon Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_addon_price",
+        "column": "addon_price_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_addon_price",
+          "displayField": "name",
+          "valueField": "addon_price_id"
+        }
+      }
+    },
+    {
+      "name": "subscription_item_id",
+      "label": "Subscription Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "subscription_subscription_item",
+        "column": "subscription_item_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/subscription_subscription_item",
+          "displayField": "name",
+          "valueField": "subscription_item_id"
+        }
+      }
+    },
+    {
+      "name": "feature_id",
+      "label": "Feature Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_feature",
+        "column": "feature_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_feature",
+          "displayField": "name",
+          "valueField": "feature_id"
+        }
+      }
+    },
+    {
+      "name": "coupon_id",
+      "label": "Coupon Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_coupon",
+        "column": "coupon_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_coupon",
+          "displayField": "name",
+          "valueField": "coupon_id"
+        }
+      }
+    },
+    {
+      "name": "period_start",
+      "label": "Period Start",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Period Start",
+        "placeholder": "Enter Period Start",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "period_end",
+      "label": "Period End",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Period End",
+        "placeholder": "Enter Period End",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "quantity",
+      "label": "Quantity",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Quantity",
+        "placeholder": "Enter Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 1
+    },
+    {
+      "name": "unit_amount",
+      "label": "Unit Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Unit Amount",
+        "placeholder": "Enter Unit Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "discount_amount",
+      "label": "Discount Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Discount Amount",
+        "placeholder": "Enter Discount Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "tax_rate_id",
+      "label": "Tax Rate Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_tax_rate",
+        "column": "tax_rate_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_tax_rate",
+          "displayField": "name",
+          "valueField": "tax_rate_id"
+        }
+      }
+    },
+    {
+      "name": "tax_rate",
+      "label": "Tax Rate",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Tax Rate",
+        "placeholder": "Enter Tax Rate",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "tax_amount",
+      "label": "Tax Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Tax Amount",
+        "placeholder": "Enter Tax Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "net_amount",
+      "label": "Net Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Net Amount",
+        "placeholder": "Enter Net Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

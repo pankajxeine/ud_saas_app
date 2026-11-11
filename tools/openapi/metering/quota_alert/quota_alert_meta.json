@@ -1,0 +1,418 @@
+{
+  "entity": "QuotaAlert",
+  "title": "QuotaAlert",
+  "table": "metering_quota_alert",
+  "primaryKey": "quota_alert_id",
+  "api": {
+    "list": {
+      "path": "/quota_alert",
+      "enabled": true,
+      "permission": "metering_quota_alert.operation.list"
+    },
+    "create": {
+      "path": "/quota_alert",
+      "enabled": true,
+      "permission": "metering_quota_alert.operation.create"
+    },
+    "detail": {
+      "path": "/quota_alert/{quota_alert_id}",
+      "enabled": true,
+      "permission": "metering_quota_alert.operation.detail"
+    },
+    "update": {
+      "path": "/quota_alert/{quota_alert_id}",
+      "enabled": true,
+      "permission": "metering_quota_alert.operation.update"
+    },
+    "delete": {
+      "path": "/quota_alert/{quota_alert_id}",
+      "enabled": true,
+      "permission": "metering_quota_alert.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "quota_alert_id",
+        "label": "Quota Alert Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "meter_id",
+        "label": "Meter Id"
+      },
+      {
+        "field": "period_start",
+        "label": "Period Start"
+      },
+      {
+        "field": "threshold_percent",
+        "label": "Threshold Percent"
+      },
+      {
+        "field": "used_quantity",
+        "label": "Used Quantity"
+      },
+      {
+        "field": "limit_quantity",
+        "label": "Limit Quantity"
+      },
+      {
+        "field": "triggered_at",
+        "label": "Triggered At"
+      },
+      {
+        "field": "acknowledged_at",
+        "label": "Acknowledged At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "quota_alert_id",
+      "tenant_application_id",
+      "meter_id",
+      "period_start",
+      "threshold_percent",
+      "used_quantity",
+      "limit_quantity",
+      "triggered_at",
+      "acknowledged_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "quota_alert_id",
+      "label": "Quota Alert Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenancy_tenant_application",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "meter_id",
+      "label": "Meter Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "metering_meter",
+        "column": "meter_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/metering_meter",
+          "displayField": "name",
+          "valueField": "meter_id"
+        }
+      }
+    },
+    {
+      "name": "period_start",
+      "label": "Period Start",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Period Start",
+        "placeholder": "Enter Period Start",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "threshold_percent",
+      "label": "Threshold Percent",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Threshold Percent",
+        "placeholder": "Enter Threshold Percent",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "minimum": 1,
+        "maximum": 1000
+      }
+    },
+    {
+      "name": "used_quantity",
+      "label": "Used Quantity",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Used Quantity",
+        "placeholder": "Enter Used Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "limit_quantity",
+      "label": "Limit Quantity",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Limit Quantity",
+        "placeholder": "Enter Limit Quantity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "triggered_at",
+      "label": "Triggered At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Triggered At",
+        "placeholder": "Enter Triggered At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "acknowledged_at",
+      "label": "Acknowledged At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Acknowledged At",
+        "placeholder": "Enter Acknowledged At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

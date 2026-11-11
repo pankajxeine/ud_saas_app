@@ -34,6 +34,19 @@ class ApplicationRoutesConstants {
   // Settings routes
   static const settings = '/settings';
 
+  // Metadata designer route
+  static const metadataModules = '/metadata/modules';
+  static const metadataModuleNew = '/metadata/modules/new';
+
+  static String metadataModule(String moduleId) =>
+      '/metadata/modules/${Uri.encodeComponent(moduleId)}';
+
+  static String metadataVersionNew(String moduleId) =>
+      '${metadataModule(moduleId)}/versions/new';
+
+  static String metadataVersion(String moduleId, String versionId) =>
+      '${metadataModule(moduleId)}/versions/${Uri.encodeComponent(versionId)}';
+
   // Error routes
   static const notFound = '/not-found';
   static const error = '/error';
@@ -108,51 +121,78 @@ class ApplicationRoutesConstants {
       Icons.dashboard_outlined,
     ),
     NavGroup(
-        'Manage',
-        'nav_manage',
-        [
-          NavItem(
-              'Orders', 'nav_orders', R.orders, Icons.receipt_long_outlined),
-          NavItem(
-              'Customers', 'nav_customers', R.customers, Icons.people_outline),
-          NavItem('Products', 'nav_products', R.products,
-              Icons.inventory_2_outlined),
-        ],
-        null,
-        null),
+      'Manage',
+      'nav_manage',
+      [
+        NavItem('Orders', 'nav_orders', R.orders, Icons.receipt_long_outlined),
+        NavItem(
+          'Customers',
+          'nav_customers',
+          R.customers,
+          Icons.people_outline,
+        ),
+        NavItem(
+          'Products',
+          'nav_products',
+          R.products,
+          Icons.inventory_2_outlined,
+        ),
+      ],
+      null,
+      null,
+    ),
     NavGroup(
-        'Apps',
-        'nav_apps',
-        [
-          NavItem('Inbox', 'nav_inbox', R.inbox, Icons.mail_outline),
-          NavItem('Board', 'nav_board', R.kanban, Icons.view_kanban_outlined),
-          NavItem('Calendar', 'nav_calendar', R.calendar,
-              Icons.calendar_today_outlined),
-          NavItem('Chat', 'nav_chat', R.chat, Icons.chat_bubble_outline),
-        ],
-        null,
-        null),
+      'Apps',
+      'nav_apps',
+      [
+        NavItem('Inbox', 'nav_inbox', R.inbox, Icons.mail_outline),
+        NavItem('Board', 'nav_board', R.kanban, Icons.view_kanban_outlined),
+        NavItem(
+          'Calendar',
+          'nav_calendar',
+          R.calendar,
+          Icons.calendar_today_outlined,
+        ),
+        NavItem('Chat', 'nav_chat', R.chat, Icons.chat_bubble_outline),
+      ],
+      null,
+      null,
+    ),
     NavGroup(
-        'Build',
-        'nav_build',
-        [
-          NavItem('Components', 'nav_components', R.components,
-              Icons.widgets_outlined),
-          NavItem('Forms', 'nav_forms', R.forms, Icons.edit_note_outlined),
-          NavItem(
-              'Wizard', 'nav_wizard', R.wizard, Icons.linear_scale_outlined),
-          NavItem('Settings', 'settings', R.settings, Icons.settings_outlined),
-          NavItem('Profile', 'nav_profile', R.profile, Icons.person_outline,
-              inSidebar: false),
-        ],
-        null,
-        null)
+      'Build',
+      'nav_build',
+      [
+        NavItem(
+          'Components',
+          'nav_components',
+          R.components,
+          Icons.widgets_outlined,
+        ),
+        NavItem('Forms', 'nav_forms', R.forms, Icons.edit_note_outlined),
+        NavItem('Wizard', 'nav_wizard', R.wizard, Icons.linear_scale_outlined),
+        NavItem('Settings', 'settings', R.settings, Icons.settings_outlined),
+        NavItem(
+          'Profile',
+          'nav_profile',
+          R.profile,
+          Icons.person_outline,
+          inSidebar: false,
+        ),
+      ],
+      null,
+      null,
+    ),
   ];
 }
 
 class NavGroup {
   const NavGroup(
-      this.label, this.localizationKey, this.items, this.path, this.icon);
+    this.label,
+    this.localizationKey,
+    this.items,
+    this.path,
+    this.icon,
+  );
   final String label;
   final String localizationKey;
   final List<NavItem> items;

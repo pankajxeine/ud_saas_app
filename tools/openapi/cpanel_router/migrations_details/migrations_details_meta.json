@@ -1,0 +1,505 @@
+{
+  "entity": "MigrationsDetails",
+  "title": "MigrationsDetails",
+  "table": "migrations_details",
+  "primaryKey": "migration_id",
+  "api": {
+    "list": {
+      "path": "/migrations_details",
+      "enabled": true,
+      "permission": "migrations_details.operation.list"
+    },
+    "create": {
+      "path": "/migrations_details",
+      "enabled": true,
+      "permission": "migrations_details.operation.create"
+    },
+    "detail": {
+      "path": "/migrations_details/{migration_id}",
+      "enabled": true,
+      "permission": "migrations_details.operation.detail"
+    },
+    "update": {
+      "path": "/migrations_details/{migration_id}",
+      "enabled": true,
+      "permission": "migrations_details.operation.update"
+    },
+    "delete": {
+      "path": "/migrations_details/{migration_id}",
+      "enabled": true,
+      "permission": "migrations_details.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "migration_id",
+        "label": "Migration Id"
+      },
+      {
+        "field": "tenant_id",
+        "label": "Tenant Id"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "folder",
+        "label": "Folder"
+      },
+      {
+        "field": "year_folder",
+        "label": "Year Folder"
+      },
+      {
+        "field": "file_name",
+        "label": "File Name"
+      },
+      {
+        "field": "checksum",
+        "label": "Checksum"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "execution_started_at",
+        "label": "Execution Started At"
+      },
+      {
+        "field": "execution_finished_at",
+        "label": "Execution Finished At"
+      },
+      {
+        "field": "error_message",
+        "label": "Error Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "migration_id",
+      "tenant_id",
+      "schema_name",
+      "folder",
+      "year_folder",
+      "file_name",
+      "checksum",
+      "status",
+      "execution_started_at",
+      "execution_finished_at",
+      "error_message",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "migration_id",
+      "label": "Migration Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_id",
+      "label": "Tenant Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Schema Name",
+        "placeholder": "Enter Schema Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "folder",
+      "label": "Folder",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Folder",
+        "placeholder": "Enter Folder",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "year_folder",
+      "label": "Year Folder",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Year Folder",
+        "placeholder": "Enter Year Folder",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "file_name",
+      "label": "File Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "File Name",
+        "placeholder": "Enter File Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "checksum",
+      "label": "Checksum",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Checksum",
+        "placeholder": "Enter Checksum",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "pending",
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "rolled_back"
+      ]
+    },
+    {
+      "name": "execution_started_at",
+      "label": "Execution Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Execution Started At",
+        "placeholder": "Enter Execution Started At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "execution_finished_at",
+      "label": "Execution Finished At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Execution Finished At",
+        "placeholder": "Enter Execution Finished At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "error_message",
+      "label": "Error Message",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Error Message",
+        "placeholder": "Enter Error Message",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

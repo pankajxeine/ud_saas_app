@@ -1,0 +1,357 @@
+{
+  "entity": "AddonPrice",
+  "title": "AddonPrice",
+  "table": "commerce_addon_price",
+  "primaryKey": "addon_price_id",
+  "api": {
+    "list": {
+      "path": "/addon_price",
+      "enabled": true,
+      "permission": "commerce_addon_price.operation.list"
+    },
+    "create": {
+      "path": "/addon_price",
+      "enabled": true,
+      "permission": "commerce_addon_price.operation.create"
+    },
+    "detail": {
+      "path": "/addon_price/{addon_price_id}",
+      "enabled": true,
+      "permission": "commerce_addon_price.operation.detail"
+    },
+    "update": {
+      "path": "/addon_price/{addon_price_id}",
+      "enabled": true,
+      "permission": "commerce_addon_price.operation.update"
+    },
+    "delete": {
+      "path": "/addon_price/{addon_price_id}",
+      "enabled": true,
+      "permission": "commerce_addon_price.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "addon_price_id",
+        "label": "Addon Price Id"
+      },
+      {
+        "field": "addon_version_id",
+        "label": "Addon Version Id"
+      },
+      {
+        "field": "price_book_id",
+        "label": "Price Book Id"
+      },
+      {
+        "field": "billing_period",
+        "label": "Billing Period"
+      },
+      {
+        "field": "unit_amount",
+        "label": "Unit Amount"
+      },
+      {
+        "field": "is_active",
+        "label": "Is Active"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "addon_price_id",
+      "addon_version_id",
+      "price_book_id",
+      "billing_period",
+      "unit_amount",
+      "is_active",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "addon_price_id",
+      "label": "Addon Price Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "addon_version_id",
+      "label": "Addon Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_addon_version",
+        "column": "addon_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_addon_version",
+          "displayField": "name",
+          "valueField": "addon_version_id"
+        }
+      }
+    },
+    {
+      "name": "price_book_id",
+      "label": "Price Book Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_price_book",
+        "column": "price_book_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_price_book",
+          "displayField": "name",
+          "valueField": "price_book_id"
+        }
+      }
+    },
+    {
+      "name": "billing_period",
+      "label": "Billing Period",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Billing Period",
+        "placeholder": "Enter Billing Period",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      }
+    },
+    {
+      "name": "unit_amount",
+      "label": "Unit Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Unit Amount",
+        "placeholder": "Enter Unit Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "is_active",
+      "label": "Is Active",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Active",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": true
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

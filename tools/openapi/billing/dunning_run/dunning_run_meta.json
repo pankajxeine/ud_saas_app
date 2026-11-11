@@ -1,0 +1,304 @@
+{
+  "entity": "DunningRun",
+  "title": "DunningRun",
+  "table": "billing_dunning_run",
+  "primaryKey": "dunning_run_id",
+  "api": {
+    "list": {
+      "path": "/dunning_run",
+      "enabled": true,
+      "permission": "billing_dunning_run.operation.list"
+    },
+    "create": {
+      "path": "/dunning_run",
+      "enabled": true,
+      "permission": "billing_dunning_run.operation.create"
+    },
+    "detail": {
+      "path": "/dunning_run/{dunning_run_id}",
+      "enabled": true,
+      "permission": "billing_dunning_run.operation.detail"
+    },
+    "update": {
+      "path": "/dunning_run/{dunning_run_id}",
+      "enabled": true,
+      "permission": "billing_dunning_run.operation.update"
+    },
+    "delete": {
+      "path": "/dunning_run/{dunning_run_id}",
+      "enabled": true,
+      "permission": "billing_dunning_run.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "dunning_run_id",
+        "label": "Dunning Run Id"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "executed_at",
+        "label": "Executed At"
+      },
+      {
+        "field": "result",
+        "label": "Result"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "dunning_run_id",
+      "invoice_id",
+      "step_no",
+      "action",
+      "executed_at",
+      "result"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "dunning_run_id",
+      "label": "Dunning Run Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/billing_invoice",
+          "displayField": "name",
+          "valueField": "invoice_id"
+        }
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Step No",
+        "placeholder": "Enter Step No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Action",
+        "placeholder": "Enter Action",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 14
+      }
+    },
+    {
+      "name": "executed_at",
+      "label": "Executed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Executed At",
+        "placeholder": "Enter Executed At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "result",
+      "label": "Result",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Result",
+        "placeholder": "Enter Result",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

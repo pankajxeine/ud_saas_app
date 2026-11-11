@@ -1,0 +1,375 @@
+{
+  "entity": "DeliveryAttempt",
+  "title": "DeliveryAttempt",
+  "table": "notify_delivery_attempt",
+  "primaryKey": "delivery_attempt_id",
+  "api": {
+    "list": {
+      "path": "/delivery_attempt",
+      "enabled": true,
+      "permission": "notify_delivery_attempt.operation.list"
+    },
+    "create": {
+      "path": "/delivery_attempt",
+      "enabled": true,
+      "permission": "notify_delivery_attempt.operation.create"
+    },
+    "detail": {
+      "path": "/delivery_attempt/{delivery_attempt_id}",
+      "enabled": true,
+      "permission": "notify_delivery_attempt.operation.detail"
+    },
+    "update": {
+      "path": "/delivery_attempt/{delivery_attempt_id}",
+      "enabled": true,
+      "permission": "notify_delivery_attempt.operation.update"
+    },
+    "delete": {
+      "path": "/delivery_attempt/{delivery_attempt_id}",
+      "enabled": true,
+      "permission": "notify_delivery_attempt.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "delivery_attempt_id",
+        "label": "Delivery Attempt Id"
+      },
+      {
+        "field": "notification_id",
+        "label": "Notification Id"
+      },
+      {
+        "field": "attempt_no",
+        "label": "Attempt No"
+      },
+      {
+        "field": "provider_code",
+        "label": "Provider Code"
+      },
+      {
+        "field": "provider_message_id",
+        "label": "Provider Message Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "error",
+        "label": "Error"
+      },
+      {
+        "field": "attempted_at",
+        "label": "Attempted At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "delivery_attempt_id",
+      "notification_id",
+      "attempt_no",
+      "provider_code",
+      "provider_message_id",
+      "status",
+      "error",
+      "attempted_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "delivery_attempt_id",
+      "label": "Delivery Attempt Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "notification_id",
+      "label": "Notification Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "notify_notification",
+        "column": "notification_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/notify_notification",
+          "displayField": "name",
+          "valueField": "notification_id"
+        }
+      }
+    },
+    {
+      "name": "attempt_no",
+      "label": "Attempt No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Attempt No",
+        "placeholder": "Enter Attempt No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "provider_code",
+      "label": "Provider Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "notify_channel_provider",
+        "column": "provider_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/notify_channel_provider",
+          "displayField": "name",
+          "valueField": "provider_code"
+        }
+      }
+    },
+    {
+      "name": "provider_message_id",
+      "label": "Provider Message Id",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 120
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      }
+    },
+    {
+      "name": "error",
+      "label": "Error",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Error",
+        "placeholder": "Enter Error",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "attempted_at",
+      "label": "Attempted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Attempted At",
+        "placeholder": "Enter Attempted At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

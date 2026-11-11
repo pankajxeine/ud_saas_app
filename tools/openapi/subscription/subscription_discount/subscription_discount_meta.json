@@ -1,0 +1,291 @@
+{
+  "entity": "SubscriptionDiscount",
+  "title": "SubscriptionDiscount",
+  "table": "subscription_subscription_discount",
+  "primaryKey": "subscription_discount_id",
+  "api": {
+    "list": {
+      "path": "/subscription_discount",
+      "enabled": true,
+      "permission": "subscription_subscription_discount.operation.list"
+    },
+    "create": {
+      "path": "/subscription_discount",
+      "enabled": true,
+      "permission": "subscription_subscription_discount.operation.create"
+    },
+    "detail": {
+      "path": "/subscription_discount/{subscription_discount_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_discount.operation.detail"
+    },
+    "update": {
+      "path": "/subscription_discount/{subscription_discount_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_discount.operation.update"
+    },
+    "delete": {
+      "path": "/subscription_discount/{subscription_discount_id}",
+      "enabled": true,
+      "permission": "subscription_subscription_discount.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "subscription_discount_id",
+        "label": "Subscription Discount Id"
+      },
+      {
+        "field": "subscription_id",
+        "label": "Subscription Id"
+      },
+      {
+        "field": "coupon_id",
+        "label": "Coupon Id"
+      },
+      {
+        "field": "applied_at",
+        "label": "Applied At"
+      },
+      {
+        "field": "ends_at",
+        "label": "Ends At"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "subscription_discount_id",
+      "subscription_id",
+      "coupon_id",
+      "applied_at",
+      "ends_at",
+      "created_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subscription_discount_id",
+      "label": "Subscription Discount Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "subscription_id",
+      "label": "Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "subscription_subscription",
+        "column": "subscription_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/subscription_subscription",
+          "displayField": "name",
+          "valueField": "subscription_id"
+        }
+      }
+    },
+    {
+      "name": "coupon_id",
+      "label": "Coupon Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_coupon",
+        "column": "coupon_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_coupon",
+          "displayField": "name",
+          "valueField": "coupon_id"
+        }
+      }
+    },
+    {
+      "name": "applied_at",
+      "label": "Applied At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Applied At",
+        "placeholder": "Enter Applied At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ends_at",
+      "label": "Ends At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Ends At",
+        "placeholder": "Enter Ends At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

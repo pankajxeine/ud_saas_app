@@ -1,0 +1,265 @@
+{
+  "entity": "SensitiveColumn",
+  "title": "SensitiveColumn",
+  "table": "audit_sensitive_column",
+  "primaryKey": "sensitive_column_id",
+  "api": {
+    "list": {
+      "path": "/sensitive_column",
+      "enabled": true,
+      "permission": "audit_sensitive_column.operation.list"
+    },
+    "create": {
+      "path": "/sensitive_column",
+      "enabled": true,
+      "permission": "audit_sensitive_column.operation.create"
+    },
+    "detail": {
+      "path": "/sensitive_column/{sensitive_column_id}",
+      "enabled": true,
+      "permission": "audit_sensitive_column.operation.detail"
+    },
+    "update": {
+      "path": "/sensitive_column/{sensitive_column_id}",
+      "enabled": true,
+      "permission": "audit_sensitive_column.operation.update"
+    },
+    "delete": {
+      "path": "/sensitive_column/{sensitive_column_id}",
+      "enabled": true,
+      "permission": "audit_sensitive_column.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "sensitive_column_id",
+        "label": "Sensitive Column Id"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "table_name",
+        "label": "Table Name"
+      },
+      {
+        "field": "column_name",
+        "label": "Column Name"
+      },
+      {
+        "field": "category",
+        "label": "Category"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "sensitive_column_id",
+      "schema_name",
+      "table_name",
+      "column_name",
+      "category"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "sensitive_column_id",
+      "label": "Sensitive Column Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Schema Name",
+        "placeholder": "Enter Schema Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "table_name",
+      "label": "Table Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Table Name",
+        "placeholder": "Enter Table Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "column_name",
+      "label": "Column Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Column Name",
+        "placeholder": "Enter Column Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "category",
+      "label": "Category",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Category",
+        "placeholder": "Enter Category",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      }
+    }
+  ]
+}

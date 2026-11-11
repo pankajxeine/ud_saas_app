@@ -1,0 +1,242 @@
+{
+  "entity": "RolePermission",
+  "title": "RolePermission",
+  "table": "iam_role_permission",
+  "primaryKey": "role_permission_id",
+  "api": {
+    "list": {
+      "path": "/role_permission",
+      "enabled": true,
+      "permission": "iam_role_permission.operation.list"
+    },
+    "create": {
+      "path": "/role_permission",
+      "enabled": true,
+      "permission": "iam_role_permission.operation.create"
+    },
+    "detail": {
+      "path": "/role_permission/{role_permission_id}",
+      "enabled": true,
+      "permission": "iam_role_permission.operation.detail"
+    },
+    "update": {
+      "path": "/role_permission/{role_permission_id}",
+      "enabled": true,
+      "permission": "iam_role_permission.operation.update"
+    },
+    "delete": {
+      "path": "/role_permission/{role_permission_id}",
+      "enabled": true,
+      "permission": "iam_role_permission.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "role_permission_id",
+        "label": "Role Permission Id"
+      },
+      {
+        "field": "role_code",
+        "label": "Role Code"
+      },
+      {
+        "field": "permission_code",
+        "label": "Permission Code"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "role_permission_id",
+      "role_code",
+      "permission_code",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "role_permission_id",
+      "label": "Role Permission Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "role_code",
+      "label": "Role Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_role",
+          "displayField": "name",
+          "valueField": "role_code"
+        }
+      }
+    },
+    {
+      "name": "permission_code",
+      "label": "Permission Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_permission",
+        "column": "permission_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_permission",
+          "displayField": "name",
+          "valueField": "permission_code"
+        }
+      }
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

@@ -1,0 +1,346 @@
+{
+  "entity": "NumberSeries",
+  "title": "NumberSeries",
+  "table": "billing_number_series",
+  "primaryKey": "number_series_id",
+  "api": {
+    "list": {
+      "path": "/number_series",
+      "enabled": true,
+      "permission": "billing_number_series.operation.list"
+    },
+    "create": {
+      "path": "/number_series",
+      "enabled": true,
+      "permission": "billing_number_series.operation.create"
+    },
+    "detail": {
+      "path": "/number_series/{number_series_id}",
+      "enabled": true,
+      "permission": "billing_number_series.operation.detail"
+    },
+    "update": {
+      "path": "/number_series/{number_series_id}",
+      "enabled": true,
+      "permission": "billing_number_series.operation.update"
+    },
+    "delete": {
+      "path": "/number_series/{number_series_id}",
+      "enabled": true,
+      "permission": "billing_number_series.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "number_series_id",
+        "label": "Number Series Id"
+      },
+      {
+        "field": "legal_entity_id",
+        "label": "Legal Entity Id"
+      },
+      {
+        "field": "document_type",
+        "label": "Document Type"
+      },
+      {
+        "field": "fiscal_year",
+        "label": "Fiscal Year"
+      },
+      {
+        "field": "prefix",
+        "label": "Prefix"
+      },
+      {
+        "field": "next_number",
+        "label": "Next Number"
+      },
+      {
+        "field": "padding",
+        "label": "Padding"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "number_series_id",
+      "legal_entity_id",
+      "document_type",
+      "fiscal_year",
+      "prefix",
+      "next_number",
+      "padding"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "number_series_id",
+      "label": "Number Series Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "legal_entity_id",
+      "label": "Legal Entity Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "org_legal_entity",
+        "column": "legal_entity_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/org_legal_entity",
+          "displayField": "name",
+          "valueField": "legal_entity_id"
+        }
+      }
+    },
+    {
+      "name": "document_type",
+      "label": "Document Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Document Type",
+        "placeholder": "Enter Document Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      }
+    },
+    {
+      "name": "fiscal_year",
+      "label": "Fiscal Year",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Fiscal Year",
+        "placeholder": "Enter Fiscal Year",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "prefix",
+      "label": "Prefix",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Prefix",
+        "placeholder": "Enter Prefix",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "next_number",
+      "label": "Next Number",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Next Number",
+        "placeholder": "Enter Next Number",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int64",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 1
+    },
+    {
+      "name": "padding",
+      "label": "Padding",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Padding",
+        "placeholder": "Enter Padding",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 6
+    }
+  ]
+}

@@ -1,0 +1,456 @@
+{
+  "entity": "WebhookDelivery",
+  "title": "WebhookDelivery",
+  "table": "integration_webhook_delivery",
+  "primaryKey": "webhook_delivery_id",
+  "api": {
+    "list": {
+      "path": "/webhook_delivery",
+      "enabled": true,
+      "permission": "integration_webhook_delivery.operation.list"
+    },
+    "create": {
+      "path": "/webhook_delivery",
+      "enabled": true,
+      "permission": "integration_webhook_delivery.operation.create"
+    },
+    "detail": {
+      "path": "/webhook_delivery/{webhook_delivery_id}",
+      "enabled": true,
+      "permission": "integration_webhook_delivery.operation.detail"
+    },
+    "update": {
+      "path": "/webhook_delivery/{webhook_delivery_id}",
+      "enabled": true,
+      "permission": "integration_webhook_delivery.operation.update"
+    },
+    "delete": {
+      "path": "/webhook_delivery/{webhook_delivery_id}",
+      "enabled": true,
+      "permission": "integration_webhook_delivery.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "webhook_delivery_id",
+        "label": "Webhook Delivery Id"
+      },
+      {
+        "field": "webhook_subscription_id",
+        "label": "Webhook Subscription Id"
+      },
+      {
+        "field": "event_id",
+        "label": "Event Id"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "attempts",
+        "label": "Attempts"
+      },
+      {
+        "field": "next_attempt_at",
+        "label": "Next Attempt At"
+      },
+      {
+        "field": "response_code",
+        "label": "Response Code"
+      },
+      {
+        "field": "response_ms",
+        "label": "Response Ms"
+      },
+      {
+        "field": "delivered_at",
+        "label": "Delivered At"
+      },
+      {
+        "field": "last_error",
+        "label": "Last Error"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "webhook_delivery_id",
+      "webhook_subscription_id",
+      "event_id",
+      "status",
+      "attempts",
+      "next_attempt_at",
+      "response_code",
+      "response_ms",
+      "delivered_at",
+      "last_error"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "webhook_delivery_id",
+      "label": "Webhook Delivery Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "webhook_subscription_id",
+      "label": "Webhook Subscription Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "integration_webhook_subscription",
+        "column": "webhook_subscription_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/integration_webhook_subscription",
+          "displayField": "name",
+          "valueField": "webhook_subscription_id"
+        }
+      }
+    },
+    {
+      "name": "event_id",
+      "label": "Event Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "integration_outbox_event",
+        "column": "event_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/integration_outbox_event",
+          "displayField": "name",
+          "valueField": "event_id"
+        }
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      },
+      "default": "pending"
+    },
+    {
+      "name": "attempts",
+      "label": "Attempts",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Attempts",
+        "placeholder": "Enter Attempts",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "next_attempt_at",
+      "label": "Next Attempt At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Next Attempt At",
+        "placeholder": "Enter Next Attempt At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "response_code",
+      "label": "Response Code",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Response Code",
+        "placeholder": "Enter Response Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "response_ms",
+      "label": "Response Ms",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Response Ms",
+        "placeholder": "Enter Response Ms",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "delivered_at",
+      "label": "Delivered At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Delivered At",
+        "placeholder": "Enter Delivered At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "last_error",
+      "label": "Last Error",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Last Error",
+        "placeholder": "Enter Last Error",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

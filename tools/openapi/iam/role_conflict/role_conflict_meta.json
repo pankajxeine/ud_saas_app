@@ -1,0 +1,320 @@
+{
+  "entity": "RoleConflict",
+  "title": "RoleConflict",
+  "table": "iam_role_conflict",
+  "primaryKey": "role_conflict_id",
+  "api": {
+    "list": {
+      "path": "/role_conflict",
+      "enabled": true,
+      "permission": "iam_role_conflict.operation.list"
+    },
+    "create": {
+      "path": "/role_conflict",
+      "enabled": true,
+      "permission": "iam_role_conflict.operation.create"
+    },
+    "detail": {
+      "path": "/role_conflict/{role_conflict_id}",
+      "enabled": true,
+      "permission": "iam_role_conflict.operation.detail"
+    },
+    "update": {
+      "path": "/role_conflict/{role_conflict_id}",
+      "enabled": true,
+      "permission": "iam_role_conflict.operation.update"
+    },
+    "delete": {
+      "path": "/role_conflict/{role_conflict_id}",
+      "enabled": true,
+      "permission": "iam_role_conflict.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "role_conflict_id",
+        "label": "Role Conflict Id"
+      },
+      {
+        "field": "role_code_a",
+        "label": "Role Code A"
+      },
+      {
+        "field": "role_code_b",
+        "label": "Role Code B"
+      },
+      {
+        "field": "severity",
+        "label": "Severity"
+      },
+      {
+        "field": "rationale",
+        "label": "Rationale"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "role_conflict_id",
+      "role_code_a",
+      "role_code_b",
+      "severity",
+      "rationale",
+      "created_at",
+      "created_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "role_conflict_id",
+      "label": "Role Conflict Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "role_code_a",
+      "label": "Role Code A",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_role",
+          "displayField": "name",
+          "valueField": "role_code"
+        }
+      }
+    },
+    {
+      "name": "role_code_b",
+      "label": "Role Code B",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_role",
+          "displayField": "name",
+          "valueField": "role_code"
+        }
+      }
+    },
+    {
+      "name": "severity",
+      "label": "Severity",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Severity",
+        "placeholder": "Enter Severity",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      },
+      "default": "block"
+    },
+    {
+      "name": "rationale",
+      "label": "Rationale",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Rationale",
+        "placeholder": "Enter Rationale",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_by",
+      "label": "Created By",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": true,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

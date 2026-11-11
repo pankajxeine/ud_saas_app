@@ -1,0 +1,404 @@
+{
+  "entity": "ProvisioningRuns",
+  "title": "ProvisioningRuns",
+  "table": "provisioning_runs",
+  "primaryKey": "provisioning_run_id",
+  "api": {
+    "list": {
+      "path": "/provisioning_runs",
+      "enabled": true,
+      "permission": "provisioning_runs.operation.list"
+    },
+    "create": {
+      "path": "/provisioning_runs",
+      "enabled": true,
+      "permission": "provisioning_runs.operation.create"
+    },
+    "detail": {
+      "path": "/provisioning_runs/{provisioning_run_id}",
+      "enabled": true,
+      "permission": "provisioning_runs.operation.detail"
+    },
+    "update": {
+      "path": "/provisioning_runs/{provisioning_run_id}",
+      "enabled": true,
+      "permission": "provisioning_runs.operation.update"
+    },
+    "delete": {
+      "path": "/provisioning_runs/{provisioning_run_id}",
+      "enabled": true,
+      "permission": "provisioning_runs.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "provisioning_run_id",
+        "label": "Provisioning Run Id"
+      },
+      {
+        "field": "registration_id",
+        "label": "Registration Id"
+      },
+      {
+        "field": "script_name",
+        "label": "Script Name"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "started_at",
+        "label": "Started At"
+      },
+      {
+        "field": "finished_at",
+        "label": "Finished At"
+      },
+      {
+        "field": "output",
+        "label": "Output"
+      },
+      {
+        "field": "error_message",
+        "label": "Error Message"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "provisioning_run_id",
+      "registration_id",
+      "script_name",
+      "status",
+      "started_at",
+      "finished_at",
+      "output",
+      "error_message",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "provisioning_run_id",
+      "label": "Provisioning Run Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "registration_id",
+      "label": "Registration Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "tenant_registrations",
+        "column": "registration_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/tenant_registrations",
+          "displayField": "name",
+          "valueField": "registration_id"
+        }
+      }
+    },
+    {
+      "name": "script_name",
+      "label": "Script Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Script Name",
+        "placeholder": "Enter Script Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "queued",
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed"
+      ]
+    },
+    {
+      "name": "started_at",
+      "label": "Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Started At",
+        "placeholder": "Enter Started At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "finished_at",
+      "label": "Finished At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Finished At",
+        "placeholder": "Enter Finished At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "output",
+      "label": "Output",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Output",
+        "placeholder": "Enter Output",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "{}"
+    },
+    {
+      "name": "error_message",
+      "label": "Error Message",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Error Message",
+        "placeholder": "Enter Error Message",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

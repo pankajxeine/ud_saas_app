@@ -1,0 +1,491 @@
+{
+  "entity": "ProvisioningStep",
+  "title": "ProvisioningStep",
+  "table": "provisioning_provisioning_step",
+  "primaryKey": "provisioning_step_id",
+  "api": {
+    "list": {
+      "path": "/provisioning_step",
+      "enabled": true,
+      "permission": "provisioning_provisioning_step.operation.list"
+    },
+    "create": {
+      "path": "/provisioning_step",
+      "enabled": true,
+      "permission": "provisioning_provisioning_step.operation.create"
+    },
+    "detail": {
+      "path": "/provisioning_step/{provisioning_step_id}",
+      "enabled": true,
+      "permission": "provisioning_provisioning_step.operation.detail"
+    },
+    "update": {
+      "path": "/provisioning_step/{provisioning_step_id}",
+      "enabled": true,
+      "permission": "provisioning_provisioning_step.operation.update"
+    },
+    "delete": {
+      "path": "/provisioning_step/{provisioning_step_id}",
+      "enabled": true,
+      "permission": "provisioning_provisioning_step.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "provisioning_step_id",
+        "label": "Provisioning Step Id"
+      },
+      {
+        "field": "job_id",
+        "label": "Job Id"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "step_code",
+        "label": "Step Code"
+      },
+      {
+        "field": "compensation_step_code",
+        "label": "Compensation Step Code"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "attempts",
+        "label": "Attempts"
+      },
+      {
+        "field": "started_at",
+        "label": "Started At"
+      },
+      {
+        "field": "finished_at",
+        "label": "Finished At"
+      },
+      {
+        "field": "output",
+        "label": "Output"
+      },
+      {
+        "field": "error",
+        "label": "Error"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "provisioning_step_id",
+      "job_id",
+      "step_no",
+      "step_code",
+      "compensation_step_code",
+      "status",
+      "attempts",
+      "started_at",
+      "finished_at",
+      "output",
+      "error"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "provisioning_step_id",
+      "label": "Provisioning Step Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "job_id",
+      "label": "Job Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "provisioning_provisioning_job",
+        "column": "job_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/provisioning_provisioning_job",
+          "displayField": "name",
+          "valueField": "job_id"
+        }
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Step No",
+        "placeholder": "Enter Step No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "step_code",
+      "label": "Step Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Step Code",
+        "placeholder": "Enter Step Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "compensation_step_code",
+      "label": "Compensation Step Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Compensation Step Code",
+        "placeholder": "Enter Compensation Step Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      },
+      "default": "pending"
+    },
+    {
+      "name": "attempts",
+      "label": "Attempts",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Attempts",
+        "placeholder": "Enter Attempts",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "started_at",
+      "label": "Started At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Started At",
+        "placeholder": "Enter Started At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "finished_at",
+      "label": "Finished At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Finished At",
+        "placeholder": "Enter Finished At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "output",
+      "label": "Output",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Output",
+        "placeholder": "Enter Output",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "error",
+      "label": "Error",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Error",
+        "placeholder": "Enter Error",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

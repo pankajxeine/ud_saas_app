@@ -1,0 +1,499 @@
+{
+  "entity": "LoginAttempt",
+  "title": "LoginAttempt",
+  "table": "iam_login_attempt",
+  "primaryKey": "login_attempt_id",
+  "api": {
+    "list": {
+      "path": "/login_attempt",
+      "enabled": true,
+      "permission": "iam_login_attempt.operation.list"
+    },
+    "create": {
+      "path": "/login_attempt",
+      "enabled": true,
+      "permission": "iam_login_attempt.operation.create"
+    },
+    "detail": {
+      "path": "/login_attempt/{login_attempt_id}",
+      "enabled": true,
+      "permission": "iam_login_attempt.operation.detail"
+    },
+    "update": {
+      "path": "/login_attempt/{login_attempt_id}",
+      "enabled": true,
+      "permission": "iam_login_attempt.operation.update"
+    },
+    "delete": {
+      "path": "/login_attempt/{login_attempt_id}",
+      "enabled": true,
+      "permission": "iam_login_attempt.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "login_attempt_id",
+        "label": "Login Attempt Id"
+      },
+      {
+        "field": "app_user_id",
+        "label": "App User Id"
+      },
+      {
+        "field": "username_entered",
+        "label": "Username Entered"
+      },
+      {
+        "field": "auth_method",
+        "label": "Auth Method"
+      },
+      {
+        "field": "attempted_at",
+        "label": "Attempted At"
+      },
+      {
+        "field": "is_success",
+        "label": "Is Success"
+      },
+      {
+        "field": "failure_reason",
+        "label": "Failure Reason"
+      },
+      {
+        "field": "ip_address",
+        "label": "Ip Address"
+      },
+      {
+        "field": "geo_country",
+        "label": "Geo Country"
+      },
+      {
+        "field": "user_agent",
+        "label": "User Agent"
+      },
+      {
+        "field": "risk_score",
+        "label": "Risk Score"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "login_attempt_id",
+      "app_user_id",
+      "username_entered",
+      "auth_method",
+      "attempted_at",
+      "is_success",
+      "failure_reason",
+      "ip_address",
+      "geo_country",
+      "user_agent",
+      "risk_score"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "login_attempt_id",
+      "label": "Login Attempt Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "app_user_id",
+      "label": "App User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "username_entered",
+      "label": "Username Entered",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Username Entered",
+        "placeholder": "Enter Username Entered",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 254
+      }
+    },
+    {
+      "name": "auth_method",
+      "label": "Auth Method",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Auth Method",
+        "placeholder": "Enter Auth Method",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      },
+      "default": "password"
+    },
+    {
+      "name": "attempted_at",
+      "label": "Attempted At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Attempted At",
+        "placeholder": "Enter Attempted At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "is_success",
+      "label": "Is Success",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Success",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "failure_reason",
+      "label": "Failure Reason",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Failure Reason",
+        "placeholder": "Enter Failure Reason",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 20
+      }
+    },
+    {
+      "name": "ip_address",
+      "label": "Ip Address",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Ip Address",
+        "placeholder": "Enter Ip Address",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "geo_country",
+      "label": "Geo Country",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Geo Country",
+        "placeholder": "Enter Geo Country",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 2
+      }
+    },
+    {
+      "name": "user_agent",
+      "label": "User Agent",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "User Agent",
+        "placeholder": "Enter User Agent",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "risk_score",
+      "label": "Risk Score",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Risk Score",
+        "placeholder": "Enter Risk Score",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

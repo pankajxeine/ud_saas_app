@@ -1,0 +1,795 @@
+{
+  "entity": "AcceptanceConfiguration",
+  "title": "AcceptanceConfiguration",
+  "table": "payment_acceptance_configuration",
+  "primaryKey": "acceptance_configuration_id",
+  "api": {
+    "list": {
+      "path": "/acceptance_configuration",
+      "enabled": true,
+      "permission": "payment_acceptance_configuration.operation.list"
+    },
+    "create": {
+      "path": "/acceptance_configuration",
+      "enabled": true,
+      "permission": "payment_acceptance_configuration.operation.create"
+    },
+    "detail": {
+      "path": "/acceptance_configuration/{acceptance_configuration_id}",
+      "enabled": true,
+      "permission": "payment_acceptance_configuration.operation.detail"
+    },
+    "update": {
+      "path": "/acceptance_configuration/{acceptance_configuration_id}",
+      "enabled": true,
+      "permission": "payment_acceptance_configuration.operation.update"
+    },
+    "delete": {
+      "path": "/acceptance_configuration/{acceptance_configuration_id}",
+      "enabled": true,
+      "permission": "payment_acceptance_configuration.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "acceptance_configuration_id",
+        "label": "Acceptance Configuration Id"
+      },
+      {
+        "field": "tenant_application_id",
+        "label": "Tenant Application Id"
+      },
+      {
+        "field": "outlet_id",
+        "label": "Outlet Id"
+      },
+      {
+        "field": "mode_code",
+        "label": "Mode Code"
+      },
+      {
+        "field": "merchant_account_id",
+        "label": "Merchant Account Id"
+      },
+      {
+        "field": "pos_terminal_id",
+        "label": "Pos Terminal Id"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "currency_code",
+        "label": "Currency Code"
+      },
+      {
+        "field": "upi_flow",
+        "label": "Upi Flow"
+      },
+      {
+        "field": "upi_vpa",
+        "label": "Upi Vpa"
+      },
+      {
+        "field": "upi_verified_at",
+        "label": "Upi Verified At"
+      },
+      {
+        "field": "minimum_amount",
+        "label": "Minimum Amount"
+      },
+      {
+        "field": "maximum_amount",
+        "label": "Maximum Amount"
+      },
+      {
+        "field": "capture_mode",
+        "label": "Capture Mode"
+      },
+      {
+        "field": "is_enabled",
+        "label": "Is Enabled"
+      },
+      {
+        "field": "valid_from",
+        "label": "Valid From"
+      },
+      {
+        "field": "valid_to",
+        "label": "Valid To"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "acceptance_configuration_id",
+      "tenant_application_id",
+      "outlet_id",
+      "mode_code",
+      "merchant_account_id",
+      "pos_terminal_id",
+      "channel",
+      "currency_code",
+      "upi_flow",
+      "upi_vpa",
+      "upi_verified_at",
+      "minimum_amount",
+      "maximum_amount",
+      "capture_mode",
+      "is_enabled",
+      "valid_from",
+      "valid_to",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "acceptance_configuration_id",
+      "label": "Acceptance Configuration Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "tenant_application_id",
+      "label": "Tenant Application Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_pos_terminal",
+        "column": "tenant_application_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_pos_terminal",
+          "displayField": "name",
+          "valueField": "tenant_application_id"
+        }
+      }
+    },
+    {
+      "name": "outlet_id",
+      "label": "Outlet Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_pos_terminal",
+        "column": "outlet_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_pos_terminal",
+          "displayField": "name",
+          "valueField": "outlet_id"
+        }
+      }
+    },
+    {
+      "name": "mode_code",
+      "label": "Mode Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_acceptance_mode",
+        "column": "mode_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_acceptance_mode",
+          "displayField": "name",
+          "valueField": "mode_code"
+        }
+      }
+    },
+    {
+      "name": "merchant_account_id",
+      "label": "Merchant Account Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_pos_terminal",
+        "column": "merchant_account_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_pos_terminal",
+          "displayField": "name",
+          "valueField": "merchant_account_id"
+        }
+      }
+    },
+    {
+      "name": "pos_terminal_id",
+      "label": "Pos Terminal Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_pos_terminal",
+        "column": "pos_terminal_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_pos_terminal",
+          "displayField": "name",
+          "valueField": "pos_terminal_id"
+        }
+      }
+    },
+    {
+      "name": "channel",
+      "label": "Channel",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Channel",
+        "placeholder": "Enter Channel",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      },
+      "enum": [
+        "pos",
+        "web",
+        "mobile",
+        "backoffice"
+      ]
+    },
+    {
+      "name": "currency_code",
+      "label": "Currency Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_currency",
+          "displayField": "name",
+          "valueField": "currency_code"
+        }
+      }
+    },
+    {
+      "name": "upi_flow",
+      "label": "Upi Flow",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Upi Flow",
+        "placeholder": "Enter Upi Flow",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 10
+      },
+      "enum": [
+        "intent",
+        "dynamic_qr",
+        "static_qr"
+      ]
+    },
+    {
+      "name": "upi_vpa",
+      "label": "Upi Vpa",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Upi Vpa",
+        "placeholder": "Enter Upi Vpa",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "upi_verified_at",
+      "label": "Upi Verified At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Upi Verified At",
+        "placeholder": "Enter Upi Verified At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "minimum_amount",
+      "label": "Minimum Amount",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Minimum Amount",
+        "placeholder": "Enter Minimum Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": 0
+    },
+    {
+      "name": "maximum_amount",
+      "label": "Maximum Amount",
+      "type": "number",
+      "widget": "text",
+      "ui": {
+        "label": "Maximum Amount",
+        "placeholder": "Enter Maximum Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "double",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "capture_mode",
+      "label": "Capture Mode",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Capture Mode",
+        "placeholder": "Enter Capture Mode",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 9
+      },
+      "default": "automatic",
+      "enum": [
+        "automatic",
+        "manual"
+      ]
+    },
+    {
+      "name": "is_enabled",
+      "label": "Is Enabled",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Enabled",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": false
+    },
+    {
+      "name": "valid_from",
+      "label": "Valid From",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Valid From",
+        "placeholder": "Enter Valid From",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "valid_to",
+      "label": "Valid To",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Valid To",
+        "placeholder": "Enter Valid To",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

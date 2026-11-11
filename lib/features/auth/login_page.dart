@@ -162,29 +162,6 @@ class _LoginPageState extends State<LoginPage> {
                                           context,
                                         ).authSignIn,
                                       ),
-                                      // child: state is AuthLoginLoading
-                                      //     ? const BorderLoading(
-                                      //         mode: BorderLoadingMode.tracer,
-                                      //         tracer: BorderTracerSpec(
-                                      //           lengthFraction: 0.12,
-                                      //           dashCount: 2,
-                                      //         ),
-                                      //         spec: BorderGradientSpec(
-                                      //           type: BorderGradientType.linear,
-                                      //           colors: [
-                                      //             Color(0xFF3B82F6),
-                                      //             Color(0xFF22C55E),
-                                      //           ],
-                                      //         ),
-                                      //         child: Padding(
-                                      //           padding: EdgeInsets.symmetric(
-                                      //             horizontal: 18,
-                                      //             vertical: 12,
-                                      //           ),
-                                      //           child: Text('Logging...'),
-                                      //         ),
-                                      //       )
-                                      //     : const Text('Submit'),
                                     ),
                                   ],
                                 ),

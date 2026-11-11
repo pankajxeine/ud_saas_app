@@ -1,0 +1,307 @@
+{
+  "entity": "JobStepTemplate",
+  "title": "JobStepTemplate",
+  "table": "provisioning_job_step_template",
+  "primaryKey": "job_step_template_id",
+  "api": {
+    "list": {
+      "path": "/job_step_template",
+      "enabled": true,
+      "permission": "provisioning_job_step_template.operation.list"
+    },
+    "create": {
+      "path": "/job_step_template",
+      "enabled": true,
+      "permission": "provisioning_job_step_template.operation.create"
+    },
+    "detail": {
+      "path": "/job_step_template/{job_step_template_id}",
+      "enabled": true,
+      "permission": "provisioning_job_step_template.operation.detail"
+    },
+    "update": {
+      "path": "/job_step_template/{job_step_template_id}",
+      "enabled": true,
+      "permission": "provisioning_job_step_template.operation.update"
+    },
+    "delete": {
+      "path": "/job_step_template/{job_step_template_id}",
+      "enabled": true,
+      "permission": "provisioning_job_step_template.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "job_step_template_id",
+        "label": "Job Step Template Id"
+      },
+      {
+        "field": "job_type",
+        "label": "Job Type"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "step_code",
+        "label": "Step Code"
+      },
+      {
+        "field": "compensation_step_code",
+        "label": "Compensation Step Code"
+      },
+      {
+        "field": "timeout_seconds",
+        "label": "Timeout Seconds"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "job_step_template_id",
+      "job_type",
+      "step_no",
+      "step_code",
+      "compensation_step_code",
+      "timeout_seconds"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "job_step_template_id",
+      "label": "Job Step Template Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "job_type",
+      "label": "Job Type",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Job Type",
+        "placeholder": "Enter Job Type",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 12
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Step No",
+        "placeholder": "Enter Step No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "step_code",
+      "label": "Step Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Step Code",
+        "placeholder": "Enter Step Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "compensation_step_code",
+      "label": "Compensation Step Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Compensation Step Code",
+        "placeholder": "Enter Compensation Step Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "timeout_seconds",
+      "label": "Timeout Seconds",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Timeout Seconds",
+        "placeholder": "Enter Timeout Seconds",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "minimum": 1,
+        "maximum": 86400
+      },
+      "default": 300
+    }
+  ]
+}

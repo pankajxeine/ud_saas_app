@@ -1,200 +1,366 @@
 import 'package:flutter/material.dart';
 
-import '../core/config/allowed_paths.dart';
+import 'allowed_paths.dart';
 import '../core/config/app_logger.dart';
 import '../core/config/environment.dart';
-import '../core/navigation/app_route_definition.dart';
-import '../core/navigation/app_route_location.dart';
-import '../core/utils/security_utils.dart';
 import '../core/layouts/app_layout.dart';
 import '../core/widgets/common/app_not_found_page.dart';
-import '../features/auth/login_page.dart';
-import '../features/cpanel/cpanel_category_page.dart';
-import '../features/cpanel/cpanel_module_page.dart';
-import '../features/dashboard/dashboard_page.dart';
-import '../features/example/data_grid_page.dart';
-// import '../features/example/onboarding_page.dart';
-import '../features/settings/settings.dart';
+import '../core/utils/security_utils.dart';
+import '../core/navigation/app_route_definition.dart';
+import '../core/navigation/app_route_location.dart';
 import 'app_routes_constants.dart';
+
+// Authentication pages
+import '../features/auth/login_page.dart';
+
+// Dashboard and application pages
+import '../../features/dashboard/dashboard_page.dart';
+import '../../features/cpanel/cpanel_category_page.dart';
+import '../../features/cpanel/cpanel_module_page.dart';
+import '../../features/example/data_grid_page.dart';
+import '../../features/settings/settings_page.dart';
+
+// Generated module routes
 import 'generated_module_routes.dart';
+import 'metadata_route_match.dart';
 
-/// Imperative route configuration shared by DashcnApp and app navigation.
-class AppRouteConfig {
-  static final _log = AppLogger.getLogger('AppRouteConfig');
-  static const _pageTransitionDuration = Duration(milliseconds: 180);
-  static const _pageReverseTransitionDuration = Duration(milliseconds: 120);
-  static final List<AppRouteDefinition> _prioritizedGeneratedRoutes =
-      List<AppRouteDefinition>.of(generatedModuleRoutes)..sort(
-        (AppRouteDefinition first, AppRouteDefinition second) =>
-            second.specificity.compareTo(first.specificity),
-      );
+import '../metadata_designer/modules/modules.dart';
+import '../metadata_designer/module/module.dart';
+import '../metadata_designer/module_version/module_version.dart';
 
-  /// Dynamic routes are resolved by [onGenerateRoute], including module IDs.
-  static const Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{};
+class AppRouter {
+  AppRouter._();
 
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) =>
-      _routeForLocation(settings.name, settings: settings);
+  static final AppLogger _logger = AppLogger();
+
+  // ------------------------------------------------------------
+  // ROUTE CONFIGURATION
+  // ------------------------------------------------------------
+
+  static const Map<String, WidgetBuilder> routes = {};
+
+  static final List<AppRouteDefinition> _generatedRoutes =
+      List<AppRouteDefinition>.from(generatedModuleRoutes)
+        ..sort((a, b) => b.specificity.compareTo(a.specificity));
+
+  static const Duration _transitionDuration = Duration(milliseconds: 220);
+
+  static const Curve _transitionCurve = Curves.easeOutCubic;
+
+  // ------------------------------------------------------------
+  // FLUTTER ROUTER CALLBACKS
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    return _resolveRoute(settings);
+  }
 
   static List<Route<dynamic>> onGenerateInitialRoutes(String initialRoute) {
-    final RouteSettings settings = RouteSettings(name: initialRoute);
-    final Route<dynamic>? route = _routeForLocation(
-      initialRoute,
+    final route = _resolveRoute(RouteSettings(name: initialRoute));
+
+    // Return one route. Flutter should not split nested deep links
+    // into intermediate routes.
+    return [route];
+  }
+
+  static Route<dynamic> onUnknownRoute(RouteSettings settings) {
+    _logger.debug('Unknown route: ${settings.name}');
+
+    return _buildPageRoute(
       settings: settings,
+      page: const AppNotFoundPage(title: "Page Not Found"),
+      useLayout: false,
     );
-    return <Route<dynamic>>[route ?? onUnknownRoute(settings)!];
   }
 
-  static Route<dynamic>? onUnknownRoute(RouteSettings settings) => _pageRoute(
-    settings,
-    (_) => const AppNotFoundPage(title: 'Page not found'),
-  );
+  // ------------------------------------------------------------
+  // MAIN ROUTE RESOLVER
+  // ------------------------------------------------------------
 
-  static PageRoute<T> pageRouteBuilder<T>(
-    RouteSettings settings,
-    WidgetBuilder builder,
-  ) => _pageRoute<T>(settings, builder);
+  static Route<dynamic> _resolveRoute(RouteSettings settings) {
+    final uri = _parseUri(settings.name);
 
-  static Route<dynamic>? _routeForLocation(
-    String? location, {
-    required RouteSettings settings,
-  }) {
-    if (location == null || location.isEmpty) {
-      return null;
+    if (uri == null) {
+      return _notFoundRoute(settings);
     }
 
-    final Uri uri = Uri.parse(location);
-    final String path = uri.path.isEmpty ? '/' : uri.path;
-    final String? redirectedLocation = _redirectLocation(uri);
-    if (redirectedLocation != null) {
-      return _routeForLocation(
-        redirectedLocation,
-        settings: RouteSettings(name: redirectedLocation),
-      );
+    _logger.debug('Resolving route: ${uri.toString()}');
+
+    // 1. Authentication and permission redirects.
+    final redirect = _resolveRedirect(uri);
+
+    if (redirect != null) {
+      return _resolveRoute(RouteSettings(name: redirect));
     }
 
-    if (path == ApplicationRoutesConstants.login) {
-      return _pageRoute(settings, (_) => LoginPage());
-    }
+    // 2. Resolve page.
+    final page = _resolvePage(uri);
 
-    Widget? page = _buildGeneratedModulePage(uri);
-    page ??= _buildStaticPage(uri);
     if (page == null) {
-      return null;
+      return _notFoundRoute(settings);
     }
 
-    return _pageRoute(
-      settings,
-      (_) => AppRouteLocation(
-        location: path,
-        child: AppLayout(body: page!),
-      ),
+    // 3. Login is standalone; authenticated pages use shared layout.
+    final useLayout = !_isAuthPath(uri.path);
+
+    return _buildPageRoute(
+      settings: settings,
+      page: page,
+      useLayout: useLayout,
+      location: uri.path,
     );
   }
+  // ------------------------------------------------------------
+  // URI PARSING AND NORMALIZATION
+  // ------------------------------------------------------------
 
-  static String? _redirectLocation(Uri uri) {
-    final String path = uri.path.isEmpty ? '/' : uri.path;
-    _log.debug('BEGIN: redirect');
-    _log.debug('redirect - uri: $uri');
-    _log.debug('authPaths: $authPaths');
-
-    if (authPaths.any((String authPath) => path.startsWith(authPath))) {
-      _log.debug('END: redirect null - with authPaths');
-      return null;
+  static Uri? _parseUri(String? location) {
+    if (location == null || location.trim().isEmpty) {
+      return Uri(path: ApplicationRoutesConstants.dashboard);
     }
 
-    _log.debug('isUserLoggedIn: ${SecurityUtils.isUserLoggedIn()}');
-    if (!SecurityUtils.isUserLoggedIn() &&
-        !SecurityUtils.isAllowedPath(uri.toString())) {
-      _log.debug('END: isUserLoggedIn is false and isAllowedPath is false');
-      if (uri.toString() != ApplicationRoutesConstants.login) {
-        return ApplicationRoutesConstants.login;
+    try {
+      final parsed = Uri.parse(location);
+
+      var path = parsed.path;
+
+      // Normalize repeated trailing slashes.
+      if (path.length > 1) {
+        path = path.replaceFirst(RegExp(r'/+$'), '');
       }
+
+      if (path.isEmpty) {
+        path = '/';
+      }
+
+      return parsed.replace(path: path);
+    } catch (error, stackTrace) {
+      _logger.error(
+        'Invalid route URI: $location , error: $error, stackTrace: $stackTrace',
+      );
+
       return null;
     }
+  }
 
-    if (ProfileConstants.isProduction &&
-        SecurityUtils.isTokenExpired() &&
-        uri.toString() != ApplicationRoutesConstants.login) {
-      _log.debug('END: redirect - jwtToken is expired');
+  // ------------------------------------------------------------
+  // AUTHENTICATION AND REDIRECTS
+  // ------------------------------------------------------------
+
+  static String? _resolveRedirect(Uri uri) {
+    final path = uri.path;
+
+    final isLogin = _isAuthPath(path);
+    final isLoggedIn = SecurityUtils.isUserLoggedIn();
+
+    // Unauthenticated user.
+    if (!isLoggedIn && !isLogin) {
       return ApplicationRoutesConstants.login;
     }
 
-    _log.debug('END: redirect return null');
+    // Already authenticated.
+    if (isLoggedIn && isLogin) {
+      return ApplicationRoutesConstants.dashboard;
+    }
+
+    // Token expiry.
+    if (isLoggedIn &&
+        ProfileConstants.isProduction &&
+        SecurityUtils.isTokenExpired()) {
+      return ApplicationRoutesConstants.login;
+    }
+
+    // Route authorization.
+    if (!isAllowedPath(path)) {
+      return ApplicationRoutesConstants.dashboard;
+    }
+
     return null;
   }
 
-  static Widget? _buildGeneratedModulePage(Uri uri) {
-    for (final AppRouteDefinition route in _prioritizedGeneratedRoutes) {
-      final Widget? page = route.build(uri);
-      if (page != null) {
-        return page;
+  static bool _isAuthPath(String path) {
+    return path == ApplicationRoutesConstants.login;
+  }
+
+  // ------------------------------------------------------------
+  // PAGE RESOLUTION
+  // ------------------------------------------------------------
+
+  static Widget? _resolvePage(Uri uri) {
+    // 1. Metadata routes.
+    final metadataPage = _resolveMetadataRoute(uri);
+
+    if (metadataPage != null) {
+      return metadataPage;
+    }
+
+    // 2. Generated module routes.
+    final generatedPage = _resolveGeneratedRoute(uri);
+
+    if (generatedPage != null) {
+      return generatedPage;
+    }
+
+    // 3. Static routes.
+    return _resolveStaticRoute(uri);
+  }
+  // ------------------------------------------------------------
+  // METADATA ROUTES
+  // ------------------------------------------------------------
+
+  static Widget? _resolveMetadataRoute(Uri uri) {
+    final match = MetadataRouteMatch.parse(uri);
+
+    if (match == null) {
+      return null;
+    }
+
+    switch (match.type) {
+      case MetadataRouteType.moduleList:
+        return const MetadataModules();
+
+      case MetadataRouteType.createModule:
+        return const MetadataModules();
+
+      case MetadataRouteType.moduleDetails:
+        return MetadataModule(
+          key: ValueKey('metadata-module-${match.moduleId}'),
+          moduleId: match.moduleId!,
+        );
+
+      case MetadataRouteType.createVersion:
+        return const MetadataModules();
+
+      case MetadataRouteType.versionDetails:
+        return MetadataVersionDesign(
+          key: ValueKey(
+            'metadata-version-${match.moduleId}-${match.versionId}',
+          ),
+          moduleId: match.moduleId!,
+          versionId: match.versionId!,
+        );
+    }
+  }
+  // ------------------------------------------------------------
+  // GENERATED DATABASE-DRIVEN ROUTES
+  // ------------------------------------------------------------
+
+  static Widget? _resolveGeneratedRoute(Uri uri) {
+    for (final route in _generatedRoutes) {
+      if (!route.matches(uri)) {
+        continue;
       }
+
+      _logger.debug('Generated route matched: ${uri.path}');
+
+      return route.build(uri);
     }
+
     return null;
   }
+  // ------------------------------------------------------------
+  // STATIC ROUTES
+  // ------------------------------------------------------------
 
-  static Widget? _buildStaticPage(Uri uri) {
-    final List<String> segments = uri.pathSegments;
-    final String path = uri.path.isEmpty ? '/' : uri.path;
+  static Widget? _resolveStaticRoute(Uri uri) {
+    final path = uri.path;
+    final segments = uri.pathSegments;
 
-    if (path == '/' ||
-        path == ApplicationRoutesConstants.dashboard ||
-        path == '/dashboard') {
-      return const DashboardPage();
+    switch (path) {
+      case '/':
+      case ApplicationRoutesConstants.dashboard:
+        return const DashboardPage();
+
+      case ApplicationRoutesConstants.login:
+        return const LoginPage();
+
+      case '/products':
+        return const DataGridPage();
+
+      case '/modules':
+        return const MetadataModules();
+
+      case '/settings':
+        return const SettingsPage();
     }
-    if (segments.length == 2 && segments.first == 'cpanel') {
+
+    // Cpanel category route.
+    if (segments.length == 2 &&
+        segments[0] == 'cpanel' &&
+        segments[1].isNotEmpty) {
       return CpanelCategoryPage(categorySlug: segments[1]);
     }
+
+    // Cpanel module route.
     if (segments.length == 3 &&
         segments[0] == 'cpanel' &&
-        segments[1] == 'modules') {
+        segments[1].isNotEmpty &&
+        segments[2].isNotEmpty) {
       return CpanelModulePage(moduleSlug: segments[2]);
     }
-    // if (path == '/orders') {
-    //   return const DataGridPage();
-    // }
-    if (path == '/products') {
-      return const DataGridPage();
-    }
-    // if (path == R.forms) {
-    //   return const DynamicFormPage();
-    // }
-    if (path == R.components) {
-      return const DataGridPage();
-    }
-    if (path == '/settings') {
-      return const SettingsPage();
-    }
-    if (path == '/installation') {
-      return const DataGridPage();
-    }
+
     return null;
   }
 
-  static PageRoute<T> _pageRoute<T>(
-    RouteSettings settings,
-    WidgetBuilder builder,
-  ) => PageRouteBuilder<T>(
-    settings: settings,
-    transitionDuration: _pageTransitionDuration,
-    reverseTransitionDuration: _pageReverseTransitionDuration,
-    pageBuilder: (context, animation, secondaryAnimation) => builder(context),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      final CurvedAnimation curve = CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeOutCubic,
-        reverseCurve: Curves.easeInCubic,
-      );
-      return FadeTransition(
-        opacity: Tween<double>(begin: 0, end: 1).animate(curve),
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.02),
-            end: Offset.zero,
-          ).animate(curve),
-          child: child,
-        ),
-      );
-    },
-  );
+  // ------------------------------------------------------------
+  // PAGE ROUTE BUILDER
+  // ------------------------------------------------------------
+
+  static Route<dynamic> _buildPageRoute({
+    required RouteSettings settings,
+    required Widget page,
+    required bool useLayout,
+    String? location,
+  }) {
+    return PageRouteBuilder<dynamic>(
+      settings: settings,
+      transitionDuration: _transitionDuration,
+      reverseTransitionDuration: _transitionDuration,
+
+      pageBuilder: (context, animation, secondaryAnimation) {
+        if (!useLayout) {
+          return page;
+        }
+
+        return AppRouteLocation(
+          location: location ?? settings.name ?? '/',
+          child: AppLayout(body: page),
+        );
+      },
+
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: _transitionCurve,
+          reverseCurve: Curves.easeInCubic,
+        );
+
+        return FadeTransition(
+          opacity: curvedAnimation,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.015, 0),
+              end: Offset.zero,
+            ).animate(curvedAnimation),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
+  // ------------------------------------------------------------
+  // NOT FOUND
+  // ------------------------------------------------------------
+
+  static Route<dynamic> _notFoundRoute(RouteSettings settings) {
+    _logger.debug('No route matched: ${settings.name}');
+
+    return _buildPageRoute(
+      settings: settings,
+      page: const AppNotFoundPage(title: "Page Not Found"),
+      useLayout: false,
+    );
+  }
 }

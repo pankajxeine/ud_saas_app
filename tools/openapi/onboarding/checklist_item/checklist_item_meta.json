@@ -1,0 +1,419 @@
+{
+  "entity": "ChecklistItem",
+  "title": "ChecklistItem",
+  "table": "onboarding_checklist_item",
+  "primaryKey": "checklist_item_id",
+  "api": {
+    "list": {
+      "path": "/checklist_item",
+      "enabled": true,
+      "permission": "onboarding_checklist_item.operation.list"
+    },
+    "create": {
+      "path": "/checklist_item",
+      "enabled": true,
+      "permission": "onboarding_checklist_item.operation.create"
+    },
+    "detail": {
+      "path": "/checklist_item/{checklist_item_id}",
+      "enabled": true,
+      "permission": "onboarding_checklist_item.operation.detail"
+    },
+    "update": {
+      "path": "/checklist_item/{checklist_item_id}",
+      "enabled": true,
+      "permission": "onboarding_checklist_item.operation.update"
+    },
+    "delete": {
+      "path": "/checklist_item/{checklist_item_id}",
+      "enabled": true,
+      "permission": "onboarding_checklist_item.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "checklist_item_id",
+        "label": "Checklist Item Id"
+      },
+      {
+        "field": "request_id",
+        "label": "Request Id"
+      },
+      {
+        "field": "item_code",
+        "label": "Item Code"
+      },
+      {
+        "field": "title",
+        "label": "Title"
+      },
+      {
+        "field": "is_mandatory",
+        "label": "Is Mandatory"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "completed_by_user_id",
+        "label": "Completed By User Id"
+      },
+      {
+        "field": "completed_at",
+        "label": "Completed At"
+      },
+      {
+        "field": "note",
+        "label": "Note"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "checklist_item_id",
+      "request_id",
+      "item_code",
+      "title",
+      "is_mandatory",
+      "status",
+      "completed_by_user_id",
+      "completed_at",
+      "note"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "checklist_item_id",
+      "label": "Checklist Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "request_id",
+      "label": "Request Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "onboarding_onboarding_request",
+        "column": "request_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/onboarding_onboarding_request",
+          "displayField": "name",
+          "valueField": "request_id"
+        }
+      }
+    },
+    {
+      "name": "item_code",
+      "label": "Item Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Item Code",
+        "placeholder": "Enter Item Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Title",
+        "placeholder": "Enter Title",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "is_mandatory",
+      "label": "Is Mandatory",
+      "type": "boolean",
+      "widget": "switch",
+      "ui": {
+        "label": "Is Mandatory",
+        "placeholder": "",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": true
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 8
+      },
+      "default": "pending"
+    },
+    {
+      "name": "completed_by_user_id",
+      "label": "Completed By User Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/iam_app_user",
+          "displayField": "name",
+          "valueField": "app_user_id"
+        }
+      }
+    },
+    {
+      "name": "completed_at",
+      "label": "Completed At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Completed At",
+        "placeholder": "Enter Completed At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "note",
+      "label": "Note",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Note",
+        "placeholder": "Enter Note",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

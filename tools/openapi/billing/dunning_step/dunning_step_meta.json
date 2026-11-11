@@ -1,0 +1,341 @@
+{
+  "entity": "DunningStep",
+  "title": "DunningStep",
+  "table": "billing_dunning_step",
+  "primaryKey": "dunning_step_id",
+  "api": {
+    "list": {
+      "path": "/dunning_step",
+      "enabled": true,
+      "permission": "billing_dunning_step.operation.list"
+    },
+    "create": {
+      "path": "/dunning_step",
+      "enabled": true,
+      "permission": "billing_dunning_step.operation.create"
+    },
+    "detail": {
+      "path": "/dunning_step/{dunning_step_id}",
+      "enabled": true,
+      "permission": "billing_dunning_step.operation.detail"
+    },
+    "update": {
+      "path": "/dunning_step/{dunning_step_id}",
+      "enabled": true,
+      "permission": "billing_dunning_step.operation.update"
+    },
+    "delete": {
+      "path": "/dunning_step/{dunning_step_id}",
+      "enabled": true,
+      "permission": "billing_dunning_step.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "dunning_step_id",
+        "label": "Dunning Step Id"
+      },
+      {
+        "field": "dunning_policy_id",
+        "label": "Dunning Policy Id"
+      },
+      {
+        "field": "step_no",
+        "label": "Step No"
+      },
+      {
+        "field": "days_after_due",
+        "label": "Days After Due"
+      },
+      {
+        "field": "action",
+        "label": "Action"
+      },
+      {
+        "field": "template_code",
+        "label": "Template Code"
+      },
+      {
+        "field": "grace_days",
+        "label": "Grace Days"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "dunning_step_id",
+      "dunning_policy_id",
+      "step_no",
+      "days_after_due",
+      "action",
+      "template_code",
+      "grace_days"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "dunning_step_id",
+      "label": "Dunning Step Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "dunning_policy_id",
+      "label": "Dunning Policy Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "billing_dunning_policy",
+        "column": "dunning_policy_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/billing_dunning_policy",
+          "displayField": "name",
+          "valueField": "dunning_policy_id"
+        }
+      }
+    },
+    {
+      "name": "step_no",
+      "label": "Step No",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Step No",
+        "placeholder": "Enter Step No",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "days_after_due",
+      "label": "Days After Due",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Days After Due",
+        "placeholder": "Enter Days After Due",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Action",
+        "placeholder": "Enter Action",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "validations": {
+        "maxLength": 14
+      }
+    },
+    {
+      "name": "template_code",
+      "label": "Template Code",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Template Code",
+        "placeholder": "Enter Template Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "grace_days",
+      "label": "Grace Days",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Grace Days",
+        "placeholder": "Enter Grace Days",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "entity": "PlanItem",
+  "title": "PlanItem",
+  "table": "commerce_plan_item",
+  "primaryKey": "plan_item_id",
+  "api": {
+    "list": {
+      "path": "/plan_item",
+      "enabled": true,
+      "permission": "commerce_plan_item.operation.list"
+    },
+    "create": {
+      "path": "/plan_item",
+      "enabled": true,
+      "permission": "commerce_plan_item.operation.create"
+    },
+    "detail": {
+      "path": "/plan_item/{plan_item_id}",
+      "enabled": true,
+      "permission": "commerce_plan_item.operation.detail"
+    },
+    "update": {
+      "path": "/plan_item/{plan_item_id}",
+      "enabled": true,
+      "permission": "commerce_plan_item.operation.update"
+    },
+    "delete": {
+      "path": "/plan_item/{plan_item_id}",
+      "enabled": true,
+      "permission": "commerce_plan_item.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "plan_item_id",
+        "label": "Plan Item Id"
+      },
+      {
+        "field": "plan_version_id",
+        "label": "Plan Version Id"
+      },
+      {
+        "field": "module_id",
+        "label": "Module Id"
+      },
+      {
+        "field": "feature_id",
+        "label": "Feature Id"
+      },
+      {
+        "field": "value",
+        "label": "Value"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "plan_item_id",
+      "plan_version_id",
+      "module_id",
+      "feature_id",
+      "value"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "plan_item_id",
+      "label": "Plan Item Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "plan_version_id",
+      "label": "Plan Version Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "commerce_plan_version",
+        "column": "plan_version_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/commerce_plan_version",
+          "displayField": "name",
+          "valueField": "plan_version_id"
+        }
+      }
+    },
+    {
+      "name": "module_id",
+      "label": "Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_module",
+          "displayField": "name",
+          "valueField": "module_id"
+        }
+      }
+    },
+    {
+      "name": "feature_id",
+      "label": "Feature Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_feature",
+        "column": "feature_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_feature",
+          "displayField": "name",
+          "valueField": "feature_id"
+        }
+      }
+    },
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Value",
+        "placeholder": "Enter Value",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

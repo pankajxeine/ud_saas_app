@@ -15,5 +15,5 @@ List<String> authPaths = [
   '/login',
   '/authenticate',
   '/login-otp',
-  '/login-otp-verify'
+  '/login-otp-verify',
 ];

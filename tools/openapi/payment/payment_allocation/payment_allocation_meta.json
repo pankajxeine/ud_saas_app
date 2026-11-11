@@ -1,0 +1,342 @@
+{
+  "entity": "PaymentAllocation",
+  "title": "PaymentAllocation",
+  "table": "payment_payment_allocation",
+  "primaryKey": "payment_allocation_id",
+  "api": {
+    "list": {
+      "path": "/payment_allocation",
+      "enabled": true,
+      "permission": "payment_payment_allocation.operation.list"
+    },
+    "create": {
+      "path": "/payment_allocation",
+      "enabled": true,
+      "permission": "payment_payment_allocation.operation.create"
+    },
+    "detail": {
+      "path": "/payment_allocation/{payment_allocation_id}",
+      "enabled": true,
+      "permission": "payment_payment_allocation.operation.detail"
+    },
+    "update": {
+      "path": "/payment_allocation/{payment_allocation_id}",
+      "enabled": true,
+      "permission": "payment_payment_allocation.operation.update"
+    },
+    "delete": {
+      "path": "/payment_allocation/{payment_allocation_id}",
+      "enabled": true,
+      "permission": "payment_payment_allocation.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "payment_allocation_id",
+        "label": "Payment Allocation Id"
+      },
+      {
+        "field": "payment_id",
+        "label": "Payment Id"
+      },
+      {
+        "field": "invoice_id",
+        "label": "Invoice Id"
+      },
+      {
+        "field": "amount",
+        "label": "Amount"
+      },
+      {
+        "field": "reversal_of_id",
+        "label": "Reversal Of Id"
+      },
+      {
+        "field": "allocated_at",
+        "label": "Allocated At"
+      },
+      {
+        "field": "allocated_by",
+        "label": "Allocated By"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "payment_allocation_id",
+      "payment_id",
+      "invoice_id",
+      "amount",
+      "reversal_of_id",
+      "allocated_at",
+      "allocated_by"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "payment_allocation_id",
+      "label": "Payment Allocation Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "payment_id",
+      "label": "Payment Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_payment",
+        "column": "payment_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_payment",
+          "displayField": "name",
+          "valueField": "payment_id"
+        }
+      }
+    },
+    {
+      "name": "invoice_id",
+      "label": "Invoice Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/billing_invoice",
+          "displayField": "name",
+          "valueField": "invoice_id"
+        }
+      }
+    },
+    {
+      "name": "amount",
+      "label": "Amount",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Amount",
+        "placeholder": "Enter Amount",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "reversal_of_id",
+      "label": "Reversal Of Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "payment_payment_allocation",
+        "column": "payment_allocation_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/payment_payment_allocation",
+          "displayField": "name",
+          "valueField": "payment_allocation_id"
+        }
+      }
+    },
+    {
+      "name": "allocated_at",
+      "label": "Allocated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "ui": {
+        "label": "Allocated At",
+        "placeholder": "Enter Allocated At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "allocated_by",
+      "label": "Allocated By",
+      "type": "uuid",
+      "widget": "text",
+      "ui": {
+        "label": "Allocated By",
+        "placeholder": "Select Allocated By",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

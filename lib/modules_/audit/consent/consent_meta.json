@@ -1,0 +1,1240 @@
+{
+  "entity": "Consent",
+  "title": "Consent",
+  "table": "audit_consent",
+  "primaryKey": "consent_id",
+  "api": {
+    "list": {
+      "method": "GET",
+      "path": "/consent",
+      "operationId": "listConsent",
+      "summary": "Get all consent",
+      "requestSchema": null,
+      "responseSchema": {
+        "kind": "array",
+        "items": {
+          "kind": "ref",
+          "schema": "ConsentResponse",
+          "resolved": {
+            "type": "object",
+            "description": null,
+            "required": [
+              "record_code",
+              "consent_id",
+              "subject_type",
+              "subject_id",
+              "purpose",
+              "granted",
+              "source",
+              "policy_version",
+              "captured_at"
+            ],
+            "properties": {
+              "record_code": {
+                "required": true,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": true,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "consent_id": {
+                "required": true,
+                "type": "string",
+                "format": "uuid",
+                "description": null,
+                "nullable": false,
+                "readOnly": true,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "subject_type": {
+                "required": true,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "subject_id": {
+                "required": true,
+                "type": "string",
+                "format": "uuid",
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "purpose": {
+                "required": true,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "granted": {
+                "required": true,
+                "type": "boolean",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "boolean"
+                }
+              },
+              "source": {
+                "required": true,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "policy_version": {
+                "required": true,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "evidence_ref": {
+                "required": false,
+                "type": "string",
+                "format": null,
+                "description": null,
+                "nullable": true,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string"
+                }
+              },
+              "captured_at": {
+                "required": true,
+                "type": "string",
+                "format": "date-time",
+                "description": null,
+                "nullable": false,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "withdrawn_at": {
+                "required": false,
+                "type": "string",
+                "format": "date-time",
+                "description": null,
+                "nullable": true,
+                "readOnly": false,
+                "default": null,
+                "schema": {
+                  "kind": "primitive",
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "create": {
+      "method": "POST",
+      "path": "/consent",
+      "operationId": "createConsent",
+      "summary": "Create a new consent",
+      "requestSchema": {
+        "kind": "ref",
+        "schema": "ConsentRequest",
+        "resolved": {
+          "type": "object",
+          "description": null,
+          "required": [
+            "subject_type",
+            "subject_id",
+            "purpose",
+            "granted",
+            "source",
+            "policy_version"
+          ],
+          "properties": {
+            "subject_type": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "subject_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "purpose": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "granted": {
+              "required": true,
+              "type": "boolean",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "boolean"
+              }
+            },
+            "source": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "policy_version": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "evidence_ref": {
+              "required": false,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "captured_at": {
+              "required": false,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "withdrawn_at": {
+              "required": false,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "responseSchema": {
+        "kind": "ref",
+        "schema": "ConsentResponse",
+        "resolved": {
+          "type": "object",
+          "description": null,
+          "required": [
+            "record_code",
+            "consent_id",
+            "subject_type",
+            "subject_id",
+            "purpose",
+            "granted",
+            "source",
+            "policy_version",
+            "captured_at"
+          ],
+          "properties": {
+            "record_code": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "consent_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "subject_type": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "subject_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "purpose": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "granted": {
+              "required": true,
+              "type": "boolean",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "boolean"
+              }
+            },
+            "source": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "policy_version": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "evidence_ref": {
+              "required": false,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "captured_at": {
+              "required": true,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "withdrawn_at": {
+              "required": false,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/consent/{consent_id}",
+      "operationId": "getConsentById",
+      "summary": "Get consent by consent_id",
+      "requestSchema": null,
+      "responseSchema": {
+        "kind": "ref",
+        "schema": "ConsentResponse",
+        "resolved": {
+          "type": "object",
+          "description": null,
+          "required": [
+            "record_code",
+            "consent_id",
+            "subject_type",
+            "subject_id",
+            "purpose",
+            "granted",
+            "source",
+            "policy_version",
+            "captured_at"
+          ],
+          "properties": {
+            "record_code": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "consent_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "subject_type": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "subject_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "purpose": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "granted": {
+              "required": true,
+              "type": "boolean",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "boolean"
+              }
+            },
+            "source": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "policy_version": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "evidence_ref": {
+              "required": false,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "captured_at": {
+              "required": true,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "withdrawn_at": {
+              "required": false,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    "update": {
+      "method": "PUT",
+      "path": "/consent/{consent_id}",
+      "operationId": "updateConsent",
+      "summary": "Update consent by consent_id",
+      "requestSchema": {
+        "kind": "ref",
+        "schema": "ConsentUpdateRequest",
+        "resolved": {
+          "type": "object",
+          "description": null,
+          "required": [
+            "subject_type",
+            "subject_id",
+            "purpose",
+            "granted",
+            "source",
+            "policy_version",
+            "evidence_ref",
+            "captured_at",
+            "withdrawn_at"
+          ],
+          "properties": {
+            "subject_type": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "subject_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "purpose": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "granted": {
+              "required": true,
+              "type": "boolean",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "boolean"
+              }
+            },
+            "source": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "policy_version": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "evidence_ref": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "captured_at": {
+              "required": true,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "withdrawn_at": {
+              "required": true,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "responseSchema": {
+        "kind": "ref",
+        "schema": "ConsentResponse",
+        "resolved": {
+          "type": "object",
+          "description": null,
+          "required": [
+            "record_code",
+            "consent_id",
+            "subject_type",
+            "subject_id",
+            "purpose",
+            "granted",
+            "source",
+            "policy_version",
+            "captured_at"
+          ],
+          "properties": {
+            "record_code": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "consent_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": true,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "subject_type": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "subject_id": {
+              "required": true,
+              "type": "string",
+              "format": "uuid",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "purpose": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "granted": {
+              "required": true,
+              "type": "boolean",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "boolean"
+              }
+            },
+            "source": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "policy_version": {
+              "required": true,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "evidence_ref": {
+              "required": false,
+              "type": "string",
+              "format": null,
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            },
+            "captured_at": {
+              "required": true,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": false,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "withdrawn_at": {
+              "required": false,
+              "type": "string",
+              "format": "date-time",
+              "description": null,
+              "nullable": true,
+              "readOnly": false,
+              "default": null,
+              "schema": {
+                "kind": "primitive",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/consent/{consent_id}",
+      "operationId": "deleteConsent",
+      "summary": "Delete consent by consent_id",
+      "requestSchema": null,
+      "responseSchema": null
+    }
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "consent_id",
+        "label": "Consent Id"
+      },
+      {
+        "field": "subject_type",
+        "label": "Subject Type"
+      },
+      {
+        "field": "subject_id",
+        "label": "Subject Id"
+      },
+      {
+        "field": "purpose",
+        "label": "Purpose"
+      },
+      {
+        "field": "granted",
+        "label": "Granted"
+      },
+      {
+        "field": "source",
+        "label": "Source"
+      },
+      {
+        "field": "policy_version",
+        "label": "Policy Version"
+      },
+      {
+        "field": "evidence_ref",
+        "label": "Evidence Ref"
+      },
+      {
+        "field": "captured_at",
+        "label": "Captured At"
+      },
+      {
+        "field": "withdrawn_at",
+        "label": "Withdrawn At"
+      }
+    ]
+  },
+  "form": {
+    "create": [
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ],
+    "update": [
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "consent_id",
+      "subject_type",
+      "subject_id",
+      "purpose",
+      "granted",
+      "source",
+      "policy_version",
+      "evidence_ref",
+      "captured_at",
+      "withdrawn_at"
+    ]
+  },
+  "references": {},
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "consent_id",
+      "label": "Consent Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": true,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "subject_type",
+      "label": "Subject Type",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "subject_id",
+      "label": "Subject Id",
+      "type": "uuid",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "purpose",
+      "label": "Purpose",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "granted",
+      "label": "Granted",
+      "type": "boolean",
+      "widget": "switch",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "source",
+      "label": "Source",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "policy_version",
+      "label": "Policy Version",
+      "type": "string",
+      "widget": "text",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "evidence_ref",
+      "label": "Evidence Ref",
+      "type": "string",
+      "widget": "text",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "captured_at",
+      "label": "Captured At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": false,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    },
+    {
+      "name": "withdrawn_at",
+      "label": "Withdrawn At",
+      "type": "datetime",
+      "widget": "datetime",
+      "nullable": true,
+      "readOnly": false,
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "showInDetail": true,
+      "showInTable": true
+    }
+  ]
+}

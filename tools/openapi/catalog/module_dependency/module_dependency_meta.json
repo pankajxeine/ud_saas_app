@@ -1,0 +1,192 @@
+{
+  "entity": "ModuleDependency",
+  "title": "ModuleDependency",
+  "table": "catalog_module_dependency",
+  "primaryKey": "module_dependency_id",
+  "api": {
+    "list": {
+      "path": "/module_dependency",
+      "enabled": true,
+      "permission": "catalog_module_dependency.operation.list"
+    },
+    "create": {
+      "path": "/module_dependency",
+      "enabled": true,
+      "permission": "catalog_module_dependency.operation.create"
+    },
+    "detail": {
+      "path": "/module_dependency/{module_dependency_id}",
+      "enabled": true,
+      "permission": "catalog_module_dependency.operation.detail"
+    },
+    "update": {
+      "path": "/module_dependency/{module_dependency_id}",
+      "enabled": true,
+      "permission": "catalog_module_dependency.operation.update"
+    },
+    "delete": {
+      "path": "/module_dependency/{module_dependency_id}",
+      "enabled": true,
+      "permission": "catalog_module_dependency.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "module_dependency_id",
+        "label": "Module Dependency Id"
+      },
+      {
+        "field": "module_id",
+        "label": "Module Id"
+      },
+      {
+        "field": "requires_module_id",
+        "label": "Requires Module Id"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "module_dependency_id",
+      "module_id",
+      "requires_module_id"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "module_dependency_id",
+      "label": "Module Dependency Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "module_id",
+      "label": "Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_module",
+          "displayField": "name",
+          "valueField": "module_id"
+        }
+      }
+    },
+    {
+      "name": "requires_module_id",
+      "label": "Requires Module Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "catalog_module",
+        "column": "module_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/catalog_module",
+          "displayField": "name",
+          "valueField": "module_id"
+        }
+      }
+    }
+  ]
+}

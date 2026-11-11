@@ -1,0 +1,227 @@
+{
+  "entity": "Holiday",
+  "title": "Holiday",
+  "table": "platform_holiday",
+  "primaryKey": "holiday_id",
+  "api": {
+    "list": {
+      "path": "/holiday",
+      "enabled": true,
+      "permission": "platform_holiday.operation.list"
+    },
+    "create": {
+      "path": "/holiday",
+      "enabled": true,
+      "permission": "platform_holiday.operation.create"
+    },
+    "detail": {
+      "path": "/holiday/{holiday_id}",
+      "enabled": true,
+      "permission": "platform_holiday.operation.detail"
+    },
+    "update": {
+      "path": "/holiday/{holiday_id}",
+      "enabled": true,
+      "permission": "platform_holiday.operation.update"
+    },
+    "delete": {
+      "path": "/holiday/{holiday_id}",
+      "enabled": true,
+      "permission": "platform_holiday.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "holiday_id",
+        "label": "Holiday Id"
+      },
+      {
+        "field": "calendar_id",
+        "label": "Calendar Id"
+      },
+      {
+        "field": "holiday_date",
+        "label": "Holiday Date"
+      },
+      {
+        "field": "name",
+        "label": "Name"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "holiday_id",
+      "calendar_id",
+      "holiday_date",
+      "name"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "holiday_id",
+      "label": "Holiday Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "calendar_id",
+      "label": "Calendar Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "platform_calendar",
+        "column": "calendar_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/platform_calendar",
+          "displayField": "name",
+          "valueField": "calendar_id"
+        }
+      }
+    },
+    {
+      "name": "holiday_date",
+      "label": "Holiday Date",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Holiday Date",
+        "placeholder": "Enter Holiday Date",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "date",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Name",
+        "placeholder": "Enter Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

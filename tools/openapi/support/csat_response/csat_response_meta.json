@@ -1,0 +1,53 @@
+{
+  "entity": "Csat",
+  "title": "Csat",
+  "table": "support_csat_response",
+  "primaryKey": "id",
+  "api": {
+    "list": {
+      "path": "/csat_response",
+      "enabled": true,
+      "permission": "support_csat_response.operation.list"
+    },
+    "create": {
+      "path": "/csat_response",
+      "enabled": true,
+      "permission": "support_csat_response.operation.create"
+    },
+    "detail": {
+      "path": "/csat_response/{csat_response_id}",
+      "enabled": true,
+      "permission": "support_csat_response.operation.detail"
+    },
+    "update": {
+      "path": "/csat_response/{csat_response_id}",
+      "enabled": true,
+      "permission": "support_csat_response.operation.update"
+    },
+    "delete": {
+      "path": "/csat_response/{csat_response_id}",
+      "enabled": true,
+      "permission": "support_csat_response.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": []
+  },
+  "detail": {
+    "fields": []
+  },
+  "fields": []
+}

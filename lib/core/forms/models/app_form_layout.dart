@@ -1,0 +1,1 @@
+enum AppFormLayout { column, grid }

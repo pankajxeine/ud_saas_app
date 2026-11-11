@@ -1,0 +1,401 @@
+{
+  "entity": "SkeletonDbDetails",
+  "title": "SkeletonDbDetails",
+  "table": "skeleton_db_details",
+  "primaryKey": "skeleton_db_id",
+  "api": {
+    "list": {
+      "path": "/skeleton_db_details",
+      "enabled": true,
+      "permission": "skeleton_db_details.operation.list"
+    },
+    "create": {
+      "path": "/skeleton_db_details",
+      "enabled": true,
+      "permission": "skeleton_db_details.operation.create"
+    },
+    "detail": {
+      "path": "/skeleton_db_details/{skeleton_db_id}",
+      "enabled": true,
+      "permission": "skeleton_db_details.operation.detail"
+    },
+    "update": {
+      "path": "/skeleton_db_details/{skeleton_db_id}",
+      "enabled": true,
+      "permission": "skeleton_db_details.operation.update"
+    },
+    "delete": {
+      "path": "/skeleton_db_details/{skeleton_db_id}",
+      "enabled": true,
+      "permission": "skeleton_db_details.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "skeleton_db_id",
+        "label": "Skeleton Db Id"
+      },
+      {
+        "field": "database_name",
+        "label": "Database Name"
+      },
+      {
+        "field": "schema_name",
+        "label": "Schema Name"
+      },
+      {
+        "field": "environment",
+        "label": "Environment"
+      },
+      {
+        "field": "industry",
+        "label": "Industry"
+      },
+      {
+        "field": "template_version",
+        "label": "Template Version"
+      },
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "configuration",
+        "label": "Configuration"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "skeleton_db_id",
+      "database_name",
+      "schema_name",
+      "environment",
+      "industry",
+      "template_version",
+      "status",
+      "configuration",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "fields": [
+    {
+      "name": "skeleton_db_id",
+      "label": "Skeleton Db Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "database_name",
+      "label": "Database Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Database Name",
+        "placeholder": "Enter Database Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "schema_name",
+      "label": "Schema Name",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Schema Name",
+        "placeholder": "Enter Schema Name",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Environment",
+        "placeholder": "Enter Environment",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": true,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "industry",
+      "label": "Industry",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Industry",
+        "placeholder": "Enter Industry",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "template_version",
+      "label": "Template Version",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Template Version",
+        "placeholder": "Enter Template Version",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "1"
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "string",
+      "widget": "select",
+      "ui": {
+        "label": "Status",
+        "placeholder": "Enter Status",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "active",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    {
+      "name": "configuration",
+      "label": "Configuration",
+      "type": "string",
+      "widget": "text",
+      "ui": {
+        "label": "Configuration",
+        "placeholder": "Enter Configuration",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "default": "{}"
+    },
+    {
+      "name": "created_at",
+      "label": "Created At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "updated_at",
+      "label": "Updated At",
+      "type": "datetime",
+      "widget": "datetime",
+      "format": "date-time",
+      "title": null,
+      "description": null,
+      "showInTable": false,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}

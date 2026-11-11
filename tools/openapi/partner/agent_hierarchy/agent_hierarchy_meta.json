@@ -1,0 +1,229 @@
+{
+  "entity": "AgentHierarchy",
+  "title": "AgentHierarchy",
+  "table": "partner_agent_hierarchy",
+  "primaryKey": "agent_hierarchy_id",
+  "api": {
+    "list": {
+      "path": "/agent_hierarchy",
+      "enabled": true,
+      "permission": "partner_agent_hierarchy.operation.list"
+    },
+    "create": {
+      "path": "/agent_hierarchy",
+      "enabled": true,
+      "permission": "partner_agent_hierarchy.operation.create"
+    },
+    "detail": {
+      "path": "/agent_hierarchy/{agent_hierarchy_id}",
+      "enabled": true,
+      "permission": "partner_agent_hierarchy.operation.detail"
+    },
+    "update": {
+      "path": "/agent_hierarchy/{agent_hierarchy_id}",
+      "enabled": true,
+      "permission": "partner_agent_hierarchy.operation.update"
+    },
+    "delete": {
+      "path": "/agent_hierarchy/{agent_hierarchy_id}",
+      "enabled": true,
+      "permission": "partner_agent_hierarchy.operation.delete"
+    }
+  },
+  "grid": {
+    "pageSize": 20,
+    "defaultSort": {
+      "field": "record_code",
+      "direction": "desc"
+    }
+  },
+  "search": {
+    "quickSearch": [
+      "record_code"
+    ],
+    "filters": []
+  },
+  "datatable": {
+    "columns": [
+      {
+        "field": "record_code",
+        "label": "Record Code"
+      },
+      {
+        "field": "agent_hierarchy_id",
+        "label": "Agent Hierarchy Id"
+      },
+      {
+        "field": "ancestor_id",
+        "label": "Ancestor Id"
+      },
+      {
+        "field": "descendant_id",
+        "label": "Descendant Id"
+      },
+      {
+        "field": "depth",
+        "label": "Depth"
+      }
+    ]
+  },
+  "detail": {
+    "fields": [
+      "record_code",
+      "agent_hierarchy_id",
+      "ancestor_id",
+      "descendant_id",
+      "depth"
+    ]
+  },
+  "fields": [
+    {
+      "name": "record_code",
+      "label": "Record Code",
+      "type": "string",
+      "widget": "text",
+      "format": null,
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "agent_hierarchy_id",
+      "label": "Agent Hierarchy Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": false,
+      "showInUpdate": false,
+      "permissions": {
+        "read": true,
+        "create": false,
+        "update": false
+      },
+      "requiredOnCreate": false,
+      "requiredOnUpdate": false,
+      "nullable": false,
+      "readOnly": true,
+      "writeOnly": false,
+      "deprecated": false
+    },
+    {
+      "name": "ancestor_id",
+      "label": "Ancestor Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/partner_sales_agent",
+          "displayField": "name",
+          "valueField": "sales_agent_id"
+        }
+      }
+    },
+    {
+      "name": "descendant_id",
+      "label": "Descendant Id",
+      "type": "uuid",
+      "widget": "text",
+      "format": "uuid",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false,
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "strategy": "remote",
+          "endpoint": "/partner_sales_agent",
+          "displayField": "name",
+          "valueField": "sales_agent_id"
+        }
+      }
+    },
+    {
+      "name": "depth",
+      "label": "Depth",
+      "type": "integer",
+      "widget": "number",
+      "ui": {
+        "label": "Depth",
+        "placeholder": "Enter Depth",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null
+      },
+      "format": "int32",
+      "title": null,
+      "description": null,
+      "showInTable": true,
+      "showInDetail": true,
+      "showInCreate": true,
+      "showInUpdate": true,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "requiredOnCreate": true,
+      "requiredOnUpdate": true,
+      "nullable": false,
+      "readOnly": false,
+      "writeOnly": false,
+      "deprecated": false
+    }
+  ]
+}
