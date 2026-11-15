@@ -47,48 +47,52 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "dunning_step_id",
-        "label": "Dunning Step Id"
+        "label": "Dunning Step Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "dunning_policy_id",
-        "label": "Dunning Policy Id"
+        "label": "Dunning Policy Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "step_no",
-        "label": "Step No"
+        "label": "Step No",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "days_after_due",
-        "label": "Days After Due"
+        "label": "Days After Due",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "action",
-        "label": "Action"
+        "label": "Action",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "template_code",
-        "label": "Template Code"
+        "label": "Template Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "grace_days",
-        "label": "Grace Days"
+        "label": "Grace Days",
+        "tableEnable": true,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "dunning_step_id",
-      "dunning_policy_id",
-      "step_no",
-      "days_after_due",
-      "action",
-      "template_code",
-      "grace_days"
     ]
   },
   "fields": [
@@ -96,246 +100,432 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "dunning_step_id",
       "label": "Dunning Step Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Dunning Step Id",
+        "placeholder": "Select Dunning Step Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "dunning_policy_id",
       "label": "Dunning Policy Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Dunning Policy",
+      "reference": {
+        "table": "billing_dunning_policy",
+        "column": "dunning_policy_id",
+        "lookup": {
+          "endpoint": "/billing_dunning_policy",
+          "strategy": "remote",
+          "valueField": "dunning_policy_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "billing_dunning_policy",
-        "column": "dunning_policy_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/billing_dunning_policy",
-          "displayField": "name",
-          "valueField": "dunning_policy_id"
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Dunning Policy Id",
+        "placeholder": "Select Dunning Policy Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "step_no",
       "label": "Step No",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Step No",
         "placeholder": "Enter Step No",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "days_after_due",
       "label": "Days After Due",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Days After Due",
         "placeholder": "Enter Days After Due",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "action",
       "label": "Action",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Action",
         "placeholder": "Enter Action",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 14
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 14
+        }
+      ],
+      "rules": []
     },
     {
       "name": "template_code",
       "label": "Template Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Template Code",
         "placeholder": "Enter Template Code",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "grace_days",
       "label": "Grace Days",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "dunning.step.read",
+          "create": "dunning.step.create",
+          "update": "dunning.step.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Grace Days",
         "placeholder": "Enter Grace Days",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     }
   ]
 }

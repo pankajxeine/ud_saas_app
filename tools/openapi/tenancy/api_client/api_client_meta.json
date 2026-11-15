@@ -47,70 +47,88 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "api_client_id",
-        "label": "Api Client Id"
+        "label": "Api Client Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "name",
-        "label": "Name"
+        "label": "Name",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "tenant_application_id",
-        "label": "Tenant Application Id"
+        "label": "Tenant Application Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "application_id",
-        "label": "Application Id"
+        "label": "Application Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "client_key",
-        "label": "Client Key"
+        "label": "Client Key",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "secret_hash",
-        "label": "Secret Hash"
+        "label": "Secret Hash",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "scopes",
-        "label": "Scopes"
+        "label": "Scopes",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "ip_allowlist",
-        "label": "Ip Allowlist"
+        "label": "Ip Allowlist",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "expires_at",
-        "label": "Expires At"
+        "label": "Expires At",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "last_used_at",
-        "label": "Last Used At"
+        "label": "Last Used At",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "revoked_at",
-        "label": "Revoked At"
+        "label": "Revoked At",
+        "tableEnable": true,
+        "viewEnable": true
+      },
+      {
+        "field": "created_at",
+        "label": "Created At",
+        "tableEnable": false,
+        "viewEnable": true
+      },
+      {
+        "field": "created_by",
+        "label": "Created By",
+        "tableEnable": false,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "api_client_id",
-      "name",
-      "tenant_application_id",
-      "application_id",
-      "client_key",
-      "secret_hash",
-      "scopes",
-      "ip_allowlist",
-      "expires_at",
-      "last_used_at",
-      "revoked_at",
-      "created_at",
-      "created_by"
     ]
   },
   "fields": [
@@ -118,428 +136,754 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "api_client_id",
       "label": "Api Client Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Api Client Id",
+        "placeholder": "Select Api Client Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "name",
       "label": "Name",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Name",
         "placeholder": "Enter Name",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 60
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 60
+        }
+      ],
+      "rules": []
     },
     {
       "name": "tenant_application_id",
       "label": "Tenant Application Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Tenant Application",
+      "reference": {
+        "table": "tenancy_tenant_application",
+        "column": "tenant_application_id",
+        "lookup": {
+          "endpoint": "/tenancy_tenant_application",
+          "strategy": "remote",
+          "valueField": "tenant_application_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "tenancy_tenant_application",
-        "column": "tenant_application_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/tenancy_tenant_application",
-          "displayField": "name",
-          "valueField": "tenant_application_id"
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Tenant Application Id",
+        "placeholder": "Select Tenant Application Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "application_id",
       "label": "Application Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Application",
+      "reference": {
+        "table": "catalog_application",
+        "column": "application_id",
+        "lookup": {
+          "endpoint": "/catalog_application",
+          "strategy": "remote",
+          "valueField": "application_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "catalog_application",
-        "column": "application_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/catalog_application",
-          "displayField": "name",
-          "valueField": "application_id"
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Application Id",
+        "placeholder": "Select Application Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "client_key",
       "label": "Client Key",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Client Key",
         "placeholder": "Enter Client Key",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 40
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 40
+        }
+      ],
+      "rules": []
     },
     {
       "name": "secret_hash",
       "label": "Secret Hash",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Secret Hash",
         "placeholder": "Enter Secret Hash",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "scopes",
       "label": "Scopes",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Scopes",
         "placeholder": "Enter Scopes",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [],
+      "rules": [],
       "default": "{access:read}"
     },
     {
       "name": "ip_allowlist",
       "label": "Ip Allowlist",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Ip Allowlist",
         "placeholder": "Enter Ip Allowlist",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "expires_at",
       "label": "Expires At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Expires At",
         "placeholder": "Enter Expires At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "last_used_at",
       "label": "Last Used At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Last Used At",
         "placeholder": "Enter Last Used At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "revoked_at",
       "label": "Revoked At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Revoked At",
         "placeholder": "Enter Revoked At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "created_at",
       "label": "Created At",
       "type": "datetime",
-      "widget": "datetime",
       "format": "date-time",
-      "title": null,
+      "widget": "datetime",
       "description": null,
-      "showInTable": false,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Created At",
+        "placeholder": "Enter Created At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "created_by",
       "label": "Created By",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": false,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
+      "security": {
+        "permissions": {
+          "read": "api.client.read",
+          "create": "api.client.create",
+          "update": "api.client.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "nullable": true,
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Created By",
+        "placeholder": "Select Created By",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     }
   ]
 }

@@ -47,68 +47,76 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "login_attempt_id",
-        "label": "Login Attempt Id"
+        "label": "Login Attempt Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "app_user_id",
-        "label": "App User Id"
+        "label": "App User Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "username_entered",
-        "label": "Username Entered"
+        "label": "Username Entered",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "auth_method",
-        "label": "Auth Method"
+        "label": "Auth Method",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "attempted_at",
-        "label": "Attempted At"
+        "label": "Attempted At",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "is_success",
-        "label": "Is Success"
+        "label": "Is Success",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "failure_reason",
-        "label": "Failure Reason"
+        "label": "Failure Reason",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "ip_address",
-        "label": "Ip Address"
+        "label": "Ip Address",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "geo_country",
-        "label": "Geo Country"
+        "label": "Geo Country",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "user_agent",
-        "label": "User Agent"
+        "label": "User Agent",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "risk_score",
-        "label": "Risk Score"
+        "label": "Risk Score",
+        "tableEnable": true,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "login_attempt_id",
-      "app_user_id",
-      "username_entered",
-      "auth_method",
-      "attempted_at",
-      "is_success",
-      "failure_reason",
-      "ip_address",
-      "geo_country",
-      "user_agent",
-      "risk_score"
     ]
   },
   "fields": [
@@ -116,384 +124,637 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "login_attempt_id",
       "label": "Login Attempt Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Login Attempt Id",
+        "placeholder": "Select Login Attempt Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "app_user_id",
       "label": "App User Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "App User",
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote",
+          "valueField": "app_user_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "iam_app_user",
-        "column": "app_user_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/iam_app_user",
-          "displayField": "name",
-          "valueField": "app_user_id"
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "App User Id",
+        "placeholder": "Select App User Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "username_entered",
       "label": "Username Entered",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Username Entered",
         "placeholder": "Enter Username Entered",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 254
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 254
+        }
+      ],
+      "rules": []
     },
     {
       "name": "auth_method",
       "label": "Auth Method",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Auth Method",
         "placeholder": "Enter Auth Method",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 10
-      },
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 10
+        }
+      ],
+      "rules": [],
       "default": "password"
     },
     {
       "name": "attempted_at",
       "label": "Attempted At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Attempted At",
         "placeholder": "Enter Attempted At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "is_success",
       "label": "Is Success",
       "type": "boolean",
+      "format": "boolean",
       "widget": "switch",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Is Success",
         "placeholder": "",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "failure_reason",
       "label": "Failure Reason",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Failure Reason",
         "placeholder": "Enter Failure Reason",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 20
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 20
+        }
+      ],
+      "rules": []
     },
     {
       "name": "ip_address",
       "label": "Ip Address",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Ip Address",
         "placeholder": "Enter Ip Address",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "geo_country",
       "label": "Geo Country",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Geo Country",
         "placeholder": "Enter Geo Country",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 2
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 2
+        }
+      ],
+      "rules": []
     },
     {
       "name": "user_agent",
       "label": "User Agent",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "User Agent",
         "placeholder": "Enter User Agent",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "risk_score",
       "label": "Risk Score",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "login.attempt.read",
+          "create": "login.attempt.create",
+          "update": "login.attempt.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Risk Score",
         "placeholder": "Enter Risk Score",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     }
   ]
 }

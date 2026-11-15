@@ -47,38 +47,40 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "acceptance_mode_id",
-        "label": "Acceptance Mode Id"
+        "label": "Acceptance Mode Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "mode_code",
-        "label": "Mode Code"
+        "label": "Mode Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "name",
-        "label": "Name"
+        "label": "Name",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "requires_gateway",
-        "label": "Requires Gateway"
+        "label": "Requires Gateway",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "is_active",
-        "label": "Is Active"
+        "label": "Is Active",
+        "tableEnable": true,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "acceptance_mode_id",
-      "mode_code",
-      "name",
-      "requires_gateway",
-      "is_active"
     ]
   },
   "fields": [
@@ -86,177 +88,297 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "acceptance_mode_id",
       "label": "Acceptance Mode Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Acceptance Mode Id",
+        "placeholder": "Select Acceptance Mode Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "mode_code",
       "label": "Mode Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Mode Code",
         "placeholder": "Enter Mode Code",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "name",
       "label": "Name",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Name",
         "placeholder": "Enter Name",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "requires_gateway",
       "label": "Requires Gateway",
       "type": "boolean",
+      "format": "boolean",
       "widget": "switch",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Requires Gateway",
         "placeholder": "",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "is_active",
       "label": "Is Active",
       "type": "boolean",
+      "format": "boolean",
       "widget": "switch",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "acceptance.mode.read",
+          "create": "acceptance.mode.create",
+          "update": "acceptance.mode.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Is Active",
         "placeholder": "",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [],
+      "rules": [],
       "default": true
     }
   ]

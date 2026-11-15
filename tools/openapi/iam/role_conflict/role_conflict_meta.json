@@ -47,40 +47,52 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "role_conflict_id",
-        "label": "Role Conflict Id"
+        "label": "Role Conflict Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "role_code_a",
-        "label": "Role Code A"
+        "label": "Role Code A",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "role_code_b",
-        "label": "Role Code B"
+        "label": "Role Code B",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "severity",
-        "label": "Severity"
+        "label": "Severity",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "rationale",
-        "label": "Rationale"
+        "label": "Rationale",
+        "tableEnable": true,
+        "viewEnable": true
+      },
+      {
+        "field": "created_at",
+        "label": "Created At",
+        "tableEnable": false,
+        "viewEnable": true
+      },
+      {
+        "field": "created_by",
+        "label": "Created By",
+        "tableEnable": false,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "role_conflict_id",
-      "role_code_a",
-      "role_code_b",
-      "severity",
-      "rationale",
-      "created_at",
-      "created_by"
     ]
   },
   "fields": [
@@ -88,233 +100,430 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "role_conflict_id",
       "label": "Role Conflict Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Role Conflict Id",
+        "placeholder": "Select Role Conflict Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "role_code_a",
       "label": "Role Code A",
       "type": "string",
-      "widget": "text",
-      "format": null,
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Role",
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "endpoint": "/iam_role",
+          "strategy": "remote",
+          "valueField": "role_code",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "iam_role",
-        "column": "role_code",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/iam_role",
-          "displayField": "name",
-          "valueField": "role_code"
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Role Code A",
+        "placeholder": "Select Role Code A",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "role_code_b",
       "label": "Role Code B",
       "type": "string",
-      "widget": "text",
-      "format": null,
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Role",
+      "reference": {
+        "table": "iam_role",
+        "column": "role_code",
+        "lookup": {
+          "endpoint": "/iam_role",
+          "strategy": "remote",
+          "valueField": "role_code",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "iam_role",
-        "column": "role_code",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/iam_role",
-          "displayField": "name",
-          "valueField": "role_code"
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Role Code B",
+        "placeholder": "Select Role Code B",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "severity",
       "label": "Severity",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Severity",
         "placeholder": "Enter Severity",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 10
-      },
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 10
+        }
+      ],
+      "rules": [],
       "default": "block"
     },
     {
       "name": "rationale",
       "label": "Rationale",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Rationale",
         "placeholder": "Enter Rationale",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "created_at",
       "label": "Created At",
       "type": "datetime",
-      "widget": "datetime",
       "format": "date-time",
-      "title": null,
+      "widget": "datetime",
       "description": null,
-      "showInTable": false,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Created At",
+        "placeholder": "Enter Created At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "created_by",
       "label": "Created By",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": false,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
+      "security": {
+        "permissions": {
+          "read": "role.conflict.read",
+          "create": "role.conflict.create",
+          "update": "role.conflict.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "nullable": true,
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Created By",
+        "placeholder": "Select Created By",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     }
   ]
 }

@@ -47,38 +47,40 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "sla_target_id",
-        "label": "Sla Target Id"
+        "label": "Sla Target Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "sla_policy_id",
-        "label": "Sla Policy Id"
+        "label": "Sla Policy Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "priority",
-        "label": "Priority"
+        "label": "Priority",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "first_response_minutes",
-        "label": "First Response Minutes"
+        "label": "First Response Minutes",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "resolution_minutes",
-        "label": "Resolution Minutes"
+        "label": "Resolution Minutes",
+        "tableEnable": true,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "sla_target_id",
-      "sla_policy_id",
-      "priority",
-      "first_response_minutes",
-      "resolution_minutes"
     ]
   },
   "fields": [
@@ -86,179 +88,324 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "sla_target_id",
       "label": "Sla Target Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Sla Target Id",
+        "placeholder": "Select Sla Target Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "sla_policy_id",
       "label": "Sla Policy Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Sla Policy",
+      "reference": {
+        "table": "support_sla_policy",
+        "column": "sla_policy_id",
+        "lookup": {
+          "endpoint": "/support_sla_policy",
+          "strategy": "remote",
+          "valueField": "sla_policy_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "support_sla_policy",
-        "column": "sla_policy_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/support_sla_policy",
-          "displayField": "name",
-          "valueField": "sla_policy_id"
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Sla Policy Id",
+        "placeholder": "Select Sla Policy Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "priority",
       "label": "Priority",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Priority",
         "placeholder": "Enter Priority",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "first_response_minutes",
       "label": "First Response Minutes",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "First Response Minutes",
         "placeholder": "Enter First Response Minutes",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "resolution_minutes",
       "label": "Resolution Minutes",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "sla.target.read",
+          "create": "sla.target.create",
+          "update": "sla.target.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Resolution Minutes",
         "placeholder": "Enter Resolution Minutes",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     }
   ]
 }

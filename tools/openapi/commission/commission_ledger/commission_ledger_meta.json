@@ -47,104 +47,124 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "entry_id",
-        "label": "Entry Id"
+        "label": "Entry Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "sales_agent_id",
-        "label": "Sales Agent Id"
+        "label": "Sales Agent Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "entry_type",
-        "label": "Entry Type"
+        "label": "Entry Type",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "amount",
-        "label": "Amount"
+        "label": "Amount",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "currency_code",
-        "label": "Currency Code"
+        "label": "Currency Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "basis_amount",
-        "label": "Basis Amount"
+        "label": "Basis Amount",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "rate_percent",
-        "label": "Rate Percent"
+        "label": "Rate Percent",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "hierarchy_depth",
-        "label": "Hierarchy Depth"
+        "label": "Hierarchy Depth",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "commission_rule_id",
-        "label": "Commission Rule Id"
+        "label": "Commission Rule Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "invoice_line_id",
-        "label": "Invoice Line Id"
+        "label": "Invoice Line Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "payment_allocation_id",
-        "label": "Payment Allocation Id"
+        "label": "Payment Allocation Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "reverses_entry_id",
-        "label": "Reverses Entry Id"
+        "label": "Reverses Entry Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "status",
-        "label": "Status"
+        "label": "Status",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "earned_at",
-        "label": "Earned At"
+        "label": "Earned At",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "approved_by_user_id",
-        "label": "Approved By User Id"
+        "label": "Approved By User Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "approved_at",
-        "label": "Approved At"
+        "label": "Approved At",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "payout_id",
-        "label": "Payout Id"
+        "label": "Payout Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "note",
-        "label": "Note"
+        "label": "Note",
+        "tableEnable": true,
+        "viewEnable": true
+      },
+      {
+        "field": "created_at",
+        "label": "Created At",
+        "tableEnable": false,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "entry_id",
-      "sales_agent_id",
-      "entry_type",
-      "amount",
-      "currency_code",
-      "basis_amount",
-      "rate_percent",
-      "hierarchy_depth",
-      "commission_rule_id",
-      "invoice_line_id",
-      "payment_allocation_id",
-      "reverses_entry_id",
-      "status",
-      "earned_at",
-      "approved_by_user_id",
-      "approved_at",
-      "payout_id",
-      "note",
-      "created_at"
     ]
   },
   "fields": [
@@ -152,640 +172,1134 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "entry_id",
       "label": "Entry Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Entry Id",
+        "placeholder": "Select Entry Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "sales_agent_id",
       "label": "Sales Agent Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Sales Agent",
+      "reference": {
+        "table": "partner_sales_agent",
+        "column": "sales_agent_id",
+        "lookup": {
+          "endpoint": "/partner_sales_agent",
+          "strategy": "remote",
+          "valueField": "sales_agent_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "partner_sales_agent",
-        "column": "sales_agent_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/partner_sales_agent",
-          "displayField": "name",
-          "valueField": "sales_agent_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Sales Agent Id",
+        "placeholder": "Select Sales Agent Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "entry_type",
       "label": "Entry Type",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Entry Type",
         "placeholder": "Enter Entry Type",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 10
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 10
+        }
+      ],
+      "rules": []
     },
     {
       "name": "amount",
       "label": "Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Amount",
         "placeholder": "Enter Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "currency_code",
       "label": "Currency Code",
       "type": "string",
-      "widget": "text",
-      "format": null,
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Currency",
+      "reference": {
+        "table": "platform_currency",
+        "column": "currency_code",
+        "lookup": {
+          "endpoint": "/platform_currency",
+          "strategy": "remote",
+          "valueField": "currency_code",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "platform_currency",
-        "column": "currency_code",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/platform_currency",
-          "displayField": "name",
-          "valueField": "currency_code"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Currency Code",
+        "placeholder": "Select Currency Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "basis_amount",
       "label": "Basis Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Basis Amount",
         "placeholder": "Enter Basis Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "rate_percent",
       "label": "Rate Percent",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Rate Percent",
         "placeholder": "Enter Rate Percent",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "hierarchy_depth",
       "label": "Hierarchy Depth",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Hierarchy Depth",
         "placeholder": "Enter Hierarchy Depth",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "commission_rule_id",
       "label": "Commission Rule Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Commission Rule",
+      "reference": {
+        "table": "commission_commission_rule",
+        "column": "commission_rule_id",
+        "lookup": {
+          "endpoint": "/commission_commission_rule",
+          "strategy": "remote",
+          "valueField": "commission_rule_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commission_commission_rule",
-        "column": "commission_rule_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commission_commission_rule",
-          "displayField": "name",
-          "valueField": "commission_rule_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Commission Rule Id",
+        "placeholder": "Select Commission Rule Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "invoice_line_id",
       "label": "Invoice Line Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Invoice Line",
+      "reference": {
+        "table": "billing_invoice_line",
+        "column": "invoice_line_id",
+        "lookup": {
+          "endpoint": "/billing_invoice_line",
+          "strategy": "remote",
+          "valueField": "invoice_line_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "billing_invoice_line",
-        "column": "invoice_line_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/billing_invoice_line",
-          "displayField": "name",
-          "valueField": "invoice_line_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Invoice Line Id",
+        "placeholder": "Select Invoice Line Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "payment_allocation_id",
       "label": "Payment Allocation Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Payment Allocation",
+      "reference": {
+        "table": "payment_payment_allocation",
+        "column": "payment_allocation_id",
+        "lookup": {
+          "endpoint": "/payment_payment_allocation",
+          "strategy": "remote",
+          "valueField": "payment_allocation_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "payment_payment_allocation",
-        "column": "payment_allocation_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/payment_payment_allocation",
-          "displayField": "name",
-          "valueField": "payment_allocation_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Payment Allocation Id",
+        "placeholder": "Select Payment Allocation Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "reverses_entry_id",
       "label": "Reverses Entry Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Commission Ledger",
+      "reference": {
+        "table": "commission_commission_ledger",
+        "column": "entry_id",
+        "lookup": {
+          "endpoint": "/commission_commission_ledger",
+          "strategy": "remote",
+          "valueField": "entry_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commission_commission_ledger",
-        "column": "entry_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commission_commission_ledger",
-          "displayField": "name",
-          "valueField": "entry_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Reverses Entry Id",
+        "placeholder": "Select Reverses Entry Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "status",
       "label": "Status",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Status",
         "placeholder": "Enter Status",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 10
-      },
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 10
+        }
+      ],
+      "rules": [],
       "default": "pending"
     },
     {
       "name": "earned_at",
       "label": "Earned At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Earned At",
         "placeholder": "Enter Earned At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "approved_by_user_id",
       "label": "Approved By User Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "App User",
+      "reference": {
+        "table": "iam_app_user",
+        "column": "app_user_id",
+        "lookup": {
+          "endpoint": "/iam_app_user",
+          "strategy": "remote",
+          "valueField": "app_user_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "iam_app_user",
-        "column": "app_user_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/iam_app_user",
-          "displayField": "name",
-          "valueField": "app_user_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Approved By User Id",
+        "placeholder": "Select Approved By User Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "approved_at",
       "label": "Approved At",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Approved At",
         "placeholder": "Enter Approved At",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "payout_id",
       "label": "Payout Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Payout",
+      "reference": {
+        "table": "commission_payout",
+        "column": "payout_id",
+        "lookup": {
+          "endpoint": "/commission_payout",
+          "strategy": "remote",
+          "valueField": "payout_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commission_payout",
-        "column": "payout_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commission_payout",
-          "displayField": "name",
-          "valueField": "payout_id"
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Payout Id",
+        "placeholder": "Select Payout Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "note",
       "label": "Note",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Note",
         "placeholder": "Enter Note",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "created_at",
       "label": "Created At",
       "type": "datetime",
-      "widget": "datetime",
       "format": "date-time",
-      "title": null,
+      "widget": "datetime",
       "description": null,
-      "showInTable": false,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "commission.ledger.read",
+          "create": "commission.ledger.create",
+          "update": "commission.ledger.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Created At",
+        "placeholder": "Enter Created At",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     }
   ]
 }

@@ -47,108 +47,124 @@
     "columns": [
       {
         "field": "record_code",
-        "label": "Record Code"
+        "label": "Record Code",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "invoice_line_id",
-        "label": "Invoice Line Id"
+        "label": "Invoice Line Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "invoice_id",
-        "label": "Invoice Id"
+        "label": "Invoice Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "line_no",
-        "label": "Line No"
+        "label": "Line No",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "line_type",
-        "label": "Line Type"
+        "label": "Line Type",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "description",
-        "label": "Description"
+        "label": "Description",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "plan_price_id",
-        "label": "Plan Price Id"
+        "label": "Plan Price Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "addon_price_id",
-        "label": "Addon Price Id"
+        "label": "Addon Price Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "subscription_item_id",
-        "label": "Subscription Item Id"
+        "label": "Subscription Item Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "feature_id",
-        "label": "Feature Id"
+        "label": "Feature Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "coupon_id",
-        "label": "Coupon Id"
+        "label": "Coupon Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "period_start",
-        "label": "Period Start"
+        "label": "Period Start",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "period_end",
-        "label": "Period End"
+        "label": "Period End",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "quantity",
-        "label": "Quantity"
+        "label": "Quantity",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "unit_amount",
-        "label": "Unit Amount"
+        "label": "Unit Amount",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "discount_amount",
-        "label": "Discount Amount"
+        "label": "Discount Amount",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "tax_rate_id",
-        "label": "Tax Rate Id"
+        "label": "Tax Rate Id",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "tax_rate",
-        "label": "Tax Rate"
+        "label": "Tax Rate",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "tax_amount",
-        "label": "Tax Amount"
+        "label": "Tax Amount",
+        "tableEnable": true,
+        "viewEnable": true
       },
       {
         "field": "net_amount",
-        "label": "Net Amount"
+        "label": "Net Amount",
+        "tableEnable": true,
+        "viewEnable": true
       }
-    ]
-  },
-  "detail": {
-    "fields": [
-      "record_code",
-      "invoice_line_id",
-      "invoice_id",
-      "line_no",
-      "line_type",
-      "description",
-      "plan_price_id",
-      "addon_price_id",
-      "subscription_item_id",
-      "feature_id",
-      "coupon_id",
-      "period_start",
-      "period_end",
-      "quantity",
-      "unit_amount",
-      "discount_amount",
-      "tax_rate_id",
-      "tax_rate",
-      "tax_amount",
-      "net_amount"
     ]
   },
   "fields": [
@@ -156,646 +172,1121 @@
       "name": "record_code",
       "label": "Record Code",
       "type": "string",
+      "format": "string",
       "widget": "text",
-      "format": null,
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Record Code",
+        "placeholder": "Enter Record Code",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [],
+      "rules": []
     },
     {
       "name": "invoice_line_id",
       "label": "Invoice Line Id",
       "type": "uuid",
+      "format": "string",
       "widget": "text",
-      "format": "uuid",
-      "title": null,
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": false,
-      "showInUpdate": false,
+      "title": null,
       "permissions": {
         "read": true,
         "create": false,
         "update": false
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": false,
-      "nullable": false,
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "readOnly": true,
-      "writeOnly": false,
-      "deprecated": false
+      "ui": {
+        "label": "Invoice Line Id",
+        "placeholder": "Select Invoice Line Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "table",
+          "detail"
+        ],
+        "required": [],
+        "readOnly": [
+          "create",
+          "edit"
+        ]
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "invoice_id",
       "label": "Invoice Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Invoice",
+      "reference": {
+        "table": "billing_invoice",
+        "column": "invoice_id",
+        "lookup": {
+          "endpoint": "/billing_invoice",
+          "strategy": "remote",
+          "valueField": "invoice_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "billing_invoice",
-        "column": "invoice_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/billing_invoice",
-          "displayField": "name",
-          "valueField": "invoice_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "ui": {
+        "label": "Invoice Id",
+        "placeholder": "Select Invoice Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "line_no",
       "label": "Line No",
       "type": "integer",
+      "format": "int32",
       "widget": "number",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Line No",
         "placeholder": "Enter Line No",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "int32",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "int32"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "line_type",
       "label": "Line Type",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Line Type",
         "placeholder": "Enter Line Type",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "validations": {
-        "maxLength": 12
-      }
+      "validation": [
+        {
+          "type": "maxLength",
+          "value": 12
+        }
+      ],
+      "rules": []
     },
     {
       "name": "description",
       "label": "Description",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Description",
         "placeholder": "Enter Description",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "plan_price_id",
       "label": "Plan Price Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Plan Price",
+      "reference": {
+        "table": "commerce_plan_price",
+        "column": "plan_price_id",
+        "lookup": {
+          "endpoint": "/commerce_plan_price",
+          "strategy": "remote",
+          "valueField": "plan_price_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commerce_plan_price",
-        "column": "plan_price_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commerce_plan_price",
-          "displayField": "name",
-          "valueField": "plan_price_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Plan Price Id",
+        "placeholder": "Select Plan Price Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "addon_price_id",
       "label": "Addon Price Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Addon Price",
+      "reference": {
+        "table": "commerce_addon_price",
+        "column": "addon_price_id",
+        "lookup": {
+          "endpoint": "/commerce_addon_price",
+          "strategy": "remote",
+          "valueField": "addon_price_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commerce_addon_price",
-        "column": "addon_price_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commerce_addon_price",
-          "displayField": "name",
-          "valueField": "addon_price_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Addon Price Id",
+        "placeholder": "Select Addon Price Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "subscription_item_id",
       "label": "Subscription Item Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Subscription Item",
+      "reference": {
+        "table": "subscription_subscription_item",
+        "column": "subscription_item_id",
+        "lookup": {
+          "endpoint": "/subscription_subscription_item",
+          "strategy": "remote",
+          "valueField": "subscription_item_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "subscription_subscription_item",
-        "column": "subscription_item_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/subscription_subscription_item",
-          "displayField": "name",
-          "valueField": "subscription_item_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Subscription Item Id",
+        "placeholder": "Select Subscription Item Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "feature_id",
       "label": "Feature Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Feature",
+      "reference": {
+        "table": "catalog_feature",
+        "column": "feature_id",
+        "lookup": {
+          "endpoint": "/catalog_feature",
+          "strategy": "remote",
+          "valueField": "feature_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "catalog_feature",
-        "column": "feature_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/catalog_feature",
-          "displayField": "name",
-          "valueField": "feature_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Feature Id",
+        "placeholder": "Select Feature Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "coupon_id",
       "label": "Coupon Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Coupon",
+      "reference": {
+        "table": "commerce_coupon",
+        "column": "coupon_id",
+        "lookup": {
+          "endpoint": "/commerce_coupon",
+          "strategy": "remote",
+          "valueField": "coupon_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "commerce_coupon",
-        "column": "coupon_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/commerce_coupon",
-          "displayField": "name",
-          "valueField": "coupon_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Coupon Id",
+        "placeholder": "Select Coupon Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "period_start",
       "label": "Period Start",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Period Start",
         "placeholder": "Enter Period Start",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "period_end",
       "label": "Period End",
       "type": "datetime",
+      "format": "date-time",
       "widget": "datetime",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Period End",
         "placeholder": "Enter Period End",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "date-time",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [
+        {
+          "type": "format",
+          "value": "date-time"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "quantity",
       "label": "Quantity",
       "type": "number",
+      "format": "double",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Quantity",
         "placeholder": "Enter Quantity",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": "double",
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [
+        {
+          "type": "format",
+          "value": "double"
+        }
+      ],
+      "rules": [],
       "default": 1
     },
     {
       "name": "unit_amount",
       "label": "Unit Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Unit Amount",
         "placeholder": "Enter Unit Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "create",
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": true,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     },
     {
       "name": "discount_amount",
       "label": "Discount Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Discount Amount",
         "placeholder": "Enter Discount Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [],
+      "rules": [],
       "default": 0
     },
     {
       "name": "tax_rate_id",
       "label": "Tax Rate Id",
       "type": "uuid",
-      "widget": "text",
-      "format": "uuid",
-      "title": null,
+      "format": "string",
+      "widget": "reference",
+      "group": "Tax Rate",
+      "reference": {
+        "table": "platform_tax_rate",
+        "column": "tax_rate_id",
+        "lookup": {
+          "endpoint": "/platform_tax_rate",
+          "strategy": "remote",
+          "valueField": "tax_rate_id",
+          "displayField": "name"
+        }
+      },
       "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
+      "title": null,
       "permissions": {
         "read": true,
         "create": true,
         "update": true
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
-      "reference": {
-        "table": "platform_tax_rate",
-        "column": "tax_rate_id",
-        "lookup": {
-          "strategy": "remote",
-          "endpoint": "/platform_tax_rate",
-          "displayField": "name",
-          "valueField": "tax_rate_id"
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
         }
-      }
+      },
+      "nullable": true,
+      "ui": {
+        "label": "Tax Rate Id",
+        "placeholder": "Select Tax Rate Id",
+        "hint": null,
+        "tooltip": null,
+        "helperText": null,
+        "icon": null,
+        "hidden": false
+      },
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
+      },
+      "validation": [
+        {
+          "type": "format",
+          "value": "uuid"
+        }
+      ],
+      "rules": []
     },
     {
       "name": "tax_rate",
       "label": "Tax Rate",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Tax Rate",
         "placeholder": "Enter Tax Rate",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [],
+      "rules": [],
       "default": 0
     },
     {
       "name": "tax_amount",
       "label": "Tax Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
       "ui": {
         "label": "Tax Amount",
         "placeholder": "Enter Tax Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": false,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false,
+      "validation": [],
+      "rules": [],
       "default": 0
     },
     {
       "name": "net_amount",
       "label": "Net Amount",
       "type": "string",
+      "format": "string",
       "widget": "text",
+      "description": null,
+      "title": null,
+      "permissions": {
+        "read": true,
+        "create": true,
+        "update": true
+      },
+      "security": {
+        "permissions": {
+          "read": "invoice.line.read",
+          "create": "invoice.line.create",
+          "update": "invoice.line.update"
+        },
+        "masking": {
+          "enabled": false,
+          "strategy": "none"
+        }
+      },
+      "nullable": true,
       "ui": {
         "label": "Net Amount",
         "placeholder": "Enter Net Amount",
         "hint": null,
         "tooltip": null,
         "helperText": null,
-        "icon": null
+        "icon": null,
+        "hidden": false
       },
-      "format": null,
-      "title": null,
-      "description": null,
-      "showInTable": true,
-      "showInDetail": true,
-      "showInCreate": true,
-      "showInUpdate": true,
-      "permissions": {
-        "read": true,
-        "create": true,
-        "update": true
+      "visibility": {
+        "show": [
+          "create",
+          "edit",
+          "table",
+          "detail"
+        ],
+        "required": [
+          "edit"
+        ],
+        "readOnly": []
       },
-      "requiredOnCreate": false,
-      "requiredOnUpdate": true,
-      "nullable": true,
-      "readOnly": false,
-      "writeOnly": false,
-      "deprecated": false
+      "validation": [],
+      "rules": []
     }
   ]
 }

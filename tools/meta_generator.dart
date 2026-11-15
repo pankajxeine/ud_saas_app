@@ -99,25 +99,20 @@ class MetaGenerator {
         "filters": [],
       },
       'datatable': {
-        'columns': fields
-            .where((e) => e['showInTable'] == true)
-            .map((e) => {'field': e['name'], 'label': e['label']})
-            .toList(),
+        'columns': fields.map((field) {
+          final visibility = field['visibility'];
+          final show = visibility is Map
+              ? (visibility['show'] as List? ?? const [])
+              : const [];
+
+          return {
+            'field': field['name'],
+            'label': field['label'],
+            'tableEnable': show.contains('table'),
+            'viewEnable': show.contains('detail'),
+          };
+        }).toList(),
       },
-
-      // 'form': {
-      //   'create': fields
-      //       .where((e) => e['showInCreate'] == true)
-      //       .map((e) => e['name'])
-      //       .toList(),
-      //   'update': fields
-      //       .where((e) => e['showInUpdate'] == true)
-      //       .map((e) => e['name'])
-      //       .toList(),
-      // },
-      'detail': {'fields': fields.map((e) => e['name']).toList()},
-
-      // 'references': references,
       'fields': fields,
     };
   }
@@ -204,10 +199,20 @@ class MetaGenerator {
     }
 
     for (final item in list) {
-      result[item['column']] = {
-        'table': item['table'],
-        'key': item['key'],
-        'lookup': {'endpoint': '/${item['table']}', 'strategy': 'remote'},
+      final table = item['table']?.toString();
+      final column =
+          item['column']?.toString() ?? item['key']?.toString() ?? '';
+      if (column.isEmpty) continue;
+
+      result[column] = {
+        'table': table,
+        'column': column,
+        'lookup': {
+          'endpoint': table == null ? null : '/$table',
+          'strategy': 'remote',
+          'valueField': column,
+          'displayField': 'name',
+        }..removeWhere((key, value) => value == null),
       };
     }
 
@@ -239,87 +244,60 @@ class MetaGenerator {
           ? entry.value as YamlMap
           : YamlMap();
 
+      final reference = _buildReference(name, property, globalRefs);
+      final type = _type(property);
+
       final field = <String, dynamic>{
         // Identity
         'name': name,
-        'label': _humanize(name),
+        'label': _uiLabel(name, property),
 
         // Type metadata
-        'type': _type(property),
+        'type': type,
+        'format': _fieldFormat(property, type),
 
-        'widget': _widget(property),
-        //ui property
-        if (!_skipUiMetadata(name, property))
-          'ui': _buildUiMetadata(name, property),
+        // A relation is rendered as a lookup/select by default.
+        'widget': reference != null ? 'reference' : _widget(property),
 
-        'format': property['format'],
+        if (_group(property, reference) != null)
+          'group': _group(property, reference),
 
-        // Documentation
-        'title': property['title'],
+        if (reference != null) 'reference': reference,
 
         'description': property['description'],
 
-        // Visibility
-        'showInTable': !_isAudit(name),
+        'title': property['title'],
 
-        'showInDetail': true,
-
-        'showInCreate': createProps.containsKey(name),
-
-        'showInUpdate': updateProps.containsKey(name),
-
-        // Permissions
         'permissions': {
           'read': true,
           'create': createProps.containsKey(name),
           'update': updateProps.containsKey(name),
         },
 
-        // Required Rules
-        'requiredOnCreate': createRequired.contains(name),
+        'security': _buildSecurity(property, entityName: _detectEntity()),
 
-        'requiredOnUpdate': updateRequired.contains(name),
+        if (property['nullable'] == true) 'nullable': true,
+        if (property['readOnly'] == true) 'readOnly': true,
+        if (property['writeOnly'] == true) 'writeOnly': true,
+        if (property['deprecated'] == true) 'deprecated': true,
 
-        // OpenAPI flags
-        'nullable': property['nullable'] == true,
+        'ui': _buildUiMetadata(name, property, reference: reference),
 
-        'readOnly': property['readOnly'] == true,
+        'visibility': _buildVisibility(
+          name: name,
+          property: property,
+          createProps: createProps,
+          updateProps: updateProps,
+          createRequired: createRequired,
+          updateRequired: updateRequired,
+        ),
 
-        'writeOnly': property['writeOnly'] == true,
+        'validation': _buildValidation(property),
 
-        'deprecated': property['deprecated'] == true,
+        // Conditional field behavior is intentionally separate from static
+        // validation. An absent x-rules extension produces an empty array.
+        'rules': _buildRules(property),
       };
-
-      // Validation block
-      final validations = <String, dynamic>{};
-
-      if (property['minimum'] != null) {
-        validations['minimum'] = property['minimum'];
-      }
-
-      if (property['maximum'] != null) {
-        validations['maximum'] = property['maximum'];
-      }
-
-      if (property['minLength'] != null) {
-        validations['minLength'] = property['minLength'];
-      }
-
-      if (property['maxLength'] != null) {
-        validations['maxLength'] = property['maxLength'];
-      }
-
-      if (property['pattern'] != null) {
-        validations['pattern'] = property['pattern'];
-      }
-
-      if (property['multipleOf'] != null) {
-        validations['multipleOf'] = property['multipleOf'];
-      }
-
-      if (validations.isNotEmpty) {
-        field['validations'] = validations;
-      }
 
       // Default value
       if (property['default'] != null) {
@@ -348,29 +326,6 @@ class MetaGenerator {
         field['object'] = _resolveSchema(property);
       }
 
-      // Reference support
-      if (property['x-reference'] is YamlMap) {
-        final ref = property['x-reference'] as YamlMap;
-
-        field['reference'] = {
-          'table': ref['table'],
-
-          'column': ref['column'],
-
-          'lookup': {
-            'strategy': 'remote',
-
-            'endpoint': '/${ref['table']}',
-
-            'displayField': 'name',
-
-            'valueField': ref['column'],
-          },
-        };
-      } else if (globalRefs.containsKey(name)) {
-        field['reference'] = globalRefs[name];
-      }
-
       // Association ($ref)
       if (property[r'$ref'] != null) {
         field['association'] = _resolveSchema(property);
@@ -380,6 +335,161 @@ class MetaGenerator {
     }
 
     return fields;
+  }
+
+  Map<String, dynamic>? _buildReference(
+    String fieldName,
+    YamlMap property,
+    Map<String, dynamic> globalRefs,
+  ) {
+    final raw = property['x-reference'];
+    final reference = raw is YamlMap
+        ? Map<String, dynamic>.from(raw)
+        : globalRefs[fieldName] is Map
+        ? Map<String, dynamic>.from(globalRefs[fieldName] as Map)
+        : null;
+
+    if (reference == null) return null;
+
+    final table = reference['table']?.toString();
+    final column =
+        reference['column']?.toString() ??
+        reference['key']?.toString() ??
+        fieldName;
+
+    final rawLookup = reference['lookup'];
+    final lookup = rawLookup is Map
+        ? Map<String, dynamic>.from(rawLookup)
+        : <String, dynamic>{};
+
+    return {
+      if (table != null) 'table': table,
+      'column': column,
+      'lookup': {
+        'endpoint': lookup['endpoint'] ?? (table == null ? null : '/$table'),
+        'strategy': lookup['strategy'] ?? 'remote',
+        'valueField': lookup['valueField'] ?? column,
+        'displayField': lookup['displayField'] ?? 'name',
+      }..removeWhere((key, value) => value == null),
+    };
+  }
+
+  String _uiLabel(String fieldName, YamlMap property) {
+    final ui = property['x-ui'];
+    if (ui is YamlMap && ui['label'] != null) {
+      return ui['label'].toString();
+    }
+    return _humanize(fieldName);
+  }
+
+  String _fieldFormat(YamlMap property, String type) {
+    if (type == 'uuid') return 'string';
+    return property['format']?.toString() ?? property['type']?.toString() ?? 'string';
+  }
+
+  String? _group(YamlMap property, Map<String, dynamic>? reference) {
+    final explicit = property['x-group'] ?? property['group'];
+    if (explicit != null && explicit.toString().trim().isNotEmpty) {
+      return explicit.toString();
+    }
+    final table = reference?['table']?.toString();
+    if (table == null) return null;
+
+    // SQL table names commonly include a schema/module prefix, for example
+    // crm_account. Use the entity portion as the default UI group label.
+    final parts = table.split('_');
+    return _humanize(parts.length > 1 ? parts.skip(1).join('_') : table);
+  }
+
+  Map<String, dynamic> _buildSecurity(
+    YamlMap property, {
+    required String entityName,
+  }) {
+    final raw = property['x-security'];
+    if (raw is YamlMap) return Map<String, dynamic>.from(raw);
+
+    final permissions = property['x-permissions'];
+    if (permissions is YamlMap) {
+      return {'permissions': Map<String, dynamic>.from(permissions)};
+    }
+
+    final prefix = entityName.replaceAllMapped(
+      RegExp(r'([a-z0-9])([A-Z])'),
+      (match) => '${match[1]}.${match[2]}',
+    ).replaceAll('_', '.').toLowerCase();
+
+    return {
+      'permissions': {
+        'read': '$prefix.read',
+        'create': '$prefix.create',
+        'update': '$prefix.update',
+      },
+      'masking': {
+        'enabled': false,
+        'strategy': 'none',
+      },
+    };
+  }
+
+  Map<String, dynamic> _buildVisibility({
+    required String name,
+    required YamlMap property,
+    required YamlMap createProps,
+    required YamlMap updateProps,
+    required Set<String> createRequired,
+    required Set<String> updateRequired,
+  }) {
+    final show = <String>[];
+    if (createProps.containsKey(name)) show.add('create');
+    if (updateProps.containsKey(name)) show.add('edit');
+    if (!_isAudit(name)) show.add('table');
+    show.add('detail');
+
+    final required = <String>[];
+    if (createRequired.contains(name)) required.add('create');
+    if (updateRequired.contains(name)) required.add('edit');
+
+    final readOnly = <String>[];
+    if (property['readOnly'] == true) {
+      readOnly.addAll(['create', 'edit']);
+    }
+
+    return {
+      'show': show,
+      'required': required,
+      'readOnly': readOnly,
+    };
+  }
+
+  List<Map<String, dynamic>> _buildValidation(YamlMap property) {
+    final rules = <Map<String, dynamic>>[];
+    for (final key in [
+      'minLength',
+      'maxLength',
+      'minimum',
+      'maximum',
+      'exclusiveMinimum',
+      'exclusiveMaximum',
+      'multipleOf',
+      'minItems',
+      'maxItems',
+      'pattern',
+      'format',
+    ]) {
+      if (property[key] != null) {
+        rules.add({'type': key, 'value': property[key]});
+      }
+    }
+    return rules;
+  }
+
+  List<Map<String, dynamic>> _buildRules(YamlMap property) {
+    final raw = property['x-rules'] ?? property['x-field-rules'];
+    if (raw is! YamlList) return <Map<String, dynamic>>[];
+    return raw
+        .whereType<YamlMap>()
+        .map((rule) => Map<String, dynamic>.from(rule))
+        .toList();
   }
 
   bool _skipUiMetadata(String fieldName, YamlMap property) {
@@ -413,7 +523,11 @@ class MetaGenerator {
     return false;
   }
 
-  Map<String, dynamic> _buildUiMetadata(String fieldName, YamlMap property) {
+  Map<String, dynamic> _buildUiMetadata(
+    String fieldName,
+    YamlMap property, {
+    Map<String, dynamic>? reference,
+  }) {
     final ui = property['x-ui'] is YamlMap
         ? property['x-ui'] as YamlMap
         : YamlMap();
@@ -424,7 +538,10 @@ class MetaGenerator {
       'label': label,
 
       'placeholder':
-          ui['placeholder'] ?? _defaultPlaceholder(fieldName, property),
+          ui['placeholder'] ??
+              (reference == null
+                  ? _defaultPlaceholder(fieldName, property)
+                  : 'Select ${_humanize(fieldName)}'),
 
       'hint': ui['hint'] ?? property['description'],
 
@@ -433,6 +550,7 @@ class MetaGenerator {
       'helperText': ui['helperText'] ?? property['description'],
 
       'icon': ui['icon'],
+      'hidden': ui['hidden'] == true,
     };
   }
 
