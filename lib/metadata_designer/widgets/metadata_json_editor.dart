@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ud_sass_app/ui/dashcn/components/button.dart';
 import 'package:ud_sass_app/ui/dashcn/components/input.dart';
+import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -79,62 +80,72 @@ class _MetadataJsonEditorState extends State<MetadataJsonEditor> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Theme.of(context);
     return BlocListener<MetadataBloc, MetadataState>(
       listenWhen: (previous, current) => previous.metadata != current.metadata,
       listener: (context, state) {
         // Do not overwrite in-progress JSON editing when another
         // editor changes metadata. Use Reload to refresh explicitly.
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              const Expanded(
+      child: Padding(
+        padding: EdgeInsetsGeometry.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'JSON editor',
+                    style: t.typography.extraBold.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: t.colors.accentForeground,
+                    ),
+                  ),
+                ),
+                Button(
+                  variant: ButtonVariant.outline,
+                  onPressed: _loadFromBloc,
+                  child: const Text('Reload'),
+                ),
+                const SizedBox(width: 8),
+                Button(onPressed: _applyJson, child: const Text('Apply JSON')),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Edit the complete module metadata document.',
+              style: t.typography.small.copyWith(
+                fontWeight: FontWeight.w600,
+                color: t.colors.accentForeground,
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (_error != null)
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFEF2F2),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFFECACA)),
+                ),
                 child: Text(
-                  'JSON editor',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  _error!,
+                  style: const TextStyle(color: Color(0xFFB91C1C)),
                 ),
               ),
-              Button(
-                variant: ButtonVariant.outline,
-                onPressed: _loadFromBloc,
-                child: const Text('Reload'),
-              ),
-              const SizedBox(width: 8),
-              Button(onPressed: _applyJson, child: const Text('Apply JSON')),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Edit the complete module metadata document.',
-            style: TextStyle(color: Color(0xFF64748B)),
-          ),
-          const SizedBox(height: 12),
-          if (_error != null)
-            Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFEF2F2),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFFECACA)),
-              ),
-              child: Text(
-                _error!,
-                style: const TextStyle(color: Color(0xFFB91C1C)),
+            Expanded(
+              child: Input(
+                controller: _controller,
+                expands: true,
+                minLines: null,
+                maxLines: null,
+                textAlign: TextAlign.start,
               ),
             ),
-          Expanded(
-            child: Input(
-              controller: _controller,
-              expands: true,
-              minLines: null,
-              maxLines: null,
-              textAlign: TextAlign.start,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

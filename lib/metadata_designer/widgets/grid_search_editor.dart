@@ -18,9 +18,7 @@ class GridSearchEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MetadataBloc, MetadataState>(
       builder: (context, state) {
-        final grid = Map<String, dynamic>.from(
-          (state.metadata?.schemaJson.grid as Map?) ?? {},
-        );
+        final grid = state.metadata?.schemaJson.grid;
 
         final search = Map<String, dynamic>.from(
           (state.metadata?.schemaJson.search as Map?) ?? {},
@@ -39,38 +37,38 @@ class GridSearchEditor extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
-            _numberInput(
-              label: 'Page size',
-              value: grid['pageSize'] ?? 20,
-              onChanged: (value) {
-                _updateGrid(context, grid, 'pageSize', value);
-              },
-            ),
+            // _numberInput(
+            //   label: 'Page size',
+            //   value: grid['pageSize'] ?? 20,
+            //   onChanged: (value) {
+            //     _updateGrid(context, grid, 'pageSize', value);
+            //   },
+            // ),
             const SizedBox(height: 12),
             const Text(
               'Default sorting',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            _input(
-              label: 'Sort field',
-              value: (grid['defaultSort'] is Map)
-                  ? grid['defaultSort']['field']?.toString() ?? ''
-                  : '',
-              onChanged: (value) {
-                _updateSort(context, grid, 'field', value);
-              },
-            ),
-            _select(
-              label: 'Sort direction',
-              value: (grid['defaultSort'] is Map)
-                  ? grid['defaultSort']['direction']?.toString() ?? 'asc'
-                  : 'asc',
-              options: const ['asc', 'desc'],
-              onChanged: (value) {
-                _updateSort(context, grid, 'direction', value);
-              },
-            ),
+            // _input(
+            //   label: 'Sort field',
+            //   value: (grid['defaultSort'] is Map)
+            //       ? grid['defaultSort']['field']?.toString() ?? ''
+            //       : '',
+            //   onChanged: (value) {
+            //     _updateSort(context, grid, 'field', value);
+            //   },
+            // ),
+            // _select(
+            //   label: 'Sort direction',
+            //   value: (grid['defaultSort'] is Map)
+            //       ? grid['defaultSort']['direction']?.toString() ?? 'asc'
+            //       : 'asc',
+            //   options: const ['asc', 'desc'],
+            //   onChanged: (value) {
+            //     _updateSort(context, grid, 'direction', value);
+            //   },
+            // ),
             const SizedBox(height: 20),
             const Text(
               'Search configuration',

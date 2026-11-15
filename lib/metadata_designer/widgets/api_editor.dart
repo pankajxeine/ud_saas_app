@@ -1,156 +1,324 @@
+import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
+
+import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
+import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
+import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/ui/dashcn/components/select.dart';
+import 'package:ud_sass_app/ui/dashcn/src/components/divider/divider.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
-import '../bloc/metadata_state.dart';
+import '../models/metadata_api.dart';
 
-class ApiEditor extends StatelessWidget {
-  const ApiEditor({super.key});
+class ApiEditor extends StatefulWidget {
+  const ApiEditor({
+    super.key,
+    this.api,
+    this.mode = EntityMode.edit,
+    this.selectedOperation = 'list',
+  });
 
-  static const operations = ['list', 'create', 'detail', 'update', 'delete'];
+  /// API configuration received from the parent.
+  final MetadataApi? api;
+
+  final EntityMode mode;
+
+  /// Initial dropdown selection.
+  final String selectedOperation;
+
+  static const List<String> operations = [
+    'list',
+    'create',
+    'detail',
+    'update',
+    'delete',
+  ];
+
+  static const List<String> methods = ['get', 'post', 'put', 'delete', 'patch'];
+
+  static const Map<String, dynamic> _schema = {
+    "name": "api",
+    "label": "API Configuration",
+    "type": "array",
+    "widget": "array",
+    "fields": [
+      {
+        "name": "operation",
+        "label": "Operation",
+        "type": "select",
+        "widget": "select",
+
+        "options": ["list", "create", "detail", "update", "delete"],
+      },
+      {
+        "name": "path",
+        "label": "Path",
+        "type": "text",
+        "widget": "text",
+        "required": true,
+      },
+      {
+        "name": "enabled",
+        "label": "Enabled",
+        "type": "boolean",
+        "widget": "switch",
+        "default": true,
+      },
+      {
+        "name": "permission",
+        "label": "Permission",
+        "type": "text",
+        "widget": "text",
+      },
+    ],
+  };
+
+  // static const initialData = {
+  //   'ui': {
+  //     'hint': null,
+  //     'icon': null,
+  //     'label': 'Marketing Consent',
+  //     'tooltip': null,
+  //     'helperText': null,
+  //     'placeholder': '',
+  //   },
+
+  //   'name': 'marketing_consent',
+  //   'type': 'boolean',
+  //   'label': 'Marketing Consent',
+  //   'widget': 'switch',
+
+  //   'default': false,
+
+  //   'nullable': false,
+  //   'readOnly': false,
+  //   'writeOnly': false,
+  //   'deprecated': false,
+
+  //   'permissions': {'read': true, 'create': true, 'update': true},
+
+  //   'showInTable': true,
+  //   'showInCreate': true,
+  //   'showInDetail': true,
+  //   'showInUpdate': true,
+
+  //   'requiredOnCreate': false,
+  //   'requiredOnUpdate': true,
+
+  //   'validations': {},
+  //   'reference': {},
+  //   'extra': {},
+  // };
+
+  // static const Map<String, dynamic> _schema = {
+  //   'entityName': 'API Operation',
+  //   'fields': [
+  //     {
+  //       'name': 'path',
+  //       'label': 'Path',
+  //       'type': 'text',
+  //       'widget': 'text',
+  //       'required': true,
+  //       'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 1},
+  //     },
+  //     {
+  //       'name': 'method',
+  //       'label': 'Method',
+  //       'widget': 'text',
+  //       'type': 'text',
+  //       'required': true,
+  //       'layout': {'mobileColSpan': 2, 'tabletColSpan': 2, 'desktopColSpan': 2},
+  //     },
+  //     {
+  //       'name': 'enabled',
+  //       'label': 'Enabled',
+  //       'helpText': 'Field Visible',
+  //       'widget': 'switch',
+  //       'type': 'boolean',
+  //       'initialValue': true,
+  //       'layout': {'mobileColSpan': 2, 'tabletColSpan': 2, 'desktopColSpan': 2},
+  //     },
+  //     {
+  //       'name': 'permission',
+  //       'label': 'Permission',
+  //       'widget': 'text',
+  //       'type': 'text',
+  //       'required': true,
+  //       'layout': {'mobileColSpan': 1, 'tabletColSpan': 2, 'desktopColSpan': 4},
+  //     },
+  //   ],
+  // };
+
+  static final EntityMeta _metadata = entityMetaFromJson(_schema);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<MetadataBloc, MetadataState>(
-      builder: (context, state) {
-        final api = Map<String, dynamic>.from(
-          (state.metadata?.schemaJson.api as Map?) ?? {},
+  State<ApiEditor> createState() => _ApiEditorState();
+}
+
+class _ApiEditorState extends State<ApiEditor> {
+  late String _selectedOperation;
+
+  /// Local copy prevents us from depending on a potentially stale parent
+  /// value while successive operations are being edited.
+  late MetadataApi _currentApi;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _currentApi = widget.api ?? const MetadataApi(operations: []);
+
+    _selectedOperation = ApiEditor.operations.contains(widget.selectedOperation)
+        ? widget.selectedOperation
+        : ApiEditor.operations.first;
+  }
+
+  @override
+  void didUpdateWidget(covariant ApiEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Synchronize when the parent provides a newer API configuration.
+    if (oldWidget.api != widget.api && widget.api != null) {
+      _currentApi = widget.api!;
+    }
+
+    if (oldWidget.selectedOperation != widget.selectedOperation &&
+        ApiEditor.operations.contains(widget.selectedOperation)) {
+      _selectedOperation = widget.selectedOperation;
+    }
+  }
+
+  /// Returns the selected operation.
+  ///
+  /// If the operation does not exist yet, return a default configuration.
+  ApiOperation _getSelectedOperation() {
+    return _currentApi.getOperation(_selectedOperation) ??
+        ApiOperation.empty(
+          operation: _selectedOperation,
+          path: '',
+          enabled: true,
+          permission: '',
         );
+  }
 
-        return ListView(
-          children: [
-            const Text(
-              'API configuration',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              'Configure the endpoints and permissions for each operation.',
-              style: TextStyle(color: Color(0xFF64748B)),
-            ),
-            const SizedBox(height: 20),
-            ...operations.map((operation) {
-              final config = Map<String, dynamic>.from(
-                (api[operation] as Map?) ?? {},
-              );
+  /// Converts the selected operation into the generic form's initial data.
+  Map<String, dynamic> _getInitialData() {
+    return _getSelectedOperation().toJson();
+  }
 
-              final enabled = config['enabled'] != false;
-              final path = config['path']?.toString() ?? '';
-              final permission = config['permission']?.toString() ?? '';
+  /// Saves the selected operation into the API array.
+  Future<void> _saveOperation(Map<String, dynamic> formData) async {
+    final updatedData = <String, dynamic>{
+      ...formData,
+      // Keep operation identity controlled by the dropdown.
+      'operation': _selectedOperation,
+    };
 
-              return Container(
-                margin: const EdgeInsets.only(bottom: 14),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            operation.toUpperCase(),
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Checkbox(
-                          value: enabled
-                              ? CheckboxValue.checked
-                              : CheckboxValue.unchecked,
-                          label: const Text('Enabled'),
-                          onChanged: (value) {
-                            _updateOperation(
-                              context,
-                              api,
-                              operation,
-                              'enabled',
-                              value == CheckboxValue.checked,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _input(
-                      label: 'Endpoint path',
-                      value: path,
-                      hint: '/api/accounts',
-                      onChanged: (value) {
-                        _updateOperation(
-                          context,
-                          api,
-                          operation,
-                          'path',
-                          value,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    _input(
-                      label: 'Permission',
-                      value: permission,
-                      hint: 'account.read',
-                      onChanged: (value) {
-                        _updateOperation(
-                          context,
-                          api,
-                          operation,
-                          'permission',
-                          value,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        );
-      },
+    final updatedOperation = ApiOperation.fromJson(updatedData);
+
+    // Update local state immediately so the next operation edit uses
+    // the latest API configuration.
+    setState(() {
+      _currentApi = _currentApi.updateOperation(updatedOperation);
+    });
+
+    // The parent metadata editor owns persistence and the root API value.
+    if (!mounted) return;
+
+    context.read<MetadataBloc>().add(
+      UpdateRootProperty('api', _currentApi.toJson()),
     );
   }
 
-  Widget _input({
-    required String label,
-    required String value,
-    required String hint,
-    required ValueChanged<String> onChanged,
+  Map<String, dynamic> entityToFormData({
+    required List<ApiOperation> apiOperations,
   }) {
+    return {
+      'api': apiOperations.map((operation) {
+        final json = operation.toJson();
+
+        return {
+          'operation': json['operation']?.toString() ?? 'list',
+          'path': json['path']?.toString() ?? '',
+          'enabled': json['enabled'] as bool? ?? true,
+          'permission': json['permission']?.toString() ?? '',
+        };
+      }).toList(),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final initialData = _getInitialData();
+    //final initialData = entityToFormData(apiOperations: _currentApi.operations);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label),
-        const SizedBox(height: 6),
-        Input(
-          initialValue: value,
-          placeholder: Text(hint),
-          onChanged: onChanged,
+        // Operation selector.
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: SizedBox(
+            width: 240,
+            child: Select<String>(
+              value: _selectedOperation,
+              onChanged: (String? value) {
+                if (value == null || value == _selectedOperation) {
+                  return;
+                }
+
+                setState(() {
+                  _selectedOperation = value;
+                });
+              },
+              placeholder: const Text('Select API operation'),
+              itemBuilder: (BuildContext context, String value) {
+                return Text(_operationLabel(value));
+              },
+              items: [
+                for (final operation in ApiEditor.operations)
+                  SelectItem<String>(
+                    value: operation,
+                    child: Text(_operationLabel(operation)),
+                  ),
+              ],
+            ),
+          ),
+        ),
+
+        const Divider(),
+
+        // Selected operation form.
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: AppReactiveForm(
+              // Recreate the form when the selected operation or its
+              // initial data changes.
+              key: ValueKey(
+                'api-operation-$_selectedOperation-${jsonEncode(initialData)}',
+              ),
+              meta: ApiEditor._metadata,
+              mode: widget.mode == EntityMode.edit
+                  ? EntityMode.edit
+                  : EntityMode.create,
+              initialData: initialData,
+              onSubmit: (data) async {
+                print("API EDITOR DATA SAVE: $data");
+                // await _saveOperation(data);
+              },
+            ),
+          ),
         ),
       ],
     );
   }
 
-  void _updateOperation(
-    BuildContext context,
-    Map<String, dynamic> currentApi,
-    String operation,
-    String property,
-    dynamic value,
-  ) {
-    final updatedApi = Map<String, dynamic>.from(currentApi);
-    final operationConfig = Map<String, dynamic>.from(
-      (updatedApi[operation] as Map?) ?? {},
-    );
+  String _operationLabel(String operation) {
+    if (operation.isEmpty) return operation;
 
-    operationConfig[property] = value;
-    updatedApi[operation] = operationConfig;
-
-    context.read<MetadataBloc>().add(UpdateRootProperty('api', updatedApi));
+    return '${operation[0].toUpperCase()}${operation.substring(1)}';
   }
 }

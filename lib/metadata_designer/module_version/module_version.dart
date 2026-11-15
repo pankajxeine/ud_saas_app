@@ -86,7 +86,6 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildToolbar(BuildContext context, MetadataState state) {
-    final c = Theme.of(context).colors;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
@@ -219,8 +218,8 @@ class MetadataVersionDesign extends StatelessWidget {
         const Divider(axis: Axis.vertical),
 
         // RIGHT PREVIEW
-        if (state.selectedSection != 'json')
-          const SizedBox(width: 340, child: MetadataPreview()),
+        // if (state.selectedSection == 'preview')
+        //   const SizedBox(width: 340, child: MetadataPreview()),
       ],
     );
   }
@@ -231,12 +230,13 @@ class MetadataVersionDesign extends StatelessWidget {
 
   Widget _buildSelectedEditor(BuildContext context, MetadataState state) {
     print("selectedSection $state.selectedSection");
+    final moduleVersion = state.metadata;
     switch (state.selectedSection) {
       case 'general':
         return const GeneralEditor();
 
       case 'fields':
-        return const FieldListEditor();
+        return FieldEditor(fields: moduleVersion?.schemaJson.fields ?? []);
 
       case 'field-properties':
         return const FieldPropertiesEditor();
@@ -251,7 +251,7 @@ class MetadataVersionDesign extends StatelessWidget {
         return const ReferenceLookupEditor();
 
       case 'api':
-        return const ApiEditor();
+        return ApiEditor(api: moduleVersion?.schemaJson.api);
 
       case 'grid':
         return const GridSearchEditor();
@@ -259,8 +259,8 @@ class MetadataVersionDesign extends StatelessWidget {
       case 'detail':
         return const DetailEditor();
 
-      case 'preview':
-        return _buildPreviewSection(context, state);
+      // case 'preview':
+      //   return _buildPreviewSection(context, state);
 
       case 'json':
         return const MetadataJsonEditor();
@@ -275,16 +275,16 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildPreviewSection(BuildContext context, MetadataState state) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
+    return const Padding(
+      padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Metadata Preview',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Expanded(child: MetadataPreview()),
         ],
       ),

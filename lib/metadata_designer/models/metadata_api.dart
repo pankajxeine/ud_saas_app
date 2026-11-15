@@ -1,112 +1,127 @@
 class MetadataApi {
-  final ApiOperation? list;
-  final ApiOperation? create;
-  final ApiOperation? detail;
-  final ApiOperation? update;
-  final ApiOperation? delete;
-  final Map<String, dynamic> extra;
+  final List<ApiOperation> operations;
 
-  const MetadataApi({
-    this.list,
-    this.create,
-    this.detail,
-    this.update,
-    this.delete,
-    this.extra = const {},
-  });
+  const MetadataApi({this.operations = const []});
 
-  factory MetadataApi.fromJson(Map<String, dynamic> json) {
-    const known = {'list', 'create', 'detail', 'update', 'delete'};
+  /// JSON array:
+  ///
+  /// [
+  ///   {
+  ///     "operation": "list",
+  ///     "path": "/contact",
+  ///     "enabled": true,
+  ///     "permission": "crm_contact.operation.list"
+  ///   }
+  /// ]
+  factory MetadataApi.fromJson(List<dynamic> json) {
+    return MetadataApi(
+      operations: json
+          .whereType<Map>()
+          .map((item) => ApiOperation.fromJson(Map<String, dynamic>.from(item)))
+          .toList(),
+    );
+  }
 
-    ApiOperation? operation(String key) {
-      final value = json[key];
-
-      if (value is! Map) return null;
-
-      return ApiOperation.fromJson(Map<String, dynamic>.from(value));
+  /// Returns the operation matching the supplied name.
+  ApiOperation? getOperation(String operation) {
+    for (final item in operations) {
+      if (item.operation == operation) {
+        return item;
+      }
     }
 
-    return MetadataApi(
-      list: operation('list'),
-      create: operation('create'),
-      detail: operation('detail'),
-      update: operation('update'),
-      delete: operation('delete'),
-      extra: Map<String, dynamic>.fromEntries(
-        json.entries.where((entry) => !known.contains(entry.key)),
-      ),
+    return null;
+  }
+
+  /// Add or replace an operation.
+  MetadataApi updateOperation(ApiOperation operation) {
+    final updated = [...operations];
+
+    final index = updated.indexWhere(
+      (item) => item.operation == operation.operation,
+    );
+
+    if (index >= 0) {
+      updated[index] = operation;
+    } else {
+      updated.add(operation);
+    }
+
+    return copyWith(operations: updated);
+  }
+
+  /// Remove an operation.
+  MetadataApi removeOperation(String operation) {
+    return copyWith(
+      operations: operations
+          .where((item) => item.operation != operation)
+          .toList(),
     );
   }
 
-  MetadataApi copyWith({
-    ApiOperation? list,
-    ApiOperation? create,
-    ApiOperation? detail,
-    ApiOperation? update,
-    ApiOperation? delete,
-    Map<String, dynamic>? extra,
-  }) {
-    return MetadataApi(
-      list: list ?? this.list,
-      create: create ?? this.create,
-      detail: detail ?? this.detail,
-      update: update ?? this.update,
-      delete: delete ?? this.delete,
-      extra: extra ?? this.extra,
-    );
+  MetadataApi copyWith({List<ApiOperation>? operations}) {
+    return MetadataApi(operations: operations ?? this.operations);
   }
 
-  Map<String, dynamic> toJson() => {
-    ...extra,
-    if (list != null) 'list': list!.toJson(),
-    if (create != null) 'create': create!.toJson(),
-    if (detail != null) 'detail': detail!.toJson(),
-    if (update != null) 'update': update!.toJson(),
-    if (delete != null) 'delete': delete!.toJson(),
-  };
+  /// Serialize directly to JSON array.
+  List<Map<String, dynamic>> toJson() {
+    return operations.map((item) => item.toJson()).toList();
+  }
 
+  /// Create default API operations for an entity.
   factory MetadataApi.empty({required String entity}) {
     return MetadataApi(
-      list: ApiOperation.empty(path: '/$entity'),
-      create: ApiOperation.empty(path: '/$entity'),
-      detail: ApiOperation.empty(path: '/$entity/:id'),
-      update: ApiOperation.empty(path: '/$entity/:id'),
-      delete: ApiOperation.empty(path: '/$entity/:id'),
+      operations: [
+        ApiOperation.empty(
+          operation: 'list',
+          path: '/$entity',
+          permission: '${entity}.operation.list',
+        ),
+        ApiOperation.empty(
+          operation: 'create',
+          path: '/$entity',
+          permission: '${entity}.operation.create',
+        ),
+        ApiOperation.empty(
+          operation: 'detail',
+          path: '/$entity/{${entity}_id}',
+          permission: '${entity}.operation.detail',
+        ),
+        ApiOperation.empty(
+          operation: 'update',
+          path: '/$entity/{${entity}_id}',
+          permission: '${entity}.operation.update',
+        ),
+        ApiOperation.empty(
+          operation: 'delete',
+          path: '/$entity/{${entity}_id}',
+          permission: '${entity}.operation.delete',
+        ),
+      ],
     );
   }
 }
 
 class ApiOperation {
+  final String? operation;
   final String? path;
   final bool enabled;
   final String? permission;
   final Map<String, dynamic> extra;
 
   const ApiOperation({
+    this.operation,
     this.path,
     this.enabled = true,
     this.permission,
     this.extra = const {},
   });
 
-  ApiOperation copyWith({
-    String? path,
-    bool? enabled,
-    String? permission,
-    Map<String, dynamic>? extra,
-  }) {
-    return ApiOperation(
-      path: path ?? this.path,
-      enabled: enabled ?? this.enabled,
-      permission: permission ?? this.permission,
-      extra: extra ?? this.extra,
-    );
-  }
-
   factory ApiOperation.fromJson(Map<String, dynamic> json) {
-    const known = {'path', 'enabled', 'permission'};
+    const known = {'operation', 'path', 'enabled', 'permission'};
 
     return ApiOperation(
+      operation: json['operation']?.toString(),
       path: json['path']?.toString(),
       enabled: json['enabled'] != false,
       permission: json['permission']?.toString(),
@@ -117,17 +132,42 @@ class ApiOperation {
   }
 
   factory ApiOperation.empty({
+    required String operation,
     required String path,
     bool enabled = true,
     String? permission,
   }) {
-    return ApiOperation(path: path, enabled: enabled, permission: permission);
+    return ApiOperation(
+      operation: operation,
+      path: path,
+      enabled: enabled,
+      permission: permission,
+    );
   }
 
-  Map<String, dynamic> toJson() => {
-    ...extra,
-    if (path != null) 'path': path,
-    'enabled': enabled,
-    if (permission != null) 'permission': permission,
-  };
+  ApiOperation copyWith({
+    String? operation,
+    String? path,
+    bool? enabled,
+    String? permission,
+    Map<String, dynamic>? extra,
+  }) {
+    return ApiOperation(
+      operation: operation ?? this.operation,
+      path: path ?? this.path,
+      enabled: enabled ?? this.enabled,
+      permission: permission ?? this.permission,
+      extra: extra ?? this.extra,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      ...extra,
+      if (operation != null) 'operation': operation,
+      if (path != null) 'path': path,
+      'enabled': enabled,
+      if (permission != null) 'permission': permission,
+    };
+  }
 }

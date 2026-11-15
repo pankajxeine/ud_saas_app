@@ -8,7 +8,19 @@ class MetadataSchema {
   final String? table;
   final String? primaryKey;
 
+  /// API operations stored as an array.
+  ///
+  /// Example:
+  /// "api": [
+  ///   {
+  ///     "operation": "list",
+  ///     "path": "/contact",
+  ///     "enabled": true,
+  ///     "permission": "crm_contact.operation.list"
+  ///   }
+  /// ]
   final MetadataApi? api;
+
   final MetadataGrid? grid;
 
   // Flexible metadata sections.
@@ -56,8 +68,10 @@ class MetadataSchema {
       table: json['table']?.toString(),
       primaryKey: json['primaryKey']?.toString(),
 
-      api: _parseObject(json['api'], MetadataApi.fromJson),
+      // API is now an array of operations.
+      api: _parseApi(json['api']),
 
+      // Grid remains an object.
       grid: _parseObject(json['grid'], MetadataGrid.fromJson),
 
       search: _map(json['search']),
@@ -81,7 +95,9 @@ class MetadataSchema {
       if (table != null) 'table': table,
       if (primaryKey != null) 'primaryKey': primaryKey,
 
+      // Serializes API as an array.
       if (api != null) 'api': api!.toJson(),
+
       if (grid != null) 'grid': grid!.toJson(),
 
       'search': search,
@@ -120,6 +136,28 @@ class MetadataSchema {
     );
   }
 
+  // ------------------------------------------------------------
+  // JSON parsing helpers
+  // ------------------------------------------------------------
+
+  /// Parses API operations from a JSON array.
+  static MetadataApi? _parseApi(dynamic value) {
+    if (value == null) return null;
+
+    if (value is List) {
+      return MetadataApi.fromJson(value);
+    }
+
+    // Also supports the wrapper format:
+    // { "api": [...] }
+    if (value is Map && value['api'] is List) {
+      return MetadataApi.fromJson(value['api']);
+    }
+
+    return null;
+  }
+
+  /// Parses an object-based metadata section.
   static T? _parseObject<T>(
     dynamic value,
     T Function(Map<String, dynamic>) parser,
@@ -146,6 +184,10 @@ class MetadataSchema {
         .toList();
   }
 
+  // ------------------------------------------------------------
+  // Default schema
+  // ------------------------------------------------------------
+
   factory MetadataSchema.empty({
     required String entity,
     String? title,
@@ -159,6 +201,7 @@ class MetadataSchema {
       table: table ?? normalizedEntity,
       primaryKey: 'id',
 
+      // Creates default API operation array.
       api: MetadataApi.empty(entity: normalizedEntity),
 
       grid: MetadataGrid.empty(),

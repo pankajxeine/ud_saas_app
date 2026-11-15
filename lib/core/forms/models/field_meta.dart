@@ -1,7 +1,4 @@
 import 'package:reactive_forms/reactive_forms.dart';
-
-import '../helper/build_validators.dart';
-
 import 'entity_grid_layout.dart';
 
 enum EntityFieldType {
@@ -19,6 +16,9 @@ enum EntityFieldType {
   multiselect,
   textarea,
   slider,
+  group,
+  array,
+  custom,
 }
 
 /// Select option with separate display label and API value.
@@ -66,6 +66,7 @@ class FieldOption<T> {
 /// {"field":"type","equals":"physical"}
 /// {"field":"type","notEquals":"service"}
 /// {"field":"notes","isEmpty":true}
+
 class FieldCondition {
   const FieldCondition({
     required this.field,
@@ -92,11 +93,9 @@ class FieldCondition {
   }
 
   bool evaluate(FormGroup form) {
-    if (!form.controls.containsKey(field)) {
-      return false;
-    }
+    final value = _resolvePath(form, field);
 
-    final value = form.control(field).value;
+    if (value == _notFound) return false;
 
     if (equals != null && value != equals) return false;
     if (notEquals != null && value == notEquals) return false;
@@ -105,6 +104,31 @@ class FieldCondition {
     if (isNotEmpty == true && _isEmpty(value)) return false;
 
     return true;
+  }
+
+  static const Object _notFound = Object();
+
+  static dynamic _resolvePath(AbstractControl<dynamic> root, String path) {
+    dynamic current = root;
+
+    for (final segment in path.split('.')) {
+      if (current is FormGroup) {
+        if (!current.controls.containsKey(segment)) {
+          return _notFound;
+        }
+        current = current.control(segment);
+      } else if (current is FormArray) {
+        final index = int.tryParse(segment);
+        if (index == null || index < 0 || index >= current.controls.length) {
+          return _notFound;
+        }
+        current = current.controls[index];
+      } else {
+        return _notFound;
+      }
+    }
+
+    return current is AbstractControl ? current.value : current;
   }
 
   static bool _isEmpty(dynamic value) {
@@ -121,6 +145,7 @@ class FieldMeta<T> {
     required this.name,
     required this.label,
     required this.type,
+    this.widget,
     this.editable = true,
     this.initialValue,
     this.placeholder,
@@ -130,13 +155,16 @@ class FieldMeta<T> {
     this.validationRules = const {},
     this.features = const {},
     this.layout = const FieldLayoutMeta(),
+    this.fields = const [],
     this.visibleWhen,
     this.enabledWhen,
+    this.itemMeta,
   });
 
   final String name;
   final String label;
   final EntityFieldType type;
+  final String? widget;
   final bool editable;
   final T? initialValue;
 
@@ -149,6 +177,9 @@ class FieldMeta<T> {
 
   final FieldLayoutMeta layout;
 
+  /// Child fields for nested FormGroup.
+  final List<FieldMeta<dynamic>> fields;
+  final FieldMeta<dynamic>? itemMeta;
   final Map<String, dynamic> features;
 
   final FieldCondition? visibleWhen;
@@ -156,14 +187,17 @@ class FieldMeta<T> {
 
   bool get isRequired => validationRules['required'] == true;
 
+  bool get isGroup => type == EntityFieldType.group;
+
+  bool get isArray => type == EntityFieldType.array;
+
+  bool get isBoolean => type == EntityFieldType.boolean;
+
+  bool get isContainer => isGroup || isArray;
+
+  bool get hasItemMeta => itemMeta != null;
+
   bool isVisible(FormGroup form) => visibleWhen?.evaluate(form) ?? true;
 
   bool isEnabled(FormGroup form) => enabledWhen?.evaluate(form) ?? true;
-
-  FormControl<T> toFormControl() {
-    return FormControl<T>(
-      value: initialValue,
-      validators: buildValidators(validationRules),
-    );
-  }
 }

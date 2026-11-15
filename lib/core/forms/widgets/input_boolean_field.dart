@@ -45,7 +45,7 @@ class AppBooleanField extends StatelessWidget {
               : Switch(
                   value: value ?? false,
                   enabled: state.control.enabled,
-                  label: Text(field.features['text'] as String? ?? field.label),
+                  // label: Text(field.features['text'] as String? ?? field.label),
                   onChanged: state.control.enabled
                       ? (value) {
                           state.didChange(value);

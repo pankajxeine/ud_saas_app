@@ -9,6 +9,9 @@ import 'models/entity_grid_layout.dart';
 import 'models/entity_form_actions.dart';
 import 'entity_form_field_factory.dart';
 
+import 'entity_form_array.dart';
+import 'entity_form_group.dart';
+
 typedef EntityFormSubmitCallback =
     Future<void> Function(Map<String, dynamic> value);
 
@@ -53,6 +56,8 @@ class EntityReactiveForm extends StatefulWidget {
     this.includeDisabledValues = true,
     this.enabled = true,
     this.emptyFieldsBuilder,
+    this.listenToValueChanges = true,
+    this.notifyOnChanged = true,
   });
 
   /// Entity/module metadata used to build the form controls and fields.
@@ -84,6 +89,9 @@ class EntityReactiveForm extends StatefulWidget {
   /// When true, submit uses rawValue and includes disabled controls.
   /// When false, submit uses value and excludes disabled controls.
   final bool includeDisabledValues;
+
+  final bool listenToValueChanges;
+  final bool notifyOnChanged;
 
   /// Enables or disables the complete form.
   final bool enabled;
@@ -136,7 +144,9 @@ class _EntityReactiveFormState extends State<EntityReactiveForm> {
   void initState() {
     super.initState();
     _initializeForm();
-    _attachFormListeners();
+    if (widget.listenToValueChanges) {
+      _attachFormListeners();
+    }
   }
 
   @override
@@ -153,7 +163,9 @@ class _EntityReactiveFormState extends State<EntityReactiveForm> {
       _disposeOwnedForm();
       _cancelListeners();
       _initializeForm();
-      _attachFormListeners();
+      if (widget.listenToValueChanges) {
+        _attachFormListeners();
+      }
       return;
     }
 
@@ -233,8 +245,10 @@ class _EntityReactiveFormState extends State<EntityReactiveForm> {
     // Rebuild the form so field.isVisible(form) is evaluated again.
     // This supports metadata conditions that depend on form values.
     setState(() {});
-
-    widget.onChanged?.call(Map<String, dynamic>.from(_form.rawValue));
+    // Optional external callback.
+    if (widget.notifyOnChanged) {
+      widget.onChanged?.call(Map<String, dynamic>.from(_form.rawValue));
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -487,12 +501,52 @@ class _EntityReactiveFormState extends State<EntityReactiveForm> {
     FieldMeta<dynamic> field,
     FormGroup form,
   ) {
-    final customBuilder = widget.fieldBuilder;
+    // ============================================================
+    // NESTED FORM GROUP
+    // ============================================================
+    if (field.type == EntityFieldType.group) {
+      final control = form.control(field.name);
 
-    if (customBuilder != null) {
-      return customBuilder(context, field, form, widget.mode);
+      if (control is! FormGroup) {
+        return const SizedBox.shrink();
+      }
+
+      return EntityFormGroup(
+        field: field,
+        form: control,
+        mode: widget.mode,
+        fieldBuilder: widget.fieldBuilder,
+      );
     }
 
+    // ============================================================
+    // FORM ARRAY
+    // ============================================================
+    if (field.type == EntityFieldType.array) {
+      final control = form.control(field.name);
+
+      if (control is! FormArray) {
+        return const SizedBox.shrink();
+      }
+
+      return EntityFormArray(
+        field: field,
+        array: control,
+        mode: widget.mode,
+        fieldBuilder: widget.fieldBuilder,
+      );
+    }
+
+    // ============================================================
+    // CUSTOM BUILDER
+    // ============================================================
+    if (widget.fieldBuilder != null) {
+      return widget.fieldBuilder!(context, field, form, widget.mode);
+    }
+
+    // ============================================================
+    // STANDARD FIELD
+    // ============================================================
     return EntityFormFieldFactory.build(
       context: context,
       field: field,
@@ -500,7 +554,6 @@ class _EntityReactiveFormState extends State<EntityReactiveForm> {
       mode: widget.mode,
     );
   }
-
   // ---------------------------------------------------------------------------
   // ACTIONS
   // ---------------------------------------------------------------------------

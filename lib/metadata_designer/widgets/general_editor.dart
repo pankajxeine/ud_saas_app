@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
-import 'package:ud_sass_app/core/forms/entity_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
 
 import '../bloc/metadata_bloc.dart';
 // import '../bloc/metadata_event.dart';
@@ -22,6 +22,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'moduleId',
         'label': 'Module ID',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'crm_contact',
         'editable': false,
         'validationRules': {'required': true, 'minLength': 3, 'maxLength': 100},
@@ -31,6 +32,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'moduleCode',
         'label': 'Module Code',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'CRM_CONTACT',
         'validationRules': {
           'required': true,
@@ -45,6 +47,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'moduleName',
         'label': 'Module Name',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'CRM Contact',
         'validationRules': {'required': true, 'minLength': 2, 'maxLength': 150},
         "colSpan": {"mobile": 12, "tablet": 6, "desktop": 3},
@@ -54,6 +57,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'apiBasePath',
         'label': 'API Base Path',
         'type': 'text',
+        'widget': 'text',
         'placeholder': '/api/crm/contacts',
         'validationRules': {
           'required': true,
@@ -67,6 +71,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'schemaName',
         'label': 'Database Schema',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'crm',
         'initialValue': 'public',
         'validationRules': {
@@ -80,6 +85,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'tableName',
         'label': 'Database Table',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'crm_contact',
         'validationRules': {
           'required': true,
@@ -92,6 +98,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'icon',
         'label': 'Icon',
         'type': 'text',
+        'widget': 'text',
         'placeholder': 'people',
         'validationRules': {'maxLength': 100},
         'colSpan': 6,
@@ -100,6 +107,7 @@ class GeneralEditor extends StatelessWidget {
       {
         'name': 'isActive',
         'label': 'Active',
+        'widget': 'switch',
         'type': 'boolean',
         'initialValue': true,
         'colSpan': 6,
@@ -108,6 +116,7 @@ class GeneralEditor extends StatelessWidget {
         'name': 'description',
         'label': 'Description',
         'type': 'textarea',
+        'widget': 'text',
         'placeholder': 'Describe this module',
         'maxLength': 1000,
         'validationRules': {'maxLength': 1000},
@@ -140,7 +149,7 @@ class GeneralEditor extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EntityReactiveForm(
+              AppReactiveForm(
                 meta: _metadata,
                 mode: metaModule != null ? EntityMode.edit : EntityMode.create,
                 initialData: moduleEditorInitialData(metaModule),
