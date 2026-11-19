@@ -1,6 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import '../models/entity_meta.dart';
 import '../models/field_meta.dart';
@@ -24,7 +23,6 @@ class EntityFormGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -33,9 +31,9 @@ class EntityFormGroup extends StatelessWidget {
           if (field.label.isNotEmpty) ...[
             Text(
               field.label,
-              style: t.typography.extraBold.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: t.colors.accentForeground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 12),

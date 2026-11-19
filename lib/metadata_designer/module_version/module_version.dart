@@ -1,32 +1,25 @@
-// import 'package:flutter/material.dart' hide Scaffold;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/widgets.dart';
-import 'package:ud_sass_app/core/config/environment.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/scaffold/scaffold.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/divider/divider.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/lucide_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:ud_sass_app/core/config/environment.dart';
 import 'package:ud_sass_app/core/widgets/components/loading.dart';
 import 'package:ud_sass_app/core/widgets/components/tooltip_button.dart';
+import 'package:ud_sass_app/core/theme/app_theme.dart';
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
 import '../bloc/metadata_state.dart';
 import '../repository/metadata_repository.dart';
 
+import 'widgets/datatable_fields.dart';
 import 'components/metadata_sidebar.dart';
+
 import '../widgets/metadata_preview.dart';
 import '../widgets/metadata_json_editor.dart';
-
 import '../widgets/general_editor.dart';
 import '../widgets/field_list_editor.dart';
-import '../widgets/field_properties_editor.dart';
-import '../widgets/field_validation_editor.dart';
-import '../widgets/field_permission_editor.dart';
 import '../widgets/api_editor.dart';
 import '../widgets/grid_search_editor.dart';
-import '../widgets/detail_editor.dart';
 import '../widgets/reference_lookup_editor.dart';
 
 class MetadataVersionDesign extends StatelessWidget {
@@ -53,30 +46,38 @@ class MetadataVersionDesign extends StatelessWidget {
               versionId: versionId,
             ),
           ),
-      child: Scaffold(
-        child: SafeArea(
-          child: BlocBuilder<MetadataBloc, MetadataState>(
-            builder: (context, state) {
-              if (state.isLoadingModules) {
-                return const Center(child: Loading());
-              }
+      child: BlocBuilder<MetadataBloc, MetadataState>(
+        builder: (context, state) {
+          final theme = Theme.of(context);
+          final scheme = theme.colorScheme;
 
-              if (state.metadata == null) {
-                return const _EmptyMetadataView();
-              }
+          if (state.isLoadingModules) {
+            return const Loading();
+          }
 
-              return Column(
-                children: [
-                  _buildToolbar(context, state),
-                  const Divider(),
-                  Expanded(child: _buildDesignerBody(context, state)),
-                  if (state.errors.isNotEmpty)
-                    _buildValidationPanel(context, state),
-                ],
-              );
-            },
-          ),
-        ),
+          if (state.metadata == null) {
+            return const _EmptyMetadataView();
+          }
+
+          return Column(
+            children: [
+              _buildToolbar(context, state),
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: scheme.outlineVariant.withValues(alpha: 0.5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: _buildDesignerBody(context, state),
+                ),
+              ),
+              if (state.errors.isNotEmpty)
+                _buildValidationPanel(context, state),
+            ],
+          );
+        },
       ),
     );
   }
@@ -86,141 +87,204 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildToolbar(BuildContext context, MetadataState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        children: [
-          TooltipButton(
-            label: 'Back',
-            variant: ButtonVariant.outline,
-            size: ButtonSize.icon,
-            onPressed: () => Navigator.of(context).maybePop(),
-            child: const Icon(LucideIcons.arrowBigLeft),
-          ),
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final schema = state.metadata?.schemaJson;
 
-          const SizedBox(width: 12),
+    final title = schema?.title?.toString().trim();
+    final entity = schema?.entity?.toString().trim();
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  state.metadata?.schemaJson.title.toString() ??
-                      state.metadata?.schemaJson.entity?.toString() ??
-                      'Metadata Designer',
-                  style: Theme.of(context).typography.h3.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colors.accentForeground,
-                  ),
-                ),
-                Text(
-                  state.metadata?.schemaJson.entity?.toString() ?? '',
-                  style: Theme.of(context).typography.h3.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colors.accentForeground,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    final pageTitle = title?.isNotEmpty == true
+        ? title!
+        : entity?.isNotEmpty == true
+        ? entity!
+        : 'Metadata Designer';
 
-          if (state.isDirty)
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Text(
-                'Unsaved changes',
-                style: Theme.of(context).typography.h3.copyWith(
-                  fontSize: 12,
-                  color: const Color(0xFFB42318),
-                ),
-                // style: TextStyle(color: Color(0xFFB42318), fontSize: 12),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Use the available toolbar width, not the whole screen width.
+        final isCompact = constraints.maxWidth < 850;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TooltipButton(
+                label: 'Back',
+                onPressed: () => context.pop(),
+                child: const Icon(Icons.arrow_back),
               ),
-            ),
+              const SizedBox(width: 12),
 
-          TooltipButton(
-            label: 'Preview',
-            onPressed: () {
-              context.read<MetadataBloc>().add(const SelectSection('preview'));
-            },
-            child: const Icon(LucideIcons.eye),
+              // Title section
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            pageTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                              color: scheme.onSurface,
+                            ),
+                          ),
+                          if (entity?.isNotEmpty == true)
+                            Text(
+                              entity!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (state.isDirty) ...[
+                      const SizedBox(width: 8),
+                      const _UnsavedChangesIndicator(),
+                    ],
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // Actions always stay in the same row.
+              _buildToolbarActions(context, state, compact: isCompact),
+            ],
           ),
-
-          const SizedBox(width: 8),
-
-          Button(
-            variant: ButtonVariant.outline,
-            onPressed: state.isSaving
-                ? null
-                : () {
-                    context.read<MetadataBloc>().add(const ValidateMetadata());
-                  },
-            leading: const Icon(LucideIcons.check, size: 16),
-            child: const Text('Validate'),
-          ),
-
-          const SizedBox(width: 8),
-
-          Button(
-            variant: ButtonVariant.outline,
-            onPressed: state.isSaving
-                ? null
-                : () {
-                    context.read<MetadataBloc>().add(const SaveMetadata());
-                  },
-            leading: const Icon(LucideIcons.save, size: 16),
-            child: const Text('Save'),
-          ),
-
-          const SizedBox(width: 8),
-
-          Button(
-            variant: ButtonVariant.link,
-            onPressed: state.isSaving
-                ? null
-                : () {
-                    context.read<MetadataBloc>().add(const PublishMetadata());
-                  },
-            leading: const Icon(LucideIcons.send, size: 16),
-            child: const Text('Publish'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
+  Widget _buildToolbarActions(
+    BuildContext context,
+    MetadataState state, {
+    required bool compact,
+  }) {
+    final bloc = context.read<MetadataBloc>();
+    final scheme = Theme.of(context).colorScheme;
+    final previewButton = IconButton.filled(
+      tooltip: 'Preview',
+      style: AppTheme.filledIconButtonStyle(scheme),
+      onPressed: () {
+        bloc.add(const SelectSection('preview'));
+      },
+      icon: const Icon(Icons.visibility_outlined),
+    );
+
+    final validateButton = compact
+        ? IconButton.outlined(
+            tooltip: 'Validate',
+            style: AppTheme.outlinedIconButtonStyle(scheme),
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const ValidateMetadata()),
+            icon: const Icon(Icons.fact_check_outlined),
+          )
+        : OutlinedButton.icon(
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const ValidateMetadata()),
+            icon: const Icon(Icons.fact_check_outlined, size: 17),
+            label: const Text('Validate'),
+          );
+
+    final saveButton = compact
+        ? IconButton.outlined(
+            style: AppTheme.outlinedIconButtonStyle(scheme),
+            tooltip: 'Save',
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const SaveMetadata()),
+            icon: const Icon(Icons.save_outlined),
+          )
+        : OutlinedButton.icon(
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const SaveMetadata()),
+            icon: const Icon(Icons.save_outlined, size: 17),
+            label: const Text('Save'),
+          );
+
+    final publishButton = compact
+        ? IconButton.filled(
+            tooltip: 'Publish',
+            style: AppTheme.filledIconButtonStyle(scheme),
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const PublishMetadata()),
+            icon: const Icon(Icons.publish_outlined),
+          )
+        : FilledButton.icon(
+            onPressed: state.isSaving
+                ? null
+                : () => bloc.add(const PublishMetadata()),
+            icon: const Icon(Icons.publish_outlined, size: 17),
+            label: const Text('Publish'),
+          );
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        previewButton,
+        const SizedBox(width: 4),
+        validateButton,
+        const SizedBox(width: 4),
+        saveButton,
+        const SizedBox(width: 4),
+        publishButton,
+      ],
+    );
+  }
   // ------------------------------------------------------------
   // MAIN DESIGNER BODY
   // ------------------------------------------------------------
 
   Widget _buildDesignerBody(BuildContext context, MetadataState state) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // LEFT SIDEBAR
-        MetadataSidebar(
-          selectedSection: state.selectedSection,
-          onSectionSelected: (section) {
-            print("Section selected $section $state.selectedSection");
-            context.read<MetadataBloc>().add(SelectSection(section));
-          },
-        ),
-        // MAIN EDITOR
-        Expanded(
-          flex: 3,
-          child: Container(
-            color: Theme.of(context).colors.background,
-            child: _buildSelectedEditor(context, state),
-          ),
-        ),
+    final scheme = Theme.of(context).colorScheme;
 
-        const Divider(axis: Axis.vertical),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 800;
 
-        // RIGHT PREVIEW
-        // if (state.selectedSection == 'preview')
-        //   const SizedBox(width: 340, child: MetadataPreview()),
-      ],
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            MetadataSidebar(
+              selectedSection: state.selectedSection,
+              onSectionSelected: (section) {
+                context.read<MetadataBloc>().add(SelectSection(section));
+              },
+              compact: isCompact,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: scheme.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: scheme.outlineVariant.withValues(alpha: 0.5),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: _buildSelectedEditor(context, state),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -229,8 +293,8 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildSelectedEditor(BuildContext context, MetadataState state) {
-    print("selectedSection $state.selectedSection");
     final moduleVersion = state.metadata;
+
     switch (state.selectedSection) {
       case 'general':
         return const GeneralEditor();
@@ -238,14 +302,8 @@ class MetadataVersionDesign extends StatelessWidget {
       case 'fields':
         return FieldEditor(fields: moduleVersion?.schemaJson.fields ?? []);
 
-      case 'field-properties':
-        return const FieldPropertiesEditor();
-
-      case 'field-validations':
-        return const FieldValidationEditor();
-
-      case 'field-permissions':
-        return const FieldPermissionEditor();
+      case 'datatable':
+        return const DataTableColumnView();
 
       case 'reference':
         return const ReferenceLookupEditor();
@@ -256,11 +314,8 @@ class MetadataVersionDesign extends StatelessWidget {
       case 'grid':
         return const GridSearchEditor();
 
-      case 'detail':
-        return const DetailEditor();
-
-      // case 'preview':
-      //   return _buildPreviewSection(context, state);
+      case 'preview':
+        return _buildPreviewSection();
 
       case 'json':
         return const MetadataJsonEditor();
@@ -274,7 +329,7 @@ class MetadataVersionDesign extends StatelessWidget {
   // PREVIEW SECTION
   // ------------------------------------------------------------
 
-  Widget _buildPreviewSection(BuildContext context, MetadataState state) {
+  Widget _buildPreviewSection() {
     return const Padding(
       padding: EdgeInsets.all(20),
       child: Column(
@@ -282,7 +337,7 @@ class MetadataVersionDesign extends StatelessWidget {
         children: [
           Text(
             'Metadata Preview',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 16),
           Expanded(child: MetadataPreview()),
@@ -296,55 +351,105 @@ class MetadataVersionDesign extends StatelessWidget {
   // ------------------------------------------------------------
 
   Widget _buildValidationPanel(BuildContext context, MetadataState state) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(maxHeight: 150),
-      decoration: const BoxDecoration(
-        color: Color(0xFFFFF4F2),
-        border: Border(top: BorderSide(color: Color(0xFFE5B5AE))),
+      decoration: BoxDecoration(
+        color: scheme.errorContainer,
+        border: Border(
+          top: BorderSide(color: scheme.error.withValues(alpha: 0.35)),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: Text(
-              'Validation Errors',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Color(0xFFB42318),
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 9, 16, 5),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 17,
+                  color: scheme.onErrorContainer,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Validation errors',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: scheme.onErrorContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '(${state.errors.length})',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: scheme.onErrorContainer,
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListView.separated(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
               itemCount: state.errors.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 5),
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        LucideIcons.circleAlert,
-                        size: 15,
-                        color: Color(0xFFB42318),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          state.errors[index].toString(),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFFB42318),
-                          ),
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.circle, size: 6, color: scheme.onErrorContainer),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        state.errors[index].toString(),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onErrorContainer,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ------------------------------------------------------------
+// UNSAVED CHANGES INDICATOR
+// ------------------------------------------------------------
+
+class _UnsavedChangesIndicator extends StatelessWidget {
+  const _UnsavedChangesIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      decoration: BoxDecoration(
+        color: scheme.tertiaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.circle, size: 7, color: scheme.onTertiaryContainer),
+          const SizedBox(width: 6),
+          Text(
+            'Unsaved',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: scheme.onTertiaryContainer,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -362,37 +467,45 @@ class _EmptyMetadataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(LucideIcons.container, size: 48),
-          const SizedBox(height: 12),
-          Text(
-            'No metadata loaded',
-            style: t.typography.extraBold.copyWith(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: t.colors.accentForeground,
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.description_outlined,
+              size: 44,
+              color: scheme.onSurfaceVariant,
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Select an entity to open its metadata designer.',
-            style: t.typography.extraBold.copyWith(
-              fontWeight: FontWeight.w700,
-              color: t.colors.accentForeground,
+            const SizedBox(height: 14),
+            Text(
+              'No metadata loaded',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Button(
-            onPressed: () {
-              context.read<MetadataBloc>().add(const BackToEntitySelection());
-            },
-            child: const Text('Back to entities'),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              'Select an entity to open its metadata designer.',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: () {
+                context.read<MetadataBloc>().add(const BackToEntitySelection());
+              },
+              icon: const Icon(Icons.arrow_back, size: 17),
+              label: const Text('Back to entities'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -407,6 +520,15 @@ class _UnknownSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Select a section from the sidebar.'));
+    final scheme = Theme.of(context).colorScheme;
+
+    return Center(
+      child: Text(
+        'Select a section from the sidebar.',
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+      ),
+    );
   }
 }

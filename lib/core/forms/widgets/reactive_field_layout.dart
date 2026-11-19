@@ -1,6 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
 
 import '../models/field_meta.dart';
 import '../form_error.dart';
@@ -20,6 +19,7 @@ class ReactiveFieldLayout extends StatelessWidget {
     this.booleanPosition = BooleanControlPosition.trailing,
     this.booleanStyle = BooleanControlStyle.switchControl,
     this.showBooleanHelpText = true,
+    this.isRowLayout = false,
   });
 
   final FieldMeta<dynamic> field;
@@ -32,26 +32,26 @@ class ReactiveFieldLayout extends StatelessWidget {
   /// Switch or checkbox presentation.
   final BooleanControlStyle booleanStyle;
 
+  final bool isRowLayout;
+
   /// Whether help text is displayed for boolean fields.
   final bool showBooleanHelpText;
 
-  bool get _isBoolean => field.type == EntityFieldType.boolean;
-
   @override
   Widget build(BuildContext context) {
-    print("field type : $_isBoolean $field.type");
-    if (_isBoolean) {
-      return _buildBooleanLayout(context);
+    print("field type : $isRowLayout $field.type");
+    if (isRowLayout) {
+      return _buildRowLayout(context);
     }
 
-    return _buildNormalLayout(context);
+    return _buildColumnlLayout(context);
   }
 
   // ------------------------------------------------------------
   // Normal field layout
   // ------------------------------------------------------------
 
-  Widget _buildNormalLayout(BuildContext context) {
+  Widget _buildColumnlLayout(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -76,7 +76,7 @@ class ReactiveFieldLayout extends StatelessWidget {
   // Boolean field layout
   // ------------------------------------------------------------
 
-  Widget _buildBooleanLayout(BuildContext context) {
+  Widget _buildRowLayout(BuildContext context) {
     final controlWidget = _buildBooleanControl();
 
     return Column(
@@ -125,9 +125,9 @@ class ReactiveFieldLayout extends StatelessWidget {
         Flexible(
           child: Text(
             field.label,
-            style: Theme.of(context).typography.small.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontSize: 12,
-              color: Theme.of(context).colors.mutedForeground,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -143,9 +143,9 @@ class ReactiveFieldLayout extends StatelessWidget {
   Widget _buildHelpText(BuildContext context) {
     return Text(
       field.helpText!,
-      style: Theme.of(context).typography.small.copyWith(
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
         fontSize: 12,
-        color: Theme.of(context).colors.mutedForeground,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }

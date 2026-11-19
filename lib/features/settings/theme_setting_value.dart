@@ -1,9 +1,9 @@
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
+import 'package:flutter/material.dart';
 
-const Map<String, dashcn.ThemeMode> themeModes = {
-  'Light': dashcn.ThemeMode.light,
-  'Dark': dashcn.ThemeMode.dark,
-  'System': dashcn.ThemeMode.system,
+const Map<String, ThemeMode> themeModes = {
+  'Light': ThemeMode.light,
+  'Dark': ThemeMode.dark,
+  'System': ThemeMode.system,
 };
 
 const Map<String, double> radiusOptions = {
@@ -18,13 +18,6 @@ const Map<String, double> scalingOptions = {
   'Compact': 0.85,
   'Default': 1.0,
   'Large': 1.15,
-};
-
-const Map<String, dashcn.Density> densityOptions = {
-  'Compact': dashcn.Density.compactDensity,
-  'Reduced': dashcn.Density.reducedDensity,
-  'Default': dashcn.Density.defaultDensity,
-  'Spacious': dashcn.Density.spaciousDensity,
 };
 
 const Map<String, double> surfaceOpacityOptions = {

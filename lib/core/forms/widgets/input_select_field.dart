@@ -1,6 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/components/select.dart';
 
 import '../models/field_meta.dart';
 import 'reactive_field_layout.dart';
@@ -14,39 +13,29 @@ class AppSelectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveFormField<dynamic, dynamic>(
       formControlName: field.name,
-      builder: (state) {
-        final value = state.value;
-
-        final selectedOption = field.options
-            .where((option) => option.value == value)
-            .firstOrNull;
-
-        return ReactiveFieldLayout(
-          field: field,
-          control: state.control,
-          child: Select<dynamic>(
-            value: selectedOption?.value,
-            onChanged: state.control.enabled
-                ? (value) {
-                    state.didChange(value);
-                    state.control.markAsTouched();
-                  }
-                : null,
-            // onChanged: (dynamic? value) => setState(() => _fruit = value),
-            placeholder: Text(field.placeholder ?? 'Select ${field.label}'),
-            itemBuilder: (BuildContext context, dynamic value) => Text(value),
-            items: field.options
-                .map(
-                  (option) => SelectItem<dynamic>(
+      builder: (state) => ReactiveFieldLayout(
+        field: field,
+        control: state.control,
+        child: DropdownButtonFormField<dynamic>(
+          value: state.value,
+          decoration: InputDecoration(
+            hintText: field.placeholder ?? 'Select ${field.label}',
+          ),
+          onChanged: state.control.enabled
+              ? (value) {
+                  state.didChange(value);
+                  state.control.markAsTouched();
+                }
+              : null,
+          items: field.options
+              .map((option) => DropdownMenuItem<dynamic>(
                     value: option.value,
                     enabled: !option.disabled,
                     child: Text(option.label),
-                  ),
-                )
-                .toList(),
-          ),
-        );
-      },
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 }

@@ -153,6 +153,9 @@ class FieldMeta<T> {
     this.maxLength,
     this.options = const [],
     this.validationRules = const {},
+    this.asyncValidationRules = const [],
+    this.groupValidationRules = const {},
+    this.arrayValidationRules = const {},
     this.features = const {},
     this.layout = const FieldLayoutMeta(),
     this.fields = const [],
@@ -174,6 +177,9 @@ class FieldMeta<T> {
 
   final List<FieldOption<dynamic>> options;
   final Map<String, dynamic> validationRules;
+  final List<Map<String, dynamic>> asyncValidationRules;
+  final Map<String, dynamic> groupValidationRules;
+  final Map<String, dynamic> arrayValidationRules;
 
   final FieldLayoutMeta layout;
 

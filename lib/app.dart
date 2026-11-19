@@ -1,20 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ud_sass_app/routes/route_repository.dart';
 
-import 'package:ud_sass_app/data/layout_setting.dart';
-import 'package:ud_sass_app/core/theme/theme_utils.dart';
-import 'package:ud_sass_app/core/theme/theme_cubit.dart';
-import 'package:ud_sass_app/core/theme/theme_state.dart';
-import 'package:ud_sass_app/ui/dashcn/components/app.dart';
-import 'package:ud_sass_app/ui/dashcn/primitives.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
-
-import 'i10n/i10n.dart';
 import 'core/motion/motion_scope.dart';
-import 'routes/app_router.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/bloc/theme_cubit.dart';
+import 'core/theme/bloc/theme_state.dart';
+import 'features/auth/bloc/auth_login_bloc.dart';
+import 'i10n/i10n.dart';
+import 'routes/app_route.dart';
 import 'web_bridge.dart';
 
 class AppRoot extends StatefulWidget {
@@ -25,78 +24,198 @@ class AppRoot extends StatefulWidget {
 }
 
 class _AppRootState extends State<AppRoot> {
-  Brightness? _lastBrightness;
-  dashcn.ThemeColors? _lastColors;
+  late Future<GoRouter> _routerFuture;
+
+  bool _webReadyNotified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeRouter();
+  }
+
+  void _initializeRouter() {
+    _routerFuture = AppRoute.initialize(
+      routeRepository: RouteRepository(),
+      authBloc: context.read<AuthLoginBloc>(),
+      initialLocation: '/dashboard',
+
+      // Enable this when using database-driven routes.
+      // routeRepository: RouteRepository(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeState>(
-      builder: (BuildContext context, ThemeState state) {
-        final LayoutSettings settings = state.settings;
-        final Brightness effectiveBrightness = switch (settings.themeMode) {
-          dashcn.ThemeMode.light => Brightness.light,
-          dashcn.ThemeMode.dark => Brightness.dark,
-          dashcn.ThemeMode.system =>
-            WidgetsBinding.instance.platformDispatcher.platformBrightness,
-        };
-        final dashcn.ThemeData effectiveTheme =
-            effectiveBrightness == Brightness.dark
-            ? settings.darkTheme
-            : settings.lightTheme;
-        _notifyWebThemeChanged(effectiveTheme);
+      builder: (context, state) {
+        return FutureBuilder<GoRouter>(
+          future: _routerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return _buildLoadingApp(state);
+            }
 
-        return DashcnApp(
-          debugShowCheckedModeBanner: false,
-          title: 'shadcn/ui Registry Flutter Widget',
-          color: settings.lightTheme.colors.primary,
-          theme: settings.lightTheme,
-          darkTheme: settings.darkTheme,
-          themeMode: settings.themeMode,
-          // The fixed route table stays empty because generated module routes
-          // contain path parameters and are resolved by onGenerateRoute.
-          routes: AppRouter.routes,
-          // Selects the saved startup location, including browser deep links.
-          initialRoute: settings.initialPath,
-          // Resolves named navigation requests and dynamic module paths.
-          onGenerateRoute: AppRouter.onGenerateRoute,
-          // Treats an initial deep link as one route instead of splitting it into
-          // intermediate Navigator routes that do not exist in this app.
-          onGenerateInitialRoutes: AppRouter.onGenerateInitialRoutes,
-          // Shows the app's not-found page for unknown named routes.
-          onUnknownRoute: AppRouter.onUnknownRoute,
-          // Applies the same page transition to generated and fixed routes.
-          //pageRouteBuilder: AppRouter.pageRouteBuilder,
-          localizationsDelegates: const [
-            S.delegate,
-            DashcnLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: const Locale('en'),
-          supportedLocales: S.supportedLocales,
-          builder: (BuildContext context, Widget? child) =>
-              MotionScope(child: child ?? const SizedBox.shrink()),
+            if (snapshot.hasError) {
+              return _buildErrorApp(state, snapshot.error);
+            }
+
+            final router = snapshot.data!;
+
+            _notifyWebReadyOnce();
+
+            return _buildApplication(state: state, router: router);
+          },
         );
       },
     );
   }
 
-  void _notifyWebThemeChanged(dashcn.ThemeData data) {
-    if (!kIsWeb) return;
-    final dashcn.ThemeColors colors = data.colors;
-    if (_lastBrightness == colors.brightness && _lastColors == colors) {
-      return;
+  // ---------------------------------------------------------------------------
+  // Application
+  // ---------------------------------------------------------------------------
+
+  Widget _buildApplication({
+    required ThemeState state,
+    required GoRouter router,
+  }) {
+    final settings = state.settings;
+
+    final isCupertino = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+
+    if (isCupertino) {
+      return CupertinoApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'UD SaaS',
+        theme: settings.cupertinoTheme(AppTheme.brightness(settings.themeMode)),
+        routerConfig: router,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        locale: const Locale('en'),
+        supportedLocales: S.supportedLocales,
+        builder: (context, child) {
+          return MotionScope(child: child ?? const SizedBox.shrink());
+        },
+      );
     }
-    _lastBrightness = colors.brightness;
-    _lastColors = colors;
+
+    final activeTheme = settings.lightTheme;
+
+    _notifyWebThemeChanged(activeTheme);
+
+    debugPrint("settings.themeMode : $settings.themeMode");
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: 'UD SaaS',
+      // theme: settings.lightTheme,
+      // darkTheme: settings.darkTheme,
+      theme: AppTheme.lightMaterialFor(seedColor: settings.seedColor),
+      darkTheme: AppTheme.darkMaterialFor(seedColor: settings.seedColor),
+      themeMode: AppTheme.materialMode(settings.themeMode),
+      routerConfig: router,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('en'),
+      supportedLocales: S.supportedLocales,
+      builder: (context, child) {
+        return MotionScope(child: child ?? const SizedBox.shrink());
+      },
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Loading
+  // ---------------------------------------------------------------------------
+
+  Widget _buildLoadingApp(ThemeState state) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: state.settings.lightTheme,
+      darkTheme: state.settings.darkTheme,
+      themeMode: AppTheme.materialMode(state.settings.themeMode),
+      home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Error
+  // ---------------------------------------------------------------------------
+
+  Widget _buildErrorApp(ThemeState state, Object? error) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: state.settings.lightTheme,
+      darkTheme: state.settings.darkTheme,
+      themeMode: AppTheme.materialMode(state.settings.themeMode),
+      home: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48),
+                const SizedBox(height: 16),
+                const Text(
+                  'Unable to initialize application',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  error?.toString() ?? 'Unknown error',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: () {
+                    setState(_initializeRouter);
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Web bridge
+  // ---------------------------------------------------------------------------
+
+  void _notifyWebThemeChanged(ThemeData theme) {
+    if (!kIsWeb) return;
+
+    final colors = theme.colorScheme;
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+
       dispatchWebThemeChanged({
-        'background': toHexColor(colors.background),
-        'foreground': toHexColor(colors.foreground),
-        'primary': toHexColor(colors.primary),
+        'background': AppTheme.colorHex(colors.surface),
+        'foreground': AppTheme.colorHex(colors.onSurface),
+        'primary': AppTheme.colorHex(colors.primary),
       });
+    });
+  }
+
+  void _notifyWebReadyOnce() {
+    if (!kIsWeb || _webReadyNotified) return;
+
+    _webReadyNotified = true;
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      dispatchWebAppReady();
     });
   }
 }

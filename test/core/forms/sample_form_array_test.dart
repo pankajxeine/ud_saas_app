@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:ud_sass_app/core/forms/examples/sample_form_array.dart';
-import 'package:ud_sass_app/core/forms/factories/entity_form_control_factory.dart';
+import 'package:ud_sass_app/core/forms/factory/entity_form_control_factory.dart';
 
 void main() {
   test('sample schema creates an object FormArray with initial data', () {

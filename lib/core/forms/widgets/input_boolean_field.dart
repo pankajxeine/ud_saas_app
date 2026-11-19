@@ -1,7 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
-import 'package:ud_sass_app/ui/dashcn/components/switch.dart';
 
 import '../models/field_meta.dart';
 import 'reactive_field_layout.dart';
@@ -16,42 +14,25 @@ class AppBooleanField extends StatelessWidget {
     return ReactiveFormField<bool, bool>(
       formControlName: field.name,
       builder: (state) {
-        final value = state.value;
-        final checkboxValue = value != null
-            ? CheckboxValue.checked
-            : CheckboxValue.unchecked;
-
-        final displayType =
-            field.features['displayType'] as String? ?? 'switch';
-
+        final label = field.features['text'] as String? ?? field.label;
+        final isCheckbox = field.features['displayType'] == 'checkbox';
         return ReactiveFieldLayout(
           field: field,
           control: state.control,
-          child: displayType == 'checkbox'
-              ? Checkbox(
-                  value: checkboxValue,
-                  padding: EdgeInsets.zero,
-                  enabled: state.control.enabled,
-                  label: Text(field.features['text'] as String? ?? field.label),
+          isRowLayout: true,
+          child: isCheckbox
+              ? CheckboxListTile(
+                  value: state.value ?? false,
+                  title: Text(label),
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
                   onChanged: state.control.enabled
-                      ? (value) {
-                          state.didChange(
-                            value == CheckboxValue.checked ? true : false,
-                          );
-                          state.control.markAsTouched();
-                        }
+                      ? (value) => state.didChange(value ?? false)
                       : null,
                 )
               : Switch(
-                  value: value ?? false,
-                  enabled: state.control.enabled,
-                  // label: Text(field.features['text'] as String? ?? field.label),
-                  onChanged: state.control.enabled
-                      ? (value) {
-                          state.didChange(value);
-                          state.control.markAsTouched();
-                        }
-                      : null,
+                  value: state.value ?? false,
+                  onChanged: state.control.enabled ? state.didChange : null,
                 ),
         );
       },

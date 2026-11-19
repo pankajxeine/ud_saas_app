@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart' hide Theme, Checkbox;
+import 'package:flutter/material.dart';
 import 'package:trina_grid/trina_grid.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
-import 'package:ud_sass_app/ui/dashcn/components/fab.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
 class MobileDataTableView extends StatelessWidget {
   const MobileDataTableView({
@@ -49,7 +44,7 @@ class MobileDataTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashcn.ThemeColors colors = dashcn.Theme.of(context).colors;
+    final colors = Theme.of(context).colorScheme;
     final List<String> visibleKeys = rows.map(rowKey).toList();
     final bool allSelected =
         visibleKeys.isNotEmpty && visibleKeys.every(selectedRowKeys.contains);
@@ -59,8 +54,8 @@ class MobileDataTableView extends StatelessWidget {
       children: <Widget>[
         Text(
           title ?? '',
-          style: dashcn.Theme.of(context).typography.h2.copyWith(
-            color: colors.mutedForeground,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            color: colors.onSurfaceVariant,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -69,11 +64,7 @@ class MobileDataTableView extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Checkbox(
-                value: allSelected
-                    ? CheckboxValue.checked
-                    : someSelected
-                    ? CheckboxValue.indeterminate
-                    : CheckboxValue.unchecked,
+                value: allSelected || someSelected,
                 tristate: true,
                 onChanged: rows.isEmpty ? null : (_) => onSelectVisible(),
               ),
@@ -83,9 +74,9 @@ class MobileDataTableView extends StatelessWidget {
                   selectedRowKeys.isEmpty
                       ? '$totalRows items'
                       : '${selectedRowKeys.length} selected',
-                  style: dashcn.Theme.of(
-                    context,
-                  ).typography.small.copyWith(color: colors.mutedForeground),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
                 ),
               ),
               header,
@@ -146,7 +137,7 @@ class _MobileDataTableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashcn.ThemeColors colors = dashcn.Theme.of(context).colors;
+    final colors = Theme.of(context).colorScheme;
     final List<TrinaColumn> visibleColumns = columns
         .where((TrinaColumn column) => row.cells.containsKey(column.field))
         .toList();
@@ -158,7 +149,7 @@ class _MobileDataTableCard extends StatelessWidget {
         : visibleColumns.skip(1).toList();
 
     return Material(
-      color: selected ? colors.accent : colors.card,
+      color: selected ? colors.primaryContainer : colors.surface,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
@@ -167,19 +158,14 @@ class _MobileDataTableCard extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             border: Border.all(
-              color: selected ? colors.primary : colors.border,
+              color: selected ? colors.primary : colors.outline,
             ),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Checkbox(
-                value: selected
-                    ? CheckboxValue.checked
-                    : CheckboxValue.unchecked,
-                onChanged: (_) => onSelectionChanged(),
-              ),
+              Checkbox(value: selected, onChanged: (_) => onSelectionChanged()),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -188,8 +174,8 @@ class _MobileDataTableCard extends StatelessWidget {
                     if (titleColumn != null)
                       Text(
                         _cellValue(row, titleColumn),
-                        style: dashcn.Theme.of(context).typography.large
-                            .copyWith(fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                     for (final TrinaColumn column in detailColumns) ...<Widget>[
                       const SizedBox(height: 8),
@@ -200,16 +186,16 @@ class _MobileDataTableCard extends StatelessWidget {
                             width: 86,
                             child: Text(
                               column.title,
-                              style: dashcn.Theme.of(context).typography.small
-                                  .copyWith(color: colors.mutedForeground),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: colors.onSurfaceVariant),
                             ),
                           ),
                           Expanded(
                             child: Text(
                               _cellValue(row, column),
-                              style: dashcn.Theme.of(context).typography.small
-                                  .copyWith(
-                                    color: colors.foreground,
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: colors.onSurface,
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
@@ -255,21 +241,18 @@ class MobileDataTableFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashcn.ThemeColors colors = dashcn.Theme.of(context).colors;
+    final colors = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: colors.card,
-        border: Border.all(color: colors.border),
+        color: colors.surface,
+        border: Border.all(color: colors.outline),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: <Widget>[
           // Text(
           //   '$totalRows items',
-          //   style: dashcn.Theme.of(
-          //     context,
-          //   ).typography.small.copyWith(color: colors.mutedForeground),
           // ),
           // const SizedBox(width: 8),
           DropdownButtonHideUnderline(
@@ -294,29 +277,25 @@ class MobileDataTableFooter extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Fab(
-            semanticLabel: 'Previous page',
-            size: FabSize.sm,
+          IconButton(
             tooltip: 'Previous page',
             onPressed: onPreviousPage,
-            icon: const Icon(BootstrapIcons.chevronLeft, size: 18),
+            icon: const Icon(Icons.chevron_left),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               '$page / $pageCount',
-              style: dashcn.Theme.of(context).typography.small.copyWith(
-                color: colors.mutedForeground,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
-          Fab(
-            semanticLabel: 'data-table-next-page',
-            size: FabSize.sm,
+          IconButton(
             tooltip: 'Next page',
             onPressed: onNextPage,
-            icon: const Icon(BootstrapIcons.chevronRight, size: 18),
+            icon: const Icon(Icons.chevron_right),
           ),
         ],
       ),

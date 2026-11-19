@@ -8,7 +8,6 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'package:ud_sass_app/ui/dashcn/src/theme/motion.dart';
 import 'theme_app.dart';
 
 export 'theme_app.dart' show ThemeAppException;

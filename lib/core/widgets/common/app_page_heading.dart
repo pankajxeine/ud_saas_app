@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide Theme;
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
+import 'package:flutter/material.dart';
 
 class AppPageHeading extends StatelessWidget {
   const AppPageHeading({
@@ -21,7 +20,8 @@ class AppPageHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colors;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,16 +53,14 @@ class AppPageHeading extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 title,
-                style: Theme.of(
-                  context,
-                ).typography.h3.copyWith(fontWeight: FontWeight.w700),
+                style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 5),
               Text(
                 description,
-                style: Theme.of(
-                  context,
-                ).typography.p.copyWith(color: colors.mutedForeground),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: colors.onSurfaceVariant,
+                ),
               ),
             ],
           ),

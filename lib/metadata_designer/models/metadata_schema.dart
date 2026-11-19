@@ -102,8 +102,6 @@ class MetadataSchema {
 
       'search': search,
       'datatable': datatable,
-      'detail': detail,
-
       'fields': fields.map((field) => field.toJson()).toList(),
     };
   }
@@ -152,6 +150,19 @@ class MetadataSchema {
     // { "api": [...] }
     if (value is Map && value['api'] is List) {
       return MetadataApi.fromJson(value['api']);
+    }
+
+    if (value is Map) {
+      final operations = <Map<String, dynamic>>[];
+      for (final entry in value.entries) {
+        if (entry.value is Map) {
+          operations.add({
+            ...Map<String, dynamic>.from(entry.value as Map),
+            'operation': entry.key.toString(),
+          });
+        }
+      }
+      return MetadataApi.fromJson(operations);
     }
 
     return null;
@@ -209,8 +220,6 @@ class MetadataSchema {
       search: {'quickSearch': <String>[], 'filters': <Map<String, dynamic>>[]},
 
       datatable: {'columns': <Map<String, dynamic>>[]},
-
-      detail: {'fields': <String>[]},
 
       fields: const [],
 

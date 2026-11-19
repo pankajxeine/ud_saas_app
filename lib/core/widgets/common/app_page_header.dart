@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide Theme;
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
+import 'package:flutter/material.dart';
 
 import 'app_breadcrumb.dart';
 
@@ -19,7 +18,7 @@ class AppPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typography = Theme.of(context).typography;
+    final typography = Theme.of(context).textTheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -27,7 +26,7 @@ class AppPageHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: typography.h3),
+              Text(title, style: typography.headlineSmall),
               const SizedBox(height: 6),
               AppBreadcrumb(items: breadcrumbs, current: title),
             ],

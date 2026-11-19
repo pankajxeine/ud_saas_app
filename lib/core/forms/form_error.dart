@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart' hide Theme;
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
+import 'package:flutter/material.dart';
 
 class FormError extends StatelessWidget {
   const FormError({super.key, required this.control, this.message});
@@ -21,7 +20,7 @@ class FormError extends StatelessWidget {
         message != null && message!.isNotEmpty
             ? message!
             : control.errors.keys.first,
-        style: TextStyle(color: Theme.of(context).colors.destructive),
+        style: TextStyle(color: Theme.of(context).colorScheme.error),
       ),
     );
   }

@@ -1,7 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/button/button.dart';
+import 'package:flutter/material.dart';
 
 import '../models/metadata_schema.dart';
 import '../models/metadata_field.dart';
@@ -115,12 +112,16 @@ class _MetadataViewState extends State<MetadataView> {
         child: Row(
           children: [
             Expanded(child: Text(field.label)),
-            Checkbox(
-              value: checked ? CheckboxValue.checked : CheckboxValue.unchecked,
+            CheckboxListTile(
+              value: checked,
+              title: Text(field.label),
+              subtitle: field.description != null
+                  ? Text(field.description!)
+                  : null,
               onChanged: _isReadOnly(field)
                   ? null
-                  : (next) =>
-                        _updateValue(field, next == CheckboxValue.checked),
+                  : (value) => _updateValue(field, value ?? false),
+              controlAffinity: ListTileControlAffinity.leading,
             ),
           ],
         ),
@@ -153,10 +154,17 @@ class _MetadataViewState extends State<MetadataView> {
             ],
           ),
           const SizedBox(height: 6),
-          Input(
+          TextFormField(
             controller: controller,
             enabled: !_isReadOnly(field),
-            placeholder: Text(field.description ?? field.label),
+            keyboardType: numeric
+                ? const TextInputType.numberWithOptions(decimal: true)
+                : TextInputType.text,
+            decoration: InputDecoration(
+              labelText: field.label,
+              hintText: field.description,
+              border: const OutlineInputBorder(),
+            ),
             onChanged: (text) {
               dynamic parsed = text;
 
@@ -247,7 +255,7 @@ class _MetadataViewState extends State<MetadataView> {
         if (widget.mode != MetadataViewMode.detail && widget.onSubmit != null)
           Align(
             alignment: Alignment.centerRight,
-            child: Button(
+            child: FilledButton(
               onPressed: _submit,
               child: Text(
                 widget.mode == MetadataViewMode.create

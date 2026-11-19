@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/button/button.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -33,9 +31,18 @@ class _FieldValidationEditorState extends State<FieldValidationEditor> {
     if (_loadedField == name) return;
 
     _loadedField = name;
-    _controller.text = const JsonEncoder.withIndent('  ').convert(
-      field['validations'] is Map ? field['validations'] : <String, dynamic>{},
-    );
+    final validation = field['validation'];
+    final validationMap = validation is List
+        ? {
+            for (final item in validation.whereType<Map>())
+              if (item['type'] != null) item['type'].toString(): item['value'],
+          }
+        : (field['validations'] is Map
+              ? field['validations']
+              : <String, dynamic>{});
+    _controller.text = const JsonEncoder.withIndent(
+      '  ',
+    ).convert(validationMap);
     _error = null;
   }
 
@@ -49,10 +56,9 @@ class _FieldValidationEditorState extends State<FieldValidationEditor> {
       }
 
       context.read<MetadataBloc>().add(
-        UpdateFieldProperty(
-          fieldName,
-          'validations',
-          Map<String, dynamic>.from(decoded),
+        UpdateFieldValidations(
+          fieldName: fieldName,
+          validations: Map<String, dynamic>.from(decoded),
         ),
       );
 

@@ -1,24 +1,42 @@
 // import 'dart:convert';
 
 import 'package:reactive_forms/reactive_forms.dart';
-import '../helper/build_validators.dart';
+import '../validation/entity_validation_factory.dart';
 
 import 'field_meta.dart';
 import 'entity_grid_layout.dart';
-import '../entity_form_control_factory.dart';
+import '../factory/entity_form_control_factory.dart';
 
 enum EntityMode { view, edit, create }
+
+enum EntityFormLayoutMode { basic, tabs, stepper }
+
+class EntityFormSection {
+  const EntityFormSection({
+    required this.id,
+    required this.title,
+    this.fields = const [],
+  });
+
+  final String id;
+  final String title;
+  final List<String> fields;
+}
 
 class EntityMeta {
   const EntityMeta({
     required this.entityName,
     required this.fields,
     this.layout = const EntityGridLayout(),
+    this.formLayout = EntityFormLayoutMode.basic,
+    this.sections = const [],
   });
 
   final String entityName;
   final EntityGridLayout layout;
   final List<FieldMeta<dynamic>> fields;
+  final EntityFormLayoutMode formLayout;
+  final List<EntityFormSection> sections;
 
   /// Creates a Reactive Forms [FormGroup].
   ///

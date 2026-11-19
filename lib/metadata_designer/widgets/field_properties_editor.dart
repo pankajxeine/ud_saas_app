@@ -1,8 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/checkbox.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/select/select.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -276,10 +273,27 @@ class FieldPropertiesEditor extends StatelessWidget {
     String property,
     String label,
   ) {
+    final visibility = field['visibility'] is Map
+        ? Map<String, dynamic>.from(field['visibility'] as Map)
+        : const <String, dynamic>{};
+    final mode = switch (property) {
+      'showInTable' => 'table',
+      'showInDetail' => 'detail',
+      'showInCreate' => 'create',
+      'showInUpdate' => 'edit',
+      'requiredOnCreate' => 'create',
+      'requiredOnUpdate' => 'edit',
+      _ => null,
+    };
+    final visibilityKey = property.startsWith('required') ? 'required' : 'show';
+    final enabled = mode == null
+        ? field[property] == true
+        : (visibility[visibilityKey] as List? ?? const [])
+              .map((item) => item.toString())
+              .contains(mode);
+
     return Checkbox(
-      value: field[property] == true
-          ? CheckboxValue.checked
-          : CheckboxValue.unchecked,
+      value: enabled ? CheckboxValue.checked : CheckboxValue.unchecked,
       onChanged: (checked) {
         context.read<MetadataBloc>().add(
           UpdateFieldProperty(fieldName, property, checked),

@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
-import 'package:ud_sass_app/ui/dashcn/components/select.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/divider/divider.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -262,9 +260,10 @@ class _ApiEditorState extends State<ApiEditor> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: SizedBox(
             width: 240,
-            child: Select<String>(
-              value: _selectedOperation,
-              onChanged: (String? value) {
+            child: DropdownMenu<String>(
+              initialSelection: _selectedOperation,
+              label: const Text('Select API operation'),
+              onSelected: (String? value) {
                 if (value == null || value == _selectedOperation) {
                   return;
                 }
@@ -273,17 +272,14 @@ class _ApiEditorState extends State<ApiEditor> {
                   _selectedOperation = value;
                 });
               },
-              placeholder: const Text('Select API operation'),
-              itemBuilder: (BuildContext context, String value) {
-                return Text(_operationLabel(value));
-              },
-              items: [
-                for (final operation in ApiEditor.operations)
-                  SelectItem<String>(
-                    value: operation,
-                    child: Text(_operationLabel(operation)),
-                  ),
-              ],
+              dropdownMenuEntries: ApiEditor.operations
+                  .map(
+                    (operation) => DropdownMenuEntry<String>(
+                      value: operation,
+                      label: _operationLabel(operation),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         ),

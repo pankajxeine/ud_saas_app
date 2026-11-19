@@ -268,19 +268,9 @@ class MetaGenerator {
 
         'title': property['title'],
 
-        'permissions': {
-          'read': true,
-          'create': createProps.containsKey(name),
-          'update': updateProps.containsKey(name),
-        },
-
         'security': _buildSecurity(property, entityName: _detectEntity()),
 
         if (property['nullable'] == true) 'nullable': true,
-        if (property['readOnly'] == true) 'readOnly': true,
-        if (property['writeOnly'] == true) 'writeOnly': true,
-        if (property['deprecated'] == true) 'deprecated': true,
-
         'ui': _buildUiMetadata(name, property, reference: reference),
 
         'visibility': _buildVisibility(
@@ -384,7 +374,9 @@ class MetaGenerator {
 
   String _fieldFormat(YamlMap property, String type) {
     if (type == 'uuid') return 'string';
-    return property['format']?.toString() ?? property['type']?.toString() ?? 'string';
+    return property['format']?.toString() ??
+        property['type']?.toString() ??
+        'string';
   }
 
   String? _group(YamlMap property, Map<String, dynamic>? reference) {
@@ -413,10 +405,13 @@ class MetaGenerator {
       return {'permissions': Map<String, dynamic>.from(permissions)};
     }
 
-    final prefix = entityName.replaceAllMapped(
-      RegExp(r'([a-z0-9])([A-Z])'),
-      (match) => '${match[1]}.${match[2]}',
-    ).replaceAll('_', '.').toLowerCase();
+    final prefix = entityName
+        .replaceAllMapped(
+          RegExp(r'([a-z0-9])([A-Z])'),
+          (match) => '${match[1]}.${match[2]}',
+        )
+        .replaceAll('_', '.')
+        .toLowerCase();
 
     return {
       'permissions': {
@@ -424,10 +419,7 @@ class MetaGenerator {
         'create': '$prefix.create',
         'update': '$prefix.update',
       },
-      'masking': {
-        'enabled': false,
-        'strategy': 'none',
-      },
+      'masking': {'enabled': false, 'strategy': 'none'},
     };
   }
 
@@ -454,11 +446,7 @@ class MetaGenerator {
       readOnly.addAll(['create', 'edit']);
     }
 
-    return {
-      'show': show,
-      'required': required,
-      'readOnly': readOnly,
-    };
+    return {'show': show, 'required': required, 'readOnly': readOnly};
   }
 
   List<Map<String, dynamic>> _buildValidation(YamlMap property) {
@@ -539,9 +527,9 @@ class MetaGenerator {
 
       'placeholder':
           ui['placeholder'] ??
-              (reference == null
-                  ? _defaultPlaceholder(fieldName, property)
-                  : 'Select ${_humanize(fieldName)}'),
+          (reference == null
+              ? _defaultPlaceholder(fieldName, property)
+              : 'Select ${_humanize(fieldName)}'),
 
       'hint': ui['hint'] ?? property['description'],
 

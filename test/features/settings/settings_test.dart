@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ud_sass_app/core/theme/theme_cubit.dart';
+import 'package:ud_sass_app/core/theme/bloc/theme_cubit.dart';
 import 'package:ud_sass_app/core/theme/theme_utils.dart';
 import 'package:ud_sass_app/features/settings/settings.dart';
 

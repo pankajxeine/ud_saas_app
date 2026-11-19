@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart' hide Theme, Card, Divider, Tooltip;
+import 'package:flutter/material.dart';
 import 'package:ud_sass_app/core/navigation/app_navigation.dart';
-import 'package:ud_sass_app/ui/dashcn/dashcn.dart';
 import '../../../core/widgets/common/common_widgets.dart';
 import '../cpanel_catalog.dart';
 
@@ -41,9 +40,8 @@ class CpanelCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colors;
-    return Button(
-      variant: ButtonVariant.ghost,
+    final colors = Theme.of(context).colorScheme;
+    return OutlinedButton(
       onPressed: () => context.go(category.path),
       child: Container(
         constraints: const BoxConstraints(minHeight: 154),

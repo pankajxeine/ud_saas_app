@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart' hide IconButton, Theme;
+import 'package:flutter/material.dart';
 import 'package:trina_grid/trina_grid.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 export 'package:trina_grid/trina_grid.dart'
     show
@@ -32,16 +28,15 @@ abstract final class AppRadius {
 
 /// The themed data grid.
 ///
-/// Spike B found that `trina_grid` does **not** inherit the shadcn theme even
-/// though it depends on `shadcn_ui`: it ships its own hamburger column
+/// The wrapper centralizes Material styling for the Trina grid and responsive
 /// affordances, a bright-blue pagination footer that clashes with the slate
 /// palette, and columns that leave a dead zone rather than filling the width.
 ///
 /// This widget is where that is fixed, once, for every screen. It is also the
 /// clearest argument for the wrapper layer existing at all — the theming has to
 /// live somewhere, and this keeps it out of twenty-two feature files.
-class DataTable extends StatefulWidget {
-  const DataTable({
+class AppDataTable extends StatefulWidget {
+  const AppDataTable({
     super.key,
     required this.columns,
     required this.rows,
@@ -51,7 +46,7 @@ class DataTable extends StatefulWidget {
     this.onLoaded,
     this.onRowTap,
     this.onRowEdit,
-    this.rowActionIcon = BootstrapIcons.eye,
+    this.rowActionIcon = Icons.visibility_outlined,
     this.rowActionTooltip = 'Open',
     this.pageSize = 25,
     this.paginate = true,
@@ -90,16 +85,16 @@ class DataTable extends StatefulWidget {
   final double mobileBreakpoint;
 
   @override
-  State<DataTable> createState() => _DataTableState();
+  State<AppDataTable> createState() => _DataTableState();
 }
 
-class _DataTableState extends State<DataTable> {
+class _DataTableState extends State<AppDataTable> {
   int _mobilePage = 1;
   late int _mobilePageSize = widget.mobilePageSize;
   final Set<String> _selectedMobileRows = <String>{};
 
   @override
-  void didUpdateWidget(covariant DataTable oldWidget) {
+  void didUpdateWidget(covariant AppDataTable oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.mobilePageSize != oldWidget.mobilePageSize) {
       _mobilePageSize = widget.mobilePageSize;
@@ -220,18 +215,19 @@ class _DataTableState extends State<DataTable> {
   );
 
   Widget _buildDesktopGrid(BuildContext context) {
-    final c = Theme.of(context).colors;
-    final t = Theme.of(context).typography;
+    final c = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
     final bool hasFilterableColumns = widget.columns.any(
-      (TrinaColumn column) => !column.hide && column.filterWidgetDelegate != null,
+      (TrinaColumn column) =>
+          !column.hide && column.filterWidgetDelegate != null,
     );
     final bool hasHeaderActions = widget.headerActionsBuilder != null;
     return ClipRRect(
       borderRadius: AppRadius.allMd,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: c.card,
-          border: Border.all(color: c.border),
+          color: c.surface,
+          border: Border.all(color: c.outline),
           borderRadius: AppRadius.allMd,
         ),
         child: TrinaGrid(
@@ -260,21 +256,19 @@ class _DataTableState extends State<DataTable> {
                     if (widget.onRowTap != null)
                       Tooltip(
                         message: widget.rowActionTooltip,
-                        child: Button(
-                          size: ButtonSize.icon,
-                          variant: ButtonVariant.ghost,
+                        child: IconButton(
+                          tooltip: widget.rowActionTooltip,
                           onPressed: () => widget.onRowTap!(ctx.rowIdx),
-                          child: Icon(widget.rowActionIcon, size: 16),
+                          icon: Icon(widget.rowActionIcon, size: 16),
                         ),
                       ),
                     if (widget.onRowEdit != null)
                       Tooltip(
                         message: 'Edit',
-                        child: Button(
-                          variant: ButtonVariant.ghost,
+                        child: IconButton(
+                          tooltip: 'Edit',
                           onPressed: () => widget.onRowEdit!(ctx.rowIdx),
-                          size: ButtonSize.icon,
-                          child: const Icon(BootstrapIcons.pencil, size: 16),
+                          icon: const Icon(Icons.edit_outlined, size: 16),
                         ),
                       ),
                   ],
@@ -319,14 +313,14 @@ class _DataTableState extends State<DataTable> {
                           if (hasFilterableColumns)
                             Tooltip(
                               message: 'Toggle filters',
-                              child: Button(
-                                variant: ButtonVariant.ghost,
-                                size: ButtonSize.icon,
-                                onPressed: () => stateManager.setShowColumnFilter(
-                                  !stateManager.showColumnFilter,
-                                ),
-                                child: const Icon(
-                                  BootstrapIcons.funnel,
+                              child: IconButton(
+                                tooltip: 'Toggle filters',
+                                onPressed: () =>
+                                    stateManager.setShowColumnFilter(
+                                      !stateManager.showColumnFilter,
+                                    ),
+                                icon: const Icon(
+                                  Icons.filter_alt_outlined,
                                   size: 16,
                                 ),
                               ),
@@ -345,43 +339,46 @@ class _DataTableState extends State<DataTable> {
             style: TrinaGridStyleConfig(
               enableRowColorAnimation: true,
               // Surfaces
-              gridBackgroundColor: c.card,
-              rowColor: c.card,
-              menuBackgroundColor: c.card,
-              cellColorInEditState: c.card,
-              cellColorInReadOnlyState: c.muted,
+              gridBackgroundColor: c.surface,
+              rowColor: c.surface,
+              menuBackgroundColor: c.surface,
+              cellColorInEditState: c.surface,
+              cellColorInReadOnlyState: c.surfaceContainerHighest,
 
               // Borders — the grid draws its own frame, so suppress the outer
               // one and let the DecoratedBox above own the rounded edge.
               gridBorderColor: const Color.fromRGBO(0, 0, 0, 0),
-              borderColor: c.border,
+              borderColor: c.outline,
               activatedBorderColor: c.primary,
-              inactivatedBorderColor: c.border,
+              inactivatedBorderColor: c.outline,
               gridBorderRadius: AppRadius.allMd,
               gridPopupBorderRadius: AppRadius.allMd,
               enableGridBorderShadow: false,
               enableCellBorderVertical: false,
 
               // Selection and hover in the accent, not lightBlue.
-              activatedColor: c.accent,
-              rowHoveredColor: c.muted,
+              activatedColor: c.primaryContainer,
+              rowHoveredColor: c.surfaceContainerHighest,
               enableRowHoverColor: true,
               columnActiveColor: c.primary,
               cellActiveColor: c.primary,
 
               // Iconography: `dehaze` is the hamburger Spike B flagged.
-              iconColor: c.mutedForeground,
-              disabledIconColor: c.border,
-              columnContextIcon: BootstrapIcons.threeDots,
+              iconColor: c.onSurfaceVariant,
+              disabledIconColor: c.outline,
+              columnContextIcon: Icons.more_horiz,
               iconSize: 16,
 
-              // Type comes from the shadcn text theme so the grid matches the
-              // rest of the page rather than defaulting to black Roboto.
-              columnTextStyle: t.small.copyWith(
-                color: c.mutedForeground,
+              // Use the application Material text theme so the grid matches
+              // the rest of the page rather than defaulting to black Roboto.
+              columnTextStyle: (t.bodySmall ?? const TextStyle()).copyWith(
+                color: c.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
               ),
-              cellTextStyle: t.p.copyWith(color: c.foreground, fontSize: 14),
+              cellTextStyle: (t.bodyMedium ?? const TextStyle()).copyWith(
+                color: c.onSurface,
+                fontSize: 14,
+              ),
 
               rowHeight: 46,
               columnHeight: 44,

@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -88,7 +85,7 @@ class _MetadataJsonEditorState extends State<MetadataJsonEditor> {
         // editor changes metadata. Use Reload to refresh explicitly.
       },
       child: Padding(
-        padding: EdgeInsetsGeometry.all(10),
+        padding: const EdgeInsetsGeometry.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -97,27 +94,29 @@ class _MetadataJsonEditorState extends State<MetadataJsonEditor> {
                 Expanded(
                   child: Text(
                     'JSON editor',
-                    style: t.typography.extraBold.copyWith(
+                    style: t.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: t.colors.accentForeground,
+                      color: t.colorScheme.onSurface,
                     ),
                   ),
                 ),
-                Button(
-                  variant: ButtonVariant.outline,
+                OutlinedButton(
                   onPressed: _loadFromBloc,
                   child: const Text('Reload'),
                 ),
                 const SizedBox(width: 8),
-                Button(onPressed: _applyJson, child: const Text('Apply JSON')),
+                ElevatedButton(
+                  onPressed: _applyJson,
+                  child: const Text('Apply JSON'),
+                ),
               ],
             ),
             const SizedBox(height: 8),
             Text(
               'Edit the complete module metadata document.',
-              style: t.typography.small.copyWith(
+              style: t.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: t.colors.accentForeground,
+                color: t.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 12),
@@ -136,12 +135,19 @@ class _MetadataJsonEditorState extends State<MetadataJsonEditor> {
                 ),
               ),
             Expanded(
-              child: Input(
+              child: TextField(
                 controller: _controller,
                 expands: true,
                 minLines: null,
                 maxLines: null,
-                textAlign: TextAlign.start,
+                textAlignVertical: TextAlignVertical.top,
+                style: const TextStyle(fontFamily: 'monospace'),
+                decoration: InputDecoration(
+                  hintText: 'Enter JSON...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
               ),
             ),
           ],

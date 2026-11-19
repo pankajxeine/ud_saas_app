@@ -5,6 +5,7 @@ import '../../../core/api/api.dart';
 import '../../../core/models/api_operation_response.dart';
 import '../models/metadata_module.dart';
 import '../models/metadata_module_version.dart';
+import '../models/metadata_schema.dart';
 import '../utils/metadata_utils.dart';
 
 abstract class MetadataRepository {
@@ -12,6 +13,17 @@ abstract class MetadataRepository {
   Future<void> save(MetaModuleVersion metadata);
   Future<ApiOperationResponse<List<MetaModule>>> fetchAllMetadata();
   Future<ApiOperationResponse<MetaModuleVersion>> createMetadata(
+    MetaModuleVersion metadata,
+  );
+  Future<ApiOperationResponse<MetaModule>> createModule({
+    required MetaModule module,
+    required MetadataSchema schema,
+  });
+  Future<ApiOperationResponse<MetaModule>> updateModule(MetaModule module);
+  Future<ApiOperationResponse<MetaModuleVersion>> createModuleVersion(
+    MetaModuleVersion metadata,
+  );
+  Future<ApiOperationResponse<MetaModuleVersion>> updateModuleVersion(
     MetaModuleVersion metadata,
   );
   Future<ApiOperationResponse<MetaModule>> fetchMetadataModuleById(
@@ -139,6 +151,141 @@ class LocalMetadataRepository implements MetadataRepository {
       return ApiOperationResponse.error('Exception occurred: $e');
     }
   }
+
+  @override
+  Future<ApiOperationResponse<MetaModule>> createModule({
+    required MetaModule module,
+    required MetadataSchema schema,
+  }) async {
+    try {
+      final response = await api.requestWithResponse<dynamic>(
+        endpointPath: MetadataApiPaths.modules,
+        method: 'POST',
+        body: {
+          'module_code': module.moduleCode,
+          'module_name': module.moduleName,
+          'api_base_path': module.apiBasePath,
+          'icon': module.icon,
+          'description': module.description,
+          'schema_name': module.schemaName,
+          'table_name': module.tableName,
+          'is_active': module.isActive,
+          'schema_json': schema.toJson(),
+        },
+      );
+
+      final success = _isSuccess(response.statusCode);
+      if (!success) {
+        return ApiOperationResponse.error(
+          'Request failed with status ${response.statusCode}',
+        );
+      }
+
+      final body = ApiParser.parseObject<MetaModule>(
+        response.data,
+        (json) => MetaModule.fromJson(Map<String, dynamic>.from(json)),
+      );
+      return ApiOperationResponse.success(body, message: 'Module created');
+    } catch (e, stack) {
+      log.error('Error creating metadata module: $e\n$stack');
+      return ApiOperationResponse.error('Exception occurred: $e');
+    }
+  }
+
+  @override
+  Future<ApiOperationResponse<MetaModule>> updateModule(
+    MetaModule module,
+  ) async {
+    try {
+      if (module.moduleId.isEmpty) {
+        return ApiOperationResponse.error('Module id is required');
+      }
+      final response = await api.requestWithResponse<dynamic>(
+        endpointPath: MetadataApiPaths.moduleById(module.moduleId),
+        method: 'PUT',
+        body: {
+          'module_code': module.moduleCode,
+          'module_name': module.moduleName,
+          'api_base_path': module.apiBasePath,
+          'icon': module.icon,
+          'description': module.description,
+          'schema_name': module.schemaName,
+          'table_name': module.tableName,
+          'is_active': module.isActive,
+        },
+      );
+      if (!_isSuccess(response.statusCode)) {
+        return ApiOperationResponse.error(
+          'Request failed with status ${response.statusCode}',
+        );
+      }
+      final body = ApiParser.parseObject<MetaModule>(
+        response.data,
+        (json) => MetaModule.fromJson(Map<String, dynamic>.from(json)),
+      );
+      return ApiOperationResponse.success(body, message: 'Module updated');
+    } catch (e, stack) {
+      log.error('Error updating metadata module: $e\n$stack');
+      return ApiOperationResponse.error('Exception occurred: $e');
+    }
+  }
+
+  @override
+  Future<ApiOperationResponse<MetaModuleVersion>> createModuleVersion(
+    MetaModuleVersion metadata,
+  ) async {
+    return _writeModuleVersion(metadata, method: 'POST');
+  }
+
+  @override
+  Future<ApiOperationResponse<MetaModuleVersion>> updateModuleVersion(
+    MetaModuleVersion metadata,
+  ) async {
+    if (metadata.moduleVersionId == null ||
+        metadata.moduleVersionId!.isEmpty) {
+      return ApiOperationResponse.error('Module version id is required');
+    }
+    return _writeModuleVersion(metadata, method: 'PUT');
+  }
+
+  Future<ApiOperationResponse<MetaModuleVersion>> _writeModuleVersion(
+    MetaModuleVersion metadata, {
+    required String method,
+  }) async {
+    try {
+      final endpoint = metadata.moduleVersionId == null
+          ? MetadataApiPaths.moduleVersions
+          : MetadataApiPaths.versionById(metadata.moduleVersionId!);
+      final response = await api.requestWithResponse<dynamic>(
+        endpointPath: endpoint,
+        method: method,
+        body: {
+          'module_id': metadata.moduleId,
+          'version_no': metadata.versionNo,
+          'schema_json': metadata.schemaJson.toJson(),
+          'publication_status': metadata.publicationStatus,
+          if (metadata.publishedAt != null)
+            'published_at': metadata.publishedAt,
+        },
+      );
+      if (!_isSuccess(response.statusCode)) {
+        return ApiOperationResponse.error(
+          'Request failed with status ${response.statusCode}',
+        );
+      }
+      final body = ApiParser.parseObject<MetaModuleVersion>(
+        response.data,
+        (json) => MetaModuleVersion.fromJson(Map<String, dynamic>.from(json)),
+      );
+      return ApiOperationResponse.success(body, message: 'Module version saved');
+    } catch (e, stack) {
+      log.error('Error saving metadata module version: $e\n$stack');
+      return ApiOperationResponse.error('Exception occurred: $e');
+    }
+  }
+
+  bool _isSuccess(int? statusCode) =>
+      statusCode != null && statusCode >= 200 && statusCode < 300;
 
   @override
   Future<ApiOperationResponse<MetaModule>> fetchMetadataModuleById(
@@ -310,6 +457,7 @@ class MetadataApiPaths {
   MetadataApiPaths._();
 
   static const modules = '/meta-module';
+  static const moduleVersions = '/meta-module-version';
 
   static String moduleById(String moduleId) =>
       '/meta-module/${Uri.encodeComponent(moduleId)}';

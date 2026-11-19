@@ -1,12 +1,6 @@
-import 'package:flutter/material.dart' hide DataTable, Scaffold;
+import 'package:flutter/material.dart';
+
 import 'package:ud_sass_app/core/widgets/data_table/data_table.dart';
-import 'package:ud_sass_app/ui/dashcn/components/alert.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart' as app_scaffold;
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/src/primitives/input_features/adornment_features.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
 
 class DataGridPage extends StatefulWidget {
   const DataGridPage({super.key});
@@ -17,15 +11,18 @@ class DataGridPage extends StatefulWidget {
 
 class _DataGridPageState extends State<DataGridPage> {
   final TextEditingController _searchController = TextEditingController();
+
   late final List<TrinaColumn> _columns;
   late final List<TrinaRow<dynamic>> _rows;
+
   bool _pendingOnly = false;
   bool _searchExpanded = false;
 
   @override
   void initState() {
     super.initState();
-    _columns = <TrinaColumn>[
+
+    _columns = [
       TrinaColumn(
         title: 'Order ID',
         field: 'id',
@@ -49,7 +46,8 @@ class _DataGridPageState extends State<DataGridPage> {
         type: TrinaColumnType.number(),
       ),
     ];
-    _rows = <TrinaRow<dynamic>>[
+
+    _rows = [
       _order(id: 'ORD-001', customer: 'Alice', status: 'Pending', amount: 250),
       _order(id: 'ORD-002', customer: 'Bob', status: 'Shipped', amount: 120),
       _order(
@@ -68,73 +66,101 @@ class _DataGridPageState extends State<DataGridPage> {
   }
 
   List<TrinaRow<dynamic>> get _visibleRows {
-    final String query = _searchController.text.trim().toLowerCase();
-    return _rows.where((TrinaRow<dynamic> row) {
-      final String status = row.cells['status']?.value.toString() ?? '';
+    final query = _searchController.text.trim().toLowerCase();
+
+    return _rows.where((row) {
+      final status = row.cells['status']?.value.toString() ?? '';
+
       if (_pendingOnly && status != 'Pending') {
         return false;
       }
+
       if (query.isEmpty) {
         return true;
       }
+
       return row.cells.values.any(
-        (TrinaCell cell) => cell.value.toString().toLowerCase().contains(query),
+        (cell) => cell.value.toString().toLowerCase().contains(query),
       );
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<TrinaRow<dynamic>> rows = _visibleRows;
-    return app_scaffold.Scaffold(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: DataTable(
-          title: 'Orders',
-          subtitle: 'Manage and track your recent orders.',
-          headerActionsBuilder: (BuildContext context, bool compact) =>
-              _OrderTableControls(
-                compact: compact,
-                pendingOnly: _pendingOnly,
-                searchExpanded: _searchExpanded,
-                searchController: _searchController,
-                onSearchChanged: (_) => setState(() {}),
-                onToggleSearch: () {
-                  setState(() {
-                    _searchExpanded = !_searchExpanded;
-                    if (!_searchExpanded) {
-                      _searchController.clear();
-                    }
-                  });
-                },
-                onToggleFilter: () =>
-                    setState(() => _pendingOnly = !_pendingOnly),
-                onAdd: _addOrder,
-              ),
-          columns: _columns,
-          rows: rows,
-          mobilePageSize: 2,
-          mobilePageSizes: const <int>[2, 5, 10, 20, 50],
-          mobileRowKey: (TrinaRow<dynamic> row) =>
-              row.cells['id']?.value.toString() ?? '',
-          onRowTap: (int rowIdx) {
-            final Object? orderId = rows[rowIdx].cells['id']?.value;
-            Alert(
-              title: const Text('Order details'),
-              content: Text('Tapped order $orderId'),
-            );
-          },
-        ),
+    final rows = _visibleRows;
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _PageHeader(
+            title: 'Orders',
+            subtitle: 'Manage and track your recent orders.',
+            totalCount: _rows.length,
+            filteredCount: rows.length,
+          ),
+
+          const SizedBox(height: 16),
+
+          Expanded(
+            child: AppDataTable(
+              title: 'All Orders',
+              subtitle: '${rows.length} orders found',
+              headerActionsBuilder: (context, compact) {
+                return _OrderTableControls(
+                  compact: compact,
+                  pendingOnly: _pendingOnly,
+                  searchExpanded: _searchExpanded,
+                  searchController: _searchController,
+                  onSearchChanged: (_) {
+                    setState(() {});
+                  },
+                  onToggleSearch: () {
+                    setState(() {
+                      _searchExpanded = !_searchExpanded;
+
+                      if (!_searchExpanded) {
+                        _searchController.clear();
+                      }
+                    });
+                  },
+                  onToggleFilter: () {
+                    setState(() {
+                      _pendingOnly = !_pendingOnly;
+                    });
+                  },
+                  onAdd: _addOrder,
+                );
+              },
+              columns: _columns,
+              rows: rows,
+              mobilePageSize: 5,
+              mobilePageSizes: const [5, 10, 20, 50],
+              mobileRowKey: (row) => row.cells['id']?.value.toString() ?? '',
+              onRowTap: (rowIdx) {
+                final orderId = rows[rowIdx].cells['id']?.value;
+
+                _showOrderDetails(orderId);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
+  // ---------------------------------------------------------------------------
+  // Actions
+  // ---------------------------------------------------------------------------
+
   void _addOrder() {
     setState(() {
-      final int orderNumber = _rows.length + 1;
+      final number = _rows.length + 1;
+
       _rows.add(
         _order(
-          id: 'ORD-${orderNumber.toString().padLeft(3, '0')}',
+          id: 'ORD-${number.toString().padLeft(3, '0')}',
           customer: 'New customer',
           status: 'Pending',
           amount: 0,
@@ -143,20 +169,123 @@ class _DataGridPageState extends State<DataGridPage> {
     });
   }
 
+  void _showOrderDetails(Object? orderId) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Order details'),
+          content: Text('Order ID: $orderId'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Row factory
+  // ---------------------------------------------------------------------------
+
   TrinaRow<dynamic> _order({
     required String id,
     required String customer,
     required String status,
     required num amount,
-  }) => TrinaRow<dynamic>(
-    cells: <String, TrinaCell>{
-      'id': TrinaCell(value: id),
-      'customer': TrinaCell(value: customer),
-      'status': TrinaCell(value: status),
-      'amount': TrinaCell(value: amount),
-    },
-  );
+  }) {
+    return TrinaRow(
+      cells: {
+        'id': TrinaCell(value: id),
+        'customer': TrinaCell(value: customer),
+        'status': TrinaCell(value: status),
+        'amount': TrinaCell(value: amount),
+      },
+    );
+  }
 }
+
+// =============================================================================
+// Page Header
+// =============================================================================
+
+class _PageHeader extends StatelessWidget {
+  const _PageHeader({
+    required this.title,
+    required this.subtitle,
+    required this.totalCount,
+    required this.filteredCount,
+  });
+
+  final String title;
+  final String subtitle;
+  final int totalCount;
+  final int filteredCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 600;
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style:
+                        (compact
+                                ? theme.textTheme.titleLarge
+                                : theme.textTheme.headlineSmall)
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '$filteredCount / $totalCount',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+// =============================================================================
+// Table Controls
+// =============================================================================
 
 class _OrderTableControls extends StatelessWidget {
   const _OrderTableControls({
@@ -173,7 +302,9 @@ class _OrderTableControls extends StatelessWidget {
   final bool compact;
   final bool pendingOnly;
   final bool searchExpanded;
+
   final TextEditingController searchController;
+
   final ValueChanged<String> onSearchChanged;
   final VoidCallback onToggleSearch;
   final VoidCallback onToggleFilter;
@@ -181,73 +312,84 @@ class _OrderTableControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashcn.ThemeColors colors = dashcn.Theme.of(context).colors;
-    final Widget search = SizedBox(
-      width: compact ? 150 : 220,
-      child: Input(
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    final searchField = SizedBox(
+      width: compact ? 170 : 220,
+      height: 40,
+      child: TextField(
         controller: searchController,
         onChanged: onSearchChanged,
-        placeholder: const Text('Search orders'),
-        borderRadius: BorderRadius.circular(9),
-        filled: true,
-        features: const [
-          InputLeadingFeature(Icon(BootstrapIcons.search, size: 16)),
-        ],
+        textInputAction: TextInputAction.search,
+        style: theme.textTheme.bodySmall,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: 'Search orders',
+          prefixIcon: const Icon(Icons.search_rounded, size: 18),
+          prefixIconConstraints: const BoxConstraints(minWidth: 36),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: colors.card,
-        border: Border.all(color: colors.border),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (compact)
-            if (searchExpanded)
-              search
-            else
-              Button(
-                size: ButtonSize.icon,
-                variant: ButtonVariant.ghost,
-                onPressed: onToggleSearch,
-                child: const Icon(BootstrapIcons.search, size: 18),
-              )
-          else
-            search,
-          if (compact && searchExpanded)
-            Button(
-              size: ButtonSize.icon,
-              variant: ButtonVariant.ghost,
-              onPressed: onToggleSearch,
-              child: const Icon(BootstrapIcons.x, size: 18),
-            ),
-          Button(
-            variant: pendingOnly
-                ? ButtonVariant.secondary
-                : ButtonVariant.ghost,
-            size: compact ? ButtonSize.icon : ButtonSize.sm,
-            onPressed: onToggleFilter,
-            leading: compact
-                ? null
-                : const Icon(BootstrapIcons.filter, size: 16),
-            child: compact
-                ? const Icon(BootstrapIcons.filter, size: 18)
-                : Text(pendingOnly ? 'Pending' : 'Filter'),
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.end,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        if (!compact || searchExpanded)
+          searchField
+        else
+          IconButton(
+            tooltip: 'Search',
+            visualDensity: VisualDensity.compact,
+            onPressed: onToggleSearch,
+            icon: const Icon(Icons.search_rounded),
           ),
-          const SizedBox(width: 4),
-          Button(
-            size: compact ? ButtonSize.icon : ButtonSize.sm,
+
+        if (compact && searchExpanded)
+          IconButton(
+            tooltip: 'Close search',
+            visualDensity: VisualDensity.compact,
+            onPressed: onToggleSearch,
+            icon: const Icon(Icons.close_rounded),
+          ),
+
+        FilterChip(
+          selected: pendingOnly,
+          showCheckmark: false,
+          visualDensity: VisualDensity.compact,
+          avatar: Icon(
+            Icons.filter_alt_outlined,
+            size: 16,
+            color: pendingOnly
+                ? scheme.onSecondaryContainer
+                : scheme.onSurfaceVariant,
+          ),
+          label: const Text('Pending'),
+          onSelected: (_) => onToggleFilter(),
+        ),
+
+        if (compact)
+          IconButton.filled(
+            tooltip: 'Add order',
+            visualDensity: VisualDensity.compact,
             onPressed: onAdd,
-            leading: compact ? null : const Icon(BootstrapIcons.plus, size: 16),
-            child: compact
-                ? const Icon(BootstrapIcons.plus, size: 18)
-                : const Text('Add order'),
+            icon: const Icon(Icons.add_rounded),
+          )
+        else
+          FilledButton.icon(
+            onPressed: onAdd,
+            icon: const Icon(Icons.add_rounded, size: 18),
+            label: const Text('Add order'),
           ),
-        ],
-      ),
+      ],
     );
   }
 }

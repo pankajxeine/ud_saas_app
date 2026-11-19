@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart' hide IconButton, Theme;
+import 'package:flutter/material.dart';
 import 'package:trina_grid/trina_grid.dart';
 import 'package:ud_sass_app/core/widgets/components/tooltip_button.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/bootstrap_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart';
 
 import '../../layouts/responsive.dart';
 
@@ -31,7 +28,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colors;
+    final cs = Theme.of(context).colorScheme;
     // Ensure state manager is properly initialized and has data
     if (widget.stateManager.refRows.isEmpty) {
       return const SizedBox.shrink();
@@ -53,7 +50,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         //color: cs.cardForeground,
-        border: Border(top: BorderSide(color: cs.border)),
+        border: Border(top: BorderSide(color: cs.outlineVariant, width: 1)),
       ),
       child: Row(
         children: [
@@ -85,21 +82,18 @@ class _PaginationFooterState extends State<PaginationFooter> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TooltipButton(
-                  size: ButtonSize.icon,
+                IconButton(
+                  tooltip: 'First Page',
                   onPressed: currentPage > 1 ? () => _goToPage(1) : null,
-                  label: 'First Page',
-                  child: const Icon(BootstrapIcons.chevronBarLeft),
+                  icon: const Icon(Icons.first_page),
                 ),
                 const SizedBox(width: 8),
-                TooltipButton(
-                  variant: ButtonVariant.outline,
-                  size: ButtonSize.icon,
+                IconButton(
+                  tooltip: 'Previous Page',
                   onPressed: currentPage > 1
                       ? () => _goToPage(currentPage - 1)
                       : null,
-                  label: 'Previous Page',
-                  child: const Icon(BootstrapIcons.chevronLeft),
+                  icon: const Icon(Icons.chevron_left),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -150,22 +144,20 @@ class _PaginationFooterState extends State<PaginationFooter> {
                     ],
                   ),
                 ),
-                TooltipButton(
-                  size: ButtonSize.icon,
+                IconButton(
+                  tooltip: 'Next Page',
                   onPressed: currentPage < totalPage
                       ? () => _goToPage(currentPage + 1)
                       : null,
-                  label: 'Next Page',
-                  child: const Icon(BootstrapIcons.chevronRight),
+                  icon: const Icon(Icons.chevron_right),
                 ),
                 const SizedBox(width: 8),
-                TooltipButton(
-                  size: ButtonSize.icon,
+                IconButton(
+                  tooltip: 'Last Page',
                   onPressed: currentPage < totalPage
                       ? () => _goToPage(totalPage)
                       : null,
-                  label: 'Last Page',
-                  child: const Icon(BootstrapIcons.chevronBarRight),
+                  icon: const Icon(Icons.last_page),
                 ),
               ],
             ),
@@ -176,14 +168,14 @@ class _PaginationFooterState extends State<PaginationFooter> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: cs.primaryForeground,
+                color: cs.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: cs.border),
+                border: Border.all(color: cs.outlineVariant, width: 1),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(BootstrapIcons.infoCircle, size: 16, color: cs.primary),
+                  Icon(Icons.info_outline, size: 16, color: cs.primary),
                   const SizedBox(width: 8),
                   Text(
                     '$totalRows total records',

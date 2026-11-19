@@ -4,16 +4,18 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:ud_sass_app/core/config/app_logger.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
 import 'package:ud_sass_app/core/config/local_storage.dart';
-import 'package:ud_sass_app/core/theme/theme_cubit.dart';
-
+import 'package:ud_sass_app/core/theme/bloc/theme_cubit.dart';
 import 'package:ud_sass_app/di/injection.dart';
 
-import 'web_bridge.dart';
+import 'features/auth/bloc/auth_login_bloc.dart';
+
 import 'app.dart';
 import 'core/theme/theme_utils.dart';
+import 'web_bridge.dart';
 
 const bool enableWebSemantics = bool.fromEnvironment(
   'ENABLE_WEB_SEMANTICS',
@@ -21,31 +23,44 @@ const bool enableWebSemantics = bool.fromEnvironment(
 );
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   AppLogger.configure(isProduction: false);
-  final log = AppLogger.getLogger("main_local.dart");
+  final log = AppLogger.getLogger('main_local.dart');
 
   ProfileConstants.setEnvironment(Environment.dev);
 
-  log.info("Starting App with env: {}", [Environment.dev.name]);
-  WidgetsFlutterBinding.ensureInitialized();
+  log.info('Starting App with env: {}', [Environment.dev.name]);
+
   if (kIsWeb && enableWebSemantics) {
     SemanticsBinding.instance.ensureSemantics();
   }
+
+  // Initialize dependency injection.
   await configureDependencies();
-  const defaultLanguage = "en";
+
+  // Initialize local storage.
   AppLocalStorage().setStorage(StorageType.sharedPreferences);
+
+  const defaultLanguage = 'en';
   await AppLocalStorage().save(StorageKeys.language.name, defaultLanguage);
 
+  // Load persisted theme settings.
   final SharedPreferences prefs = sl<SharedPreferences>();
   final settings = await loadSettings(prefs);
 
   runApp(
-    BlocProvider<ThemeCubit>(
-      create: (_) => ThemeCubit(initialSettings: settings, preferences: prefs),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>(
+          create: (_) =>
+              ThemeCubit(initialSettings: settings, preferences: prefs),
+        ),
+        BlocProvider<AuthLoginBloc>(create: (_) => sl<AuthLoginBloc>()),
+      ],
       child: const _DeferredFirstFrameApp(child: AppRoot()),
     ),
   );
-  _notifyWebAppReady();
 }
 
 class _DeferredFirstFrameApp extends StatefulWidget {
@@ -63,8 +78,10 @@ class _DeferredFirstFrameAppState extends State<_DeferredFirstFrameApp> {
   @override
   void initState() {
     super.initState();
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+
       setState(() {
         _ready = true;
       });
@@ -77,13 +94,4 @@ class _DeferredFirstFrameAppState extends State<_DeferredFirstFrameApp> {
   }
 }
 
-void _notifyWebAppReady() {
-  if (!kIsWeb) return;
-  SchedulerBinding.instance.addPostFrameCallback((_) {
-    dispatchWebAppReady();
-  });
-}
-
-String getReleaseTagName() {
-  return 'Release';
-}
+String getReleaseTagName() => 'Release';

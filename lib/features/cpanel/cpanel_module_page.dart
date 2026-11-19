@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Theme;
 import 'package:ud_sass_app/core/navigation/app_navigation.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
 import '../../core/api/rest_api.dart';
 import '../../core/config/environment.dart';
 import '../../core/widgets/common/common_widgets.dart';
@@ -114,8 +113,7 @@ class _CpanelModulePageState extends State<CpanelModulePage> {
             description: feature.description,
             icon: feature.icon,
             accent: category.accent,
-            trailing: Button(
-              variant: ButtonVariant.outline,
+            trailing: OutlinedButton(
               onPressed: () => context.go(category.path),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,

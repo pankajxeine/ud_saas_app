@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart' show Brightness;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
+import 'package:ud_sass_app/core/theme/app_theme.dart';
 import 'package:ud_sass_app/core/theme/theme_app.dart';
-import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;
+import '../core/theme/app_theme_palette.dart';
 
-/// App appearance and startup route, resolved from persisted preferences.
-///
-/// The theme document is the source of truth for both Dashcn themes, matching
-/// the docs app's theme model.
+/// Persisted application appearance and startup settings.
 class LayoutSettings {
   const LayoutSettings({
     required this.themeDocument,
@@ -14,25 +13,55 @@ class LayoutSettings {
     required this.initialPath,
     required this.scaling,
     required this.density,
+    this.seedColor = AppThemePalette.defaultColor,
   });
 
   final ThemeApp themeDocument;
-  final dashcn.ThemeMode themeMode;
+  final ThemeMode themeMode;
   final String initialPath;
   final double scaling;
-  final dashcn.Density? density;
+  final AppDensity? density;
+
+  /// Selected accent/seed color for generating color schemes.
+  final Color seedColor;
 
   String get presetId => themeDocument.id;
 
-  dashcn.ThemeData get lightTheme => _resolveTheme(Brightness.light);
+  ThemeData get lightTheme => AppTheme.materialFor(
+    brightness: Brightness.light,
+    seedColor: seedColor,
+    colorTokens: themeDocument.light,
+    radius: themeDocument.radiusPx.clamp(0.0, 40.0).toDouble(),
+    fontFamily: themeDocument.bodyFont,
+    surfaceOpacity: themeDocument.surfaceOpacity,
+    surfaceBlur: themeDocument.surfaceBlur,
+    shadowColor: Color(themeDocument.lightShadow.color),
+    shadowOpacity: themeDocument.lightShadow.opacity,
+    shadowBlur: themeDocument.lightShadow.blur,
+    density: density,
+  );
 
-  dashcn.ThemeData get darkTheme => _resolveTheme(Brightness.dark);
+  ThemeData get darkTheme => AppTheme.materialFor(
+    brightness: Brightness.dark,
+    seedColor: seedColor,
+    colorTokens: themeDocument.dark,
+    radius: themeDocument.radiusPx.clamp(0.0, 40.0).toDouble(),
+    fontFamily: themeDocument.bodyFont,
+    surfaceOpacity: themeDocument.surfaceOpacity,
+    surfaceBlur: themeDocument.surfaceBlur,
+    shadowColor: Color(themeDocument.darkShadow.color),
+    shadowOpacity: themeDocument.darkShadow.opacity,
+    shadowBlur: themeDocument.darkShadow.blur,
+    density: density,
+  );
 
-  dashcn.ThemeData _resolveTheme(Brightness brightness) {
-    final dashcn.ThemeData resolved = themeDocument.theme(brightness);
-    return resolved.copyWith(
-      scaling: () => scaling,
-      density: density == null ? null : () => density!,
-    );
-  }
+  CupertinoThemeData cupertinoTheme(Brightness brightness) =>
+      AppTheme.cupertino(
+        brightness,
+        seedColor: seedColor,
+        colorTokens: brightness == Brightness.dark
+            ? themeDocument.dark
+            : themeDocument.light,
+        fontFamily: themeDocument.bodyFont,
+      );
 }

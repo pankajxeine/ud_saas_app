@@ -1,33 +1,17 @@
-import 'package:flutter/widgets.dart';
-import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
+import 'package:flutter/material.dart';
 
 class StatusChip extends StatelessWidget {
   const StatusChip({super.key, required this.label, required this.isPublished});
-
   final String label;
   final bool isPublished;
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colors;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: isPublished
-            ? colorScheme.primaryForeground
-            : colorScheme.secondaryForeground,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).typography.textSmall.copyWith(
-          fontWeight: FontWeight.w600,
-          color: isPublished
-              ? colorScheme.primaryForeground
-              : colorScheme.secondaryForeground,
-        ),
-      ),
+    final scheme = Theme.of(context).colorScheme;
+    return Chip(
+      label: Text(label),
+      avatar: Icon(isPublished ? Icons.check_circle : Icons.edit, size: 16),
+      backgroundColor: isPublished ? scheme.primaryContainer : scheme.secondaryContainer,
+      labelStyle: TextStyle(color: isPublished ? scheme.onPrimaryContainer : scheme.onSecondaryContainer, fontWeight: FontWeight.w600),
     );
   }
 }

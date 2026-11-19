@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
-
-import '../../../../ui/dashcn/components/button.dart';
+import 'package:flutter/material.dart';
 import 'entity_meta.dart';
 
 class EntityFormActions extends StatelessWidget {
@@ -38,8 +36,7 @@ class EntityFormActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (showResetButton)
-          Button(
-            variant: ButtonVariant.outline,
+          ElevatedButton(
             onPressed: isSubmitting ? null : onReset,
             child: Text(resetLabel),
           ),
@@ -47,8 +44,7 @@ class EntityFormActions extends StatelessWidget {
         if (showResetButton && showSubmitButton) const SizedBox(width: 12),
 
         if (showSubmitButton)
-          Button(
-            variant: ButtonVariant.primary,
+          ElevatedButton(
             onPressed: isSubmitting ? null : onSubmit,
             child: Text(isSubmitting ? 'Saving...' : submitLabel),
           ),

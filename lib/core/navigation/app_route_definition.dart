@@ -1,187 +1,126 @@
-//
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
-typedef AppRoutePageBuilder = Widget Function(AppRouteParameters parameters);
+typedef AppRouteBuilder =
+    Widget Function(BuildContext context, GoRouterState state);
 
-/// Parameters passed to a route builder.
-class AppRouteParameters {
-  const AppRouteParameters({
-    required this.uri,
-    required this.pathParameters,
-    required this.queryParameters,
-    this.arguments,
-  });
+typedef AppRouteRedirect =
+    FutureOr<String?> Function(BuildContext context, GoRouterState state);
 
-  /// Complete requested URI.
-  final Uri uri;
+typedef DynamicPageBuilder =
+    Widget Function(
+      BuildContext context,
+      GoRouterState state,
+      Map<String, dynamic> pageConfig,
+    );
 
-  /// Dynamic parameters extracted from the route path.
-  ///
-  /// Example:
-  /// Route: /products/:productId
-  /// URL:   /products/123
-  /// Result: {'productId': '123'}
-  final Map<String, String> pathParameters;
-
-  /// Query parameters from the URL.
-  ///
-  /// Example:
-  /// /products?page=2&limit=10
-  /// Result: {'page': '2', 'limit': '10'}
-  final Map<String, String> queryParameters;
-
-  /// Optional navigation arguments.
-  final Object? arguments;
-
-  /// Access dynamic path parameters.
-  String? operator [](String key) => pathParameters[key];
-
-  String? path(String key) => pathParameters[key];
-
-  /// Access query parameters.
-  String? query(String key) => queryParameters[key];
-
-  /// Safely retrieve navigation arguments by type.
-  T? argumentAs<T>() {
-    final value = arguments;
-    return value is T ? value : null;
-  }
-
-  /// Retrieve an integer path parameter.
-  int? intParameter(String key) {
-    return int.tryParse(pathParameters[key] ?? '');
-  }
-
-  /// Retrieve an integer query parameter.
-  int? intQuery(String key) {
-    return int.tryParse(queryParameters[key] ?? '');
-  }
-}
-
-/// Defines a static or dynamic application route.
-///
-/// Examples:
-///
-/// Static:
-/// /dashboard
-///
-/// Dynamic:
-/// /products/:productId
-///
-/// Multiple parameters:
-/// /metadata/modules/:moduleId/versions/:versionId
 class AppRouteDefinition {
   const AppRouteDefinition({
     required this.name,
     required this.path,
     required this.builder,
+    this.label,
+    this.localizationKey,
+    this.parentName,
+    this.icon = 0xe836,
+    this.selectedIcon = 0xe836,
+    this.section,
+    this.showInSidebar = false,
+    this.showInRail = false,
+    this.showInBottomBar = false,
+    this.showInBreadcrumb = true,
+    this.bottomBarOrder,
+    this.redirect,
+    this.pageType,
+    this.pageConfig = const {},
+    this.permission,
+    this.requiresAuth = true,
+    this.isDynamic = false,
+    this.enabled = true,
   });
 
   final String name;
-
   final String path;
 
-  final AppRoutePageBuilder builder;
+  final String? label;
+  final String? localizationKey;
 
-  /// Normalized route path segments.
-  ///
-  /// Example:
-  /// /products/:productId
-  /// becomes:
-  /// ['products', ':productId']
-  List<String> get segments {
-    return path.split('/').where((segment) => segment.isNotEmpty).toList();
-  }
+  /// Parent route name used for navigation hierarchy and breadcrumbs.
+  final String? parentName;
 
-  /// Higher values indicate more specific routes.
-  ///
-  /// Static segments receive more weight than dynamic segments.
-  ///
-  /// Example:
-  /// /products/new       -> more specific
-  /// /products/:id       -> less specific
-  int get specificity {
-    return segments.fold<int>(
-      0,
-      (total, segment) => total + (segment.startsWith(':') ? 1 : 10),
+  final int icon;
+  final int selectedIcon;
+  final String? section;
+
+  final bool showInSidebar;
+  final bool showInRail;
+  final bool showInBottomBar;
+  final bool showInBreadcrumb;
+  final bool requiresAuth;
+  final int? bottomBarOrder;
+
+  final AppRouteBuilder builder;
+  final AppRouteRedirect? redirect;
+
+  /// Logical page type, for example:
+  /// modules, module, moduleVersion, entityList, entityDetail.
+  final String? pageType;
+
+  /// Additional configuration supplied by the database.
+  final Map<String, dynamic> pageConfig;
+
+  /// Permission required to access this route.
+  final String? permission;
+
+  final bool isDynamic;
+  final bool enabled;
+
+  AppRouteDefinition copyWith({
+    String? name,
+    String? path,
+    String? label,
+    String? localizationKey,
+    String? parentName,
+    int? icon,
+    int? selectedIcon,
+    String? section,
+    bool? showInSidebar,
+    bool? showInRail,
+    bool? showInBottomBar,
+    bool? showInBreadcrumb,
+    int? bottomBarOrder,
+    AppRouteBuilder? builder,
+    AppRouteRedirect? redirect,
+    String? pageType,
+    Map<String, dynamic>? pageConfig,
+    String? permission,
+    bool? isDynamic,
+    bool? enabled,
+    bool? requiresAuth,
+  }) {
+    return AppRouteDefinition(
+      name: name ?? this.name,
+      path: path ?? this.path,
+      label: label ?? this.label,
+      localizationKey: localizationKey ?? this.localizationKey,
+      parentName: parentName ?? this.parentName,
+      icon: icon ?? this.icon,
+      selectedIcon: selectedIcon ?? this.selectedIcon,
+      section: section ?? this.section,
+      showInSidebar: showInSidebar ?? this.showInSidebar,
+      showInRail: showInRail ?? this.showInRail,
+      showInBottomBar: showInBottomBar ?? this.showInBottomBar,
+      showInBreadcrumb: showInBreadcrumb ?? this.showInBreadcrumb,
+      bottomBarOrder: bottomBarOrder ?? this.bottomBarOrder,
+      builder: builder ?? this.builder,
+      redirect: redirect ?? this.redirect,
+      pageType: pageType ?? this.pageType,
+      pageConfig: pageConfig ?? this.pageConfig,
+      permission: permission ?? this.permission,
+      isDynamic: isDynamic ?? this.isDynamic,
+      enabled: enabled ?? this.enabled,
+      requiresAuth: requiresAuth ?? this.requiresAuth,
     );
-  }
-
-  /// Checks whether the supplied URI matches this route.
-  bool matches(Uri uri) {
-    return _match(uri.path) != null;
-  }
-
-  /// Builds the route widget if the URI matches.
-  ///
-  /// Returns null when the route does not match.
-  Widget? build(Uri uri, {Object? arguments}) {
-    final parameters = _match(uri.path);
-
-    if (parameters == null) {
-      return null;
-    }
-
-    return builder(
-      AppRouteParameters(
-        uri: uri,
-        pathParameters: parameters,
-        queryParameters: uri.queryParameters,
-        arguments: arguments,
-      ),
-    );
-  }
-
-  /// Matches an actual path against the route definition.
-  ///
-  /// Returns extracted parameters when matched.
-  /// Returns null when the path does not match.
-  Map<String, String>? _match(String actualPath) {
-    final routeSegments = segments;
-
-    final actualSegments = actualPath
-        .split('/')
-        .where((segment) => segment.isNotEmpty)
-        .toList();
-
-    // Both paths must have the same number of segments.
-    if (routeSegments.length != actualSegments.length) {
-      return null;
-    }
-
-    final parameters = <String, String>{};
-
-    for (var i = 0; i < routeSegments.length; i++) {
-      final routeSegment = routeSegments[i];
-      final actualSegment = actualSegments[i];
-
-      if (routeSegment.startsWith(':')) {
-        final parameterName = routeSegment.substring(1);
-
-        // Invalid route definition.
-        if (parameterName.isEmpty) {
-          return null;
-        }
-
-        // Empty dynamic parameters are not allowed.
-        if (actualSegment.isEmpty) {
-          return null;
-        }
-
-        parameters[parameterName] = Uri.decodeComponent(actualSegment);
-      } else {
-        // Static segments must match exactly.
-        if (routeSegment != actualSegment) {
-          return null;
-        }
-      }
-    }
-
-    return parameters;
-  }
-
-  @override
-  String toString() {
-    return 'AppRouteDefinition(name: $name, path: $path)';
   }
 }

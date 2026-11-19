@@ -8,8 +8,15 @@ class MetadataField {
   final String? format;
   final String? title;
   final String? description;
+  final String? group;
 
   final Map<String, dynamic> ui;
+
+  /// Field-level mode configuration in the current metadata contract.
+  final Map<String, dynamic> visibility;
+  final Map<String, dynamic> security;
+  final List<dynamic> validation;
+  final List<Map<String, dynamic>> rules;
 
   final bool showInTable;
   final bool showInDetail;
@@ -37,14 +44,19 @@ class MetadataField {
     this.format,
     this.title,
     this.description,
+    this.group,
     this.ui = const {},
+    this.visibility = const {},
+    this.security = const {},
+    this.validation = const [],
+    this.rules = const [],
     this.showInTable = false,
     this.showInDetail = true,
     this.showInCreate = true,
     this.showInUpdate = true,
     this.requiredOnCreate = false,
     this.requiredOnUpdate = false,
-    this.nullable = true,
+    this.nullable = false,
     this.readOnly = false,
     this.writeOnly = false,
     this.deprecated = false,
@@ -64,7 +76,12 @@ class MetadataField {
       'format',
       'title',
       'description',
+      'group',
       'ui',
+      'visibility',
+      'security',
+      'validation',
+      'rules',
       'showInTable',
       'showInDetail',
       'showInCreate',
@@ -92,18 +109,56 @@ class MetadataField {
       title: json['title']?.toString(),
       description: json['description']?.toString(),
       ui: _map(json['ui']),
-      showInTable: json['showInTable'] == true,
-      showInDetail: json['showInDetail'] != false,
-      showInCreate: json['showInCreate'] != false,
-      showInUpdate: json['showInUpdate'] != false,
-      requiredOnCreate: json['requiredOnCreate'] == true,
-      requiredOnUpdate: json['requiredOnUpdate'] == true,
-      nullable: json['nullable'] != false,
+      showInTable: _visibilityFlag(
+        json['visibility'],
+        'table',
+        json['showInTable'] == true,
+      ),
+      showInDetail: _visibilityFlag(
+        json['visibility'],
+        'detail',
+        json['showInDetail'] != false,
+      ),
+      showInCreate: _visibilityFlag(
+        json['visibility'],
+        'create',
+        json['showInCreate'] != false,
+      ),
+      showInUpdate: _visibilityFlag(
+        json['visibility'],
+        'edit',
+        json['showInUpdate'] != false,
+      ),
+      requiredOnCreate: _visibilityFlag(
+        json['visibility'],
+        'create',
+        json['requiredOnCreate'] == true,
+        key: 'required',
+      ),
+      requiredOnUpdate: _visibilityFlag(
+        json['visibility'],
+        'edit',
+        json['requiredOnUpdate'] == true,
+        key: 'required',
+      ),
+      nullable: json['nullable'] == true,
       readOnly: json['readOnly'] == true,
       writeOnly: json['writeOnly'] == true,
       deprecated: json['deprecated'] == true,
       permissions: _map(json['permissions']),
       validations: _map(json['validations']),
+      group: json['group']?.toString(),
+      visibility: _map(json['visibility']),
+      security: _map(json['security']),
+      validation: json['validation'] is List
+          ? List<dynamic>.from(json['validation'] as List)
+          : const [],
+      rules: json['rules'] is List
+          ? (json['rules'] as List)
+                .whereType<Map>()
+                .map((item) => Map<String, dynamic>.from(item))
+                .toList()
+          : const [],
       defaultValue: json['default'],
       reference: reference is Map
           ? MetadataReference.fromJson(Map<String, dynamic>.from(reference))
@@ -124,18 +179,38 @@ class MetadataField {
     if (title != null) 'title': title,
     if (description != null) 'description': description,
     if (ui.isNotEmpty) 'ui': ui,
-    'showInTable': showInTable,
-    'showInDetail': showInDetail,
-    'showInCreate': showInCreate,
-    'showInUpdate': showInUpdate,
-    'requiredOnCreate': requiredOnCreate,
-    'requiredOnUpdate': requiredOnUpdate,
-    'nullable': nullable,
-    'readOnly': readOnly,
-    'writeOnly': writeOnly,
-    'deprecated': deprecated,
+    if (group != null) 'group': group,
+    if (security.isNotEmpty) 'security': security,
+    'validation': validation,
+    'rules': rules,
+    if (visibility.isNotEmpty ||
+        showInTable ||
+        showInDetail ||
+        showInCreate ||
+        showInUpdate ||
+        requiredOnCreate ||
+        requiredOnUpdate)
+      'visibility': {
+        ...visibility,
+        'show': [
+          if (showInTable) 'table',
+          if (showInDetail) 'detail',
+          if (showInCreate) 'create',
+          if (showInUpdate) 'edit',
+        ],
+        'required': [
+          if (requiredOnCreate) 'create',
+          if (requiredOnUpdate) 'edit',
+        ],
+        'readOnly': visibility['readOnly'] is List
+            ? List<dynamic>.from(visibility['readOnly'] as List)
+            : const [],
+      },
+    if (nullable) 'nullable': true,
+    if (readOnly) 'readOnly': true,
+    if (writeOnly) 'writeOnly': true,
+    if (deprecated) 'deprecated': true,
     'permissions': permissions,
-    'validations': validations,
     if (defaultValue != null) 'default': defaultValue,
     if (reference != null) 'reference': reference!.toJson(),
   };
@@ -162,6 +237,11 @@ class MetadataField {
     Map<String, dynamic>? validations,
     dynamic defaultValue,
     MetadataReference? reference,
+    String? group,
+    Map<String, dynamic>? visibility,
+    Map<String, dynamic>? security,
+    List<dynamic>? validation,
+    List<Map<String, dynamic>>? rules,
     Map<String, dynamic>? extra,
   }) {
     return MetadataField(
@@ -172,7 +252,12 @@ class MetadataField {
       format: format ?? this.format,
       title: title ?? this.title,
       description: description ?? this.description,
+      group: group ?? this.group,
       ui: ui ?? this.ui,
+      visibility: visibility ?? this.visibility,
+      security: security ?? this.security,
+      validation: validation ?? this.validation,
+      rules: rules ?? this.rules,
       nullable: nullable ?? this.nullable,
       readOnly: readOnly ?? this.readOnly,
       writeOnly: writeOnly ?? this.writeOnly,
@@ -187,5 +272,15 @@ class MetadataField {
 
   static Map<String, dynamic> _map(dynamic value) {
     return value is Map ? Map<String, dynamic>.from(value) : {};
+  }
+
+  static bool _visibilityFlag(
+    dynamic raw,
+    String value,
+    bool fallback, {
+    String key = 'show',
+  }) {
+    if (raw is! Map || raw[key] is! List) return fallback;
+    return (raw[key] as List).map((item) => item.toString()).contains(value);
   }
 }

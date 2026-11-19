@@ -1,291 +1,50 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-// import 'package:ud_sass_app/ui/dashcn/components/select.dart';
-// import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
-
-import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
-import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
+import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 
 import '../bloc/metadata_bloc.dart';
-// import '../bloc/metadata_event.dart';
-import '../bloc/metadata_state.dart';
+import '../bloc/metadata_event.dart';
 
+/// Edits entity/title/table/primaryKey on the current schema version.
 class GeneralEditor extends StatelessWidget {
   const GeneralEditor({super.key});
 
-  static const Map<String, dynamic> _schema = {
-    'entityName': 'Metadata Module',
+  static final EntityMeta _metadata = entityMetaFromJson(const {
+    'entityName': 'Module schema',
     'fields': [
-      {
-        'name': 'moduleId',
-        'label': 'Module ID',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'crm_contact',
-        'editable': false,
-        'validationRules': {'required': true, 'minLength': 3, 'maxLength': 100},
-        "colSpan": {"mobile": 12, "tablet": 6, "desktop": 3},
-      },
-      {
-        'name': 'moduleCode',
-        'label': 'Module Code',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'CRM_CONTACT',
-        'validationRules': {
-          'required': true,
-          'minLength': 2,
-          'maxLength': 100,
-          'pattern': r'^[A-Za-z][A-Za-z0-9_]*$',
-        },
-        "colSpan": {"mobile": 12, "tablet": 6, "desktop": 3},
-        "rowSpan": {"mobile": 1, "tablet": 2, "desktop": 2, "largeDesktop": 3},
-      },
-      {
-        'name': 'moduleName',
-        'label': 'Module Name',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'CRM Contact',
-        'validationRules': {'required': true, 'minLength': 2, 'maxLength': 150},
-        "colSpan": {"mobile": 12, "tablet": 6, "desktop": 3},
-        "rowSpan": {"mobile": 1, "tablet": 2, "desktop": 2, "largeDesktop": 3},
-      },
-      {
-        'name': 'apiBasePath',
-        'label': 'API Base Path',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': '/api/crm/contacts',
-        'validationRules': {
-          'required': true,
-          'maxLength': 200,
-          'pattern': r'^/.*$',
-        },
-        'colSpan': 6,
-        'features': {'showClearButton': true, 'showCopyButton': true},
-      },
-      {
-        'name': 'schemaName',
-        'label': 'Database Schema',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'crm',
-        'initialValue': 'public',
-        'validationRules': {
-          'required': true,
-          'maxLength': 63,
-          'pattern': r'^[a-z][a-z0-9_]*$',
-        },
-        'colSpan': 6,
-      },
-      {
-        'name': 'tableName',
-        'label': 'Database Table',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'crm_contact',
-        'validationRules': {
-          'required': true,
-          'maxLength': 63,
-          'pattern': r'^[a-z][a-z0-9_]*$',
-        },
-        'colSpan': 6,
-      },
-      {
-        'name': 'icon',
-        'label': 'Icon',
-        'type': 'text',
-        'widget': 'text',
-        'placeholder': 'people',
-        'validationRules': {'maxLength': 100},
-        'colSpan': 6,
-        'features': {'showClearButton': true},
-      },
-      {
-        'name': 'isActive',
-        'label': 'Active',
-        'widget': 'switch',
-        'type': 'boolean',
-        'initialValue': true,
-        'colSpan': 6,
-      },
-      {
-        'name': 'description',
-        'label': 'Description',
-        'type': 'textarea',
-        'widget': 'text',
-        'placeholder': 'Describe this module',
-        'maxLength': 1000,
-        'validationRules': {'maxLength': 1000},
-        'colSpan': 12,
-        'rowSpan': 2,
-      },
+      {'name': 'entity', 'label': 'Entity', 'type': 'text', 'validationRules': {'required': true}},
+      {'name': 'title', 'label': 'Title', 'type': 'text', 'validationRules': {'required': true}},
+      {'name': 'table', 'label': 'Database table', 'type': 'text', 'validationRules': {'required': true}},
+      {'name': 'primaryKey', 'label': 'Primary key', 'type': 'text', 'initialValue': 'id'},
     ],
-  };
-
-  static final EntityMeta _metadata = entityMetaFromJson(_schema);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MetadataBloc, MetadataState>(
-      builder: (context, state) {
-        final metaModule = state.metadata?.metaModule;
-
-        // final fields = (metadata?.metaModule as List<dynamic>? ?? [])
-        //     .whereType<Map<String, dynamic>>()
-        //     .toList();
-
-        // final fieldNames = fields
-        //     .map((field) => field['name']?.toString() ?? '')
-        //     .where((name) => name.isNotEmpty)
-        //     .toList();
-
-        print("Meta module details :-  $metaModule");
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppReactiveForm(
-                meta: _metadata,
-                mode: metaModule != null ? EntityMode.edit : EntityMode.create,
-                initialData: moduleEditorInitialData(metaModule),
-                onSubmit: (data) async => {print("submit application $data")},
-              ),
-            ],
-          ),
-        );
-      },
+    final schema = context.select(
+      (MetadataBloc bloc) => bloc.state.metadata?.schemaJson,
     );
-  }
+    if (schema == null) return const Center(child: Text('No schema loaded.'));
 
-  Map<String, dynamic> moduleEditorInitialData(Map<String, dynamic>? module) {
-    return {
-      'moduleId': module?['moduleId'] ?? '',
-      'moduleCode': module?['moduleCode'] ?? '',
-      'moduleName': module?['moduleName'] ?? '',
-      'apiBasePath': module?['apiBasePath'] ?? '',
-      'icon': module?['icon'],
-      'description': module?['description'] ?? '',
-      'schemaName': module?['schemaName'] ?? '',
-      'tableName': module?['tableName'] ?? '',
-      'isActive': module?['isActive'] ?? true,
-    };
-  }
-
-  // Widget _buildTextEditor({
-  //   required BuildContext context,
-  //   required String label,
-  //   required String description,
-  //   required String property,
-  //   required String value,
-  // }) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(bottom: 18),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Text(
-  //           label,
-  //           style: Theme.of(context).typography.medium.copyWith(
-  //             fontWeight: FontWeight.bold,
-  //             color: Theme.of(context).colors.accentForeground,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 4),
-  //         Text(
-  //           description,
-  //           style: Theme.of(context).typography.small.copyWith(
-  //             fontSize: 12,
-  //             fontWeight: FontWeight.bold,
-  //             color: Theme.of(context).colors.mutedForeground,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 8),
-  //         Input(
-  //           initialValue: value,
-  //           onChanged: (newValue) {
-  //             context.read<MetadataBloc>().add(
-  //               UpdateRootProperty(property, newValue),
-  //             );
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildPrimaryKeyEditor({
-  //   required BuildContext context,
-  //   required List<String> fieldNames,
-  //   required String? primaryKey,
-  // }) {
-  //   final selectedValue = fieldNames.contains(primaryKey) ? primaryKey : null;
-
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const Text(
-  //         'Primary Key',
-  //         style: TextStyle(fontWeight: FontWeight.w600),
-  //       ),
-  //       const SizedBox(height: 4),
-  //       Text(
-  //         'Select the field used to identify each record.',
-  //         style: Theme.of(context).typography.medium.copyWith(
-  //           fontSize: 12,
-  //           fontWeight: FontWeight.bold,
-  //           color: Theme.of(context).colors.accentForeground,
-  //         ),
-  //       ),
-  //       const SizedBox(height: 8),
-
-  //       if (fieldNames.isEmpty)
-  //         Text(
-  //           'Add at least one field before selecting a primary key.',
-  //           style: Theme.of(context).typography.medium.copyWith(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //             color: const Color(0xFFB42318),
-  //           ),
-  //         )
-  //       else
-  //         Select<String>(
-  //           value: selectedValue,
-  //           onChanged: (value) {
-  //             if (value != null) {
-  //               context.read<MetadataBloc>().add(
-  //                 UpdateRootProperty('primaryKey', value),
-  //               );
-  //             }
-  //           },
-  //           itemBuilder: (context, item) {
-  //             return Text(item);
-  //           },
-  //           items: fieldNames
-  //               .map((name) => SelectItem(value: name, child: Text(name)))
-  //               .toList(),
-  //         ),
-  //     ],
-  //   );
-  // }
-}
-
-extension ModuleEditorData on Map<String, dynamic> {
-  Map<String, dynamic> toFormData() {
-    return {
-      'moduleId': this['moduleId'],
-      'moduleCode': this['moduleCode'],
-      'moduleName': this['moduleName'],
-      'apiBasePath': this['apiBasePath'],
-      'icon': this['icon'],
-      'description': this['description'],
-      'schemaName': this['schemaName'],
-      'tableName': this['tableName'],
-      'isActive': this['isActive'],
-    };
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: AppReactiveForm(
+        key: ValueKey(
+          'schema-${schema.entity}-${schema.title}-${schema.table}-${schema.primaryKey}',
+        ),
+        meta: _metadata,
+        initialData: {
+          'entity': schema.entity ?? '',
+          'title': schema.title ?? '',
+          'table': schema.table ?? '',
+          'primaryKey': schema.primaryKey ?? 'id',
+        },
+        onSubmit: (data) async {
+          context.read<MetadataBloc>().add(UpdateRootProperties(data));
+        },
+      ),
+    );
   }
 }

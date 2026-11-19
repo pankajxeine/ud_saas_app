@@ -1,17 +1,21 @@
 import 'dart:convert';
-import 'package:flutter/widgets.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
-import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
-import 'package:ud_sass_app/ui/dashcn/components/select.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/divider/divider.dart';
-import 'helper/field_json_convertor.dart';
+import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
+import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
+
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
 import '../models/metadata_field.dart';
+import 'helper/field_json_convertor.dart';
 
+/// Edits one field using the current field metadata contract.
+///
+/// Nested objects are represented as `group` fields and object arrays use
+/// `itemMeta`, which is rendered by the shared reactive form array renderer.
 class FieldEditor extends StatefulWidget {
   const FieldEditor({
     super.key,
@@ -22,283 +26,278 @@ class FieldEditor extends StatefulWidget {
 
   final List<MetadataField> fields;
   final EntityMode mode;
-
-  /// Name of the initially selected field.
   final String? selectedField;
 
-  static const Map<String, dynamic> _schema = {
-    'entityName': 'Field Configuration',
+  static final EntityMeta metadata = entityMetaFromJson(_fieldSchema);
 
+  static const Map<String, dynamic> _fieldSchema = {
+    'entityName': 'Field Configuration',
     'fields': [
-      // ==========================================================
-      // BASIC INFORMATION
-      // ==========================================================
       {
         'name': 'name',
-        'label': 'Field Name',
-        'widget': 'text',
+        'label': 'Field name',
         'type': 'text',
-        'required': true,
-        'validationRules': {'required': true, 'minLength': 3, 'maxLength': 100},
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 2},
+        'validationRules': {'required': true},
       },
       {
         'name': 'label',
         'label': 'Label',
         'type': 'text',
-        'widget': 'text',
-        'required': true,
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 2},
+        'validationRules': {'required': true},
       },
       {
         'name': 'type',
-        'label': 'Data Type',
+        'label': 'Data type',
+        'type': 'select',
+        'options': [
+          {'label': 'String', 'value': 'string'},
+          {'label': 'UUID', 'value': 'uuid'},
+          {'label': 'Integer', 'value': 'integer'},
+          {'label': 'Number', 'value': 'number'},
+          {'label': 'Boolean', 'value': 'boolean'},
+          {'label': 'Date time', 'value': 'datetime'},
+          {'label': 'Object', 'value': 'object'},
+          {'label': 'Array', 'value': 'array'},
+        ],
+      },
+      {
+        'name': 'format',
+        'label': 'Format',
         'type': 'text',
-        'widget': 'text',
-        'required': true,
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 2},
+        'placeholder': 'string, uuid, date-time...',
       },
       {
         'name': 'widget',
         'label': 'Widget',
-        'type': 'text',
-        'widget': 'text',
-        'required': true,
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 2},
+        'type': 'select',
+        'options': [
+          {'label': 'Text', 'value': 'text'},
+          {'label': 'Textarea', 'value': 'textarea'},
+          {'label': 'Number', 'value': 'number'},
+          {'label': 'Switch', 'value': 'switch'},
+          {'label': 'Select', 'value': 'select'},
+          {'label': 'Reference', 'value': 'reference'},
+          {'label': 'Date', 'value': 'date'},
+          {'label': 'Array', 'value': 'array'},
+          {'label': 'Group', 'value': 'group'},
+        ],
       },
-      {
-        'name': 'default',
-        'label': 'Default Value',
-        'type': 'text',
-        'widget': 'text',
-        'initialValue': false,
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 1},
-      },
-
-      // ==========================================================
-      // UI GROUP
-      // ==========================================================
+      {'name': 'group', 'label': 'UI group', 'type': 'text'},
+      {'name': 'title', 'label': 'Title', 'type': 'text'},
+      {'name': 'description', 'label': 'Description', 'type': 'textarea'},
       {
         'name': 'ui',
-        'label': 'UI Configuration',
+        'label': 'UI configuration',
         'type': 'group',
-        'widget': 'group',
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 2, 'desktopColSpan': 4},
-
         'fields': [
+          {'name': 'label', 'label': 'UI label', 'type': 'text'},
+          {'name': 'placeholder', 'label': 'Placeholder', 'type': 'text'},
+          {'name': 'hint', 'label': 'Hint', 'type': 'text'},
+          {'name': 'tooltip', 'label': 'Tooltip', 'type': 'text'},
+          {'name': 'helperText', 'label': 'Helper text', 'type': 'text'},
+          {'name': 'icon', 'label': 'Icon', 'type': 'text'},
           {
-            'name': 'label',
-            'label': 'UI Label',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
-          },
-          {
-            'name': 'placeholder',
-            'label': 'Placeholder',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
-          },
-          {
-            'name': 'hint',
-            'label': 'Hint',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
-          },
-          {
-            'name': 'helperText',
-            'label': 'Helper Text',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
-          },
-          {
-            'name': 'tooltip',
-            'label': 'Tooltip',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
-          },
-          {
-            'name': 'icon',
-            'label': 'Icon',
-            'type': 'text',
-            'widget': 'text',
-            'layout': {
-              'mobileColSpan': 1,
-              'tabletColSpan': 1,
-              'desktopColSpan': 2,
-            },
+            'name': 'hidden',
+            'label': 'Hidden',
+            'type': 'boolean',
+            'initialValue': false,
           },
         ],
       },
-
-      // ==========================================================
-      // BEHAVIOR
-      // ==========================================================
-      {
-        'name': 'nullable',
-        'label': 'Nullable',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-      {
-        'name': 'readOnly',
-        'label': 'Read Only',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-      {
-        'name': 'writeOnly',
-        'label': 'Write Only',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-      {
-        'name': 'deprecated',
-        'label': 'Deprecated',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-
-      // ==========================================================
-      // PERMISSIONS GROUP
-      // ==========================================================
       {
         'name': 'permissions',
         'label': 'Permissions',
         'type': 'group',
-        'widget': 'group',
-        'layout': {'mobileColSpan': 1, 'tabletColSpan': 2, 'desktopColSpan': 4},
-
         'fields': [
           {
             'name': 'read',
-            'label': 'Allow Read',
+            'label': 'Read',
             'type': 'boolean',
-            'widget': 'switch',
             'initialValue': true,
           },
           {
             'name': 'create',
-            'label': 'Allow Create',
+            'label': 'Create',
             'type': 'boolean',
-            'widget': 'switch',
             'initialValue': true,
           },
           {
             'name': 'update',
-            'label': 'Allow Update',
+            'label': 'Update',
             'type': 'boolean',
-            'widget': 'switch',
             'initialValue': true,
           },
         ],
       },
-
-      // ==========================================================
-      // VISIBILITY
-      // ==========================================================
       {
-        'name': 'showInTable',
-        'label': 'Show In Table',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': true,
-      },
-      {
-        'name': 'showInCreate',
-        'label': 'Show In Create',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': true,
-      },
-      {
-        'name': 'showInDetail',
-        'label': 'Show In Detail',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': true,
-      },
-      {
-        'name': 'showInUpdate',
-        'label': 'Show In Update',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': true,
-      },
-
-      // ==========================================================
-      // REQUIRED
-      // ==========================================================
-      {
-        'name': 'requiredOnCreate',
-        'label': 'Required On Create',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-      {
-        'name': 'requiredOnUpdate',
-        'label': 'Required On Update',
-        'type': 'boolean',
-        'widget': 'switch',
-        'initialValue': false,
-      },
-
-      // ==========================================================
-      // ADVANCED GROUPS
-      // ==========================================================
-      {
-        'name': 'validations',
-        'label': 'Validations',
+        'name': 'security',
+        'label': 'Security',
         'type': 'group',
-        'widget': 'group',
-        'fields': [],
+        'fields': [
+          {
+            'name': 'permissions',
+            'label': 'Security permissions',
+            'type': 'group',
+            'fields': [
+              {'name': 'read', 'label': 'Read permission', 'type': 'text'},
+              {'name': 'create', 'label': 'Create permission', 'type': 'text'},
+              {'name': 'update', 'label': 'Update permission', 'type': 'text'},
+            ],
+          },
+          {
+            'name': 'masking',
+            'label': 'Masking',
+            'type': 'group',
+            'fields': [
+              {
+                'name': 'enabled',
+                'label': 'Enabled',
+                'type': 'boolean',
+                'initialValue': false,
+              },
+              {
+                'name': 'strategy',
+                'label': 'Strategy',
+                'type': 'text',
+                'initialValue': 'none',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        'name': 'visibility',
+        'label': 'Visibility',
+        'type': 'group',
+        'fields': [
+          {
+            'name': 'show',
+            'label': 'Show in',
+            'type': 'multiselect',
+            'options': [
+              {'label': 'Create', 'value': 'create'},
+              {'label': 'Edit', 'value': 'edit'},
+              {'label': 'Table', 'value': 'table'},
+              {'label': 'Detail', 'value': 'detail'},
+            ],
+          },
+          {
+            'name': 'required',
+            'label': 'Required in',
+            'type': 'multiselect',
+            'options': [
+              {'label': 'Create', 'value': 'create'},
+              {'label': 'Edit', 'value': 'edit'},
+            ],
+          },
+          {
+            'name': 'readOnly',
+            'label': 'Read only in',
+            'type': 'multiselect',
+            'options': [
+              {'label': 'Create', 'value': 'create'},
+              {'label': 'Edit', 'value': 'edit'},
+            ],
+          },
+        ],
       },
       {
         'name': 'reference',
         'label': 'Reference',
         'type': 'group',
-        'widget': 'group',
-        'fields': [],
+        'fields': [
+          {'name': 'table', 'label': 'Table', 'type': 'text'},
+          {'name': 'column', 'label': 'Column', 'type': 'text'},
+          {
+            'name': 'lookup',
+            'label': 'Lookup',
+            'type': 'group',
+            'fields': [
+              {'name': 'endpoint', 'label': 'Endpoint', 'type': 'text'},
+              {
+                'name': 'strategy',
+                'label': 'Strategy',
+                'type': 'text',
+                'initialValue': 'remote',
+              },
+              {'name': 'valueField', 'label': 'Value field', 'type': 'text'},
+              {
+                'name': 'displayField',
+                'label': 'Display field',
+                'type': 'text',
+                'initialValue': 'name',
+              },
+            ],
+          },
+        ],
       },
       {
-        'name': 'extra',
-        'label': 'Extra Configuration',
-        'type': 'group',
-        'widget': 'group',
-        'fields': [],
+        'name': 'validation',
+        'label': 'Validation',
+        'type': 'array',
+        'itemMeta': {
+          'name': 'validationRule',
+          'label': 'Validation rule',
+          'type': 'group',
+          'fields': [
+            {
+              'name': 'type',
+              'label': 'Type',
+              'type': 'text',
+              'validationRules': {'required': true},
+            },
+            {'name': 'value', 'label': 'Value', 'type': 'text'},
+          ],
+        },
+      },
+      {
+        'name': 'rules',
+        'label': 'Conditional rules',
+        'type': 'array',
+        'itemMeta': {
+          'name': 'rule',
+          'label': 'Rule',
+          'type': 'group',
+          'fields': [
+            {
+              'name': 'condition',
+              'label': 'Condition',
+              'type': 'group',
+              'fields': [
+                {'name': 'field', 'label': 'Field', 'type': 'text'},
+                {
+                  'name': 'operator',
+                  'label': 'Operator',
+                  'type': 'text',
+                  'initialValue': '=',
+                },
+                {'name': 'value', 'label': 'Value', 'type': 'text'},
+              ],
+            },
+            {
+              'name': 'actions',
+              'label': 'Actions',
+              'type': 'array',
+              'itemMeta': {
+                'name': 'action',
+                'label': 'Action',
+                'type': 'group',
+                'fields': [
+                  {'name': 'type', 'label': 'Type', 'type': 'text'},
+                  {
+                    'name': 'value',
+                    'label': 'Value',
+                    'type': 'boolean',
+                    'initialValue': true,
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
     ],
   };
-  static final EntityMeta metadata = entityMetaFromJson(_schema);
 
   @override
   State<FieldEditor> createState() => _FieldEditorState();
@@ -311,84 +310,49 @@ class _FieldEditorState extends State<FieldEditor> {
   @override
   void initState() {
     super.initState();
-
     _currentFields = List<MetadataField>.from(widget.fields);
-
     _selectedFieldName =
         widget.selectedField ??
-        (_currentFields.isNotEmpty
-            ? _currentFields.first.toJson()['name']?.toString()
-            : null);
+        (_currentFields.isNotEmpty ? _currentFields.first.name : null);
   }
 
   @override
   void didUpdateWidget(covariant FieldEditor oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (oldWidget.fields != widget.fields) {
       _currentFields = List<MetadataField>.from(widget.fields);
-
-      // Keep the selected field if it still exists.
-      final stillExists = _currentFields.any(
-        (field) => field.toJson()['name']?.toString() == _selectedFieldName,
-      );
-
-      if (!stillExists) {
+      if (!_currentFields.any((field) => field.name == _selectedFieldName)) {
         _selectedFieldName = _currentFields.isNotEmpty
-            ? _currentFields.first.toJson()['name']?.toString()
+            ? _currentFields.first.name
             : null;
       }
     }
   }
 
   Map<String, dynamic>? _selectedFieldJson() {
-    if (_selectedFieldName == null) return null;
-
     for (final field in _currentFields) {
-      final json = field.toJson();
-
-      if (json['name']?.toString() == _selectedFieldName) {
-        return json;
-      }
+      if (field.name == _selectedFieldName) return field.toJson();
     }
-
     return null;
-  }
-
-  Map<String, dynamic>? _initialData() {
-    final json = _selectedFieldJson();
-
-    if (json == null) return null;
-
-    return fieldToFormData(json);
   }
 
   Future<void> _saveField(Map<String, dynamic> formData) async {
     final original = _selectedFieldJson();
-
     if (original == null || _selectedFieldName == null) return;
 
-    final updatedJson = fieldFromFormData(formData, original);
-
-    // Preserve the original field name as the array identity.
-    updatedJson['name'] = _selectedFieldName;
-
+    final updatedJson = fieldFromFormData(formData, original)
+      ..['name'] = _selectedFieldName;
     final updatedField = MetadataField.fromJson(updatedJson);
 
-    final updatedFields = _currentFields.map((field) {
-      if (field.toJson()['name']?.toString() == _selectedFieldName) {
-        return updatedField;
-      }
-
-      return field;
-    }).toList();
-
     setState(() {
-      _currentFields = updatedFields;
+      _currentFields = _currentFields
+          .map(
+            (field) => field.name == _selectedFieldName ? updatedField : field,
+          )
+          .toList();
     });
 
     if (!mounted) return;
-
     context.read<MetadataBloc>().add(
       UpdateRootProperty(
         'fields',
@@ -399,57 +363,40 @@ class _FieldEditorState extends State<FieldEditor> {
 
   @override
   Widget build(BuildContext context) {
-    final initialData = _initialData();
-
-    print("******************Inital data **************: $initialData");
-    if (_currentFields.isEmpty || _selectedFieldName == null) {
+    final initialData = _selectedFieldJson();
+    if (initialData == null || _selectedFieldName == null) {
       return const Center(child: Text('No fields available'));
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ------------------------------------------------------
-        // Field selector
-        // ------------------------------------------------------
         Padding(
           padding: const EdgeInsets.all(16),
           child: SizedBox(
             width: 280,
-            child: Select<String>(
-              value: _selectedFieldName,
-              placeholder: const Text('Select field'),
-              onChanged: (String? value) {
-                if (value == null || value == _selectedFieldName) {
-                  return;
+            child: DropdownMenu<String>(
+              enableSearch: true,
+              enableFilter: true,
+              initialSelection: _selectedFieldName,
+              label: const Text('Select field'),
+              onSelected: (value) {
+                if (value != null) {
+                  setState(() => _selectedFieldName = value);
                 }
-
-                setState(() {
-                  _selectedFieldName = value;
-                });
               },
-              itemBuilder: (context, value) {
-                return Text(value);
-              },
-              items: [
-                for (final field in _currentFields)
-                  SelectItem<String>(
-                    value: field.toJson()['name'].toString(),
-                    child: Text(
-                      field.toJson()['label']?.toString() ??
-                          field.toJson()['name'].toString(),
+              dropdownMenuEntries: _currentFields
+                  .map(
+                    (field) => DropdownMenuEntry<String>(
+                      value: field.name,
+                      label: field.ui['label']?.toString() ?? field.label,
                     ),
-                  ),
-              ],
+                  )
+                  .toList(),
             ),
           ),
         ),
-
         const Divider(),
-
-        // ------------------------------------------------------
-        // Selected field form
-        // ------------------------------------------------------
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -459,10 +406,8 @@ class _FieldEditorState extends State<FieldEditor> {
               ),
               meta: FieldEditor.metadata,
               mode: widget.mode,
-              initialData: initialData!,
-              onSubmit: (data) async {
-                await _saveField(data);
-              },
+              initialData: fieldToFormData(initialData),
+              onSubmit: _saveField,
             ),
           ),
         ),

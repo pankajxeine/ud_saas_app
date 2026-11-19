@@ -8,6 +8,8 @@ import '../repository/metadata_repository.dart';
 import '../utils/metadata_validator.dart';
 import '../models/metadata_module.dart';
 import '../models/metadata_module_version.dart';
+import '../models/metadata_field.dart';
+import '../models/metadata_schema.dart';
 
 class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
   final MetadataRepository repository;
@@ -17,12 +19,22 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
     on<SelectSection>(_onSelectSection);
     on<SelectField>(_onSelectField);
     on<UpdateRootProperty>(_onUpdateRootProperty);
+    on<UpdateRootProperties>(_onUpdateRootProperties);
     on<UpdateFieldProperty>(_onUpdateFieldProperty);
+    on<UpdateMetadataField>(_onUpdateMetadataField);
     on<AddMetadataField>(_onAddField);
     on<DeleteMetadataField>(_onDeleteField);
     on<ReplaceMetadata>(_onReplaceMetadata);
     on<ValidateMetadata>(_onValidate);
     on<MarkMetadataSaved>(_onMarkSaved);
+    on<UpdateFieldValidations>(_onUpdateFieldValidations);
+    on<AddFieldValidation>(_onAddFieldValidation);
+    on<RemoveFieldValidation>(_onRemoveFieldValidation);
+    on<UpdateFieldPermissions>(_onUpdateFieldPermissions);
+    on<UpdateFieldReference>(_onUpdateFieldReference);
+    on<UpdateFieldLookup>(_onUpdateFieldLookup);
+    on<SaveMetadata>(_onSaveMetadata);
+    on<PublishMetadata>(_onPublishMetadata);
 
     // Modules
     on<LoadMetadataModules>(_onLoadMetadataModules);
@@ -66,44 +78,90 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
     UpdateRootProperty event,
     Emitter<MetadataState> emit,
   ) {
-    final metadata = deepCopyModel(state.metadata, MetaModuleVersion.fromJson);
-    //metadata[event.key] = event.value;
+    _emitSchemaUpdate(emit, (schema) => _setSchemaProperty(schema, event.key, event.value));
+  }
 
-    emit(state.copyWith(metadata: metadata, isDirty: true, errors: []));
+  void _onUpdateRootProperties(
+    UpdateRootProperties event,
+    Emitter<MetadataState> emit,
+  ) {
+    _emitSchemaUpdate(emit, (schema) {
+      var updated = schema;
+      for (final entry in event.properties.entries) {
+        updated = _setSchemaProperty(updated, entry.key, entry.value);
+      }
+      return updated;
+    });
   }
 
   void _onUpdateFieldProperty(
     UpdateFieldProperty event,
     Emitter<MetadataState> emit,
   ) {
-    final metadata = deepCopyModel(state.metadata, MetaModuleVersion.fromJson);
-
-    final newFields = metadata.schemaJson.fields;
-    final index = metadata.schemaJson.fields.indexWhere(
+    final metadata = state.metadata;
+    if (metadata == null) return;
+    final fields = List<MetadataField>.from(metadata.schemaJson.fields);
+    final index = fields.indexWhere(
       (field) => field.name == event.fieldName,
     );
 
     if (index == -1) return;
 
-    newFields[index] = newFields[index].copyWith(
-      name: event.fieldName,
-      label: event.value,
-    );
-    metadata.schemaJson.copyWith(fields: newFields);
+    final fieldJson = fields[index].toJson();
+    _applyFieldProperty(fieldJson, event.property, event.value);
+    fields[index] = MetadataField.fromJson(fieldJson);
+    _emitSchemaUpdate(emit, (schema) => schema.copyWith(fields: fields));
+  }
 
-    emit(
-      state.copyWith(
-        metadata: metadata.copyWith(
-          schemaJson: metadata.schemaJson.copyWith(fields: newFields),
-        ),
-        isDirty: true,
-        errors: [],
-      ),
+  void _onUpdateMetadataField(
+    UpdateMetadataField event,
+    Emitter<MetadataState> emit,
+  ) {
+    final metadata = state.metadata;
+    if (metadata == null) return;
+    final fields = List<MetadataField>.from(metadata.schemaJson.fields);
+    final index = fields.indexWhere((field) => field.name == event.fieldName);
+    if (index == -1) return;
+    final json = fields[index].toJson()..addAll(event.updates);
+    fields[index] = MetadataField.fromJson(json);
+    _emitSchemaUpdate(emit, (schema) => schema.copyWith(fields: fields));
+  }
+
+  void _applyFieldProperty(
+    Map<String, dynamic> json,
+    String property,
+    dynamic value,
+  ) {
+    const visibilityProperties = {
+      'showInTable': 'table',
+      'showInDetail': 'detail',
+      'showInCreate': 'create',
+      'showInUpdate': 'edit',
+      'requiredOnCreate': 'create',
+      'requiredOnUpdate': 'edit',
+    };
+    final mode = visibilityProperties[property];
+    if (mode == null) {
+      json[property] = value;
+      return;
+    }
+
+    final visibility = Map<String, dynamic>.from(
+      (json['visibility'] as Map?) ?? {},
     );
+    final key = property.startsWith('required') ? 'required' : 'show';
+    final values = List<String>.from(
+      (visibility[key] as List? ?? const []).map((item) => item.toString()),
+    );
+    if (value == true && !values.contains(mode)) values.add(mode);
+    if (value != true) values.remove(mode);
+    visibility[key] = values;
+    json['visibility'] = visibility;
   }
 
   void _onAddField(AddMetadataField event, Emitter<MetadataState> emit) {
-    final metadata = deepCopyModel(state.metadata, MetaModuleVersion.fromJson);
+    final metadata = state.metadata;
+    if (metadata == null) return;
     // final fields = List<Map<String, dynamic>>.from(
     //   (metadata['fields'] as List? ?? []).whereType<Map>().map(
     //     (field) => Map<String, dynamic>.from(field),
@@ -118,36 +176,150 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
       name = 'new_field_$index';
     }
 
-    // final field = MetadataField({
-    //   'name': name,
-    //   'label': 'New Field',
-    //   'type': 'string',
-    //   'widget': 'text',
-    //   'showInTable': false,
-    //   'showInDetail': true,
-    //   'showInCreate': true,
-    //   'showInUpdate': true,
-    //   'requiredOnCreate': false,
-    //   'requiredOnUpdate': false,
-    //   'nullable': true,
-    //   'readOnly': false,
-    //   'writeOnly': false,
-    //   'deprecated': false,
-    //   'permissions': {'read': true, 'create': true, 'update': true},
-    //   'validations': {},
-    // });
-
-    // metadata['fields'] = fields;
+    final fields = List<MetadataField>.from(metadata.schemaJson.fields)
+      ..add(MetadataField(name: name, label: 'New Field'));
 
     emit(
       state.copyWith(
-        metadata: metadata,
+        metadata: metadata.copyWith(
+          schemaJson: metadata.schemaJson.copyWith(fields: fields),
+        ),
         selectedField: name,
         selectedSection: 'fields',
         isDirty: true,
         errors: [],
       ),
     );
+  }
+
+  void _onUpdateFieldValidations(
+    UpdateFieldValidations event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    json['validation'] = event.validations.entries
+        .map((entry) => {'type': entry.key, 'value': entry.value})
+        .toList();
+    json['validations'] = event.validations;
+  });
+
+  void _onAddFieldValidation(
+    AddFieldValidation event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    final validations = Map<String, dynamic>.from(
+      (json['validations'] as Map?) ?? {},
+    )..[event.validationName] = event.value;
+    json['validations'] = validations;
+    json['validation'] = validations.entries
+        .map((entry) => {'type': entry.key, 'value': entry.value})
+        .toList();
+  });
+
+  void _onRemoveFieldValidation(
+    RemoveFieldValidation event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    final validations = Map<String, dynamic>.from(
+      (json['validations'] as Map?) ?? {},
+    )..remove(event.validationName);
+    json['validations'] = validations;
+    json['validation'] = validations.entries
+        .map((entry) => {'type': entry.key, 'value': entry.value})
+        .toList();
+  });
+
+  void _onUpdateFieldPermissions(
+    UpdateFieldPermissions event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    json['permissions'] = event.permissions;
+  });
+
+  void _onUpdateFieldReference(
+    UpdateFieldReference event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    if (event.reference == null) {
+      json.remove('reference');
+    } else {
+      json['reference'] = event.reference;
+      json['widget'] = 'reference';
+    }
+  });
+
+  void _onUpdateFieldLookup(
+    UpdateFieldLookup event,
+    Emitter<MetadataState> emit,
+  ) => _updateFieldJson(emit, event.fieldName, (json) {
+    final reference = Map<String, dynamic>.from(
+      (json['reference'] as Map?) ?? {},
+    );
+    if (event.lookup == null) {
+      reference.remove('lookup');
+    } else {
+      reference['lookup'] = event.lookup;
+    }
+    json['reference'] = reference;
+    json['widget'] = 'reference';
+  });
+
+  void _updateFieldJson(
+    Emitter<MetadataState> emit,
+    String fieldName,
+    void Function(Map<String, dynamic>) update,
+  ) {
+    final metadata = state.metadata;
+    if (metadata == null) return;
+    final fields = List<MetadataField>.from(metadata.schemaJson.fields);
+    final index = fields.indexWhere((field) => field.name == fieldName);
+    if (index == -1) return;
+    final json = fields[index].toJson();
+    update(json);
+    fields[index] = MetadataField.fromJson(json);
+    _emitSchemaUpdate(emit, (schema) => schema.copyWith(fields: fields));
+  }
+
+  void _emitSchemaUpdate(
+    Emitter<MetadataState> emit,
+    MetadataSchema Function(MetadataSchema) update,
+  ) {
+    final metadata = state.metadata;
+    if (metadata == null) return;
+    emit(
+      state.copyWith(
+        metadata: metadata.copyWith(schemaJson: update(metadata.schemaJson)),
+        isDirty: true,
+        errors: const [],
+      ),
+    );
+  }
+
+  MetadataSchema _setSchemaProperty(
+    MetadataSchema schema,
+    String key,
+    dynamic value,
+  ) {
+    switch (key) {
+      case 'entity':
+        return schema.copyWith(entity: value?.toString());
+      case 'title':
+        return schema.copyWith(title: value?.toString());
+      case 'table':
+        return schema.copyWith(table: value?.toString());
+      case 'primaryKey':
+        return schema.copyWith(primaryKey: value?.toString());
+      case 'fields':
+        final fields = value is List
+            ? value.whereType<Map>().map((item) => MetadataField.fromJson(Map<String, dynamic>.from(item))).toList()
+            : schema.fields;
+        return schema.copyWith(fields: fields);
+      case 'datatable':
+        return schema.copyWith(datatable: value is Map ? Map<String, dynamic>.from(value) : const {});
+      case 'search':
+        return schema.copyWith(search: value is Map ? Map<String, dynamic>.from(value) : const {});
+      default:
+        return schema.copyWith(extra: {...schema.extra, key: value});
+    }
   }
 
   void _onDeleteField(DeleteMetadataField event, Emitter<MetadataState> emit) {
@@ -188,6 +360,58 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
 
   void _onMarkSaved(MarkMetadataSaved event, Emitter<MetadataState> emit) {
     emit(state.copyWith(isDirty: false));
+  }
+
+  Future<void> _onSaveMetadata(
+    SaveMetadata event,
+    Emitter<MetadataState> emit,
+  ) async {
+    final metadata = state.metadata;
+    if (metadata == null) return;
+
+    final errors = MetadataValidator.validate(metadata.schemaJson);
+    if (errors.isNotEmpty) {
+      emit(state.copyWith(errors: errors));
+      return;
+    }
+
+    emit(state.copyWith(isSaving: true, errors: const []));
+    final result = metadata.moduleVersionId == null
+        ? await repository.createModuleVersion(metadata)
+        : await repository.updateModuleVersion(metadata);
+
+    if (result.body != null) {
+      emit(
+        state.copyWith(
+          metadata: result.body,
+          isSaving: false,
+          isDirty: false,
+          errors: const [],
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          isSaving: false,
+          errors: [result.message ?? 'Unable to save metadata version.'],
+        ),
+      );
+    }
+  }
+
+  Future<void> _onPublishMetadata(
+    PublishMetadata event,
+    Emitter<MetadataState> emit,
+  ) async {
+    final metadata = state.metadata;
+    if (metadata == null) return;
+
+    final published = metadata.copyWith(
+      publicationStatus: 'published',
+      publishedAt: DateTime.now().toIso8601String(),
+    );
+    emit(state.copyWith(metadata: published, isDirty: true));
+    add(const SaveMetadata());
   }
 
   Future<void> _onLoadMetadataModules(

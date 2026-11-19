@@ -30,6 +30,23 @@ import 'package:flutter/widgets.dart';
 
 import 'app_preset_sources.dart';
 
+enum MotionIntensity { subtle, standard, expressive, custom }
+
+enum MotionCurveName {
+  standard('standard'),
+  emphasizedOut('emphasizedOut'),
+  emphasizedIn('emphasizedIn'),
+  spring('spring');
+
+  const MotionCurveName(this.wireName);
+  final String wireName;
+
+  static MotionCurveName parse(String value) => values.firstWhere(
+    (item) => item.wireName == value,
+    orElse: () => throw ThemeAppException('Unknown motion curve: $value'),
+  );
+}
+
 /// A rejected preset app. [message] names the offending field so the
 /// `Open Preset` dialog can show it verbatim.
 class ThemeAppException implements Exception {

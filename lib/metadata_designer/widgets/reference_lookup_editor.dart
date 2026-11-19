@@ -1,7 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/select/select.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -155,7 +153,7 @@ class ReferenceLookupEditor extends StatelessWidget {
         children: [
           Text(label),
           const SizedBox(height: 6),
-          Input(initialValue: value, onChanged: onChanged),
+          TextFormField(initialValue: value, onChanged: onChanged, decoration: InputDecoration(labelText: label)),
         ],
       ),
     );
@@ -174,16 +172,10 @@ class ReferenceLookupEditor extends StatelessWidget {
         children: [
           Text(label),
           const SizedBox(height: 6),
-          Select<String>(
-            value: options.contains(value) ? value : options.first,
-            onChanged: (next) {
-              if (next != null) onChanged(next);
-            },
-            items: <Widget>[
-              for (final String option in options)
-                SelectItem<String>(value: option, child: Text(option)),
-            ],
-            itemBuilder: (context, item) => Text(item),
+          DropdownButtonFormField<String>(
+            initialValue: options.contains(value) ? value : options.first,
+            onChanged: (next) { if (next != null) onChanged(next); },
+            items: [for (final option in options) DropdownMenuItem(value: option, child: Text(option))],
           ),
         ],
       ),

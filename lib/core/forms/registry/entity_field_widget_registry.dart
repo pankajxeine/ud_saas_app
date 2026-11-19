@@ -7,6 +7,7 @@ import '../models/field_meta.dart';
 import '../widgets/input_text_field.dart';
 import '../widgets/input_boolean_field.dart';
 import '../widgets/input_select_field.dart';
+import '../widgets/input_multiselect_field.dart';
 
 import 'entity_field_widget_builder.dart';
 
@@ -115,7 +116,10 @@ class EntityFieldWidgetRegistry {
       'checkbox': _booleanBuilder,
 
       'select': _selectBuilder,
-      'multiselect': _selectBuilder,
+      // Reference fields use the same value/display control as a select.
+      // Applications can override this builder to attach a remote lookup.
+      'reference': _selectBuilder,
+      'multiselect': _multiselectBuilder,
     };
   }
 
@@ -147,6 +151,16 @@ class EntityFieldWidgetRegistry {
     required EntityMode mode,
   }) {
     return AppSelectField(field: field);
+  }
+
+  static Widget _multiselectBuilder({
+    required BuildContext context,
+    required FieldMeta<dynamic> field,
+    required FormGroup form,
+    required AbstractControl<dynamic> control,
+    required EntityMode mode,
+  }) {
+    return AppMultiSelectField(field: field);
   }
 }
 

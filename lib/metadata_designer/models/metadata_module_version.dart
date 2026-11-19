@@ -39,8 +39,8 @@ class MetaModuleVersion extends Equatable {
       publicationStatus:
           (json['publicationStatus'] ?? json['publication_status'] ?? 'draft')
               .toString(),
-      publishedAt: (json['publishedAt'] ?? json['publishedAt'])?.toString(),
-      draftAt: (json['updatedAt'] ?? json['updatedAt'])?.toString(),
+      publishedAt: (json['publishedAt'] ?? json['published_at'])?.toString(),
+      draftAt: (json['updatedAt'] ?? json['updated_at'])?.toString(),
       metaModule: _map(json['meta_module']),
     );
   }
@@ -81,13 +81,16 @@ class MetaModuleVersion extends Equatable {
     String? moduleId,
     int? versionNo,
     MetadataSchema? schemaJson,
+    String? publicationStatus,
+    String? publishedAt,
   }) {
     return MetaModuleVersion(
       moduleVersionId: moduleVersionId ?? this.moduleVersionId,
       moduleId: moduleId ?? this.moduleId,
       versionNo: versionNo ?? this.versionNo,
       schemaJson: schemaJson ?? this.schemaJson,
-      publicationStatus: publicationStatus,
+      publicationStatus: publicationStatus ?? this.publicationStatus,
+      publishedAt: publishedAt ?? this.publishedAt,
     );
   }
 

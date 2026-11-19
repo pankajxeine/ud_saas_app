@@ -1,302 +1,549 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/core/widgets/components/tooltip_button.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/lucide_icons.dart';
-import 'package:ud_sass_app/ui/dashcn/components/avatar.dart';
-import 'package:ud_sass_app/ui/dashcn/components/chip.dart';
-import 'package:ud_sass_app/ui/dashcn/components/scaffold.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/divider/divider.dart';
-import 'package:ud_sass_app/ui/dashcn/src/theme/theme.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:ud_sass_app/core/config/environment.dart';
+import 'package:ud_sass_app/core/theme/app_theme.dart';
 import 'package:ud_sass_app/core/widgets/components/app_grid_card.dart';
 import 'package:ud_sass_app/core/widgets/components/loading.dart';
+import 'package:ud_sass_app/routes/app_routes_constants.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
 import '../bloc/metadata_state.dart';
-
 import '../repository/metadata_repository.dart';
-
-import '../../routes/app_routes_constants.dart';
 import '../models/metadata_module.dart';
-import '../models/metadata_schema.dart';
 import '../models/metadata_module_version.dart';
+
 import 'components/module_version_card.dart';
-
-// class MetadataModuleRouteArgs {
-//   const MetadataModuleRouteArgs({required this.module, this.version});
-
-//   final MetaModule module;
-//   final MetaModuleVersion? version;
-// }
 
 class MetadataModule extends StatelessWidget {
   const MetadataModule({super.key, required this.moduleId});
+
   final String moduleId;
+
+  static const double _desktopBreakpoint = 1000;
 
   @override
   Widget build(BuildContext context) {
-    print("enter to MetadataModule with moduleId $moduleId");
     return BlocProvider<MetadataBloc>(
       create: (_) => MetadataBloc(
         repository: LocalMetadataRepository(
           baseUrl: ProfileConstants.api.toString(),
         ),
       )..add(LoadMetadataModuleById(moduleId: moduleId)),
-      child: Scaffold(
-        child: SafeArea(
-          child: BlocBuilder<MetadataBloc, MetadataState>(
-            builder: (context, state) {
-              print("module id : ${moduleId}");
-              if (state.isLoadingModules) {
-                return const Center(child: Loading());
-              }
-              if (state.module == null) {
-                print("Sate module is empty");
-                return const Text("module is empty");
-                //return const _EmptyMetadataView();
-              }
+      child: BlocBuilder<MetadataBloc, MetadataState>(
+        builder: (context, state) {
+          if (state.isLoadingModules) {
+            return const Center(child: Loading());
+          }
 
-              return Column(
+          final module = state.module;
+
+          if (module == null) {
+            return const Center(child: Text('Module is empty'));
+          }
+
+          return Container(
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            child: SafeArea(
+              child: Column(
                 children: [
                   const _Header(),
-                  const Divider(),
-                  Expanded(child: _buildDesignerBody(context, state.module!)),
-                  // _buildDesignerBody(context),
-
-                  // if (state.errors.isNotEmpty)
-                  //   _buildValidationPanel(context, state),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: _buildDesignerBody(context, module),
+                    ),
+                  ),
                 ],
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildDesignerBody(BuildContext context, MetaModule module) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth >= _desktopBreakpoint;
+
+        return isDesktop
+            ? _DesktopModuleLayout(module: module)
+            : _MobileModuleLayout(module: module);
+      },
     );
   }
 }
 
+// -----------------------------------------------------------------------------
+// Page Header
+// -----------------------------------------------------------------------------
+
 class _Header extends StatelessWidget {
-  final bool isDirty;
-  const _Header({this.isDirty = false});
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
-    final c = Theme.of(context).colors;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          TooltipButton(
-            label: 'Back',
-            onPressed: () => Navigator.of(context).maybePop(),
-            child: const Icon(LucideIcons.arrowBigLeft),
+          IconButton(
+            tooltip: 'Back',
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              }
+            },
+            icon: const Icon(Icons.arrow_back_rounded),
           ),
-
-          const SizedBox(width: 12),
-
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               'Configure Module',
-              style: Theme.of(context).typography.extraBold.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: c.accentForeground,
               ),
             ),
           ),
-
-          if (isDirty)
-            const Padding(
-              padding: EdgeInsets.only(right: 12),
-              child: Text('Unsaved changes', style: TextStyle(fontSize: 12)),
-            ),
+          Icon(Icons.tune_rounded, color: scheme.onSurfaceVariant, size: 20),
         ],
       ),
     );
   }
 }
 
-// ------------------------------------------------------------
-// MAIN DESIGNER BODY
-// ------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Desktop Layout
+// -----------------------------------------------------------------------------
 
-Widget _buildDesignerBody(BuildContext context, MetaModule module) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      // MAIN EDITOR
-      Expanded(child: _ModuleSummary(module: module)),
-      const Divider(axis: Axis.vertical),
+class _DesktopModuleLayout extends StatelessWidget {
+  const _DesktopModuleLayout({required this.module});
 
-      Expanded(
-        flex: 2,
-        child: Padding(
-          padding: const EdgeInsetsGeometry.all(16),
-          child: AppSliverGrid<MetaModuleVersion>(
-            items: module.metaModuleVersions,
-            showAddCard: true,
-            addCardTitle: 'Add Module',
-            addCardDescription: 'Create new schema version',
-            onAddTap: () {
-              context.read<MetadataBloc>().add(const CreateNewModule());
-              Navigator.of(context).pushNamed(
-                ApplicationRoutesConstants.metadataModuleNew,
-                arguments: MetaModuleVersion.empty,
-              );
-            },
-            itemBuilder: (context, moduleVersion, index) {
-              return ModuleVersionCard(
-                version: moduleVersion,
-                onTap: () {
-                  context.read<MetadataBloc>().add(
-                    SelectModuleVersionMetadata(
-                      module: module,
-                      version: moduleVersion,
-                    ),
-                  );
-                  Navigator.of(context).pushNamed(
-                    ApplicationRoutesConstants.metadataVersion(
-                      moduleVersion.moduleId!,
-                      moduleVersion.moduleVersionId!,
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+  final MetaModule module;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(flex: 1, child: _ModuleSummaryCard(module: module)),
+        const SizedBox(width: AppTheme.spaceMd),
+        Expanded(
+          flex: 2,
+          child: _ModuleVersionsCard(module: module, shrinkWrap: false),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
-class _ModuleSummary extends StatelessWidget {
-  const _ModuleSummary({required this.module});
+// -----------------------------------------------------------------------------
+// Mobile and Tablet Layout
+// -----------------------------------------------------------------------------
+
+class _MobileModuleLayout extends StatelessWidget {
+  const _MobileModuleLayout({required this.module});
+
+  final MetaModule module;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ModuleSummaryCard(module: module),
+          const SizedBox(height: 10),
+          _ModuleVersionsCard(module: module, shrinkWrap: true),
+        ],
+      ),
+    );
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Module Summary Card
+// -----------------------------------------------------------------------------
+
+class _ModuleSummaryCard extends StatelessWidget {
+  const _ModuleSummaryCard({required this.module});
 
   final MetaModule module;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     final description = module.description?.trim();
 
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Avatar(initials: "", badge: Icon(_moduleIcon(module.icon))),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      module.moduleName,
-                      style: theme.typography.h3.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colors.accentForeground,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      module.moduleCode,
-                      style: theme.typography.medium.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colors.mutedForeground,
-                      ),
-                    ),
-                  ],
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      color: scheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.5)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Module identity
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: scheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    _moduleIcon(module.icon),
+                    color: scheme.onPrimaryContainer,
+                  ),
                 ),
-              ),
-              Chip(
-                leading: Icon(
-                  module.isActive ? LucideIcons.check : LucideIcons.pause,
-                  size: 16,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        module.moduleName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        module.moduleCode,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Text(module.isActive ? 'Active' : 'Inactive'),
+                const SizedBox(width: 8),
+                _ModuleStatus(isActive: module.isActive),
+              ],
+            ),
+
+            if (description != null && description.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                description,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
               ),
             ],
-          ),
-          if (description != null && description.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text(
-              description,
-              style: theme.typography.medium.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colors.mutedForeground,
-              ),
+
+            const SizedBox(height: 12),
+            Divider(
+              height: 1,
+              color: scheme.outlineVariant.withValues(alpha: 0.6),
+            ),
+            const SizedBox(height: 12),
+
+            // Module properties
+            _SummaryValue(
+              icon: Icons.storage_outlined,
+              label: 'Database schema',
+              value: module.schemaName,
+            ),
+            _SummaryValue(
+              icon: Icons.table_chart_outlined,
+              label: 'Table',
+              value: module.tableName,
+            ),
+            _SummaryValue(
+              icon: Icons.api_outlined,
+              label: 'API base path',
+              value: module.apiBasePath.isEmpty
+                  ? 'Not set'
+                  : module.apiBasePath,
+            ),
+            _SummaryValue(
+              icon: Icons.layers_outlined,
+              label: 'Current version',
+              value: module.currentVersion == 0
+                  ? 'Not created'
+                  : 'v${module.currentVersion}',
+              showBottomPadding: false,
             ),
           ],
-          const SizedBox(height: 24),
-
-          _SummaryValue(label: 'Database schema', value: module.schemaName),
-          _SummaryValue(label: 'Table', value: module.tableName),
-          _SummaryValue(
-            label: 'API base path',
-            value: module.apiBasePath.isEmpty ? 'Not set' : module.apiBasePath,
-          ),
-          _SummaryValue(
-            label: 'Current version',
-            value: module.currentVersion == 0
-                ? 'Not created'
-                : 'v${module.currentVersion}',
-          ),
-          // _SummaryValue(
-          //   label: 'Current schema',
-          //   value:
-          //       version?.schemaJson.title ??
-          //       version?.schemaJson.entity ??
-          //       'No published schema',
-          // ),
-        ],
+        ),
       ),
     );
   }
 
-  IconData _moduleIcon(String? icon) {
-    switch (icon) {
-      case 'users':
-        return LucideIcons.users;
-      case 'settings':
-        return LucideIcons.settings;
-      case 'file':
-        return LucideIcons.disc;
-      case 'box':
-      default:
-        return LucideIcons.store;
-    }
+  IconData _moduleIcon(String? icon) => switch (icon) {
+    'users' => Icons.people_outline,
+    'settings' => Icons.settings_outlined,
+    'file' => Icons.insert_drive_file_outlined,
+    _ => Icons.inventory_2_outlined,
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Module Status
+// -----------------------------------------------------------------------------
+
+class _ModuleStatus extends StatelessWidget {
+  const _ModuleStatus({required this.isActive});
+
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    final background = isActive
+        ? scheme.tertiaryContainer
+        : scheme.surfaceContainerHighest;
+
+    final foreground = isActive
+        ? scheme.onTertiaryContainer
+        : scheme.onSurfaceVariant;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isActive ? Icons.check_circle : Icons.pause_circle_outline,
+            size: 13,
+            color: foreground,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            isActive ? 'Active' : 'Inactive',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: foreground,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class _SummaryValue extends StatelessWidget {
-  const _SummaryValue({required this.label, required this.value});
+// -----------------------------------------------------------------------------
+// Module Versions Card
+// -----------------------------------------------------------------------------
 
-  final String label;
-  final String value;
+class _ModuleVersionsCard extends StatelessWidget {
+  const _ModuleVersionsCard({required this.module, required this.shrinkWrap});
+
+  final MetaModule module;
+  final bool shrinkWrap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return SizedBox(
-      width: 220,
-      child: Column(
+    final scheme = theme.colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      color: scheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.5)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Schema Versions',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${module.metaModuleVersions.length} versions available',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.layers_outlined,
+                  color: scheme.onSurfaceVariant,
+                  size: 19,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Divider(
+              height: 1,
+              color: scheme.outlineVariant.withValues(alpha: 0.6),
+            ),
+            const SizedBox(height: 12),
+            if (shrinkWrap)
+              AppSliverGrid<MetaModuleVersion>(
+                items: module.metaModuleVersions,
+                showAddCard: true,
+                addCardTitle: 'Add Version',
+                addCardDescription: 'Create schema version',
+                addCardIcon: Icons.add_rounded,
+                onAddTap: () {
+                  context.push(
+                    ApplicationRoutesConstants.metadataVersionNew(
+                      module.moduleId,
+                    ),
+                  );
+                },
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                minCardWidth: 230,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                mobileChildAspectRatio: 3.0,
+                childAspectRatio: 2.5,
+                itemBuilder: (context, version, index) {
+                  return _versionCard(context, module, version);
+                },
+              )
+            else
+              Expanded(
+                child: AppSliverGrid<MetaModuleVersion>(
+                  items: module.metaModuleVersions,
+                  showAddCard: true,
+                  addCardTitle: 'Add Version',
+                  addCardDescription: 'Create schema version',
+                  addCardIcon: Icons.add_rounded,
+                  onAddTap: () {
+                    context.push(
+                      ApplicationRoutesConstants.metadataVersionNew(
+                        module.moduleId,
+                      ),
+                    );
+                  },
+                  minCardWidth: 230,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 2.5,
+                  mobileChildAspectRatio: 3.0,
+                  itemBuilder: (context, version, index) {
+                    return _versionCard(context, module, version);
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _versionCard(
+    BuildContext context,
+    MetaModule module,
+    MetaModuleVersion version,
+  ) {
+    return ModuleVersionCard(
+      version: version,
+      onTap: () {
+        context.read<MetadataBloc>().add(
+          SelectModuleVersionMetadata(module: module, version: version),
+        );
+
+        final uri = ApplicationRoutesConstants.metadataVersion(
+          version.moduleId!,
+          version.moduleVersionId!,
+        );
+
+        context.go(uri);
+      },
+    );
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Summary Value
+// -----------------------------------------------------------------------------
+
+class _SummaryValue extends StatelessWidget {
+  const _SummaryValue({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.showBottomPadding = true,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool showBottomPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: showBottomPadding ? 10 : 0),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: theme.typography.medium.copyWith(
-              color: theme.colors.accentForeground,
-            ),
-          ),
-          Text(
-            value,
-            style: theme.typography.medium.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colors.accentForeground,
+          Icon(icon, size: 16, color: scheme.onSurfaceVariant),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: scheme.onSurface,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

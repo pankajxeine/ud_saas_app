@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' show Brightness;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ud_sass_app/core/theme/theme_app_edits.dart';
-import 'package:ud_sass_app/core/theme/theme_cubit.dart';
+import 'package:ud_sass_app/core/theme/bloc/theme_cubit.dart';
 import 'package:ud_sass_app/core/theme/theme_utils.dart';
 import 'package:ud_sass_app/state/app_storage.dart';
 import 'package:ud_sass_app/ui/dashcn/theme.dart' as dashcn;

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/lucide_icons.dart';
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
 import '../bloc/metadata_state.dart';
@@ -39,8 +37,7 @@ class DetailEditor extends StatelessWidget {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                 ),
-                Button(
-                  variant: ButtonVariant.outline,
+                OutlinedButton.icon(
                   onPressed: availableFields.isEmpty
                       ? null
                       : () => _addField(
@@ -49,7 +46,8 @@ class DetailEditor extends StatelessWidget {
                           detailFields,
                           availableFields,
                         ),
-                  child: const Text('+ Add field'),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add field'),
                 ),
               ],
             ),
@@ -64,7 +62,7 @@ class DetailEditor extends StatelessWidget {
                   ? const Center(child: Text('No detail fields configured.'))
                   : ReorderableListView.builder(
                       itemCount: detailFields.length,
-                      onReorderItem: (oldIndex, newIndex) {
+                      onReorder: (oldIndex, newIndex) {
                         final updated = List<dynamic>.from(detailFields);
 
                         if (newIndex > oldIndex) newIndex--;
@@ -92,7 +90,7 @@ class DetailEditor extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              const Icon(LucideIcons.gripVertical, size: 16),
+                              const Icon(Icons.drag_handle, size: 18),
                               const SizedBox(width: 10),
                               Expanded(child: Text(fieldName)),
                               GestureDetector(
@@ -104,7 +102,7 @@ class DetailEditor extends StatelessWidget {
                                   updated.removeAt(index);
                                   _save(context, detail, updated);
                                 },
-                                child: const Icon(LucideIcons.trash2, size: 17),
+                                child: const Icon(Icons.delete_outline, size: 17),
                               ),
                             ],
                           ),

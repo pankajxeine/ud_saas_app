@@ -1,11 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/ui/dashcn/components/alert_dialog.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
-import 'package:ud_sass_app/ui/dashcn/components/dialog.dart';
-import 'package:ud_sass_app/ui/dashcn/components/input.dart';
-import 'package:ud_sass_app/ui/dashcn/src/components/select/select.dart';
-import 'package:ud_sass_app/ui/dashcn/src/foundation/icons/lucide_icons.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -118,7 +112,7 @@ class GridSearchEditor extends StatelessWidget {
         children: [
           Text(label),
           const SizedBox(height: 6),
-          Input(initialValue: value, onChanged: onChanged),
+          TextFormField(initialValue: value, onChanged: onChanged, decoration: InputDecoration(labelText: label)),
         ],
       ),
     );
@@ -137,16 +131,10 @@ class GridSearchEditor extends StatelessWidget {
         children: [
           Text(label),
           const SizedBox(height: 6),
-          Select<String>(
-            value: options.contains(value) ? value : options.first,
-            onChanged: (next) {
-              if (next != null) onChanged(next);
-            },
-            items: <Widget>[
-              for (final String option in options)
-                SelectItem<String>(value: option, child: Text(option)),
-            ],
-            itemBuilder: (context, item) => Text(item),
+          DropdownButtonFormField<String>(
+            initialValue: options.contains(value) ? value : options.first,
+            onChanged: (next) { if (next != null) onChanged(next); },
+            items: [for (final option in options) DropdownMenuItem(value: option, child: Text(option))],
           ),
         ],
       ),
@@ -174,30 +162,28 @@ class GridSearchEditor extends StatelessWidget {
                     ..removeAt(entry.key);
                   onChanged(updated);
                 },
-                child: const Icon(LucideIcons.trash2, size: 16),
+                child: const Icon(Icons.delete_outline, size: 16),
               ),
             ],
           );
         }),
-        Button(
-          variant: ButtonVariant.outline,
+        OutlinedButton(
           onPressed: () async {
             final controller = TextEditingController();
             final value = await showDialog<String>(
               context: context,
               builder: (dialogContext) => AlertDialog(
                 title: const Text('Add search field'),
-                description: Input(
+                  content: TextField(
                   controller: controller,
-                  placeholder: const Text('Field name'),
+                    decoration: const InputDecoration(hintText: 'Field name'),
                 ),
                 actions: [
-                  Button(
+                  TextButton(
                     onPressed: () => Navigator.pop(dialogContext),
                     child: const Text('Cancel'),
                   ),
-                  Button(
-                    variant: ButtonVariant.primary,
+                  FilledButton(
                     onPressed: () {
                       Navigator.pop(dialogContext, controller.text.trim());
                     },
@@ -251,14 +237,13 @@ class GridSearchEditor extends StatelessWidget {
                       ..removeAt(entry.key);
                     _updateSearch(context, search, 'filters', updated);
                   },
-                  child: const Icon(LucideIcons.trash2, size: 16),
+                  child: const Icon(Icons.delete_outline, size: 16),
                 ),
               ],
             ),
           );
         }),
-        Button(
-          variant: ButtonVariant.outline,
+        OutlinedButton(
           onPressed: available.isEmpty
               ? null
               : () {

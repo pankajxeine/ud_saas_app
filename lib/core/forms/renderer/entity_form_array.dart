@@ -1,8 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:ud_sass_app/ui/dashcn/components/button.dart';
 
-import '../factories/entity_form_control_factory.dart';
+import '../factory/entity_form_control_factory.dart';
 import '../models/entity_meta.dart';
 import '../models/field_meta.dart';
 import '../registry/entity_field_widget_registry.dart';
@@ -43,7 +42,7 @@ class EntityFormArray extends StatelessWidget {
         if (mode != EntityMode.view)
           Padding(
             padding: const EdgeInsets.only(top: 12),
-            child: Button(
+            child: OutlinedButton(
               onPressed: () => _addItem(context),
               child: Text('Add ${field.label}'),
             ),
@@ -67,7 +66,7 @@ class EntityFormArray extends StatelessWidget {
               children: [
                 Expanded(child: Text('${field.label} ${index + 1}')),
                 if (mode != EntityMode.view)
-                  Button(
+                  TextButton(
                     onPressed: () {
                       array.removeAt(index);
                     },
@@ -87,7 +86,22 @@ class EntityFormArray extends StatelessWidget {
       );
     }
 
-    return const SizedBox.shrink();
+    return _buildPrimitiveItem(control);
+  }
+
+  Widget _buildPrimitiveItem(AbstractControl<dynamic> control) {
+    if (control is! FormControl<dynamic>) {
+      return const Text('Array item renderer is not configured.');
+    }
+
+    return ReactiveFormField<dynamic, dynamic>(
+      formControl: control,
+      builder: (state) => TextFormField(
+        initialValue: state.value?.toString() ?? '',
+        enabled: state.control.enabled,
+        onChanged: state.didChange,
+      ),
+    );
   }
 
   void _addItem(BuildContext context) {
