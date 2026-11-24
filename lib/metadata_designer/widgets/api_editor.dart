@@ -43,6 +43,19 @@ class ApiEditor extends StatefulWidget {
     "widget": "array",
     "fields": [
       {
+        "name": "method",
+        "label": "Method",
+        "type": "select",
+        "widget": "select",
+        'options': [
+          {'label': 'GET', 'value': 'get'},
+          {'label': 'POST', 'value': 'post'},
+          {'label': 'PUT', 'value': 'put'},
+          {'label': 'DELETE', 'value': 'delete'},
+          {'label': 'PATCH', 'value': 'patch'},
+        ],
+      },
+      {
         "name": "path",
         "label": "Path",
         "type": "text",

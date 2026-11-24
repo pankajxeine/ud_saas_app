@@ -1,0 +1,10 @@
+export 'bloc/module_crud_bloc.dart';
+export 'bloc/module_crud_event.dart';
+export 'bloc/module_crud_state.dart';
+export 'bloc/module_metadata_bloc.dart';
+export 'models/module_metadata.dart';
+export 'models/presentation_models.dart';
+export 'repository/module_metadata_repository.dart';
+export 'repository/module_record_repository.dart';
+export 'utils/metadata_presentation_mapper.dart';
+export 'widgets/module_crud_page.dart';
