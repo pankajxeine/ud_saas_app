@@ -32,8 +32,51 @@ class MetadataPresentationMapper {
     );
   }
 
-  static MetadataFormModel form(ModuleMetadata metadata) {
+  static MetadataFormModel form(
+    ModuleMetadata metadata, {
+    bool edit = false,
+  }) {
     final schema = metadata.schema.toJson();
+    final fieldJson = (schema['fields'] as List? ?? const [])
+        .whereType<Map>()
+        .map((item) => Map<String, dynamic>.from(item))
+        .map((json) {
+          final name = json['name']?.toString();
+          final field = metadata.schema.fields
+              .where((item) => item.name == name)
+              .firstOrNull;
+          final validationRules = <String, dynamic>{
+            if (json['validations'] is Map)
+              ...Map<String, dynamic>.from(json['validations'] as Map),
+          };
+          final validation = json['validation'];
+          if (validation is List) {
+            for (final item in validation.whereType<Map>()) {
+              final type = item['type']?.toString();
+              if (type != null && item['value'] != null) {
+                validationRules[type] = item['value'];
+              }
+            }
+          }
+          if ((edit && field?.requiredOnUpdate == true) ||
+              (!edit && field?.requiredOnCreate == true)) {
+            validationRules['required'] = true;
+          }
+          return {
+            ...json,
+            'type': switch (json['type']?.toString().toLowerCase()) {
+              'uuid' => 'string',
+              'datetime' || 'date-time' => 'date',
+              final value => value ?? 'string',
+            },
+            'widget': switch (json['widget']?.toString().toLowerCase()) {
+              'datetime' => 'date',
+              final value => value,
+            },
+            'validations': validationRules,
+          };
+        })
+        .toList(growable: false);
     return MetadataFormModel(
       entityName: metadata.schema.entity ?? metadata.module.moduleCode,
       json: Map<String, dynamic>.unmodifiable({
@@ -42,7 +85,7 @@ class MetadataPresentationMapper {
         'sections': metadata.schema.sections
             .map((section) => section.toJson())
             .toList(growable: false),
-        'fields': schema['fields'] ?? const <dynamic>[],
+        'fields': fieldJson,
       }),
     );
   }

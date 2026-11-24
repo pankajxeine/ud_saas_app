@@ -302,7 +302,10 @@ class _ModuleFormView extends StatelessWidget {
           _FormSelection(data: state.formData, operation: state.operation),
       builder: (context, selection) {
         final metadata = context.read<ModuleCrudBloc>().metadata;
-        final model = MetadataPresentationMapper.form(metadata);
+        final model = MetadataPresentationMapper.form(
+          metadata,
+          edit: !create,
+        );
         final meta = entityMetaFromJson(model.json);
         return Padding(
           padding: const EdgeInsets.all(16),

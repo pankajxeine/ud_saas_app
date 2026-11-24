@@ -128,13 +128,14 @@ class RestModuleRecordRepository implements ModuleRecordRepository {
           .replaceAll(':${metadata.primaryKey}', encoded)
           .replaceAll('{${metadata.primaryKey}}', encoded);
     }
-    final method = switch (operation) {
-      'list' || 'detail' => 'GET',
-      'create' => 'POST',
-      'update' => 'PUT',
-      'delete' => 'DELETE',
-      _ => throw StateError('Unsupported operation "$operation".'),
-    };
+    final method = apiOperation.effectiveMethod ??
+        (switch (operation) {
+          'list' || 'detail' => 'GET',
+          'create' => 'POST',
+          'update' => 'PUT',
+          'delete' => 'DELETE',
+          _ => throw StateError('Unsupported operation "$operation".'),
+        });
     final response = await api.requestWithResponse<dynamic>(
       endpointPath: path,
       method: method,

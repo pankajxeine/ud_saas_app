@@ -49,7 +49,29 @@ FieldMeta<dynamic> fieldMetaFromJson(Map<String, dynamic> json) {
   // Support both old and new validation property names.
   final validationJson = json['validations'] ?? json['validationRules'];
 
-  final validationRules = _asMap(validationJson);
+  final validationRules = <String, dynamic>{..._asMap(validationJson)};
+  final validationList = json['validation'];
+  if (validationList is List) {
+    for (final item in validationList.whereType<Map>()) {
+      final type = item['type']?.toString();
+      final value = item['value'];
+      if (type == 'required') validationRules['required'] = value != false;
+      if (type == 'email') validationRules['email'] = value != false;
+      if (type == 'minLength' || type == 'maxLength' || type == 'min' || type == 'max') {
+        validationRules[type!] = value;
+      }
+      if (type == 'pattern' && value != null) {
+        validationRules['pattern'] = value.toString();
+      }
+    }
+  }
+
+  final visibility = _asMap(json['visibility']);
+  final requiredModes = visibility['required'];
+  if (requiredModes is List &&
+      requiredModes.any((item) => item.toString() == 'create')) {
+    validationRules['required'] = true;
+  }
 
   final features = _asMap(json['features']);
 
@@ -414,6 +436,7 @@ EntityFieldType _parseFieldType(dynamic value) {
     // Text/string types.
     case 'string':
     case 'text':
+    case 'uuid':
       return EntityFieldType.text;
 
     case 'email':
@@ -448,6 +471,8 @@ EntityFieldType _parseFieldType(dynamic value) {
       return EntityFieldType.multiselect;
 
     case 'date':
+    case 'datetime':
+    case 'date-time':
       return EntityFieldType.date;
 
     case 'time':
