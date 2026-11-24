@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/metadata_designer/models/metadata_module.dart';
@@ -105,7 +106,7 @@ class _ModuleVersionForm extends StatelessWidget {
         if (!context.mounted) return;
         final version = result.body;
         if (version?.moduleVersionId != null) {
-          Navigator.of(context).pushReplacementNamed(
+          context.go(
             ApplicationRoutesConstants.metadataVersion(
               module.moduleId,
               version!.moduleVersionId!,

@@ -21,9 +21,7 @@ class MobileDataTableView extends StatelessWidget {
     required this.onPageSizeChanged,
     this.rowIndexOffset = 0,
     this.onRowTap,
-    this.title,
   });
-  final String? title;
   final List<TrinaColumn> columns;
   final List<TrinaRow<dynamic>> rows;
   final Set<String> selectedRowKeys;
@@ -52,13 +50,7 @@ class MobileDataTableView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          title ?? '',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: colors.onSurfaceVariant,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        header,
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           child: Row(
@@ -79,7 +71,6 @@ class MobileDataTableView extends StatelessWidget {
                   ),
                 ),
               ),
-              header,
             ],
           ),
         ),

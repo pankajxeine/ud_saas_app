@@ -75,11 +75,6 @@ class AppTopBar extends StatelessWidget {
       child: Container(
         height: height,
         padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 8),
-        // decoration: BoxDecoration(
-        //   gradient: Theme.of(
-        //     context,
-        //   ).extension<AppThemeExtension>()!.appBarGradient,
-        // ),
         child: Row(
           children: [
             _buildLeading(context),

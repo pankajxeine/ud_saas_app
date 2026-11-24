@@ -26,28 +26,10 @@ class MetadataSidebar extends StatelessWidget {
       icon: Icons.view_list_outlined,
     ),
     _SidebarItem(
-      id: 'field-properties',
-      title: 'Field Properties',
-      subtitle: 'Configure selected field',
-      icon: Icons.tune_outlined,
-    ),
-    _SidebarItem(
-      id: 'field-validations',
-      title: 'Validations',
-      subtitle: 'Field validation rules',
-      icon: Icons.rule_outlined,
-    ),
-    _SidebarItem(
-      id: 'field-permissions',
-      title: 'Permissions',
-      subtitle: 'Field access control',
-      icon: Icons.lock_outline,
-    ),
-    _SidebarItem(
-      id: 'reference',
-      title: 'References',
-      subtitle: 'Lookup configuration',
-      icon: Icons.link_outlined,
+      id: 'sections',
+      title: 'Sections',
+      subtitle: 'Manage form sections',
+      icon: Icons.tab_outlined,
     ),
     _SidebarItem(
       id: 'api',
@@ -60,12 +42,6 @@ class MetadataSidebar extends StatelessWidget {
       title: 'Grid & Search',
       subtitle: 'List and filter settings',
       icon: Icons.table_chart_outlined,
-    ),
-    _SidebarItem(
-      id: 'detail',
-      title: 'Detail View',
-      subtitle: 'Detail page configuration',
-      icon: Icons.article_outlined,
     ),
     _SidebarItem(
       id: 'preview',

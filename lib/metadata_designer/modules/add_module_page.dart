@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/metadata_designer/models/metadata_module.dart';
@@ -14,14 +15,40 @@ class AddModulePage extends StatelessWidget {
   static final EntityMeta _meta = entityMetaFromJson(const {
     'entityName': 'New metadata module',
     'fields': [
-      {'name': 'moduleCode', 'label': 'Module code', 'type': 'text', 'validationRules': {'required': true, 'minLength': 2}},
-      {'name': 'moduleName', 'label': 'Module name', 'type': 'text', 'validationRules': {'required': true}},
-      {'name': 'schemaName', 'label': 'Database schema', 'type': 'text', 'initialValue': 'public', 'validationRules': {'required': true}},
-      {'name': 'tableName', 'label': 'Database table', 'type': 'text', 'validationRules': {'required': true}},
+      {
+        'name': 'moduleCode',
+        'label': 'Module code',
+        'type': 'text',
+        'validationRules': {'required': true, 'minLength': 2},
+      },
+      {
+        'name': 'moduleName',
+        'label': 'Module name',
+        'type': 'text',
+        'validationRules': {'required': true},
+      },
+      {
+        'name': 'schemaName',
+        'label': 'Database schema',
+        'type': 'text',
+        'initialValue': 'public',
+        'validationRules': {'required': true},
+      },
+      {
+        'name': 'tableName',
+        'label': 'Database table',
+        'type': 'text',
+        'validationRules': {'required': true},
+      },
       {'name': 'apiBasePath', 'label': 'API base path', 'type': 'text'},
       {'name': 'description', 'label': 'Description', 'type': 'textarea'},
       {'name': 'icon', 'label': 'Icon', 'type': 'text', 'initialValue': 'box'},
-      {'name': 'isActive', 'label': 'Active', 'type': 'boolean', 'initialValue': true},
+      {
+        'name': 'isActive',
+        'label': 'Active',
+        'type': 'boolean',
+        'initialValue': true,
+      },
     ],
   });
 
@@ -53,7 +80,7 @@ class AddModulePage extends StatelessWidget {
         ).createModule(module: module, schema: schema);
         if (!context.mounted) return;
         if (result.body?.moduleId.isNotEmpty == true) {
-          Navigator.of(context).pushReplacementNamed(
+          context.go(
             ApplicationRoutesConstants.metadataModule(result.body!.moduleId),
           );
         }

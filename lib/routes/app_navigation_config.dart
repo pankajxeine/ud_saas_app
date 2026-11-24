@@ -8,12 +8,16 @@ import '../core/navigation/app_route_registry.dart';
 
 import '../features/auth/login_page.dart';
 import '../features/settings/settings_page.dart';
+import '../features/products/product_list_page.dart';
 import '../features/example/data_grid_page.dart';
+import '../features/example/generic_crud_demo_page.dart';
 // import '../features/example/validation_demo_page.dart';
 // import '../features/example/sample_page.dart';
 
 import '../metadata_designer/modules/modules.dart';
+import '../metadata_designer/modules/add_module_page.dart';
 import '../metadata_designer/module/module.dart';
+import '../metadata_designer/module/add_module_version_page.dart';
 import '../metadata_designer/module_version/module_version.dart';
 
 class AppNavigationConfig {
@@ -30,6 +34,7 @@ class AppNavigationConfig {
   static const users = 'users';
   static const settings = 'settings';
   static const login = 'login';
+  static const crudDemo = 'crud-demo';
   // ---------------------------------------------------------------------------
   // Static routes
   // ---------------------------------------------------------------------------
@@ -82,7 +87,7 @@ class AppNavigationConfig {
     AppRouteDefinition(
       name: orders,
       path: '/orders',
-      builder: (context, state) => const DataGridPage(),
+      builder: (context, state) => const ProductListPage(),
       label: 'Orders',
       section: 'Sales',
       localizationKey: 'orders',
@@ -114,6 +119,16 @@ class AppNavigationConfig {
       icon: 0xe8b8,
       showInSidebar: true,
       showInRail: true,
+    ),
+    AppRouteDefinition(
+      name: crudDemo,
+      path: '/crud-demo',
+      builder: (context, state) => const GenericCrudDemoPage(),
+      label: 'CRUD Demo',
+      requiresAuth: true,
+      showInSidebar: true,
+      showInRail: false,
+      showInBreadcrumb: false,
     ),
   ];
 
@@ -151,6 +166,20 @@ class AppNavigationConfig {
     AppRouteRegistry.registerPageTypes({
       'modules': (context, state, config) {
         return const MetadataModules();
+      },
+
+      'createModule': (context, state, config) {
+        return const AddModulePage();
+      },
+
+      'createVersion': (context, state, config) {
+        final segments = state.uri.pathSegments;
+
+        if (segments.length < 5) {
+          throw StateError('Module ID is missing from the route.');
+        }
+
+        return AddModuleVersionPage(moduleId: segments[2]);
       },
 
       'module': (context, state, config) {

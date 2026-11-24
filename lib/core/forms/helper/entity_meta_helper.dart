@@ -15,28 +15,33 @@ EntityMeta entityMetaFromJson(Map<String, dynamic> json) {
   final layout = json['layout'] is Map
       ? Map<String, dynamic>.from(json['layout'] as Map)
       : const <String, dynamic>{};
-  final mode = switch (layout['mode']?.toString().toLowerCase()) {
+
+  // Support both the current nested layout shape and the legacy/root shape
+  // used by metadata designer schemas (`formLayout` + `sections`).
+  final formLayout = json.containsKey('formLayout')
+      ? json['formLayout']
+      : layout['mode'];
+  final mode = switch (formLayout?.toString().toLowerCase()) {
     'tabs' => EntityFormLayoutMode.tabs,
     'stepper' => EntityFormLayoutMode.stepper,
     _ => EntityFormLayoutMode.basic,
   };
-  final sections = (layout['sections'] as List? ?? const [])
+  final stepperOrientation = parseStepperOrientation(
+    json['stepperOrientation'] ??
+        layout['stepperOrientation'] ??
+        layout['orientation'],
+  );
+  final sectionsJson = json['sections'] ?? layout['sections'];
+  final sections = (sectionsJson as List? ?? const [])
       .whereType<Map>()
-      .map(
-        (item) => EntityFormSection(
-          id: item['id']?.toString() ?? item['title']?.toString() ?? 'section',
-          title: item['title']?.toString() ?? 'Section',
-          fields: (item['fields'] as List? ?? const [])
-              .map((field) => field.toString())
-              .toList(),
-        ),
-      )
+      .map((item) => EntityFormSection.fromJson(Map<String, dynamic>.from(item)))
       .toList();
 
   return EntityMeta(
     entityName: json['entityName']?.toString() ?? 'Entity',
     fields: fields,
     formLayout: mode,
+    stepperOrientation: stepperOrientation,
     sections: sections,
   );
 }

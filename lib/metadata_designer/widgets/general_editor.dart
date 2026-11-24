@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 
@@ -14,10 +14,30 @@ class GeneralEditor extends StatelessWidget {
   static final EntityMeta _metadata = entityMetaFromJson(const {
     'entityName': 'Module schema',
     'fields': [
-      {'name': 'entity', 'label': 'Entity', 'type': 'text', 'validationRules': {'required': true}},
-      {'name': 'title', 'label': 'Title', 'type': 'text', 'validationRules': {'required': true}},
-      {'name': 'table', 'label': 'Database table', 'type': 'text', 'validationRules': {'required': true}},
-      {'name': 'primaryKey', 'label': 'Primary key', 'type': 'text', 'initialValue': 'id'},
+      {
+        'name': 'entity',
+        'label': 'Entity',
+        'type': 'text',
+        'validationRules': {'required': true},
+      },
+      {
+        'name': 'title',
+        'label': 'Title',
+        'type': 'text',
+        'validationRules': {'required': true},
+      },
+      {
+        'name': 'table',
+        'label': 'Database table',
+        'type': 'text',
+        'validationRules': {'required': true},
+      },
+      {
+        'name': 'primaryKey',
+        'label': 'Primary key',
+        'type': 'text',
+        'initialValue': 'id',
+      },
     ],
   });
 

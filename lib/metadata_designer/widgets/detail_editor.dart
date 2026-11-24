@@ -62,7 +62,7 @@ class DetailEditor extends StatelessWidget {
                   ? const Center(child: Text('No detail fields configured.'))
                   : ReorderableListView.builder(
                       itemCount: detailFields.length,
-                      onReorder: (oldIndex, newIndex) {
+                      onReorderItem: (oldIndex, newIndex) {
                         final updated = List<dynamic>.from(detailFields);
 
                         if (newIndex > oldIndex) newIndex--;
@@ -102,7 +102,10 @@ class DetailEditor extends StatelessWidget {
                                   updated.removeAt(index);
                                   _save(context, detail, updated);
                                 },
-                                child: const Icon(Icons.delete_outline, size: 17),
+                                child: const Icon(
+                                  Icons.delete_outline,
+                                  size: 17,
+                                ),
                               ),
                             ],
                           ),

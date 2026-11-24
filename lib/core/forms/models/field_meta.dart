@@ -162,6 +162,7 @@ class FieldMeta<T> {
     this.visibleWhen,
     this.enabledWhen,
     this.itemMeta,
+    this.section,
   });
 
   final String name;
@@ -190,6 +191,8 @@ class FieldMeta<T> {
 
   final FieldCondition? visibleWhen;
   final FieldCondition? enabledWhen;
+
+  final String? section;
 
   bool get isRequired => validationRules['required'] == true;
 

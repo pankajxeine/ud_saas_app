@@ -62,8 +62,7 @@ class AppDataTable extends StatefulWidget {
   final List<TrinaRow<dynamic>> rows;
   final String? title;
   final String? subtitle;
-  final Widget Function(BuildContext context, bool compact)?
-  headerActionsBuilder;
+  final Widget? headerActionsBuilder;
   final void Function(TrinaGridStateManager)? onLoaded;
   final Widget? customHeader;
 
@@ -89,6 +88,8 @@ class AppDataTable extends StatefulWidget {
 }
 
 class _DataTableState extends State<AppDataTable> {
+  static const EdgeInsets _contentPadding = EdgeInsets.all(16);
+
   int _mobilePage = 1;
   late int _mobilePageSize = widget.mobilePageSize;
   final Set<String> _selectedMobileRows = <String>{};
@@ -112,19 +113,29 @@ class _DataTableState extends State<AppDataTable> {
             widget.customHeader != null ||
             widget.title != null ||
             widget.subtitle != null;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (!compact && hasHeader) ...<Widget>[
-              _header(context, constraints, includeActions: false),
-              const SizedBox(height: 8),
+        return Padding(
+          padding: _contentPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (!compact && hasHeader) ...<Widget>[
+                _header(context, constraints, includeActions: false),
+                const SizedBox(height: 8),
+              ],
+              if (widget.headerActionsBuilder != null) ...<Widget>[
+                widget.headerActionsBuilder!,
+                const SizedBox(height: 8),
+              ],
+
+              Expanded(
+                child: compact
+                    ? _buildMobileView(
+                        _header(context, constraints, includeActions: false),
+                      )
+                    : _buildDesktopGrid(context),
+              ),
             ],
-            Expanded(
-              child: compact
-                  ? _buildMobileView(_header(context, constraints))
-                  : _buildDesktopGrid(context),
-            ),
-          ],
+          ),
         );
       },
     );
@@ -182,7 +193,6 @@ class _DataTableState extends State<AppDataTable> {
   }
 
   Widget _buildMobileView(Widget header) => MobileDataTableView(
-    title: widget.title,
     columns: widget.columns,
     rows: _mobileRows,
     header: header,
@@ -221,7 +231,6 @@ class _DataTableState extends State<AppDataTable> {
       (TrinaColumn column) =>
           !column.hide && column.filterWidgetDelegate != null,
     );
-    final bool hasHeaderActions = widget.headerActionsBuilder != null;
     return ClipRRect(
       borderRadius: AppRadius.allMd,
       child: DecoratedBox(
@@ -230,6 +239,7 @@ class _DataTableState extends State<AppDataTable> {
           border: Border.all(color: c.outline),
           borderRadius: AppRadius.allMd,
         ),
+
         child: TrinaGrid(
           columns: [
             ...widget.columns,
@@ -296,7 +306,7 @@ class _DataTableState extends State<AppDataTable> {
           createFooter: widget.paginate
               ? (TrinaGridStateManager sm) => PaginationFooter(stateManager: sm)
               : null,
-          createHeader: hasFilterableColumns || hasHeaderActions
+          createHeader: hasFilterableColumns
               ? (TrinaGridStateManager stateManager) => SizedBox(
                   height: 52,
                   child: Align(
@@ -306,10 +316,6 @@ class _DataTableState extends State<AppDataTable> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          if (hasHeaderActions)
-                            widget.headerActionsBuilder!(context, false),
-                          if (hasHeaderActions && hasFilterableColumns)
-                            const SizedBox(width: 8),
                           if (hasFilterableColumns)
                             Tooltip(
                               message: 'Toggle filters',
@@ -402,9 +408,7 @@ class _DataTableState extends State<AppDataTable> {
     return DataTableHeader(
       title: widget.title ?? '',
       subtitle: widget.subtitle,
-      actions: includeActions
-          ? widget.headerActionsBuilder?.call(context, compact)
-          : null,
+      actions: includeActions ? widget.headerActionsBuilder! : null,
       compact: compact,
     );
   }

@@ -48,18 +48,12 @@ class AppSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final routes = AppRouteRegistry.sidebarRoutes(routesList);
-    print("route list : $routes");
     final groupedRoutes = _groupRoutes(routes);
 
     return Material(
       color: theme.colorScheme.surface,
       child: Container(
         width: collapsed ? 72 : 256,
-        // decoration: BoxDecoration(
-        //   gradient: Theme.of(
-        //     context,
-        //   ).extension<AppThemeExtension>()!.appBarGradient,
-        // ),
         child: Column(
           children: [
             // _buildHeader(context),
@@ -196,8 +190,6 @@ class _NavigationTile extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     final activeIcon = selected ? selectedIcon : icon;
-    print("activeIcon : $activeIcon, selected : $selected");
-
     if (collapsed) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),

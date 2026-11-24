@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ud_sass_app/core/config/environment.dart';
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/core/navigation/app_navigation.dart';
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                           AppReactiveForm(
                             meta: _meta,
-                            initialData: const {'email': 'demo@example.test'},
+                            initialData: const {'email': 'admin@cloudsuite.io'},
                             onSubmit: (data) async {
                               context.read<AuthLoginBloc>().add(
                                 LoadAuthLoginEvent(

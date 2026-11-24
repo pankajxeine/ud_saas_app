@@ -10,6 +10,37 @@ import 'validation/entity_custom_validator_registry.dart';
 import 'validation/entity_validation_factory.dart';
 import 'validation/entity_validation_message_resolver.dart';
 
+IconData _sectionIcon(String? iconName) {
+  final name = iconName
+      ?.trim()
+      .toLowerCase()
+      .replaceFirst('icons.', '')
+      .replaceAll('-', '_')
+      .replaceAll(' ', '_');
+
+  return switch (name) {
+    'home' => Icons.home_outlined,
+    'person' || 'user' => Icons.person_outline,
+    'people' || 'users' => Icons.people_outline,
+    'settings' => Icons.settings_outlined,
+    'phone' => Icons.phone_outlined,
+    'email' || 'mail' => Icons.email_outlined,
+    'lock' || 'security' => Icons.lock_outline,
+    'list' => Icons.list_alt_outlined,
+    'table' => Icons.table_chart_outlined,
+    'search' => Icons.search,
+    'calendar' => Icons.calendar_month_outlined,
+    'description' || 'document' => Icons.description_outlined,
+    'folder' => Icons.folder_outlined,
+    'dashboard' => Icons.dashboard_outlined,
+    'check' || 'done' => Icons.check_circle_outline,
+    'star' => Icons.star_border,
+    'warning' => Icons.warning_amber_outlined,
+    'error' => Icons.error_outline,
+    _ => Icons.circle_outlined,
+  };
+}
+
 class AppReactiveForm extends StatefulWidget {
   const AppReactiveForm({
     super.key,
@@ -153,15 +184,23 @@ class _EntityReactiveFormState extends State<AppReactiveForm> {
   }
 
   Widget _buildFormLayout() {
-    final sections = _sections;
+    final sections = _sectionsForLayout;
+
+    debugPrint("######widget.meta.formLayout : $widget.meta.formLayout");
     switch (widget.meta.formLayout) {
       case EntityFormLayoutMode.tabs:
+        if (sections.isEmpty) {
+          return _buildBasicLayout();
+        }
+
         return DefaultTabController(
           length: sections.length,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TabBar(
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
                 tabs: sections
                     .map((section) => Tab(text: section.title))
                     .toList(),
@@ -169,36 +208,124 @@ class _EntityReactiveFormState extends State<AppReactiveForm> {
               SizedBox(
                 height: 560,
                 child: TabBarView(
-                  children: sections.map(_buildSection).toList(),
+                  children: sections
+                      .map(
+                        (section) => SingleChildScrollView(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: _buildSection(section),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ],
           ),
         );
+
       case EntityFormLayoutMode.stepper:
-        return _EntityFormStepper(sections: sections, builder: _buildSection);
+        if (sections.isEmpty) {
+          return _buildBasicLayout();
+        }
+
+        return _EntityFormStepper(
+          sections: sections,
+          builder: _buildSection,
+          orientation: widget.meta.stepperOrientation,
+        );
+
       case EntityFormLayoutMode.basic:
-        return _buildSection(sections.first);
+        return _buildBasicLayout();
     }
   }
 
-  List<EntityFormSection> get _sections {
-    if (widget.meta.sections.isNotEmpty) return widget.meta.sections;
-    return [
-      EntityFormSection(
-        id: 'default',
-        title: widget.meta.entityName,
-        fields: widget.meta.fields.map((field) => field.name).toList(),
-      ),
-    ];
+  Widget _buildBasicLayout() {
+    if (widget.meta.sections.isEmpty) {
+      // No sections: render all fields in one page.
+      return _buildFieldsCard(widget.meta.fields);
+    }
+
+    final sections = _sectionsForLayout;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: sections.map(_buildSection).toList(),
+    );
   }
 
+  List<EntityFormSection> get _sectionsForLayout {
+    final sections = List<EntityFormSection>.from(widget.meta.sections);
+
+    final sectionIds = sections.map((section) => section.id).toSet();
+
+    debugPrint("Sections ids : $sectionIds");
+    final hasUnassignedFields = widget.meta.fields.any((field) {
+      final sectionId = field.section;
+
+      return sectionId == null ||
+          sectionId.trim().isEmpty ||
+          !sectionIds.contains(sectionId);
+    });
+
+    if (hasUnassignedFields) {
+      sections.add(
+        const EntityFormSection(id: '__unassigned__', title: 'General'),
+      );
+    }
+
+    return sections;
+  }
+
+  Widget _buildFieldsCard(List<FieldMeta<dynamic>> fields, {String? title}) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (title != null) ...[
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 16),
+            ],
+            EntityFormRenderer(
+              fields: fields,
+              form: _form,
+              mode: widget.mode,
+              registry: _registry,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // List<EntityFormSection> get _sections {
+  //   if (widget.meta.sections.isNotEmpty) return widget.meta.sections;
+  //   return [EntityFormSection(id: 'default', title: widget.meta.entityName)];
+  // }
+
   Widget _buildSection(EntityFormSection section) {
-    final fields = section.fields.isEmpty
-        ? widget.meta.fields
-        : widget.meta.fields
-              .where((field) => section.fields.contains(field.name))
-              .toList();
+    final isBasicLayout = widget.meta.formLayout == EntityFormLayoutMode.basic;
+
+    debugPrint("form layout section : $widget.meta.formLayout ");
+    final fields = widget.meta.fields
+        .where((field) {
+          if (field.section == section.id) {
+            return true;
+          }
+
+          // Include unassigned fields only in the basic layout.
+          return (isBasicLayout && section.id == 'basic' ||
+                  section.id == '__unassigned__') &&
+              (field.section == null ||
+                  field.section!.isEmpty ||
+                  !widget.meta.sections.any(
+                    (knownSection) => knownSection.id == field.section,
+                  ));
+        })
+        .toList(growable: false);
+
+    debugPrint("form layout section fields : $section.id $fields");
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -215,9 +342,14 @@ class _EntityReactiveFormState extends State<AppReactiveForm> {
 }
 
 class _EntityFormStepper extends StatefulWidget {
-  const _EntityFormStepper({required this.sections, required this.builder});
+  const _EntityFormStepper({
+    required this.sections,
+    required this.builder,
+    required this.orientation,
+  });
   final List<EntityFormSection> sections;
   final Widget Function(EntityFormSection section) builder;
+  final EntityFormStepperOrientation orientation;
 
   @override
   State<_EntityFormStepper> createState() => _EntityFormStepperState();
@@ -228,7 +360,14 @@ class _EntityFormStepperState extends State<_EntityFormStepper> {
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
+    final isMobile = MediaQuery.sizeOf(context).width < 600;
+    final isHorizontal =
+        widget.orientation == EntityFormStepperOrientation.horizontal;
+
+    final stepper = Stepper(
+      type: widget.orientation == EntityFormStepperOrientation.vertical
+          ? StepperType.vertical
+          : StepperType.horizontal,
       currentStep: currentStep,
       onStepContinue: currentStep < widget.sections.length - 1
           ? () => setState(() => currentStep++)
@@ -239,13 +378,24 @@ class _EntityFormStepperState extends State<_EntityFormStepper> {
       steps: widget.sections
           .map(
             (section) => Step(
-              title: Text(section.title),
+              title: isHorizontal && isMobile
+                  ? Icon(_sectionIcon(section.icon), size: 20)
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(_sectionIcon(section.icon), size: 18),
+                        const SizedBox(width: 6),
+                        Text(section.title),
+                      ],
+                    ),
               content: widget.builder(section),
               isActive: widget.sections.indexOf(section) <= currentStep,
             ),
           )
           .toList(),
     );
+
+    return isHorizontal ? SizedBox(height: 600, child: stepper) : stepper;
   }
 }
 

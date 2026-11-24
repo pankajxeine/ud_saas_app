@@ -1,15 +1,16 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
+import 'package:ud_sass_app/core/widgets/common/responsive_dropdown.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
 import '../models/metadata_field.dart';
+import '../models/metadata_sections.dart';
 import 'helper/field_json_convertor.dart';
 
 /// Edits one field using the current field metadata contract.
@@ -20,33 +21,64 @@ class FieldEditor extends StatefulWidget {
   const FieldEditor({
     super.key,
     required this.fields,
+    this.sections = const [],
     this.mode = EntityMode.edit,
     this.selectedField,
   });
 
   final List<MetadataField> fields;
+  final List<MetadataSection> sections;
   final EntityMode mode;
   final String? selectedField;
 
   static final EntityMeta metadata = entityMetaFromJson(_fieldSchema);
 
+  static EntityMeta metadataForSections(List<MetadataSection> sections) {
+    final schema = jsonDecode(jsonEncode(_fieldSchema)) as Map<String, dynamic>;
+    final fields = (schema['fields'] as List).cast<Map<String, dynamic>>();
+    final sectionField = fields.firstWhere(
+      (field) => field['name'] == 'section',
+    );
+
+    sectionField['options'] = sections
+        .map(
+          (section) => {
+            'label': section.title.isEmpty ? section.id : section.title,
+            'value': section.id,
+          },
+        )
+        .toList();
+
+    return entityMetaFromJson(schema);
+  }
+
   static const Map<String, dynamic> _fieldSchema = {
     'entityName': 'Field Configuration',
+    'formLayout': 'tabs',
+    'sections': [
+      {'id': 'basic', 'title': 'Field Details'},
+      {'id': 'security_visibility', 'title': 'Security & Visibility'},
+      {'id': 'validation_rules', 'title': 'Validations & Rules'},
+      {'id': 'reference', 'title': 'Reference'},
+    ],
     'fields': [
       {
         'name': 'name',
+        'section': 'basic',
         'label': 'Field name',
         'type': 'text',
         'validationRules': {'required': true},
       },
       {
         'name': 'label',
+        'section': 'basic',
         'label': 'Label',
         'type': 'text',
         'validationRules': {'required': true},
       },
       {
         'name': 'type',
+        'section': 'basic',
         'label': 'Data type',
         'type': 'select',
         'options': [
@@ -62,12 +94,14 @@ class FieldEditor extends StatefulWidget {
       },
       {
         'name': 'format',
+        'section': 'basic',
         'label': 'Format',
         'type': 'text',
         'placeholder': 'string, uuid, date-time...',
       },
       {
         'name': 'widget',
+        'section': 'basic',
         'label': 'Widget',
         'type': 'select',
         'options': [
@@ -82,11 +116,22 @@ class FieldEditor extends StatefulWidget {
           {'label': 'Group', 'value': 'group'},
         ],
       },
-      {'name': 'group', 'label': 'UI group', 'type': 'text'},
-      {'name': 'title', 'label': 'Title', 'type': 'text'},
-      {'name': 'description', 'label': 'Description', 'type': 'textarea'},
+      {
+        'name': 'section',
+        'section': 'basic',
+        'label': 'Section',
+        'type': 'select',
+      },
+      {'name': 'title', 'section': 'basic', 'label': 'Title', 'type': 'text'},
+      {
+        'name': 'description',
+        'section': 'basic',
+        'label': 'Description',
+        'type': 'textarea',
+      },
       {
         'name': 'ui',
+        'section': 'basic',
         'label': 'UI configuration',
         'type': 'group',
         'fields': [
@@ -105,32 +150,8 @@ class FieldEditor extends StatefulWidget {
         ],
       },
       {
-        'name': 'permissions',
-        'label': 'Permissions',
-        'type': 'group',
-        'fields': [
-          {
-            'name': 'read',
-            'label': 'Read',
-            'type': 'boolean',
-            'initialValue': true,
-          },
-          {
-            'name': 'create',
-            'label': 'Create',
-            'type': 'boolean',
-            'initialValue': true,
-          },
-          {
-            'name': 'update',
-            'label': 'Update',
-            'type': 'boolean',
-            'initialValue': true,
-          },
-        ],
-      },
-      {
         'name': 'security',
+        'section': 'security_visibility',
         'label': 'Security',
         'type': 'group',
         'fields': [
@@ -167,6 +188,7 @@ class FieldEditor extends StatefulWidget {
       },
       {
         'name': 'visibility',
+        'section': 'security_visibility',
         'label': 'Visibility',
         'type': 'group',
         'fields': [
@@ -203,6 +225,7 @@ class FieldEditor extends StatefulWidget {
       },
       {
         'name': 'reference',
+        'section': 'reference',
         'label': 'Reference',
         'type': 'group',
         'fields': [
@@ -233,6 +256,7 @@ class FieldEditor extends StatefulWidget {
       },
       {
         'name': 'validation',
+        'section': 'validation_rules',
         'label': 'Validation',
         'type': 'array',
         'itemMeta': {
@@ -252,6 +276,7 @@ class FieldEditor extends StatefulWidget {
       },
       {
         'name': 'rules',
+        'section': 'validation_rules',
         'label': 'Conditional rules',
         'type': 'array',
         'itemMeta': {
@@ -372,28 +397,43 @@ class _FieldEditorState extends State<FieldEditor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: 280,
-            child: DropdownMenu<String>(
-              enableSearch: true,
-              enableFilter: true,
-              initialSelection: _selectedFieldName,
-              label: const Text('Select field'),
-              onSelected: (value) {
-                if (value != null) {
-                  setState(() => _selectedFieldName = value);
-                }
-              },
-              dropdownMenuEntries: _currentFields
-                  .map(
-                    (field) => DropdownMenuEntry<String>(
-                      value: field.name,
-                      label: field.ui['label']?.toString() ?? field.label,
-                    ),
-                  )
-                  .toList(),
-            ),
+          padding: const EdgeInsets.all(12),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final maxWidth =
+                  constraints.maxWidth.isFinite && constraints.maxWidth < 280
+                  ? constraints.maxWidth
+                  : 280.0;
+
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: maxWidth),
+                  child: ResponsiveDropdown<String>(
+                    value: _selectedFieldName,
+                    hintText: 'Select field',
+                    title: 'Select field',
+                    foregroundColor: Theme.of(context).colorScheme.onSurface,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => _selectedFieldName = value);
+                      }
+                    },
+                    items: _currentFields
+                        .map(
+                          (field) => DropdownMenuItem<String>(
+                            value: field.name,
+                            child: Text(
+                              field.ui['label']?.toString() ?? field.label,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              );
+            },
           ),
         ),
         const Divider(),
@@ -402,9 +442,10 @@ class _FieldEditorState extends State<FieldEditor> {
             padding: const EdgeInsets.all(16),
             child: AppReactiveForm(
               key: ValueKey(
-                'field-$_selectedFieldName-${jsonEncode(initialData)}',
+                'field-$_selectedFieldName-${jsonEncode(initialData)}-'
+                '${jsonEncode(widget.sections.map((section) => section.toJson()).toList())}',
               ),
-              meta: FieldEditor.metadata,
+              meta: FieldEditor.metadataForSections(widget.sections),
               mode: widget.mode,
               initialData: fieldToFormData(initialData),
               onSubmit: _saveField,

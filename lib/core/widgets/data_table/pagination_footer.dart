@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:trina_grid/trina_grid.dart';
-import 'package:ud_sass_app/core/widgets/components/tooltip_button.dart';
-
 import '../../layouts/responsive.dart';
 
 class PaginationFooter extends StatefulWidget {
@@ -14,36 +12,19 @@ class PaginationFooter extends StatefulWidget {
 }
 
 class _PaginationFooterState extends State<PaginationFooter> {
-  // Define available page sizes including the default
   final List<int> availablePageSizes = [10, 20, 25, 40, 50, 100];
-
-  // Controller for the page input field
-  final TextEditingController _pageController = TextEditingController();
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    // Ensure state manager is properly initialized and has data
     if (widget.stateManager.refRows.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    // Get pagination values from state manager
     final currentPage = widget.stateManager.page;
     final pageSize = widget.stateManager.pageSize;
     final totalPage = widget.stateManager.totalPage;
     final totalRows = widget.stateManager.refRows.length;
-
-    // Update the text controller when current page changes
-    if (_pageController.text != currentPage.toString()) {
-      _pageController.text = currentPage.toString();
-    }
 
     return Container(
       height: 60,
@@ -102,7 +83,6 @@ class _PaginationFooterState extends State<PaginationFooter> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    // color: cs.accent,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: cs.primary),
                   ),
@@ -117,30 +97,6 @@ class _PaginationFooterState extends State<PaginationFooter> {
                         ),
                       ),
 
-                      // Direct page input field
-                      // SizedBox(
-                      //   width: 50,
-                      //   child: TextField(
-                      //     controller: _pageController,
-                      //     textAlign: TextAlign.center,
-                      //     keyboardType: TextInputType.number,
-                      //     style: TextStyle(
-                      //       fontWeight: FontWeight.bold,
-                      //       color: cs.primaryForeground,
-                      //     ),
-                      //     // decoration: InputDecoration(
-                      //     //   border: InputBorder.none,
-                      //     //   contentPadding: EdgeInsets.zero,
-                      //     //   isDense: true,
-                      //     // ),
-                      //     // onSubmitted: (value) {
-                      //     //   _goToPageFromInput(value);
-                      //     // },
-                      //     // onEditingComplete: () {
-                      //     //   _goToPageFromInput(_pageController.text);
-                      //     // },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -162,7 +118,6 @@ class _PaginationFooterState extends State<PaginationFooter> {
               ],
             ),
           ),
-          // Total records display
           Visibility(
             visible: !ResponsiveLayout.isMobile(context),
             child: Container(
@@ -195,26 +150,7 @@ class _PaginationFooterState extends State<PaginationFooter> {
 
   void _goToPage(int page) {
     widget.stateManager.setPage(page);
-    setState(() {}); // Trigger rebuild to update UI
+    setState(() {});
   }
 
-  // void _goToPageFromInput(String input) {
-  //   final page = int.tryParse(input);
-  //   if (page != null && page >= 1 && page <= widget.stateManager.totalPage) {
-  //     _goToPage(page);
-  //   } else {
-  //     // Reset to current page if input is invalid
-  //     _pageController.text = widget.stateManager.page.toString();
-  //     // Show a brief feedback that the input was invalid
-  //     // ScaffoldMessenger.of(context).showSnackBar(
-  //     //   SnackBar(
-  //     //     content: Text(
-  //     //       'Please enter a valid page number between 1 and ${widget.stateManager.totalPage}',
-  //     //     ),
-  //     //     duration: const Duration(seconds: 2),
-  //     //     backgroundColor: Colors.red,
-  //     //   ),
-  //     // );
-  //   }
-  // }
 }

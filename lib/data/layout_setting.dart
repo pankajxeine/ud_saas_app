@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ud_sass_app/core/theme/app_theme.dart';
+import 'package:ud_sass_app/core/layouts/layout/app_layout_config.dart';
 import 'package:ud_sass_app/core/theme/theme_app.dart';
 import '../core/theme/app_theme_palette.dart';
 
@@ -14,6 +15,7 @@ class LayoutSettings {
     required this.scaling,
     required this.density,
     this.seedColor = AppThemePalette.defaultColor,
+    this.layoutConfig,
   });
 
   final ThemeApp themeDocument;
@@ -24,6 +26,9 @@ class LayoutSettings {
 
   /// Selected accent/seed color for generating color schemes.
   final Color seedColor;
+
+  /// Optional user override for the application shell layout.
+  final AppLayoutConfig? layoutConfig;
 
   String get presetId => themeDocument.id;
 
@@ -39,6 +44,7 @@ class LayoutSettings {
     shadowOpacity: themeDocument.lightShadow.opacity,
     shadowBlur: themeDocument.lightShadow.blur,
     density: density,
+    useSeedColorAsPrimary: true,
   );
 
   ThemeData get darkTheme => AppTheme.materialFor(
@@ -53,6 +59,7 @@ class LayoutSettings {
     shadowOpacity: themeDocument.darkShadow.opacity,
     shadowBlur: themeDocument.darkShadow.blur,
     density: density,
+    useSeedColorAsPrimary: true,
   );
 
   CupertinoThemeData cupertinoTheme(Brightness brightness) =>
@@ -63,5 +70,6 @@ class LayoutSettings {
             ? themeDocument.dark
             : themeDocument.light,
         fontFamily: themeDocument.bodyFont,
+        useSeedColorAsPrimary: true,
       );
 }

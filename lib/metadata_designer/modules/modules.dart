@@ -93,7 +93,7 @@ class _MetadataDesignerContent extends StatelessWidget {
                   addCardTitle: 'Add Module',
                   addCardDescription: 'Create new metadata module',
                   onAddTap: () {
-                    context.push(
+                    context.go(
                       ApplicationRoutesConstants.metadataModuleNew,
                       extra: MetaModule.empty(),
                     );

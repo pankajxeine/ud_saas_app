@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import 'package:ud_sass_app/core/widgets/components/app_filter_sheet.dart';
+import 'package:ud_sass_app/core/widgets/components/app_table_controls.dart';
 import 'package:ud_sass_app/core/widgets/data_table/data_table.dart';
 
 class DataGridPage extends StatefulWidget {
@@ -11,12 +15,16 @@ class DataGridPage extends StatefulWidget {
 
 class _DataGridPageState extends State<DataGridPage> {
   final TextEditingController _searchController = TextEditingController();
+  Timer? _searchDebounce;
 
   late final List<TrinaColumn> _columns;
   late final List<TrinaRow<dynamic>> _rows;
 
-  bool _pendingOnly = false;
+  String _statusFilter = 'all';
   bool _searchExpanded = false;
+  String _searchField = 'all';
+  String _submittedSearchQuery = '';
+  bool showFilters = false;
 
   @override
   void initState() {
@@ -61,93 +69,151 @@ class _DataGridPageState extends State<DataGridPage> {
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
   List<TrinaRow<dynamic>> get _visibleRows {
-    final query = _searchController.text.trim().toLowerCase();
-
     return _rows.where((row) {
       final status = row.cells['status']?.value.toString() ?? '';
 
-      if (_pendingOnly && status != 'Pending') {
+      if (_statusFilter != 'all' && status != _statusFilter) {
         return false;
       }
 
-      if (query.isEmpty) {
-        return true;
-      }
-
-      return row.cells.values.any(
-        (cell) => cell.value.toString().toLowerCase().contains(query),
+      return _matchesSearch(
+        row,
+        query: _submittedSearchQuery,
+        field: _searchField,
       );
     }).toList();
+  }
+
+  /// Returns whether [row] matches the submitted search query.
+  ///
+  /// The special `all` field searches every cell in the row. Otherwise only
+  /// the selected cell field is searched.
+  bool _matchesSearch(
+    TrinaRow<dynamic> row, {
+    required String query,
+    required String field,
+  }) {
+    final normalizedQuery = query.trim().toLowerCase();
+    if (normalizedQuery.isEmpty) return true;
+
+    final values = field == 'all'
+        ? row.cells.values.map((cell) => cell.value)
+        : <dynamic>[row.cells[field]?.value];
+
+    return values.any(
+      (value) => value?.toString().toLowerCase().contains(normalizedQuery) ?? false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final rows = _visibleRows;
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _PageHeader(
-            title: 'Orders',
-            subtitle: 'Manage and track your recent orders.',
-            totalCount: _rows.length,
-            filteredCount: rows.length,
-          ),
-
-          const SizedBox(height: 16),
-
-          Expanded(
-            child: AppDataTable(
-              title: 'All Orders',
-              subtitle: '${rows.length} orders found',
-              headerActionsBuilder: (context, compact) {
-                return _OrderTableControls(
-                  compact: compact,
-                  pendingOnly: _pendingOnly,
-                  searchExpanded: _searchExpanded,
-                  searchController: _searchController,
-                  onSearchChanged: (_) {
-                    setState(() {});
-                  },
-                  onToggleSearch: () {
-                    setState(() {
-                      _searchExpanded = !_searchExpanded;
-
-                      if (!_searchExpanded) {
-                        _searchController.clear();
-                      }
-                    });
-                  },
-                  onToggleFilter: () {
-                    setState(() {
-                      _pendingOnly = !_pendingOnly;
-                    });
-                  },
-                  onAdd: _addOrder,
-                );
-              },
-              columns: _columns,
-              rows: rows,
-              mobilePageSize: 5,
-              mobilePageSizes: const [5, 10, 20, 50],
-              mobileRowKey: (row) => row.cells['id']?.value.toString() ?? '',
-              onRowTap: (rowIdx) {
-                final orderId = rows[rowIdx].cells['id']?.value;
-
-                _showOrderDetails(orderId);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: AppFilterSheet(
+            open: showFilters,
+            presentation: AppFilterPresentation.auto,
+            mode: AppFilterSheetMode.auto,
+            desktopBreakpoint: 1024,
+            mobileBreakpoint: 600,
+            width: 320,
+            title: 'Order filters',
+            onClose: () => setState(() => showFilters = false),
+            mainContent: _buildTable(context, rows),
+            child: _OrderFilterPanel(
+              status: _statusFilter,
+              onApply: (status) {
+                setState(() => _statusFilter = status);
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+  }
+
+  Widget _buildTable(BuildContext context, List<TrinaRow<dynamic>> rows) {
+    return AppDataTable(
+      customHeader: const _PageHeader(
+        title: 'Orders',
+        subtitle: 'Manage and track your recent orders.',
+      ),
+      headerActionsBuilder: AppTableControls(
+        searchController: _searchController,
+        onSearchChanged: (value) {
+          _scheduleSearch(value);
+        },
+        onSearchSubmitted: (value) {
+          _searchDebounce?.cancel();
+          _applySearch(value);
+        },
+        searchHint: 'Search orders',
+        searchFields: const [
+          AppTableSearchField(value: 'all', label: 'All'),
+          AppTableSearchField(value: 'id', label: 'Order ID'),
+          AppTableSearchField(value: 'customer', label: 'Customer'),
+          AppTableSearchField(value: 'status', label: 'Status'),
+          AppTableSearchField(value: 'amount', label: 'Amount'),
+        ],
+        selectedSearchField: _searchField,
+        onSearchFieldChanged: (field) {
+          setState(() => _searchField = field);
+        },
+        searchExpanded: _searchExpanded,
+        onToggleSearch: () {
+          setState(() {
+            _searchExpanded = !_searchExpanded;
+            if (!_searchExpanded) {
+              _searchDebounce?.cancel();
+              _searchController.clear();
+              _submittedSearchQuery = '';
+            }
+          });
+        },
+        onFilterPressed: () {
+          setState(() => showFilters = !showFilters);
+        },
+        hasActiveFilters: _statusFilter != 'all',
+        showAddButton: true,
+        onAdd: _addOrder,
+        addLabel: 'Add order',
+        addTooltip: 'Add order',
+        compactBreakpoint: 640,
+      ),
+      columns: _columns,
+      rows: rows,
+      pageSize: 10,
+      mobilePageSize: 5,
+      mobilePageSizes: const [5, 10, 20, 50],
+      mobileRowKey: (row) => row.cells['id']?.value.toString() ?? '',
+      onRowTap: (rowIdx) {
+        final orderId = rows[rowIdx].cells['id']?.value;
+        _showOrderDetails(orderId);
+      },
+    );
+  }
+
+  void _scheduleSearch(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
+      _applySearch(value);
+    });
+  }
+
+  void _applySearch(String value) {
+    final query = value.trim();
+    if (_submittedSearchQuery == query) return;
+    setState(() => _submittedSearchQuery = query);
   }
 
   // ---------------------------------------------------------------------------
@@ -213,17 +279,10 @@ class _DataGridPageState extends State<DataGridPage> {
 // =============================================================================
 
 class _PageHeader extends StatelessWidget {
-  const _PageHeader({
-    required this.title,
-    required this.subtitle,
-    required this.totalCount,
-    required this.filteredCount,
-  });
+  const _PageHeader({required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
-  final int totalCount;
-  final int filteredCount;
 
   @override
   Widget build(BuildContext context) {
@@ -261,21 +320,6 @@ class _PageHeader extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: scheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                '$filteredCount / $totalCount',
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: scheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
           ],
         );
       },
@@ -287,109 +331,70 @@ class _PageHeader extends StatelessWidget {
 // Table Controls
 // =============================================================================
 
-class _OrderTableControls extends StatelessWidget {
-  const _OrderTableControls({
-    required this.compact,
-    required this.pendingOnly,
-    required this.searchExpanded,
-    required this.searchController,
-    required this.onSearchChanged,
-    required this.onToggleSearch,
-    required this.onToggleFilter,
-    required this.onAdd,
-  });
+class _OrderFilterPanel extends StatefulWidget {
+  const _OrderFilterPanel({required this.status, this.onApply});
 
-  final bool compact;
-  final bool pendingOnly;
-  final bool searchExpanded;
+  final String status;
+  final ValueChanged<String>? onApply;
 
-  final TextEditingController searchController;
+  @override
+  State<_OrderFilterPanel> createState() => _OrderFilterPanelState();
+}
 
-  final ValueChanged<String> onSearchChanged;
-  final VoidCallback onToggleSearch;
-  final VoidCallback onToggleFilter;
-  final VoidCallback onAdd;
+class _OrderFilterPanelState extends State<_OrderFilterPanel> {
+  late String _status = widget.status;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-
-    final searchField = SizedBox(
-      width: compact ? 170 : 220,
-      height: 40,
-      child: TextField(
-        controller: searchController,
-        onChanged: onSearchChanged,
-        textInputAction: TextInputAction.search,
-        style: theme.textTheme.bodySmall,
-        decoration: InputDecoration(
-          isDense: true,
-          hintText: 'Search orders',
-          prefixIcon: const Icon(Icons.search_rounded, size: 18),
-          prefixIconConstraints: const BoxConstraints(minWidth: 36),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 8,
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      ),
-    );
-
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      alignment: WrapAlignment.end,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!compact || searchExpanded)
-          searchField
-        else
-          IconButton(
-            tooltip: 'Search',
-            visualDensity: VisualDensity.compact,
-            onPressed: onToggleSearch,
-            icon: const Icon(Icons.search_rounded),
+        DropdownButtonFormField<String>(
+          value: _status,
+          decoration: const InputDecoration(
+            labelText: 'Status',
+            border: OutlineInputBorder(),
           ),
-
-        if (compact && searchExpanded)
-          IconButton(
-            tooltip: 'Close search',
-            visualDensity: VisualDensity.compact,
-            onPressed: onToggleSearch,
-            icon: const Icon(Icons.close_rounded),
-          ),
-
-        FilterChip(
-          selected: pendingOnly,
-          showCheckmark: false,
-          visualDensity: VisualDensity.compact,
-          avatar: Icon(
-            Icons.filter_alt_outlined,
-            size: 16,
-            color: pendingOnly
-                ? scheme.onSecondaryContainer
-                : scheme.onSurfaceVariant,
-          ),
-          label: const Text('Pending'),
-          onSelected: (_) => onToggleFilter(),
+          items: const [
+            DropdownMenuItem(value: 'all', child: Text('All statuses')),
+            DropdownMenuItem(value: 'Pending', child: Text('Pending')),
+            DropdownMenuItem(value: 'Shipped', child: Text('Shipped')),
+            DropdownMenuItem(value: 'Delivered', child: Text('Delivered')),
+          ],
+          onChanged: (value) {
+            if (value != null) setState(() => _status = value);
+          },
         ),
-
-        if (compact)
-          IconButton.filled(
-            tooltip: 'Add order',
-            visualDensity: VisualDensity.compact,
-            onPressed: onAdd,
-            icon: const Icon(Icons.add_rounded),
-          )
-        else
-          FilledButton.icon(
-            onPressed: onAdd,
-            icon: const Icon(Icons.add_rounded, size: 18),
-            label: const Text('Add order'),
-          ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => _submit('all'),
+                child: const Text('Clear'),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FilledButton(
+                onPressed: () => _submit(_status),
+                child: const Text('Apply filters'),
+              ),
+            ),
+          ],
+        ),
       ],
     );
+  }
+
+  void _submit(String status) {
+    if (widget.onApply != null) {
+      widget.onApply!(status);
+      if (status == 'all') setState(() => _status = 'all');
+      return;
+    }
+
+    Navigator.pop(context, status);
   }
 }

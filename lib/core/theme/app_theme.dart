@@ -76,6 +76,7 @@ abstract final class AppTheme {
     double shadowOpacity = 0.16,
     double shadowBlur = 12,
     AppDensity? density,
+    bool useSeedColorAsPrimary = false,
   }) {
     return materialFor(
       brightness: material.Brightness.light,
@@ -89,6 +90,7 @@ abstract final class AppTheme {
       shadowOpacity: shadowOpacity,
       shadowBlur: shadowBlur,
       density: density,
+      useSeedColorAsPrimary: useSeedColorAsPrimary,
     );
   }
 
@@ -103,6 +105,7 @@ abstract final class AppTheme {
     double shadowOpacity = 0.16,
     double shadowBlur = 12,
     AppDensity? density,
+    bool useSeedColorAsPrimary = false,
   }) {
     return materialFor(
       brightness: material.Brightness.dark,
@@ -116,6 +119,7 @@ abstract final class AppTheme {
       shadowOpacity: shadowOpacity,
       shadowBlur: shadowBlur,
       density: density,
+      useSeedColorAsPrimary: useSeedColorAsPrimary,
     );
   }
 
@@ -138,13 +142,17 @@ abstract final class AppTheme {
     double shadowOpacity = 0.16,
     double shadowBlur = 12,
     AppDensity? density,
+    bool useSeedColorAsPrimary = false,
   }) {
-    final effectiveSeed = _colorFromHex(colorTokens?['primary']) ?? seedColor;
+    final effectiveSeed = useSeedColorAsPrimary
+        ? seedColor
+        : _colorFromHex(colorTokens?['primary']) ?? seedColor;
 
     final scheme = _colorScheme(
       seedColor: effectiveSeed,
       brightness: brightness,
       tokens: colorTokens,
+      useSeedColorAsPrimary: useSeedColorAsPrimary,
     );
 
     final isDark = brightness == material.Brightness.dark;
@@ -371,6 +379,7 @@ abstract final class AppTheme {
     required material.Color seedColor,
     required material.Brightness brightness,
     Map<String, String>? tokens,
+    bool useSeedColorAsPrimary = false,
   }) {
     final base = material.ColorScheme.fromSeed(
       seedColor: seedColor,
@@ -380,8 +389,8 @@ abstract final class AppTheme {
     material.Color? color(String key) => _colorFromHex(tokens?[key]);
 
     return base.copyWith(
-      primary: color('primary'),
-      onPrimary: color('primaryForeground'),
+      primary: useSeedColorAsPrimary ? seedColor : color('primary'),
+      onPrimary: useSeedColorAsPrimary ? null : color('primaryForeground'),
       secondary: color('secondary'),
       onSecondary: color('secondaryForeground'),
       surface: color('background') ?? color('card'),
@@ -470,13 +479,17 @@ abstract final class AppTheme {
     material.Color seedColor = AppThemePalette.defaultColor,
     Map<String, String>? colorTokens,
     String? fontFamily,
+    bool useSeedColorAsPrimary = false,
   }) {
-    final effectiveSeed = _colorFromHex(colorTokens?['primary']) ?? seedColor;
+    final effectiveSeed = useSeedColorAsPrimary
+        ? seedColor
+        : _colorFromHex(colorTokens?['primary']) ?? seedColor;
 
     final scheme = _colorScheme(
       seedColor: effectiveSeed,
       brightness: brightness,
       tokens: colorTokens,
+      useSeedColorAsPrimary: useSeedColorAsPrimary,
     );
 
     return CupertinoThemeData(

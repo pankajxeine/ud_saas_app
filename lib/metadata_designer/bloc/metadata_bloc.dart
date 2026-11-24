@@ -10,6 +10,7 @@ import '../models/metadata_module.dart';
 import '../models/metadata_module_version.dart';
 import '../models/metadata_field.dart';
 import '../models/metadata_schema.dart';
+import '../models/metadata_sections.dart';
 
 class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
   final MetadataRepository repository;
@@ -78,7 +79,10 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
     UpdateRootProperty event,
     Emitter<MetadataState> emit,
   ) {
-    _emitSchemaUpdate(emit, (schema) => _setSchemaProperty(schema, event.key, event.value));
+    _emitSchemaUpdate(
+      emit,
+      (schema) => _setSchemaProperty(schema, event.key, event.value),
+    );
   }
 
   void _onUpdateRootProperties(
@@ -101,9 +105,7 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
     final metadata = state.metadata;
     if (metadata == null) return;
     final fields = List<MetadataField>.from(metadata.schemaJson.fields);
-    final index = fields.indexWhere(
-      (field) => field.name == event.fieldName,
-    );
+    final index = fields.indexWhere((field) => field.name == event.fieldName);
 
     if (index == -1) return;
 
@@ -310,13 +312,35 @@ class MetadataBloc extends Bloc<MetadataEvent, MetadataState> {
         return schema.copyWith(primaryKey: value?.toString());
       case 'fields':
         final fields = value is List
-            ? value.whereType<Map>().map((item) => MetadataField.fromJson(Map<String, dynamic>.from(item))).toList()
+            ? value
+                  .whereType<Map>()
+                  .map(
+                    (item) =>
+                        MetadataField.fromJson(Map<String, dynamic>.from(item)),
+                  )
+                  .toList()
             : schema.fields;
         return schema.copyWith(fields: fields);
+      case 'sections':
+        final sections = value is List
+            ? value
+                  .whereType<Map>()
+                  .map(
+                    (item) => MetadataSection.fromJson(
+                      Map<String, dynamic>.from(item),
+                    ),
+                  )
+                  .toList()
+            : schema.sections;
+        return schema.copyWith(sections: sections);
       case 'datatable':
-        return schema.copyWith(datatable: value is Map ? Map<String, dynamic>.from(value) : const {});
+        return schema.copyWith(
+          datatable: value is Map ? Map<String, dynamic>.from(value) : const {},
+        );
       case 'search':
-        return schema.copyWith(search: value is Map ? Map<String, dynamic>.from(value) : const {});
+        return schema.copyWith(
+          search: value is Map ? Map<String, dynamic>.from(value) : const {},
+        );
       default:
         return schema.copyWith(extra: {...schema.extra, key: value});
     }

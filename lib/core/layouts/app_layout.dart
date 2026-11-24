@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:ud_sass_app/core/navigation/app_route_location.dart';
 import 'package:ud_sass_app/core/theme/app_theme.dart';
+import 'package:ud_sass_app/core/theme/bloc/theme_cubit.dart';
 
 import '../navigation/app_route_definition.dart';
 
@@ -13,6 +14,7 @@ import 'layout/layout_scope.dart';
 import 'widgets/app_sidebar.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/app_navigation.dart';
+import 'app_scaffold.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({
@@ -125,16 +127,18 @@ class _AppShell extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final gradients = theme.extension<AppThemeExtension>();
+    final effectiveConfig =
+        context.watch<ThemeCubit>().state.settings.layoutConfig ?? config;
 
-    final currentRoute = AppRouteLocation.maybeOf(context) ?? '/';
+    final currentRoute = GoRouterState.of(context).uri.path;
 
     final isDesktop = !isMobile && !isTablet;
 
-    final showSidebar = config.showSidebar && isDesktop;
-    final showRail = config.showNavigationRail && isTablet;
-    final showBottomBar = config.showBottomNavigation && isMobile;
+    final showSidebar = effectiveConfig.showSidebar && isDesktop;
+    final showRail = effectiveConfig.showNavigationRail && isTablet;
+    final showBottomBar = effectiveConfig.showBottomNavigation && isMobile;
 
-    final appBar = config.showAppBar
+    final appBar = effectiveConfig.showAppBar
         ? AppTopBar(
             isMobile: isMobile,
             collapsed: collapsed,
@@ -161,7 +165,12 @@ class _AppShell extends StatelessWidget {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainer,
+            color: effectiveConfig.useSurfaceGradient
+                ? null
+                : colorScheme.surfaceContainer,
+            gradient: effectiveConfig.useSurfaceGradient && gradients != null
+                ? gradients.surfaceGradient
+                : null,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(AppTheme.radiusLarge),
               topRight: Radius.circular(AppTheme.radiusLarge),
@@ -182,7 +191,7 @@ class _AppShell extends StatelessWidget {
 
     final Widget content;
 
-    switch (config.appBarLayout) {
+    switch (effectiveConfig.appBarLayout) {
       case AppBarLayout.fullWidth:
         content = Column(
           children: [
@@ -209,11 +218,11 @@ class _AppShell extends StatelessWidget {
     }
 
     final backgroundDecoration =
-        config.useBackgroundGradient && gradients != null
+        effectiveConfig.useBackgroundGradient && gradients != null
         ? BoxDecoration(gradient: gradients.backgroundGradient)
         : BoxDecoration(color: colorScheme.surface);
 
-    return Scaffold(
+    return AppScaffold(
       key: scaffoldKey,
       backgroundColor: colorScheme.surface,
       drawer: isMobile ? AppNavDrawer(routes: routesList) : null,

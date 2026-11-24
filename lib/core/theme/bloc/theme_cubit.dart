@@ -12,6 +12,14 @@ import 'package:ud_sass_app/core/theme/theme_utils.dart'
         kPrefsDensityBaseContainerPadding,
         kPrefsDensityBaseContentPadding,
         kPrefsDensityBaseGap,
+        kPrefsLayoutAppBar,
+        kPrefsLayoutShowAppBar,
+        kPrefsLayoutShowSidebar,
+        kPrefsLayoutShowNavigationRail,
+        kPrefsLayoutShowBottomNavigation,
+        kPrefsLayoutBackgroundGradient,
+        kPrefsLayoutSurfaceGradient,
+        kPrefsSeedColor,
         kPrefsRadius,
         kPrefsScaling,
         kPrefsSurfaceBlur,
@@ -19,6 +27,7 @@ import 'package:ud_sass_app/core/theme/theme_utils.dart'
         kPrefsThemeMode,
         kPrefsThemePresetId,
         loadSettings;
+import 'package:ud_sass_app/core/layouts/layout/app_layout_config.dart';
 import 'package:ud_sass_app/data/layout_setting.dart';
 import 'package:ud_sass_app/state/app_storage.dart' show kAppThemeDocumentKey;
 
@@ -31,9 +40,9 @@ class ThemeCubit extends Cubit<ThemeState> {
   final SharedPreferences preferences;
 
   Future<void> setSeedColor(Color color) async {
-    // Update LayoutSettings.seedColor,
-    // persist the updated settings,
-    // and emit the updated ThemeState.
+    if (!await preferences.setInt(kPrefsSeedColor, color.toARGB32())) {
+      throw StateError('Failed to save the selected theme palette.');
+    }
     emit(
       state.copyWith(settings: _copySettings(state.settings, seedColor: color)),
     );
@@ -172,10 +181,41 @@ class ThemeCubit extends Cubit<ThemeState> {
     );
   }
 
+  Future<void> setLayoutConfig(AppLayoutConfig config) async {
+    final values = <String, bool>{
+      kPrefsLayoutShowAppBar: config.showAppBar,
+      kPrefsLayoutShowSidebar: config.showSidebar,
+      kPrefsLayoutShowNavigationRail: config.showNavigationRail,
+      kPrefsLayoutShowBottomNavigation: config.showBottomNavigation,
+      kPrefsLayoutBackgroundGradient: config.useBackgroundGradient,
+      kPrefsLayoutSurfaceGradient: config.useSurfaceGradient,
+    };
+
+    for (final entry in values.entries) {
+      if (!await preferences.setBool(entry.key, entry.value)) {
+        throw StateError('Failed to save layout preference "${entry.key}".');
+      }
+    }
+
+    if (!await preferences.setString(
+      kPrefsLayoutAppBar,
+      config.appBarLayout.name,
+    )) {
+      throw StateError('Failed to save the application bar layout.');
+    }
+
+    emit(
+      state.copyWith(
+        settings: _copySettings(state.settings, layoutConfig: config),
+      ),
+    );
+  }
+
   Future<void> resetAppearance() async {
     const List<String> keys = <String>[
       kAppThemeDocumentKey,
       kPrefsThemePresetId,
+      kPrefsSeedColor,
       kPrefsThemeMode,
       kPrefsRadius,
       kPrefsScaling,
@@ -184,6 +224,13 @@ class ThemeCubit extends Cubit<ThemeState> {
       kPrefsDensityBaseContainerPadding,
       kPrefsDensityBaseGap,
       kPrefsDensityBaseContentPadding,
+      kPrefsLayoutAppBar,
+      kPrefsLayoutShowAppBar,
+      kPrefsLayoutShowSidebar,
+      kPrefsLayoutShowNavigationRail,
+      kPrefsLayoutShowBottomNavigation,
+      kPrefsLayoutBackgroundGradient,
+      kPrefsLayoutSurfaceGradient,
       'colorScheme',
       'colorSchemeLight',
       'colorSchemeDark',
@@ -223,6 +270,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     double? scaling,
     AppDensity? density,
     Color? seedColor,
+    AppLayoutConfig? layoutConfig,
   }) => LayoutSettings(
     themeDocument: themeDocument ?? settings.themeDocument,
     themeMode: themeMode ?? settings.themeMode,
@@ -230,5 +278,6 @@ class ThemeCubit extends Cubit<ThemeState> {
     scaling: scaling ?? settings.scaling,
     density: density ?? settings.density,
     seedColor: seedColor ?? settings.seedColor,
+    layoutConfig: layoutConfig ?? settings.layoutConfig,
   );
 }

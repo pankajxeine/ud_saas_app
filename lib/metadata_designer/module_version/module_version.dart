@@ -18,6 +18,8 @@ import '../widgets/metadata_preview.dart';
 import '../widgets/metadata_json_editor.dart';
 import '../widgets/general_editor.dart';
 import '../widgets/field_list_editor.dart';
+import '../widgets/field_validation_editor.dart';
+import '../widgets/section_list_editor.dart';
 import '../widgets/api_editor.dart';
 import '../widgets/grid_search_editor.dart';
 import '../widgets/reference_lookup_editor.dart';
@@ -300,7 +302,18 @@ class MetadataVersionDesign extends StatelessWidget {
         return const GeneralEditor();
 
       case 'fields':
-        return FieldEditor(fields: moduleVersion?.schemaJson.fields ?? []);
+        return FieldEditor(
+          fields: moduleVersion?.schemaJson.fields ?? const [],
+          sections: moduleVersion?.schemaJson.sections ?? const [],
+        );
+
+      case 'field-validations':
+        return const FieldValidationEditor();
+
+      case 'sections':
+        return SectionsEditor(
+          sections: moduleVersion?.schemaJson.sections ?? const [],
+        );
 
       case 'datatable':
         return const DataTableColumnView();

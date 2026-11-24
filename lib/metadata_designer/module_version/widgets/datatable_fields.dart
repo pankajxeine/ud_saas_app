@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/forms/app_reactive_form.dart';
+import '../../../core/forms/forms.dart';
 import '../../../core/forms/helper/entity_meta_helper.dart';
 import '../../../../core/forms/models/entity_meta.dart';
 import '../../bloc/metadata_bloc.dart';
@@ -70,19 +70,84 @@ class DataTableColumnView extends StatelessWidget {
       meta: sampleOrderFormMeta,
       initialData: const {
         "columns": [
-          {"field": "record_code", "label": "Record Code", "tableEnable": true, "viewEnable": true},
-          {"field": "contact_id", "label": "Contact Id", "tableEnable": true, "viewEnable": true},
-          {"field": "account_id", "label": "Account Id", "tableEnable": true, "viewEnable": true},
-          {"field": "first_name", "label": "First Name", "tableEnable": true, "viewEnable": true},
-          {"field": "last_name", "label": "Last Name", "tableEnable": true, "viewEnable": true},
-          {"field": "email", "label": "Email", "tableEnable": true, "viewEnable": true},
-          {"field": "phone", "label": "Phone", "tableEnable": true, "viewEnable": true},
-          {"field": "job_title", "label": "Job Title", "tableEnable": true, "viewEnable": true},
-          {"field": "is_primary", "label": "Is Primary", "tableEnable": true, "viewEnable": true},
-          {"field": "is_billing", "label": "Is Billing", "tableEnable": true, "viewEnable": true},
-          {"field": "is_technical", "label": "Is Technical", "tableEnable": true, "viewEnable": true},
-          {"field": "marketing_consent", "label": "Marketing Consent", "tableEnable": true, "viewEnable": true},
-          {"field": "preferred_locale", "label": "Preferred Locale", "tableEnable": true, "viewEnable": true},
+          {
+            "field": "record_code",
+            "label": "Record Code",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "contact_id",
+            "label": "Contact Id",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "account_id",
+            "label": "Account Id",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "first_name",
+            "label": "First Name",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "last_name",
+            "label": "Last Name",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "email",
+            "label": "Email",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "phone",
+            "label": "Phone",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "job_title",
+            "label": "Job Title",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "is_primary",
+            "label": "Is Primary",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "is_billing",
+            "label": "Is Billing",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "is_technical",
+            "label": "Is Technical",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "marketing_consent",
+            "label": "Marketing Consent",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
+          {
+            "field": "preferred_locale",
+            "label": "Preferred Locale",
+            "tableEnable": true,
+            "viewEnable": true,
+          },
         ],
       },
       onSubmit: (data) async {

@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ud_sass_app/data/layout_setting.dart';
+import 'package:ud_sass_app/core/layouts/layout/app_layout_config.dart';
 import 'package:ud_sass_app/state/app_storage.dart';
 
 import 'app_theme.dart';
+import 'app_theme_palette.dart';
 import 'theme_app.dart';
 import 'theme_app_edits.dart';
 
 const kPrefsThemeMode = 'themeMode';
 const kPrefsThemePresetId = 'themePresetId';
+const kPrefsSeedColor = 'seedColor';
 const kPrefsRadius = 'radius';
 const kPrefsScaling = 'scaling';
 const kPrefsSurfaceOpacity = 'surfaceOpacity';
@@ -19,6 +22,13 @@ const kPrefsSurfaceBlur = 'surfaceBlur';
 const kPrefsDensityBaseContainerPadding = 'density.baseContainerPadding';
 const kPrefsDensityBaseGap = 'density.baseGap';
 const kPrefsDensityBaseContentPadding = 'density.baseContentPadding';
+const kPrefsLayoutAppBar = 'layout.appBarLayout';
+const kPrefsLayoutShowAppBar = 'layout.showAppBar';
+const kPrefsLayoutShowSidebar = 'layout.showSidebar';
+const kPrefsLayoutShowNavigationRail = 'layout.showNavigationRail';
+const kPrefsLayoutShowBottomNavigation = 'layout.showBottomNavigation';
+const kPrefsLayoutBackgroundGradient = 'layout.backgroundGradient';
+const kPrefsLayoutSurfaceGradient = 'layout.surfaceGradient';
 
 Future<LayoutSettings> loadSettings(SharedPreferences preferences) async {
   ThemeApp document;
@@ -64,12 +74,50 @@ Future<LayoutSettings> loadSettings(SharedPreferences preferences) async {
     document = document.withRadiusPx(radius * 16);
   }
   final density = _density(preferences);
+  final savedSeedColor = preferences.getInt(kPrefsSeedColor);
   return LayoutSettings(
     themeDocument: document,
     themeMode: mode,
     initialPath: preferences.getString('initialPath') ?? '/login',
     scaling: preferences.getDouble(kPrefsScaling) ?? 1,
     density: density,
+    seedColor: savedSeedColor == null
+        ? AppThemePalette.defaultColor
+        : Color(savedSeedColor),
+    layoutConfig: _layoutConfig(preferences),
+  );
+}
+
+AppLayoutConfig? _layoutConfig(SharedPreferences preferences) {
+  final hasSavedLayout = preferences.containsKey(kPrefsLayoutAppBar) ||
+      preferences.containsKey(kPrefsLayoutShowAppBar) ||
+      preferences.containsKey(kPrefsLayoutShowSidebar) ||
+      preferences.containsKey(kPrefsLayoutShowNavigationRail) ||
+      preferences.containsKey(kPrefsLayoutShowBottomNavigation) ||
+      preferences.containsKey(kPrefsLayoutBackgroundGradient) ||
+      preferences.containsKey(kPrefsLayoutSurfaceGradient);
+
+  if (!hasSavedLayout) return null;
+
+  final appBarLayout = switch (
+    preferences.getString(kPrefsLayoutAppBar) ?? 'fullWidth'
+  ) {
+    'contentOnly' => AppBarLayout.contentOnly,
+    _ => AppBarLayout.fullWidth,
+  };
+
+  return AppLayoutConfig(
+    appBarLayout: appBarLayout,
+    showAppBar: preferences.getBool(kPrefsLayoutShowAppBar) ?? true,
+    showSidebar: preferences.getBool(kPrefsLayoutShowSidebar) ?? true,
+    showNavigationRail:
+        preferences.getBool(kPrefsLayoutShowNavigationRail) ?? true,
+    showBottomNavigation:
+        preferences.getBool(kPrefsLayoutShowBottomNavigation) ?? true,
+    useBackgroundGradient:
+        preferences.getBool(kPrefsLayoutBackgroundGradient) ?? true,
+    useSurfaceGradient:
+        preferences.getBool(kPrefsLayoutSurfaceGradient) ?? true,
   );
 }
 

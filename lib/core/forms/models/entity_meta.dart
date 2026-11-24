@@ -11,16 +11,69 @@ enum EntityMode { view, edit, create }
 
 enum EntityFormLayoutMode { basic, tabs, stepper }
 
+enum EntityFormStepperOrientation { horizontal, vertical }
+
+EntityFormStepperOrientation parseStepperOrientation(dynamic value) {
+  return value?.toString().toLowerCase() == 'vertical'
+      ? EntityFormStepperOrientation.vertical
+      : EntityFormStepperOrientation.horizontal;
+}
+
+EntityFormLayoutMode parseFormLayout(dynamic value) {
+  switch (value?.toString().toLowerCase()) {
+    case 'tabs':
+      return EntityFormLayoutMode.tabs;
+    case 'stepper':
+      return EntityFormLayoutMode.stepper;
+    case 'basic':
+    default:
+      return EntityFormLayoutMode.basic;
+  }
+}
+
 class EntityFormSection {
   const EntityFormSection({
     required this.id,
     required this.title,
-    this.fields = const [],
+    this.icon,
+    this.permission = const {},
   });
 
   final String id;
   final String title;
-  final List<String> fields;
+  final String? icon;
+  final Map<String, String> permission;
+
+  factory EntityFormSection.fromJson(Map<String, dynamic> json) {
+    final id = json['id']?.toString() ?? 'section';
+    final rawPermission = json['permission'];
+    final permission = rawPermission is Map
+        ? rawPermission.map(
+            (key, value) => MapEntry(key.toString(), value.toString()),
+          )
+        : {
+            'read': '$id.read',
+            'edit': '$id.edit',
+            'delete': '$id.delete',
+            'create': '$id.create',
+          };
+
+    return EntityFormSection(
+      id: id,
+      title: json['title']?.toString() ?? id,
+      icon: json['icon']?.toString().trim().isEmpty == true
+          ? null
+          : json['icon']?.toString().trim(),
+      permission: permission,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    if (icon != null && icon!.isNotEmpty) 'icon': icon,
+    'permission': permission,
+  };
 }
 
 class EntityMeta {
@@ -29,6 +82,7 @@ class EntityMeta {
     required this.fields,
     this.layout = const EntityGridLayout(),
     this.formLayout = EntityFormLayoutMode.basic,
+    this.stepperOrientation = EntityFormStepperOrientation.horizontal,
     this.sections = const [],
   });
 
@@ -36,7 +90,14 @@ class EntityMeta {
   final EntityGridLayout layout;
   final List<FieldMeta<dynamic>> fields;
   final EntityFormLayoutMode formLayout;
+  final EntityFormStepperOrientation stepperOrientation;
   final List<EntityFormSection> sections;
+
+  List<FieldMeta<dynamic>> fieldsForSection(String sectionId) {
+    return fields
+        .where((field) => field.section == sectionId)
+        .toList(growable: false);
+  }
 
   /// Creates a Reactive Forms [FormGroup].
   ///

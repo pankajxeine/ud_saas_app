@@ -21,5 +21,6 @@ class ThemeState extends Equatable {
     settings.scaling,
     settings.density,
     settings.seedColor,
+    settings.layoutConfig,
   ];
 }

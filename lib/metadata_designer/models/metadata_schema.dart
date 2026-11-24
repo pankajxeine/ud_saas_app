@@ -1,6 +1,7 @@
 import 'metadata_api.dart';
 import 'metadata_field.dart';
 import 'metadata_grid.dart';
+import 'metadata_sections.dart';
 
 class MetadataSchema {
   final String? entity;
@@ -23,6 +24,8 @@ class MetadataSchema {
 
   final MetadataGrid? grid;
 
+  final List<MetadataSection> sections;
+
   // Flexible metadata sections.
   final Map<String, dynamic> search;
   final Map<String, dynamic> datatable;
@@ -40,6 +43,7 @@ class MetadataSchema {
     this.primaryKey,
     this.api,
     this.grid,
+    this.sections = const [],
     this.search = const {},
     this.datatable = const {},
     this.detail = const {},
@@ -55,6 +59,7 @@ class MetadataSchema {
       'primaryKey',
       'api',
       'grid',
+      'sections',
       'search',
       'datatable',
       'detail',
@@ -73,6 +78,8 @@ class MetadataSchema {
 
       // Grid remains an object.
       grid: _parseObject(json['grid'], MetadataGrid.fromJson),
+
+      sections: _parseSections(json['sections']),
 
       search: _map(json['search']),
       datatable: _map(json['datatable']),
@@ -100,6 +107,8 @@ class MetadataSchema {
 
       if (grid != null) 'grid': grid!.toJson(),
 
+      'sections': sections.map((section) => section.toJson()).toList(),
+
       'search': search,
       'datatable': datatable,
       'fields': fields.map((field) => field.toJson()).toList(),
@@ -113,6 +122,7 @@ class MetadataSchema {
     String? primaryKey,
     MetadataApi? api,
     MetadataGrid? grid,
+    List<MetadataSection>? sections,
     Map<String, dynamic>? search,
     Map<String, dynamic>? datatable,
     Map<String, dynamic>? detail,
@@ -126,6 +136,7 @@ class MetadataSchema {
       primaryKey: primaryKey ?? this.primaryKey,
       api: api ?? this.api,
       grid: grid ?? this.grid,
+      sections: sections ?? this.sections,
       search: search ?? this.search,
       datatable: datatable ?? this.datatable,
       detail: detail ?? this.detail,
@@ -182,6 +193,17 @@ class MetadataSchema {
     if (value is! Map) return {};
 
     return Map<String, dynamic>.from(value);
+  }
+
+  static List<MetadataSection> _parseSections(dynamic value) {
+    if (value is! List) return const <MetadataSection>[];
+
+    return value
+        .whereType<Map>()
+        .map(
+          (item) => MetadataSection.fromJson(Map<String, dynamic>.from(item)),
+        )
+        .toList();
   }
 
   static List<MetadataField> _parseFields(dynamic value) {

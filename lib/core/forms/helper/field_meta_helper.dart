@@ -125,6 +125,8 @@ FieldMeta<dynamic> fieldMetaFromJson(Map<String, dynamic> json) {
 
     itemMeta: itemMeta,
 
+    section: json['section']?.toString(),
+
     layout: layoutJson is Map
         ? FieldLayoutMeta.fromJson(Map<String, dynamic>.from(layoutJson))
         : const FieldLayoutMeta(),
@@ -176,13 +178,7 @@ List<EntityFormSection> _schemaSections(Map<String, dynamic> schema) {
   if (layout is! Map || layout['sections'] is! List) return const [];
   return (layout['sections'] as List)
       .whereType<Map>()
-      .map((item) => EntityFormSection(
-            id: item['id']?.toString() ?? 'section',
-            title: item['title']?.toString() ?? 'Section',
-            fields: (item['fields'] as List? ?? const [])
-                .map((field) => field.toString())
-                .toList(),
-          ))
+      .map((item) => EntityFormSection.fromJson(Map<String, dynamic>.from(item)))
       .toList();
 }
 
@@ -192,18 +188,21 @@ FieldMeta<dynamic> _fieldMetaFromJsonSchema(
   bool required = false,
 }) {
   final itemSchema = schema['items'];
-  final isMultiSelect = schema['widget']?.toString() == 'multiselect' ||
+  final isMultiSelect =
+      schema['widget']?.toString() == 'multiselect' ||
       (itemSchema is Map && itemSchema['enum'] is List);
   final type = isMultiSelect
       ? EntityFieldType.multiselect
       : _schemaType(schema['type']?.toString(), schema['format']?.toString());
   final json = <String, dynamic>{
     'name': name,
-    'label': schema['label']?.toString() ??
+    'label':
+        schema['label']?.toString() ??
         schema['title']?.toString() ??
         _humanizeSchemaName(name),
     'type': type.name,
     'widget': schema['widget']?.toString() ?? _schemaWidget(type),
+    if (schema['section'] != null) 'section': schema['section'],
     if (schema['format'] != null) 'format': schema['format'],
     if (schema['description'] != null) 'helpText': schema['description'],
     if (schema['enum'] is List)
@@ -215,7 +214,9 @@ FieldMeta<dynamic> _fieldMetaFromJsonSchema(
       'asyncValidationRules': schema['x-asyncValidators'],
   };
 
-  if (type == EntityFieldType.multiselect && itemSchema is Map && itemSchema['enum'] is List) {
+  if (type == EntityFieldType.multiselect &&
+      itemSchema is Map &&
+      itemSchema['enum'] is List) {
     json['options'] = (itemSchema['enum'] as List)
         .map((value) => {'label': value.toString(), 'value': value})
         .toList();
@@ -329,8 +330,10 @@ Map<String, dynamic> _schemaValidationRules(
   if (schema['enum'] is List) rules['oneOf'] = schema['enum'];
   final anyOf = schema['anyOf'];
   if (anyOf is List) {
-    rules['composeOR'] = anyOf.whereType<Map>().map((item) =>
-        _schemaValidationRules(Map<String, dynamic>.from(item))).toList();
+    rules['composeOR'] = anyOf
+        .whereType<Map>()
+        .map((item) => _schemaValidationRules(Map<String, dynamic>.from(item)))
+        .toList();
   }
   return rules;
 }
@@ -367,7 +370,10 @@ Map<String, dynamic> _schemaCompositeRules(dynamic value) {
 }
 
 String _humanizeSchemaName(String value) => value
-    .replaceAllMapped(RegExp(r'([a-z0-9])([A-Z])'), (match) => '${match[1]} ${match[2]}')
+    .replaceAllMapped(
+      RegExp(r'([a-z0-9])([A-Z])'),
+      (match) => '${match[1]} ${match[2]}',
+    )
     .replaceAll('_', ' ')
     .split(RegExp(r'\s+'))
     .where((part) => part.isNotEmpty)

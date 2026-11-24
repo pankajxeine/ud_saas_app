@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ud_sass_app/core/forms/models/entity_meta.dart';
 import 'package:ud_sass_app/core/forms/helper/entity_meta_helper.dart';
-import 'package:ud_sass_app/core/forms/app_reactive_form.dart';
+import 'package:ud_sass_app/core/forms/forms.dart';
 
 import '../bloc/metadata_bloc.dart';
 import '../bloc/metadata_event.dart';
@@ -43,14 +43,6 @@ class ApiEditor extends StatefulWidget {
     "widget": "array",
     "fields": [
       {
-        "name": "operation",
-        "label": "Operation",
-        "type": "select",
-        "widget": "select",
-
-        "options": ["list", "create", "detail", "update", "delete"],
-      },
-      {
         "name": "path",
         "label": "Path",
         "type": "text",
@@ -72,82 +64,6 @@ class ApiEditor extends StatefulWidget {
       },
     ],
   };
-
-  // static const initialData = {
-  //   'ui': {
-  //     'hint': null,
-  //     'icon': null,
-  //     'label': 'Marketing Consent',
-  //     'tooltip': null,
-  //     'helperText': null,
-  //     'placeholder': '',
-  //   },
-
-  //   'name': 'marketing_consent',
-  //   'type': 'boolean',
-  //   'label': 'Marketing Consent',
-  //   'widget': 'switch',
-
-  //   'default': false,
-
-  //   'nullable': false,
-  //   'readOnly': false,
-  //   'writeOnly': false,
-  //   'deprecated': false,
-
-  //   'permissions': {'read': true, 'create': true, 'update': true},
-
-  //   'showInTable': true,
-  //   'showInCreate': true,
-  //   'showInDetail': true,
-  //   'showInUpdate': true,
-
-  //   'requiredOnCreate': false,
-  //   'requiredOnUpdate': true,
-
-  //   'validations': {},
-  //   'reference': {},
-  //   'extra': {},
-  // };
-
-  // static const Map<String, dynamic> _schema = {
-  //   'entityName': 'API Operation',
-  //   'fields': [
-  //     {
-  //       'name': 'path',
-  //       'label': 'Path',
-  //       'type': 'text',
-  //       'widget': 'text',
-  //       'required': true,
-  //       'layout': {'mobileColSpan': 1, 'tabletColSpan': 1, 'desktopColSpan': 1},
-  //     },
-  //     {
-  //       'name': 'method',
-  //       'label': 'Method',
-  //       'widget': 'text',
-  //       'type': 'text',
-  //       'required': true,
-  //       'layout': {'mobileColSpan': 2, 'tabletColSpan': 2, 'desktopColSpan': 2},
-  //     },
-  //     {
-  //       'name': 'enabled',
-  //       'label': 'Enabled',
-  //       'helpText': 'Field Visible',
-  //       'widget': 'switch',
-  //       'type': 'boolean',
-  //       'initialValue': true,
-  //       'layout': {'mobileColSpan': 2, 'tabletColSpan': 2, 'desktopColSpan': 2},
-  //     },
-  //     {
-  //       'name': 'permission',
-  //       'label': 'Permission',
-  //       'widget': 'text',
-  //       'type': 'text',
-  //       'required': true,
-  //       'layout': {'mobileColSpan': 1, 'tabletColSpan': 2, 'desktopColSpan': 4},
-  //     },
-  //   ],
-  // };
 
   static final EntityMeta _metadata = entityMetaFromJson(_schema);
 

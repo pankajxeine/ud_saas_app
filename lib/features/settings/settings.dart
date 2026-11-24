@@ -6,6 +6,8 @@ import 'package:ud_sass_app/core/theme/bloc/theme_cubit.dart';
 import 'package:ud_sass_app/core/theme/bloc/theme_state.dart';
 import 'package:ud_sass_app/core/theme/app_theme_palette.dart';
 
+import 'package:ud_sass_app/core/layouts/layout/app_layout_config.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -59,6 +61,7 @@ class _AppearanceEditorState extends State<_AppearanceEditor> {
   late double blur;
   late String fontFamily;
   late Color seedColor;
+  late AppLayoutConfig layoutConfig;
 
   late final TextEditingController _hexController;
 
@@ -76,6 +79,12 @@ class _AppearanceEditorState extends State<_AppearanceEditor> {
     blur = widget.settings.themeDocument.surfaceBlur ?? 0.0;
     fontFamily = widget.settings.themeDocument.bodyFont ?? 'GeistSans';
     seedColor = widget.settings.seedColor ?? AppThemePalette.defaultColor;
+    layoutConfig =
+        widget.settings.layoutConfig ??
+        const AppLayoutConfig(
+          useBackgroundGradient: true,
+          useSurfaceGradient: true,
+        );
   }
 
   @override
@@ -85,6 +94,15 @@ class _AppearanceEditorState extends State<_AppearanceEditor> {
     if (oldWidget.settings.seedColor != widget.settings.seedColor) {
       seedColor = widget.settings.seedColor ?? AppThemePalette.defaultColor;
       _hexController.text = _colorToHex(seedColor);
+    }
+
+    if (oldWidget.settings.layoutConfig != widget.settings.layoutConfig) {
+      layoutConfig =
+          widget.settings.layoutConfig ??
+          const AppLayoutConfig(
+            useBackgroundGradient: true,
+            useSurfaceGradient: true,
+          );
     }
   }
 
@@ -119,6 +137,11 @@ class _AppearanceEditorState extends State<_AppearanceEditor> {
     });
 
     context.read<ThemeCubit>().setSeedColor(color);
+  }
+
+  void _updateLayoutConfig(AppLayoutConfig next) {
+    setState(() => layoutConfig = next);
+    context.read<ThemeCubit>().setLayoutConfig(next);
   }
 
   Future<void> _openColorPicker() async {
@@ -318,6 +341,82 @@ class _AppearanceEditorState extends State<_AppearanceEditor> {
                 onPressed: _openColorPicker,
                 icon: const Icon(Icons.color_lens_outlined),
                 label: const Text('Open color picker'),
+              ),
+            ],
+          ),
+        ),
+
+        _SettingsSection(
+          title: 'Application layout',
+          description:
+              'Configure the shell navigation and how the application bar is positioned.',
+          child: Column(
+            children: [
+              DropdownButtonFormField<AppBarLayout>(
+                initialValue: layoutConfig.appBarLayout,
+                decoration: const InputDecoration(
+                  labelText: 'Application bar layout',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: AppBarLayout.fullWidth,
+                    child: Text('Full width app bar'),
+                  ),
+                  DropdownMenuItem(
+                    value: AppBarLayout.contentOnly,
+                    child: Text('Content-only app bar'),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    _updateLayoutConfig(
+                      layoutConfig.copyWith(appBarLayout: value),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: AppTheme.spaceSm),
+              _LayoutSwitch(
+                title: 'Show application bar',
+                value: layoutConfig.showAppBar,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(showAppBar: value),
+                ),
+              ),
+              _LayoutSwitch(
+                title: 'Show desktop sidebar',
+                value: layoutConfig.showSidebar,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(showSidebar: value),
+                ),
+              ),
+              _LayoutSwitch(
+                title: 'Show tablet navigation rail',
+                value: layoutConfig.showNavigationRail,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(showNavigationRail: value),
+                ),
+              ),
+              _LayoutSwitch(
+                title: 'Show mobile bottom navigation',
+                value: layoutConfig.showBottomNavigation,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(showBottomNavigation: value),
+                ),
+              ),
+              _LayoutSwitch(
+                title: 'Use background gradient',
+                value: layoutConfig.useBackgroundGradient,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(useBackgroundGradient: value),
+                ),
+              ),
+              _LayoutSwitch(
+                title: 'Use content surface gradient',
+                value: layoutConfig.useSurfaceGradient,
+                onChanged: (value) => _updateLayoutConfig(
+                  layoutConfig.copyWith(useSurfaceGradient: value),
+                ),
               ),
             ],
           ),
@@ -662,6 +761,28 @@ class _SettingsSection extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _LayoutSwitch extends StatelessWidget {
+  const _LayoutSwitch({
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.zero,
+      title: Text(title),
+      value: value,
+      onChanged: onChanged,
     );
   }
 }
